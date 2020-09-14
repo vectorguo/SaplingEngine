@@ -2,34 +2,49 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="..\..\..\Source\Runtime\SaplingEngineHeader.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\GameApplication\GameApplication.h">
-      <Filter>GameApplication</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\GameApplication\D3D12Application.h">
-      <Filter>GameApplication</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Source\Runtime\Utility\Time.h">
       <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Application\D3D12Application.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Application\GameApplication.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\GameObject\GameObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\GameObject\Component.h">
+      <Filter>GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Source\Runtime\SaplingEngineMain.cpp" />
-    <ClCompile Include="..\..\..\Source\Runtime\GameApplication\GameApplication.cpp">
-      <Filter>GameApplication</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Source\Runtime\GameApplication\D3D12Application.cpp">
-      <Filter>GameApplication</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Source\Runtime\Utility\Time.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\Runtime\Application\D3D12Application.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Runtime\Application\GameApplication.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Runtime\GameObject\GameObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Runtime\GameObject\Component.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="GameApplication">
-      <UniqueIdentifier>{a0765c03-2ff4-4f02-9986-7eff72e5c0aa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Utility">
       <UniqueIdentifier>{b1ab7162-e396-4ad9-9966-e7a671a78ca5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{5f1a4dce-f1a7-4e73-99b0-16a7e0c2dfb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application">
+      <UniqueIdentifier>{a0765c03-2ff4-4f02-9986-7eff72e5c0aa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-#include "GameApplication/GameApplication.h"
+#include "Application/GameApplication.h"
 
 namespace SaplingEngine
 {

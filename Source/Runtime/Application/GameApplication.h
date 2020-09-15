@@ -68,7 +68,7 @@ namespace SaplingEngine
 		/*
 		 * »æÖÆ
 		 */
-		virtual void Draw() = 0;
+		virtual void Render() = 0;
 
 	protected:
 		static GameApplication* s_Instance;

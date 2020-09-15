@@ -23,6 +23,6 @@ namespace SaplingEngine
 		/*
 		 * »æÖÆ
 		 */
-		void Draw() override;
+		void Render() override;
 	};
 }

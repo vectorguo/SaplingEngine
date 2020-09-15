@@ -21,7 +21,7 @@ namespace SaplingEngine
 	/**
 	 * \brief »æÖÆ
 	 */
-	void D3D12Application::Draw()
+	void D3D12Application::Render()
 	{
 	}
 }

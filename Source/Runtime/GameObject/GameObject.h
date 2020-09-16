@@ -68,7 +68,7 @@ namespace SaplingEngine
 		/*
 		 * Transform
 		 */
-		TransformStrongPtr GetTransform() const
+		TransformWeakPtr GetTransform() const
 		{
 			return m_pTransform;
 		}
@@ -87,7 +87,7 @@ namespace SaplingEngine
 		 * 添加和获取Component
 		 */
 		template<typename T>
-		std::shared_ptr<T> AddComponent()
+		std::weak_ptr<T> AddComponent()
 		{
 			constexpr auto componentType = T::GetComponentType();
 			if (m_NewComponents.find(componentType) == m_NewComponents.end() && m_Components.find(componentType) == m_Components.end())
@@ -95,27 +95,27 @@ namespace SaplingEngine
 				//没有添加相同类型的组件
 				auto componentPtr = std::make_shared<T>();
 				componentPtr->SetOwner(shared_from_this());
-				componentPtr->Awake();
 				m_NewComponents.insert_or_assign(componentType, componentPtr);
-				return componentPtr;
+				m_NewComponents[componentType]->Awake();
+				return std::weak_ptr<T>(componentPtr);
 			}
 			else
 			{
 				//已经添加相同类型的组件
-				return nullptr;
+				return std::weak_ptr<T>();
 			}
 		}
 
 		template<typename T>
-		std::shared_ptr<T> GetComponent()
+		std::weak_ptr<T> GetComponent()
 		{
 			auto iter = m_Components.find(T::GetComponentType());
 			if (iter == m_Components.end())
 			{
-				return nullptr;
+				return std::weak_ptr<T>();
 			}
 
-			return std::dynamic_pointer_cast<T>(iter->second);
+			return std::weak_ptr<T>(std::static_pointer_cast<T>(iter->second));
 		}
 
 	private:
@@ -143,7 +143,7 @@ namespace SaplingEngine
 		/*
 		 * Transform
 		 */
-		TransformStrongPtr m_pTransform;
+		TransformWeakPtr m_pTransform;
 	};
 
 	using GameObjectStrongPtr = std::shared_ptr<GameObject>;

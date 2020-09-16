@@ -22,7 +22,6 @@ namespace SaplingEngine
 	{
 		//Ìí¼ÓTransform×é¼þ
 		m_pTransform = AddComponent<Transform>();
-
 		return true;
 	}
 

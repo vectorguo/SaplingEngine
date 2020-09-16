@@ -6,8 +6,6 @@ namespace SaplingEngine
 {
 	class Transform final : public Component
 	{
-		friend class GameObject;
-		
 	public:
 		Transform();
 

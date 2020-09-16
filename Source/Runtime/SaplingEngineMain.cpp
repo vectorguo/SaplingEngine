@@ -1,5 +1,4 @@
 #include "SaplingEngineHeader.h"
-#include "GameApplication/D3D12Application.h"
 
 using namespace SaplingEngine;
 

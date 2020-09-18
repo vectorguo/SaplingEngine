@@ -41,6 +41,7 @@ namespace SaplingEngine
 			for (auto iter = m_NewComponents.begin(); iter != m_NewComponents.end(); ++iter)
 			{
 				iter->second->Start();
+				iter->second->OnEnable();
 			}
 			
 			m_NewComponents.clear();
@@ -58,12 +59,19 @@ namespace SaplingEngine
 	 */
 	void GameObject::Destroy()
 	{
+		for (auto iter = m_NewComponents.begin(); iter != m_NewComponents.end(); ++iter)
+		{
+			iter->second->OnDestroy();
+			iter->second->m_pOwner.reset();
+		}
+		m_NewComponents.clear();
+		
 		for (auto iter = m_Components.begin(); iter != m_Components.end(); ++iter)
 		{
+			iter->second->OnDestroy();
 			iter->second->m_pOwner.reset();
 		}
 		m_Components.clear();
-		m_pTransform.reset();
 	}
 
 	/**
@@ -72,6 +80,24 @@ namespace SaplingEngine
 	 */
 	void GameObject::SetActive(bool active)
 	{
-		
+		if (m_IsActive != active)
+		{
+			m_IsActive = active;
+
+			if (active)
+			{
+				for (auto iter = m_Components.begin(); iter != m_Components.end(); ++iter)
+				{
+					iter->second->OnEnable();
+				}
+			}
+			else
+			{
+				for (auto iter = m_Components.begin(); iter != m_Components.end(); ++iter)
+				{
+					iter->second->OnDisable();
+				}
+			}
+		}
 	}
 }

@@ -87,8 +87,11 @@
     <ClInclude Include="..\..\..\Source\Runtime\GameObject\Component.h" />
     <ClInclude Include="..\..\..\Source\Runtime\GameObject\GameObject.h" />
     <ClInclude Include="..\..\..\Source\Runtime\GameObject\Transform.h" />
+    <ClInclude Include="..\..\..\Source\Runtime\Process\Process.h" />
+    <ClInclude Include="..\..\..\Source\Runtime\Process\ProcessManager.h" />
     <ClInclude Include="..\..\..\Source\Runtime\SaplingEngineHeader.h" />
     <ClInclude Include="..\..\..\Source\Runtime\SaplingEnginePch.h" />
+    <ClInclude Include="..\..\..\Source\Runtime\Utility\Singleton.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Utility\Time.h" />
   </ItemGroup>
   <ItemGroup>
@@ -97,6 +100,8 @@
     <ClCompile Include="..\..\..\Source\Runtime\GameObject\Component.cpp" />
     <ClCompile Include="..\..\..\Source\Runtime\GameObject\GameObject.cpp" />
     <ClCompile Include="..\..\..\Source\Runtime\GameObject\Transform.cpp" />
+    <ClCompile Include="..\..\..\Source\Runtime\Process\Process.cpp" />
+    <ClCompile Include="..\..\..\Source\Runtime\Process\ProcessManager.cpp" />
     <ClCompile Include="..\..\..\Source\Runtime\SaplingEngineMain.cpp" />
     <ClCompile Include="..\..\..\Source\Runtime\Utility\Time.cpp" />
   </ItemGroup>

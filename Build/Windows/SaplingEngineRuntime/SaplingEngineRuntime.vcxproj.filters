@@ -21,6 +21,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Source\Runtime\SaplingEnginePch.h" />
     <ClInclude Include="..\..\..\Source\Runtime\SaplingEngineHeader.h" />
+    <ClInclude Include="..\..\..\Source\Runtime\Process\Process.h">
+      <Filter>Process</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Process\ProcessManager.h">
+      <Filter>Process</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Utility\Singleton.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Source\Runtime\SaplingEngineMain.cpp" />
@@ -42,6 +51,12 @@
     <ClCompile Include="..\..\..\Source\Runtime\GameObject\Transform.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\Runtime\Process\Process.cpp">
+      <Filter>Process</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Runtime\Process\ProcessManager.cpp">
+      <Filter>Process</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utility">
@@ -52,6 +67,9 @@
     </Filter>
     <Filter Include="Application">
       <UniqueIdentifier>{a0765c03-2ff4-4f02-9986-7eff72e5c0aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Process">
+      <UniqueIdentifier>{8348b504-2b1d-4f6a-9990-d8f59d277f74}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

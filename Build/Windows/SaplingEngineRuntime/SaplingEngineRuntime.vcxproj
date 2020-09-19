@@ -82,7 +82,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Source\Runtime\Application\D3D12Application.h" />
+    <ClInclude Include="..\..\..\Source\Runtime\Application\DirectX12\D3D12Application.h" />
+    <ClInclude Include="..\..\..\Source\Runtime\Application\DirectX12\D3D12Header.h" />
+    <ClInclude Include="..\..\..\Source\Runtime\Application\DirectX12\d3dx12.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Application\GameApplication.h" />
     <ClInclude Include="..\..\..\Source\Runtime\GameObject\Component.h" />
     <ClInclude Include="..\..\..\Source\Runtime\GameObject\GameObject.h" />
@@ -95,7 +97,7 @@
     <ClInclude Include="..\..\..\Source\Runtime\Utility\Time.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Source\Runtime\Application\D3D12Application.cpp" />
+    <ClCompile Include="..\..\..\Source\Runtime\Application\DirectX12\D3D12Application.cpp" />
     <ClCompile Include="..\..\..\Source\Runtime\Application\GameApplication.cpp" />
     <ClCompile Include="..\..\..\Source\Runtime\GameObject\Component.cpp" />
     <ClCompile Include="..\..\..\Source\Runtime\GameObject\GameObject.cpp" />

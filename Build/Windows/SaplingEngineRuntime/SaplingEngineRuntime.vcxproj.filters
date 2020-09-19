@@ -4,9 +4,6 @@
     <ClInclude Include="..\..\..\Source\Runtime\Utility\Time.h">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\Application\D3D12Application.h">
-      <Filter>Application</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Source\Runtime\Application\GameApplication.h">
       <Filter>Application</Filter>
     </ClInclude>
@@ -30,14 +27,20 @@
     <ClInclude Include="..\..\..\Source\Runtime\Utility\Singleton.h">
       <Filter>Utility</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Application\DirectX12\D3D12Application.h">
+      <Filter>Application\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Application\DirectX12\d3dx12.h">
+      <Filter>Application\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Application\DirectX12\D3D12Header.h">
+      <Filter>Application\DirectX12</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Source\Runtime\SaplingEngineMain.cpp" />
     <ClCompile Include="..\..\..\Source\Runtime\Utility\Time.cpp">
       <Filter>Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Source\Runtime\Application\D3D12Application.cpp">
-      <Filter>Application</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Source\Runtime\Application\GameApplication.cpp">
       <Filter>Application</Filter>
@@ -57,6 +60,9 @@
     <ClCompile Include="..\..\..\Source\Runtime\Process\ProcessManager.cpp">
       <Filter>Process</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\Runtime\Application\DirectX12\D3D12Application.cpp">
+      <Filter>Application\DirectX12</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utility">
@@ -70,6 +76,9 @@
     </Filter>
     <Filter Include="Process">
       <UniqueIdentifier>{8348b504-2b1d-4f6a-9990-d8f59d277f74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\DirectX12">
+      <UniqueIdentifier>{fee63b76-c97a-45ca-b594-937ad6bdd7d0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

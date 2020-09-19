@@ -19,20 +19,13 @@ namespace SaplingEngine
 		/*
 		 * 单例
 		 */
-		static GameApplication* Instance()
-		{
-			return s_Instance;
-		}
-
-		static LRESULT CALLBACK MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
-		{
-			return s_Instance->MessageProcess(hwnd, msg, wParam, lParam);
-		}
+		static GameApplication* Instance() { return s_Instance; }
 
 		/*
 		 * 初始化
 		 */
-		virtual bool Initialize(HINSTANCE hInstance);
+		virtual bool InitializeConfig() = 0;
+		virtual bool InitializeApplication(HINSTANCE hInstance) = 0;
 
 		/*
 		 * 运行
@@ -40,26 +33,6 @@ namespace SaplingEngine
 		int Run();
 
 	protected:
-		/*
-		 * 初始化配置
-		 */
-		virtual bool InitializeConfig();
-
-		/*
-		 * 初始化窗口
-		 */
-		virtual bool InitializeWindow();
-
-		/*
-		 * 消息处理
-		 */
-		virtual LRESULT MessageProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
-		/*
-		 * 窗口变化回调
-		 */
-		virtual void OnResize();
-
 		/*
 		 * 更新
 		 */

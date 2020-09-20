@@ -59,7 +59,7 @@ namespace SaplingEngine
 		/*
 		 * ´°¿Ú¿íºÍ¸ß
 		 */
-		int32_t m_Width = 0;
-		int32_t m_Height = 0;
+		uint32_t m_Width = 0;
+		uint32_t m_Height = 0;
 	};
 }

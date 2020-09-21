@@ -14,6 +14,7 @@
 #pragma comment(lib, "D3D12.lib")
 #pragma comment(lib, "dxgi.lib")
 
+using namespace DirectX;
 using Microsoft::WRL::ComPtr;
 
 #define ReturnIfFailed(RESULT) if (FAILED(RESULT)) return false;

@@ -28,4 +28,10 @@
 #include <crtdbg.h>
 #endif
 
+/*
+ * math
+ */
+#include "Math/Vector3.h"
+#include "Math/Vector4.h"
+
 #include "Utility/Time.h"

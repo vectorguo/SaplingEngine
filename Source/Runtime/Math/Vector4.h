@@ -6,21 +6,21 @@ namespace SaplingEngine
 {
 	namespace Math
 	{
-		struct Vector4 : XMFLOAT4
+		class Vector4
 		{
-			Vector4() : XMFLOAT4()
+			Vector4(): m_Value()
 			{
 
 			}
 
-			Vector4(const float x, const float y, const float z, const float w) : XMFLOAT4(x, y, z, w)
+			Vector4(const float x, const float y, const float z, const float w) : m_Value(x, y, z, w)
 			{
 
 			}
 
-			explicit Vector4(FXMVECTOR v) : XMFLOAT4()
+			explicit Vector4(FXMVECTOR v) : m_Value()
 			{
-				XMStoreFloat4(this, v);
+				XMStoreFloat4(&m_Value, v);
 			}
 
 			/*
@@ -28,67 +28,67 @@ namespace SaplingEngine
 			 */
 			Vector4 operator+ (const Vector4& v) const
 			{
-				return Vector4(XMLoadFloat4(this) + XMLoadFloat4(&v));
+				return Vector4(XMLoadFloat4(&m_Value) + XMLoadFloat4(&v.m_Value));
 			}
 
 			Vector4 operator- (const Vector4& v) const
 			{
-				return Vector4(XMLoadFloat4(this) - XMLoadFloat4(&v));
+				return Vector4(XMLoadFloat4(&m_Value) - XMLoadFloat4(&v.m_Value));
 			}
 
 			Vector4 operator* (const Vector4& v) const
 			{
-				return Vector4(XMLoadFloat4(this) * XMLoadFloat4(&v));
+				return Vector4(XMLoadFloat4(&m_Value) * XMLoadFloat4(&v.m_Value));
 			}
 
 			Vector4 operator/ (const Vector4& v) const
 			{
-				return Vector4(XMLoadFloat4(this) / XMLoadFloat4(&v));
+				return Vector4(XMLoadFloat4(&m_Value) / XMLoadFloat4(&v.m_Value));
 			}
 
 			Vector4 operator* (const float s) const
 			{
-				return Vector4(XMVectorScale(XMLoadFloat4(this), s));
+				return Vector4(XMVectorScale(XMLoadFloat4(&m_Value), s));
 			}
 
 			Vector4 operator/ (const float s) const
 			{
-				return Vector4(XMLoadFloat4(this) / s);
+				return Vector4(XMLoadFloat4(&m_Value) / s);
 			}
 
 			Vector4& operator+= (const Vector4& v)
 			{
-				Vector4(XMLoadFloat4(this) + XMLoadFloat4(&v));
+				Vector4(XMLoadFloat4(&m_Value) + XMLoadFloat4(&v.m_Value));
 				return *this;
 			}
 
 			Vector4& operator-= (const Vector4& v)
 			{
-				XMStoreFloat4(this, XMLoadFloat4(this) - XMLoadFloat4(&v));
+				XMStoreFloat4(&m_Value, XMLoadFloat4(&m_Value) - XMLoadFloat4(&v.m_Value));
 				return *this;
 			}
 
 			Vector4& operator*= (const Vector4& v)
 			{
-				XMStoreFloat4(this, XMLoadFloat4(this) * XMLoadFloat4(&v));
+				XMStoreFloat4(&m_Value, XMLoadFloat4(&m_Value) * XMLoadFloat4(&v.m_Value));
 				return *this;
 			}
 
 			Vector4& operator/= (const Vector4& v)
 			{
-				XMStoreFloat4(this, XMLoadFloat4(this) / XMLoadFloat4(&v));
+				XMStoreFloat4(&m_Value, XMLoadFloat4(&m_Value) / XMLoadFloat4(&v.m_Value));
 				return *this;
 			}
 
 			Vector4& operator*= (const float s)
 			{
-				XMStoreFloat4(this, XMVectorScale(XMLoadFloat4(this), s));
+				XMStoreFloat4(&m_Value, XMVectorScale(XMLoadFloat4(&m_Value), s));
 				return *this;
 			}
 
 			Vector4& operator/= (const float s)
 			{
-				XMStoreFloat4(this, XMLoadFloat4(this) / s);
+				XMStoreFloat4(&m_Value, XMLoadFloat4(&m_Value) / s);
 				return *this;
 			}
 
@@ -97,24 +97,31 @@ namespace SaplingEngine
 			 */
 			XMVECTOR ToVector() const
 			{
-				return XMLoadFloat4(this);
+				return XMLoadFloat4(&m_Value);
 			}
 
 			float Length() const
 			{
-				return XMVectorGetX(XMVector4Length(XMLoadFloat4(this)));
+				return XMVectorGetX(XMVector4Length(XMLoadFloat4(&m_Value)));
 			}
 
 			float LengthSq() const
 			{
-				return XMVectorGetX(XMVector4LengthSq(XMLoadFloat4(this)));
+				return XMVectorGetX(XMVector4LengthSq(XMLoadFloat4(&m_Value)));
 			}
 
 			Vector4& Normalize()
 			{
-				XMVector4Normalize(XMLoadFloat4(this));
+				XMVector4Normalize(XMLoadFloat4(&m_Value));
 				return *this;
 			}
+
+		public:
+			const static Vector4 Zero;
+			const static Vector4 One;
+			
+		private:
+			XMFLOAT4 m_Value;
 		};
 	}
 }

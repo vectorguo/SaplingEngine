@@ -1,5 +1,8 @@
 #pragma once
 
+#include <Windows.h>
+#include <wrl.h>
+
 #include <d3d12.h>
 #include <d3dcompiler.h>
 #include <DirectXCollision.h>

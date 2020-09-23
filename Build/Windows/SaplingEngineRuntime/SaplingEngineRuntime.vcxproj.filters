@@ -36,6 +36,15 @@
     <ClInclude Include="..\..\..\Source\Runtime\Application\DirectX12\D3D12Header.h">
       <Filter>Application\DirectX12</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Math\Vector3.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Math\Vector4.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Math\Matrix4x4.h">
+      <Filter>Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Source\Runtime\SaplingEngineMain.cpp" />
@@ -63,6 +72,15 @@
     <ClCompile Include="..\..\..\Source\Runtime\Application\DirectX12\D3D12Application.cpp">
       <Filter>Application\DirectX12</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\Runtime\Math\Matrix4x4.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Runtime\Math\Vector3.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Runtime\Math\Vector4.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utility">
@@ -79,6 +97,9 @@
     </Filter>
     <Filter Include="Application\DirectX12">
       <UniqueIdentifier>{fee63b76-c97a-45ca-b594-937ad6bdd7d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{fce7708f-c443-4457-8ce4-b4e5bddd7d68}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

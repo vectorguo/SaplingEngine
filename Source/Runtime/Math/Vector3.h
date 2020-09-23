@@ -6,21 +6,22 @@ namespace SaplingEngine
 {
 	namespace Math
 	{
-		struct Vector3 : XMFLOAT3
+		class Vector3
 		{
-			Vector3() : XMFLOAT3()
+		public:
+			Vector3() : m_Value()
 			{
 				
 			}
 
-			Vector3(const float x, const float y, const float z): XMFLOAT3(x, y, z)
+			Vector3(const float x, const float y, const float z): m_Value(x, y, z)
 			{
 				
 			}
 			
-			explicit Vector3(FXMVECTOR v) : XMFLOAT3()
+			explicit Vector3(FXMVECTOR v): m_Value()
 			{
-				XMStoreFloat3(this, v);
+				XMStoreFloat3(&m_Value, v);
 			}
 
 			/*
@@ -28,67 +29,67 @@ namespace SaplingEngine
 			 */
 			Vector3 operator+ (const Vector3& v) const
 			{
-				return Vector3(XMLoadFloat3(this) + XMLoadFloat3(&v));
+				return Vector3(XMLoadFloat3(&m_Value) + XMLoadFloat3(&v.m_Value));
 			}
 
 			Vector3 operator- (const Vector3& v) const
 			{
-				return Vector3(XMLoadFloat3(this) - XMLoadFloat3(&v));
+				return Vector3(XMLoadFloat3(&m_Value) - XMLoadFloat3(&v.m_Value));
 			}
 
 			Vector3 operator* (const Vector3& v) const
 			{
-				return Vector3(XMLoadFloat3(this) * XMLoadFloat3(&v));
+				return Vector3(XMLoadFloat3(&m_Value) * XMLoadFloat3(&v.m_Value));
 			}
 
 			Vector3 operator/ (const Vector3& v) const
 			{
-				return Vector3(XMLoadFloat3(this) / XMLoadFloat3(&v));
+				return Vector3(XMLoadFloat3(&m_Value) / XMLoadFloat3(&v.m_Value));
 			}
 
 			Vector3 operator* (const float s) const
 			{
-				return Vector3(XMLoadFloat3(this) * s);
+				return Vector3(XMLoadFloat3(&m_Value) * s);
 			}
 
 			Vector3 operator/ (const float s) const
 			{
-				return Vector3(XMLoadFloat3(this) / s);
+				return Vector3(XMLoadFloat3(&m_Value) / s);
 			}
 
 			Vector3& operator+= (const Vector3& v)
 			{
-				Vector3(XMLoadFloat3(this) + XMLoadFloat3(&v));
+				Vector3(XMLoadFloat3(&m_Value) + XMLoadFloat3(&v.m_Value));
 				return *this;
 			}
 
 			Vector3& operator-= (const Vector3& v)
 			{
-				XMStoreFloat3(this, XMLoadFloat3(this) - XMLoadFloat3(&v));
+				XMStoreFloat3(&m_Value, XMLoadFloat3(&m_Value) - XMLoadFloat3(&v.m_Value));
 				return *this;
 			}
 
 			Vector3& operator*= (const Vector3& v)
 			{
-				XMStoreFloat3(this, XMLoadFloat3(this) * XMLoadFloat3(&v));
+				XMStoreFloat3(&m_Value, XMLoadFloat3(&m_Value) * XMLoadFloat3(&v.m_Value));
 				return *this;
 			}
 
 			Vector3& operator/= (const Vector3& v)
 			{
-				XMStoreFloat3(this, XMLoadFloat3(this) / XMLoadFloat3(&v));
+				XMStoreFloat3(&m_Value, XMLoadFloat3(&m_Value) / XMLoadFloat3(&v.m_Value));
 				return *this;
 			}
 
 			Vector3& operator*= (const float s)
 			{
-				XMStoreFloat3(this, XMLoadFloat3(this) * s);
+				XMStoreFloat3(&m_Value, XMLoadFloat3(&m_Value) * s);
 				return *this;
 			}
 
 			Vector3& operator/= (const float s)
 			{
-				XMStoreFloat3(this, XMLoadFloat3(this) / s);
+				XMStoreFloat3(&m_Value, XMLoadFloat3(&m_Value) / s);
 				return *this;
 			}
 			
@@ -97,44 +98,54 @@ namespace SaplingEngine
 			 */
 			XMVECTOR ToVector() const
 			{
-				return XMLoadFloat3(this);
+				return XMLoadFloat3(&m_Value);
 			}
 
 			float Length() const
 			{
-				return XMVectorGetX(XMVector3Length(XMLoadFloat3(this)));
+				return XMVectorGetX(XMVector3Length(XMLoadFloat3(&m_Value)));
 			}
 
 			float LengthSq() const
 			{
-				return XMVectorGetX(XMVector3LengthSq(XMLoadFloat3(this)));
+				return XMVectorGetX(XMVector3LengthSq(XMLoadFloat3(&m_Value)));
 			}
 			
 			Vector3& Normalize()
 			{
-				XMVector3Normalize(XMLoadFloat3(this));
+				XMVector3Normalize(XMLoadFloat3(&m_Value));
 				return *this;
 			}
 			
 			float Dot(const Vector3* v) const
 			{
-				return XMVectorGetX(XMVector3Dot(XMLoadFloat3(this), XMLoadFloat3(v)));
+				return XMVectorGetX(XMVector3Dot(XMLoadFloat3(&m_Value), XMLoadFloat3(&v->m_Value)));
 			}
 
 			float Dot(const Vector3& v) const
 			{
-				return XMVectorGetX(XMVector3Dot(XMLoadFloat3(this), XMLoadFloat3(&v)));
+				return XMVectorGetX(XMVector3Dot(XMLoadFloat3(&m_Value), XMLoadFloat3(&v.m_Value)));
 			}
 			
 			Vector3 Cross(const Vector3* v) const
 			{
-				return Vector3(XMVector3Cross(XMLoadFloat3(this), XMLoadFloat3(v)));
+				return Vector3(XMVector3Cross(XMLoadFloat3(&m_Value), XMLoadFloat3(&v->m_Value)));
 			}
 
 			Vector3 Cross(const Vector3& v) const
 			{
-				return Vector3(XMVector3Cross(XMLoadFloat3(this), XMLoadFloat3(&v)));
+				return Vector3(XMVector3Cross(XMLoadFloat3(&m_Value), XMLoadFloat3(&v.m_Value)));
 			}
+
+		public:
+			const static Vector3 Zero;
+			const static Vector3 One;
+			const static Vector3 Forward;
+			const static Vector3 Right;
+			const static Vector3 Up;
+			
+		private:
+			XMFLOAT3 m_Value;
 		};
 	}
 }

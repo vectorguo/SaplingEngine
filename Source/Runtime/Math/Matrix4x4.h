@@ -71,6 +71,19 @@ namespace SaplingEngine
 			}
 
 			/*
+			 * multiply
+			 */
+			Vector3 MultiplyPoint(const Vector3& v) const
+			{
+				return Vector3(XMVector3TransformCoord(v.Value(), Value()));
+			}
+			
+			Vector3 MultiplyVector(const Vector3& v) const
+			{
+				return Vector3(XMVector3TransformNormal(v.Value(), Value()));
+			}
+
+			/*
 			 * Creates a rotation matrix
 			 */
 			static Matrix4x4 RotateX(const float angle)

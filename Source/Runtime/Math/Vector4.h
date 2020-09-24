@@ -95,7 +95,7 @@ namespace SaplingEngine
 			/*
 			 * convert to vector
 			 */
-			XMVECTOR ToVector() const
+			XMVECTOR Value() const
 			{
 				return XMLoadFloat4(&m_Value);
 			}

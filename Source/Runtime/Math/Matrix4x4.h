@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Application/DirectX12/D3D12Header.h"
+#include "Quaternion.h"
+#include "Vector3.h"
+#include "Vector4.h"
 
 namespace SaplingEngine
 {
@@ -33,41 +35,105 @@ namespace SaplingEngine
 			 */
 			Matrix4x4 operator* (const Matrix4x4& m) const
 			{
-				return Matrix4x4(XMMatrixMultiply(ToMatrix(), m.ToMatrix()));
+				return Matrix4x4(XMMatrixMultiply(Value(), m.Value()));
 			}
 
 			Matrix4x4& operator*= (const Matrix4x4& m)
 			{
-				XMStoreFloat4x4(&m_Value, XMMatrixMultiply(ToMatrix(), m.ToMatrix()));
+				XMStoreFloat4x4(&m_Value, XMMatrixMultiply(Value(), m.Value()));
 				return *this;
 			}
 			
 			/*
 			 * convert to matrix
 			*/
-			XMMATRIX ToMatrix() const
+			XMMATRIX Value() const
 			{
 				return XMLoadFloat4x4(&m_Value);
 			}
 
 			/*
-			 * Äæ¾ØÕó
+			 * inverse
 			 */
 			Matrix4x4 Inverse() const
 			{
-				const auto matrix = ToMatrix();
+				const auto matrix = Value();
 				auto determinant = XMMatrixDeterminant(matrix);
 				return Matrix4x4(XMMatrixInverse(&determinant, matrix));
 			}
 			
 			/*
-			 * ×ªÖÃ¾ØÕó
+			 * transpose
 			 */
 			Matrix4x4 Transpose() const
 			{
-				return Matrix4x4(XMMatrixTranspose(ToMatrix()));
+				return Matrix4x4(XMMatrixTranspose(Value()));
 			}
 
+			/*
+			 * Creates a rotation matrix
+			 */
+			static Matrix4x4 RotateX(const float angle)
+			{
+				return Matrix4x4(XMMatrixRotationX(angle));
+			}
+
+			static Matrix4x4 RotateY(const float angle)
+			{
+				return Matrix4x4(XMMatrixRotationY(angle));
+			}
+
+			static Matrix4x4 RotateZ(const float angle)
+			{
+				return Matrix4x4(XMMatrixRotationZ(angle));
+			}
+
+			static Matrix4x4 Rotate(const Vector3& axis, const float angle)
+			{
+				return Matrix4x4(XMMatrixRotationAxis(axis.Value(), angle));
+			}
+
+			static Matrix4x4 Rotate(const Quaternion& q)
+			{
+				return Matrix4x4(XMMatrixRotationQuaternion(q.Value()));
+			}
+
+			static Matrix4x4 RotateRollPitchYaw(const float pitch, const float yaw, const float roll)
+			{
+				return Matrix4x4(XMMatrixRotationRollPitchYaw(pitch, yaw, roll));
+			}
+
+			static Matrix4x4 RotateRollPitchYaw(const Vector3& v)
+			{
+				return Matrix4x4(XMMatrixRotationRollPitchYawFromVector(v.Value()));
+			}
+			
+			/*
+			 * Create a scaling matrix
+			 */
+			static Matrix4x4 Scale(const float x, const float y, const float z)
+			{
+				return Matrix4x4(XMMatrixScaling(x, y, z));
+			}
+			
+			static Matrix4x4 Scale(const Vector3& scale)
+			{
+				return Matrix4x4(XMMatrixScalingFromVector(scale.Value()));
+			}
+
+			/*
+			 * Creates a translation matrix
+			 */
+			static Matrix4x4 Translate(const float x, const float y, const float z)
+			{
+				return Matrix4x4(XMMatrixTranslation(x, y, z));
+			}
+
+			static Matrix4x4 Translate(const Vector3& v)
+			{
+				return Matrix4x4(XMMatrixTranslationFromVector(v.Value()));
+			}
+			
 		public:
 			const static Matrix4x4 Identity;
 			

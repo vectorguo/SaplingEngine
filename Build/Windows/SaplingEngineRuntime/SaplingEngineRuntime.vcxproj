@@ -90,6 +90,7 @@
     <ClInclude Include="..\..\..\Source\Runtime\GameObject\GameObject.h" />
     <ClInclude Include="..\..\..\Source\Runtime\GameObject\Transform.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Math\Matrix4x4.h" />
+    <ClInclude Include="..\..\..\Source\Runtime\Math\Quaternion.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Math\Vector3.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Math\Vector4.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Process\Process.h" />
@@ -106,6 +107,7 @@
     <ClCompile Include="..\..\..\Source\Runtime\GameObject\GameObject.cpp" />
     <ClCompile Include="..\..\..\Source\Runtime\GameObject\Transform.cpp" />
     <ClCompile Include="..\..\..\Source\Runtime\Math\Matrix4x4.cpp" />
+    <ClCompile Include="..\..\..\Source\Runtime\Math\Quaternion.cpp" />
     <ClCompile Include="..\..\..\Source\Runtime\Math\Vector3.cpp" />
     <ClCompile Include="..\..\..\Source\Runtime\Math\Vector4.cpp" />
     <ClCompile Include="..\..\..\Source\Runtime\Process\Process.cpp" />

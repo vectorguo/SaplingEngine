@@ -84,6 +84,38 @@ namespace SaplingEngine
 			}
 
 			/*
+			 * Create an orthogonal projection matrix
+			 */
+			static Matrix4x4 Orthographic(const float viewWidth, const float viewHeight, const float nearZ, const float farZ)
+			{
+				return Matrix4x4(XMMatrixOrthographicLH(viewWidth, viewHeight, nearZ, farZ));
+			}
+
+			/*
+			 * Create a perspective projection matrix
+			 */
+			static Matrix4x4 Perspective(const float fovAngleY, const float aspectRatio, const float nearZ, const float farZ)
+			{
+				return Matrix4x4(XMMatrixPerspectiveFovLH(fovAngleY, aspectRatio, nearZ, farZ));
+			}
+			
+			/*
+			 * Create a "look at" matrix
+			 */
+			static Matrix4x4 LookAt(const Vector3& eyePosition, const Vector3& focusPosition, const Vector3& upDirection)
+			{
+				return Matrix4x4(XMMatrixLookAtLH(eyePosition.Value(), focusPosition.Value(), upDirection.Value()));
+			}
+
+			/*
+			 * Create a "look to" matrix
+			 */
+			static Matrix4x4 LookTo(const Vector3& eyePosition, const Vector3& eyeDirection, const Vector3& upDirection)
+			{
+				return Matrix4x4(XMMatrixLookToLH(eyePosition.Value(), eyeDirection.Value(), upDirection.Value()));
+			}
+			
+			/*
 			 * Creates a rotation matrix
 			 */
 			static Matrix4x4 RotateX(const float angle)

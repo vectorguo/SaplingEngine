@@ -13,7 +13,7 @@ namespace SaplingEngine
 		virtual ~Component();
 
 		/*
-		 * ç¦æ­¢æ‹·è´å’Œç§»åŠ¨
+		 * ½ûÖ¹¿½±´ºÍÒÆ¶¯
 		 */
 		Component(const Component&) = delete;
 		Component(Component&&) = delete;
@@ -21,9 +21,9 @@ namespace SaplingEngine
 		Component& operator= (Component&&) = delete;
 
 		/*
-		 * è·å–ç»„ä»¶ç±»å‹
-		 * æ¯ä¸ªç»„ä»¶éƒ½å¿…é¡»å®šä¹‰æ­¤å‡½æ•°
-		 * GameObjectå¯¹äºæ¯ä¸ªComponentTypeåªèƒ½æ‹¥æœ‰ä¸€ä¸ªComponent
+		 * »ñÈ¡×é¼şÀàĞÍ
+		 * Ã¿¸ö×é¼ş¶¼±ØĞë¶¨Òå´Ëº¯Êı
+		 * GameObject¶ÔÓÚÃ¿¸öComponentTypeÖ»ÄÜÓµÓĞÒ»¸öComponent
 		 */
 		static constexpr uint32_t GetComponentType()
 		{

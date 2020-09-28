@@ -25,7 +25,11 @@ namespace SaplingEngine
 		 * 初始化
 		 */
 		virtual bool InitializeConfig() = 0;
-		virtual bool InitializeApplication(HINSTANCE hInstance) = 0;
+		virtual bool InitializeApplication(HINSTANCE hInstance)
+		{
+			m_AppInstance = hInstance;
+			return true;
+		}
 
 		/*
 		 * 运行

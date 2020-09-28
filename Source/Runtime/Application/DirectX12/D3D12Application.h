@@ -48,6 +48,55 @@ namespace SaplingEngine
 		 */
 		bool InitializeDirectX12();
 
+		/**
+		 * \brief 创建渲染缓冲视图
+		 */
+		void CreateRenderTargetViews();
+		
+		/**
+		 * \brief 创建深度模板缓冲视图
+		 */
+		void CreateDepthStencilView();
+
+		/**
+		 * \brief 执行命令
+		 */
+		void ExecuteCommandList() const;
+		
+		/**
+		 * \brief 刷新渲染队列
+		 */
+		void FlushCommandQueue();
+		
+		/**
+		 * \brief 获取当前的后台缓冲
+		 * \return 后台缓冲
+		 */
+		ID3D12Resource* CurrentBackBuffer() const
+		{
+			return m_SwapChainBuffer[m_BackBufferIndex].Get();
+		}
+
+		/**
+		 * \brief 获取当前后台缓冲区视图
+		 * \return 后台缓冲区视图
+		 */
+		D3D12_CPU_DESCRIPTOR_HANDLE CurrentBackBufferView() const
+		{
+			auto rtvHeapHandle = m_RtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
+			rtvHeapHandle.ptr += static_cast<int64_t>(m_BackBufferIndex) * static_cast<int64_t>(m_RtvDescriptorSize);
+			return rtvHeapHandle;
+		}
+
+		/**
+		 * \brief 获取深度模板缓冲区试图
+		 * \return 深度模板缓冲区试图
+		 */
+		D3D12_CPU_DESCRIPTOR_HANDLE DepthStencilBufferView() const
+		{
+			return m_DsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
+		}
+
 		/*
 		 * 消息处理
 		 */
@@ -84,7 +133,7 @@ namespace SaplingEngine
 
 		ComPtr<IDXGISwapChain>						m_SwapChain;							//交换链
 		ComPtr<ID3D12Resource>						m_SwapChainBuffer[SwapChainBufferCount];//交换链缓冲区
-		int32_t										m_FrontBufferIndex = 0;					//交换链中前台缓冲索引
+		int32_t										m_BackBufferIndex = 0;					//交换链中前台缓冲索引
 		ComPtr<ID3D12Resource>						m_DepthStencilBuffer;					//深度/模板缓冲区
 
 		D3D12_VIEWPORT								m_Viewport;								//视图窗口

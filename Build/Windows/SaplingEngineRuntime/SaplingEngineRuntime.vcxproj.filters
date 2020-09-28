@@ -51,6 +51,9 @@
     <ClInclude Include="..\..\..\Source\Runtime\Scene\Scene.h">
       <Filter>Scene</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Application\DirectX12\D3D12Exception.h">
+      <Filter>Application\DirectX12</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Source\Runtime\SaplingEngineMain.cpp" />

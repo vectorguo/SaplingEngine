@@ -31,6 +31,9 @@ namespace SaplingEngine
 			else
 			{
 				Time::Tick();
+
+				Update();
+				Render();
 			}
 		}
 

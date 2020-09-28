@@ -11,7 +11,7 @@ namespace SaplingEngine
 	using GameObjectList = std::vector<GameObjectPtr>;
 	
 	/*
-	 * é”€æ¯GameObject
+	 * Ïú»ÙGameObject
 	 */
 	void DestroyGameObject(const GameObjectPtr& gameObject);
 	
@@ -26,7 +26,7 @@ namespace SaplingEngine
 		~GameObject() = default;
 
 		/*
-		 * ç¦æ­¢æ‹·è´å’Œç§»åŠ¨
+		 * ½ûÖ¹¿½±´ºÍÒÆ¶¯
 		 */
 		GameObject(const GameObject&) = delete;
 		GameObject(GameObject&&) = delete;
@@ -61,7 +61,7 @@ namespace SaplingEngine
 		bool IsDestroyed() const { return m_IsDestroyed; }
 
 		/*
-		 * æ·»åŠ å’Œè·å–Component
+		 * Ìí¼ÓºÍ»ñÈ¡Component
 		 */
 		template<typename T>
 		std::shared_ptr<T> AddComponent();
@@ -71,7 +71,7 @@ namespace SaplingEngine
 
 	private:
 		/**
-		 * \brief é”€æ¯
+		 * \brief Ïú»Ù
 		 */
 		void DestroyInternal();
 
@@ -87,33 +87,33 @@ namespace SaplingEngine
 		std::string m_Name;
 
 		/**
-		 * \brief æ˜¯å¦å¤„äºæ´»åŠ¨çŠ¶æ€
+		 * \brief ÊÇ·ñ´¦ÓÚ»î¶¯×´Ì¬
 		 */
 		bool m_IsActive = true;
 
 		/**
-		 * \brief æ˜¯å¦è¢«æ ‡è®°é”€æ¯
+		 * \brief ÊÇ·ñ±»±ê¼ÇÏú»Ù
 		 */
 		bool m_IsDestroyed = false;
 		
 		/*
-		 * æ‰€æœ‰ç»„ä»¶
+		 * ËùÓĞ×é¼ş
 		 */	
 		ComponentMap m_Components;
 		ComponentMap m_NewComponents;
 		
 		/**
-		 * \brief transformç»„ä»¶
+		 * \brief transform×é¼ş
 		 */
 		TransformPtr m_Transform;
 
 		/**
-		 * \brief å­èŠ‚ç‚¹
+		 * \brief ×Ó½Úµã
 		 */
 		GameObjectList m_Children;
 
 		/**
-		 * \brief çˆ¶èŠ‚ç‚¹
+		 * \brief ¸¸½Úµã
 		 */
 		GameObjectPtr m_Parent;
 	};
@@ -127,7 +127,7 @@ namespace SaplingEngine
 		constexpr auto componentType = T::GetComponentType();
 		if (m_NewComponents.find(componentType) == m_NewComponents.end() && m_Components.find(componentType) == m_Components.end())
 		{
-			//æ²¡æœ‰æ·»åŠ ç›¸åŒç±»å‹çš„ç»„ä»¶
+			//Ã»ÓĞÌí¼ÓÏàÍ¬ÀàĞÍµÄ×é¼ş
 			auto componentPtr = std::make_shared<T>();
 			componentPtr->SetOwner(shared_from_this());
 			m_NewComponents.insert_or_assign(componentType, componentPtr);
@@ -136,7 +136,7 @@ namespace SaplingEngine
 		}
 		else
 		{
-			//å·²ç»æ·»åŠ ç›¸åŒç±»å‹çš„ç»„ä»¶
+			//ÒÑ¾­Ìí¼ÓÏàÍ¬ÀàĞÍµÄ×é¼ş
 			return nullptr;
 		}
 	}

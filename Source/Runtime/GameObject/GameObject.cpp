@@ -3,7 +3,7 @@
 namespace SaplingEngine
 {
 	/**
-	 * \brief é”€æ¯GameObject
+	 * \brief Ïú»ÙGameObject
 	 * \param gameObject go
 	 */
 	void DestroyGameObject(const GameObjectPtr& gameObject)
@@ -24,8 +24,8 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief åˆå§‹åŒ–
-	 * \return æ˜¯å¦åˆå§‹åŒ–æˆåŠŸ
+	 * \brief ³õÊ¼»¯
+	 * \return ÊÇ·ñ³õÊ¼»¯³É¹¦
 	 */
 	bool GameObject::Initialize()
 	{
@@ -34,11 +34,11 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief æ›´æ–°
+	 * \brief ¸üÐÂ
 	 */
 	void GameObject::Update()
 	{
-		//æ·»åŠ æ–°çš„ç»„ä»¶
+		//Ìí¼ÓÐÂµÄ×é¼þ
 		if (!m_NewComponents.empty())
 		{
 			for (auto iter = m_NewComponents.begin(); iter != m_NewComponents.end(); ++iter)
@@ -55,7 +55,7 @@ namespace SaplingEngine
 			m_NewComponents.clear();
 		}
 
-		//æ›´æ–°ç»„ä»¶
+		//¸üÐÂ×é¼þ
 		for (auto iter = m_Components.begin(); iter != m_Components.end(); ++iter)
 		{
 			iter->second->Update();
@@ -63,7 +63,7 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief é”€æ¯
+	 * \brief Ïú»Ù
 	 */
 	void GameObject::Destroy()
 	{
@@ -76,13 +76,13 @@ namespace SaplingEngine
 			m_Parent = nullptr;
 		}
 
-		//é”€æ¯å­èŠ‚ç‚¹
+		//Ïú»Ù×Ó½Úµã
 		DestroyInternal();
 	}
 
 	/**
-	 * \brief è®¾ç½®æ´»åŠ¨çŠ¶æ€
-	 * \param active æ˜¯å¦å¤„äºŽæ´»åŠ¨çŠ¶æ€
+	 * \brief ÉèÖÃ»î¶¯×´Ì¬
+	 * \param active ÊÇ·ñ´¦ÓÚ»î¶¯×´Ì¬
 	 */
 	void GameObject::SetActive(bool active)
 	{
@@ -108,11 +108,11 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief é”€æ¯å­èŠ‚ç‚¹
+	 * \brief Ïú»Ù×Ó½Úµã
 	 */
 	void GameObject::DestroyInternal()
 	{
-		//é”€æ¯ç»„ä»¶
+		//Ïú»Ù×é¼þ
 		for (auto iter = m_NewComponents.begin(); iter != m_NewComponents.end(); ++iter)
 		{
 			iter->second->OnDestroy();

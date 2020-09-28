@@ -14,9 +14,9 @@ namespace SaplingEngine
 		Transform();
 
 		/*
-		 * 鑾峰彇缁勪欢绫诲瀷
-		 * 姣忎釜缁勪欢閮藉繀椤诲畾涔夋鍑芥暟
-		 * GameObject瀵逛簬姣忎釜ComponentType鍙兘鎷ユ湁涓�涓狢omponent
+		 * 获取组件类型
+		 * 每个组件都必须定义此函数
+		 * GameObject对于每个ComponentType只能拥有一个Component
 		 */
 		static constexpr uint32_t GetComponentType()
 		{

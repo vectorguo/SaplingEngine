@@ -11,6 +11,7 @@
 #include <DirectXPackedVector.h>
 #include <dxgi1_4.h>
 
+#include "D3D12Exception.h"
 #include "d3dx12.h"
 
 #pragma comment(lib,"d3dcompiler.lib")
@@ -20,4 +21,26 @@
 using namespace DirectX;
 using Microsoft::WRL::ComPtr;
 
-#define ReturnIfFailed(RESULT) if (FAILED(RESULT)) return false;
+constexpr void ThrowIfFailed(const HRESULT result)
+{
+	if (FAILED(result))
+	{
+		throw D3D12Exception("");
+	}
+}
+
+constexpr void ThrowIfFailed(const HRESULT result, const std::string& message)
+{
+	if (FAILED(result))
+	{
+		throw D3D12Exception(message);
+	}
+}
+
+constexpr void ThrowIfFailed(const HRESULT result, std::string&& message)
+{
+	if (FAILED(result))
+	{
+		throw D3D12Exception(std::move(message));
+	}
+}

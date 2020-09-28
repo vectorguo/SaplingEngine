@@ -10,12 +10,6 @@
     <ClInclude Include="..\..\..\Source\Runtime\GameObject\GameObject.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\GameObject\Component.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\GameObject\Transform.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Source\Runtime\SaplingEnginePch.h" />
     <ClInclude Include="..\..\..\Source\Runtime\SaplingEngineHeader.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Process\Process.h">
@@ -54,6 +48,36 @@
     <ClInclude Include="..\..\..\Source\Runtime\Application\DirectX12\D3D12Exception.h">
       <Filter>Application\DirectX12</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Graphics\Mesh.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Graphics\Material.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Graphics\Shader.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Scene\SceneManager.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\GameObject\Component.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\GameObject\Transform.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Camera\Camera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\RenderPipeline\Renderer\Renderer.h">
+      <Filter>RenderPipeline\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\RenderPipeline\Renderer\MeshRenderer.h">
+      <Filter>RenderPipeline\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Camera\CameraManager.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Source\Runtime\SaplingEngineMain.cpp" />
@@ -64,12 +88,6 @@
       <Filter>Application</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Source\Runtime\GameObject\GameObject.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Source\Runtime\GameObject\Component.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Source\Runtime\GameObject\Transform.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Source\Runtime\Process\Process.cpp">
@@ -96,6 +114,36 @@
     <ClCompile Include="..\..\..\Source\Runtime\Scene\Scene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\Runtime\Graphics\Mesh.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Runtime\Graphics\Material.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Runtime\Graphics\Shader.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Runtime\Scene\SceneManager.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Runtime\GameObject\Component.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Runtime\GameObject\Transform.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Runtime\Camera\Camera.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Runtime\RenderPipeline\Renderer\Renderer.cpp">
+      <Filter>RenderPipeline\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Runtime\RenderPipeline\Renderer\MeshRenderer.cpp">
+      <Filter>RenderPipeline\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Runtime\Camera\CameraManager.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utility">
@@ -118,6 +166,21 @@
     </Filter>
     <Filter Include="Scene">
       <UniqueIdentifier>{f6d07fce-36cf-49ec-ad53-7e367bd632f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{52b125df-c2a0-47a3-8fe7-e09ecd29b5ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RenderPipeline">
+      <UniqueIdentifier>{5bf7095a-9a10-4692-9653-401bbffe8047}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RenderPipeline\RenderPass">
+      <UniqueIdentifier>{d945d85b-8505-46c8-bd88-2f7a4667bb01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{11eab309-addf-41f8-865f-eb73f65cbec9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RenderPipeline\Renderer">
+      <UniqueIdentifier>{58594f87-2058-4297-8961-034e3ec01d4e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

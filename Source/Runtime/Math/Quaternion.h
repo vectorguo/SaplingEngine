@@ -32,7 +32,16 @@ namespace SaplingEngine
 				m_Value = XMQuaternionMultiply(Value(), q.Value());
 				return *this;
 			}
-			
+
+			Vector3 operator* (const Vector3& v) const
+			{
+				return Vector3(XMVector3TransformNormal(v.Value(), XMMatrixRotationQuaternion(m_Value)));
+			}
+
+			/**
+			 * \brief Convert To XMVECTOR
+			 * \return XMVECTOR
+			 */
 			XMVECTOR Value() const
 			{
 				return m_Value;

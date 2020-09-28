@@ -31,6 +31,8 @@
 /*
  * math
  */
+#include "Math/Matrix4x4.h"
+#include "Math/Quaternion.h"
 #include "Math/Vector3.h"
 #include "Math/Vector4.h"
 

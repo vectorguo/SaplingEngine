@@ -48,6 +48,9 @@
     <ClInclude Include="..\..\..\Source\Runtime\Math\Quaternion.h">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Scene\Scene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Source\Runtime\SaplingEngineMain.cpp" />
@@ -87,6 +90,9 @@
     <ClCompile Include="..\..\..\Source\Runtime\Math\Quaternion.cpp">
       <Filter>Math</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\Runtime\Scene\Scene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utility">
@@ -106,6 +112,9 @@
     </Filter>
     <Filter Include="Math">
       <UniqueIdentifier>{fce7708f-c443-4457-8ce4-b4e5bddd7d68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{f6d07fce-36cf-49ec-ad53-7e367bd632f5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

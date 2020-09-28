@@ -1,14 +1,23 @@
 #pragma once
 
 #include "SaplingEnginePch.h"
-#include "GameObject/Component.h"
-#include "GameObject/Transform.h"
+#include "Component.h"
+#include "Transform.h"
 
 namespace SaplingEngine
 {
+	class GameObject;
+	using GameObjectPtr = std::shared_ptr<GameObject>;
+	using GameObjectList = std::vector<GameObjectPtr>;
+	
+	/*
+	 * é”€æ¯GameObject
+	 */
+	void DestroyGameObject(const GameObjectPtr& gameObject);
+	
 	class GameObject : public std::enable_shared_from_this<GameObject>
 	{
-		using ComponentMap = std::map<uint32_t, ComponentStrongPtr>;
+		friend void DestroyGameObject(const GameObjectPtr&);
 		
 	public:
 		explicit GameObject(uint32_t id);
@@ -17,7 +26,7 @@ namespace SaplingEngine
 		~GameObject() = default;
 
 		/*
-		 * ½ûÖ¹¿½±´ºÍÒÆ¶¯
+		 * ç¦æ­¢æ‹·è´å’Œç§»åŠ¨
 		 */
 		GameObject(const GameObject&) = delete;
 		GameObject(GameObject&&) = delete;
@@ -52,18 +61,19 @@ namespace SaplingEngine
 		bool IsDestroyed() const { return m_IsDestroyed; }
 
 		/*
-		 * Get Transform
-		 */
-		TransformWeakPtr GetTransform() const { return m_pTransform; }
-
-		/*
-		 * Ìí¼ÓºÍ»ñÈ¡Component
+		 * æ·»åŠ å’Œè·å–Component
 		 */
 		template<typename T>
-		std::weak_ptr<T> AddComponent();
+		std::shared_ptr<T> AddComponent();
 
 		template<typename T>
-		std::weak_ptr<T> GetComponent();
+		std::shared_ptr<T> GetComponent();
+
+	private:
+		/**
+		 * \brief é”€æ¯
+		 */
+		void DestroyInternal();
 
 	private:
 		/**
@@ -71,69 +81,75 @@ namespace SaplingEngine
 		 */
 		uint32_t m_Id = 0;
 
-		/*
-		 * GameObject Name
+		/**
+		 * \brief GameObject Name
 		 */
 		std::string m_Name;
 
-		/*
-		 * ÊÇ·ñ´¦ÓÚ»î¶¯×´Ì¬
+		/**
+		 * \brief æ˜¯å¦å¤„äºæ´»åŠ¨çŠ¶æ€
 		 */
 		bool m_IsActive = true;
 
-		/*
-		 * ÊÇ·ñ±»±ê¼ÇÏú»Ù
+		/**
+		 * \brief æ˜¯å¦è¢«æ ‡è®°é”€æ¯
 		 */
 		bool m_IsDestroyed = false;
 		
 		/*
-		 * ËùÓĞ×é¼ş
-		 */
+		 * æ‰€æœ‰ç»„ä»¶
+		 */	
 		ComponentMap m_Components;
 		ComponentMap m_NewComponents;
-
-		/*
-		 * Transform
+		
+		/**
+		 * \brief transformç»„ä»¶
 		 */
-		TransformWeakPtr m_pTransform;
-	};
+		TransformPtr m_Transform;
 
-	using GameObjectStrongPtr = std::shared_ptr<GameObject>;
-	using GameObjectWeakPtr = std::weak_ptr<GameObject>;
+		/**
+		 * \brief å­èŠ‚ç‚¹
+		 */
+		GameObjectList m_Children;
+
+		/**
+		 * \brief çˆ¶èŠ‚ç‚¹
+		 */
+		GameObjectPtr m_Parent;
+	};
 
 	/*
 	 * inline functions
 	 */
 	template <typename T>
-	std::weak_ptr<T> GameObject::AddComponent()
+	std::shared_ptr<T> GameObject::AddComponent()
 	{
 		constexpr auto componentType = T::GetComponentType();
-		if (m_NewComponents.find(componentType) == m_NewComponents.end() && m_Components.find(componentType) ==
-			m_Components.end())
+		if (m_NewComponents.find(componentType) == m_NewComponents.end() && m_Components.find(componentType) == m_Components.end())
 		{
-			//Ã»ÓĞÌí¼ÓÏàÍ¬ÀàĞÍµÄ×é¼ş
+			//æ²¡æœ‰æ·»åŠ ç›¸åŒç±»å‹çš„ç»„ä»¶
 			auto componentPtr = std::make_shared<T>();
 			componentPtr->SetOwner(shared_from_this());
 			m_NewComponents.insert_or_assign(componentType, componentPtr);
 			m_NewComponents[componentType]->Awake();
-			return std::weak_ptr<T>(componentPtr);
+			return componentPtr;
 		}
 		else
 		{
-			//ÒÑ¾­Ìí¼ÓÏàÍ¬ÀàĞÍµÄ×é¼ş
-			return std::weak_ptr<T>();
+			//å·²ç»æ·»åŠ ç›¸åŒç±»å‹çš„ç»„ä»¶
+			return nullptr;
 		}
 	}
 
 	template <typename T>
-	std::weak_ptr<T> GameObject::GetComponent()
+	std::shared_ptr<T> GameObject::GetComponent()
 	{
 		auto iter = m_Components.find(T::GetComponentType());
 		if (iter == m_Components.end())
 		{
-			return std::weak_ptr<T>();
+			return nullptr;
 		}
 
-		return std::weak_ptr<T>(std::static_pointer_cast<T>(iter->second));
+		return std::static_pointer_cast<T>(iter->second);
 	}
 }

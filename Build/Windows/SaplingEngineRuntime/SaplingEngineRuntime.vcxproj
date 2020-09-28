@@ -59,6 +59,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -73,6 +74,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -97,6 +99,7 @@
     <ClInclude Include="..\..\..\Source\Runtime\Process\ProcessManager.h" />
     <ClInclude Include="..\..\..\Source\Runtime\SaplingEngineHeader.h" />
     <ClInclude Include="..\..\..\Source\Runtime\SaplingEnginePch.h" />
+    <ClInclude Include="..\..\..\Source\Runtime\Scene\Scene.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Utility\Singleton.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Utility\Time.h" />
   </ItemGroup>
@@ -113,6 +116,7 @@
     <ClCompile Include="..\..\..\Source\Runtime\Process\Process.cpp" />
     <ClCompile Include="..\..\..\Source\Runtime\Process\ProcessManager.cpp" />
     <ClCompile Include="..\..\..\Source\Runtime\SaplingEngineMain.cpp" />
+    <ClCompile Include="..\..\..\Source\Runtime\Scene\Scene.cpp" />
     <ClCompile Include="..\..\..\Source\Runtime\Utility\Time.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

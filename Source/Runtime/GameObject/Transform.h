@@ -4,33 +4,51 @@
 
 namespace SaplingEngine
 {
+	using Math::Matrix4x4;
+	using Math::Quaternion;
+	using Math::Vector3;
+	
 	class Transform final : public Component
 	{
 	public:
 		Transform();
 
 		/*
-		 * 获取组件类型
-		 * 每个组件都必须定义此函数
-		 * GameObject对于每个ComponentType只能拥有一个Component
+		 * 鑾峰彇缁勪欢绫诲瀷
+		 * 姣忎釜缁勪欢閮藉繀椤诲畾涔夋鍑芥暟
+		 * GameObject瀵逛簬姣忎釜ComponentType鍙兘鎷ユ湁涓�涓狢omponent
 		 */
 		static constexpr uint32_t GetComponentType()
 		{
 			return 1;
-		}
+		}		
 
-	protected:
-		void Awake() override
-		{
+	private:
+		/**
+		 * \brief world position
+		 */
+		Vector3 m_Position;
 		
-		}
+		/**
+		 * \brief local position
+		 */
+		Vector3 m_LocalPosition;
 
-		void Update() override
-		{
-			
-		}
+		/**
+		 * \brief world rotation
+		 */
+		Quaternion m_Rotation;
+		
+		/**
+		 * \brief local rotation
+		 */
+		Quaternion m_LocalRotation;
+
+		/**
+		 * \brief local scale
+		 */
+		Quaternion m_LocalScale;
 	};
 
-	using TransformStrongPtr = std::shared_ptr<Transform>;
-	using TransformWeakPtr = std::weak_ptr<Transform>;
+	using TransformPtr = std::shared_ptr<Transform>;
 }

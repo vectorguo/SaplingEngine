@@ -92,6 +92,16 @@ namespace SaplingEngine
 				XMStoreFloat3(&m_Value, XMLoadFloat3(&m_Value) / s);
 				return *this;
 			}
+
+			bool operator== (const Vector3& v) const
+			{
+				return XMVector3Equal(Value(), v.Value());
+			}
+
+			bool operator!= (const Vector3& v) const
+			{
+				return XMVector3NotEqual(Value(), v.Value());
+			}
 			
 			/*
 			 * convert to vector

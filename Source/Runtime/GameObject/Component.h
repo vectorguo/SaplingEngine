@@ -4,11 +4,6 @@
 
 namespace SaplingEngine
 {	
-	/*
-	 * Ç°ÏòÉùÃ÷
-	 */
-	class GameObject;
-	
 	class Component
 	{
 		friend class GameObject;
@@ -18,7 +13,7 @@ namespace SaplingEngine
 		virtual ~Component();
 
 		/*
-		 * ½ûÖ¹¿½±´ºÍÒÆ¶¯
+		 * ç¦æ­¢æ‹·è´å’Œç§»åŠ¨
 		 */
 		Component(const Component&) = delete;
 		Component(Component&&) = delete;
@@ -26,9 +21,9 @@ namespace SaplingEngine
 		Component& operator= (Component&&) = delete;
 
 		/*
-		 * »ñÈ¡×é¼şÀàĞÍ
-		 * Ã¿¸ö×é¼ş¶¼±ØĞë¶¨Òå´Ëº¯Êı
-		 * GameObject¶ÔÓÚÃ¿¸öComponentTypeÖ»ÄÜÓµÓĞÒ»¸öComponent
+		 * è·å–ç»„ä»¶ç±»å‹
+		 * æ¯ä¸ªç»„ä»¶éƒ½å¿…é¡»å®šä¹‰æ­¤å‡½æ•°
+		 * GameObjectå¯¹äºæ¯ä¸ªComponentTypeåªèƒ½æ‹¥æœ‰ä¸€ä¸ªComponent
 		 */
 		static constexpr uint32_t GetComponentType()
 		{
@@ -74,13 +69,13 @@ namespace SaplingEngine
 	private:
 		void SetOwner(std::shared_ptr<GameObject> pOwner)
 		{
-			m_pOwner = std::move(pOwner);
+			m_pOwner.swap(pOwner);
 		}
 		
 	protected:
 		std::shared_ptr<GameObject> m_pOwner;
 	};
 
-	using ComponentStrongPtr = std::shared_ptr<Component>;
-	using ComponentWeakPtr = std::weak_ptr<Component>;
+	using ComponentPtr = std::shared_ptr<Component>;
+	using ComponentMap = std::map<uint32_t, ComponentPtr>;
 }

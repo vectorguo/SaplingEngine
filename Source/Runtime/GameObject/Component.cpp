@@ -9,7 +9,7 @@ namespace SaplingEngine
 	 * \brief 设置活动状态
 	 * \param enabled 是否使活动状态
 	 */
-	void Component::SetEnabled(bool enabled)
+	void Component::SetEnabled(const bool enabled)
 	{
 		if (m_IsEnabled != enabled)
 		{

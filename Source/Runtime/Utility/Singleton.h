@@ -10,7 +10,7 @@ namespace SaplingEngine
 		virtual ~Singleton() {}
 		
 	public:
-		static T* GetInstance()
+		static T* Instance()
 		{
 			if (m_Instance == nullptr)
 			{

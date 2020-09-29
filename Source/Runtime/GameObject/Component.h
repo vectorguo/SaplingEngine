@@ -8,7 +8,7 @@ namespace SaplingEngine
 	constexpr uint32_t ComponentType_Renderer = 2;
 	constexpr uint32_t ComponentType_Transform = 3;
 	
-	class Component
+	class Component : public std::enable_shared_from_this<Component>
 	{
 		friend class GameObject;
 		

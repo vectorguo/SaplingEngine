@@ -24,7 +24,7 @@ namespace SaplingEngine
 		};
 		
 	public:
-		Camera();
+		Camera() = default;
 
 		/*
 		 * 获取组件类型
@@ -154,13 +154,7 @@ namespace SaplingEngine
 		 * \brief 设置相机优先级
 		 * \param priority 优先级
 		 */
-		void SetPriority(const int priority)
-		{
-			m_Priority = priority;
-
-			//刷新CameraManager中的相机排序
-			//TODO
-		}
+		void SetPriority(int priority);
 
 		/**
 		 * \brief 获取相机剔除标记
@@ -192,4 +186,7 @@ namespace SaplingEngine
 		 */
 		int32_t m_CullingMask = 0xffffffff;
 	};
+
+	using CameraPtr = std::shared_ptr<Camera>;
+	using CameraList = std::vector<CameraPtr>;
 }

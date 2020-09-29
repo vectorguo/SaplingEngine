@@ -6,4 +6,14 @@ namespace SaplingEngine
 	{
 		
 	}
+
+	void Camera::Awake()
+	{
+		
+	}
+
+	void Camera::OnDestroy()
+	{
+		//´ÓCameraManagerÖĞÉ¾³ıCamera
+	}
 }

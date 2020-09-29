@@ -33,6 +33,20 @@ namespace SaplingEngine
 		{
 			return 0;
 		}
+
+		/**
+		 * \brief 是否是活动状态
+		 */
+		bool IsEnabled() const
+		{
+			return m_IsEnabled;
+		}
+		
+		/**
+		 * \brief 设置活动状态
+		 * \param enabled 是否使活动状态
+		 */
+		void SetEnabled(bool enabled);
 		
 	protected:
 		virtual void Awake()
@@ -78,6 +92,11 @@ namespace SaplingEngine
 		
 	protected:
 		std::shared_ptr<GameObject> m_pOwner;
+
+		/**
+		 * \brief 是否处于活动状态
+		 */
+		bool m_IsEnabled = true;
 	};
 
 	using ComponentPtr = std::shared_ptr<Component>;

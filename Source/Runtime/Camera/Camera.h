@@ -172,6 +172,10 @@ namespace SaplingEngine
 		}
 
 	private:
+		void Awake() override;
+		void OnDestroy() override;
+
+	private:
 		EProjection m_Projection = EProjection::Perspective;
 		float m_Fov = 60.0f;
 		float m_Size = 5.0f;

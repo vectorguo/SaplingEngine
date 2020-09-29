@@ -55,6 +55,21 @@ namespace SaplingEngine
 			m_NewComponents.clear();
 		}
 
+		//删除组件
+		if (!m_DestroyedComponents.empty())
+		{
+			for (auto componentType : m_DestroyedComponents)
+			{
+				auto iter = m_Components.find(componentType);
+				if (iter != m_Components.end())
+				{
+					iter->second->OnDestroy();
+					m_Components.erase(iter);
+				}
+			}
+			m_DestroyedComponents.clear();
+		}
+
 		//更新组件
 		for (auto iter = m_Components.begin(); iter != m_Components.end(); ++iter)
 		{
@@ -94,14 +109,20 @@ namespace SaplingEngine
 			{
 				for (auto iter = m_Components.begin(); iter != m_Components.end(); ++iter)
 				{
-					iter->second->OnEnable();
+					if (iter->second->IsEnabled())
+					{
+						iter->second->OnEnable();
+					}
 				}
 			}
 			else
 			{
 				for (auto iter = m_Components.begin(); iter != m_Components.end(); ++iter)
 				{
-					iter->second->OnDisable();
+					if (iter->second->IsEnabled())
+					{
+						iter->second->OnDisable();
+					}
 				}
 			}
 		}

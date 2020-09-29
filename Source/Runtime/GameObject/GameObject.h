@@ -82,6 +82,12 @@ namespace SaplingEngine
 		template<typename T>
 		std::shared_ptr<T> GetComponent();
 
+		/**
+		 * \brief 销毁组件
+		 */
+		template<typename T>
+		void DestroyComponent();
+
 	private:
 		/**
 		 * \brief 销毁
@@ -119,6 +125,7 @@ namespace SaplingEngine
 		 */	
 		ComponentMap m_Components;
 		ComponentMap m_NewComponents;
+		std::vector<uint32_t> m_DestroyedComponents;
 		
 		/**
 		 * \brief transform组件
@@ -169,5 +176,11 @@ namespace SaplingEngine
 		}
 
 		return std::static_pointer_cast<T>(iter->second);
+	}
+
+	template <typename T>
+	void GameObject::DestroyComponent()
+	{
+		m_DestroyedComponents.push_back(T::GetComponentType());
 	}
 }

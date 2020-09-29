@@ -37,8 +37,9 @@ namespace SaplingEngine
 		void Update();
 		void Destroy();
 
-		/*
-		 * Get ID
+		/**
+		 * \brief 获取GameObject ID
+		 * \return GameObject ID
 		 */
 		uint32_t GetId() const { return m_Id; }
 
@@ -55,17 +56,29 @@ namespace SaplingEngine
 		bool IsActive() const { return m_IsActive; }
 		void SetActive(bool active);
 
-		/*
-		 * Get Destroyed
+		/**
+		 * \brief 是否处于销毁状态
 		 */
 		bool IsDestroyed() const { return m_IsDestroyed; }
 
-		/*
-		 * 添加和获取Component
+		/**
+		 * \brief 获取LayerMask
+		 * \return LayerMask
+		 */
+		int32_t GetLayerMask() const
+		{
+			return m_LayerMask;
+		}
+
+		/**
+		 * \brief 添加组件
 		 */
 		template<typename T>
 		std::shared_ptr<T> AddComponent();
 
+		/**
+		 * \brief 获取组件
+		 */
 		template<typename T>
 		std::shared_ptr<T> GetComponent();
 
@@ -85,6 +98,11 @@ namespace SaplingEngine
 		 * \brief GameObject Name
 		 */
 		std::string m_Name;
+
+		/**
+		 * \brief LayerMask
+		 */
+		int32_t m_LayerMask = 1;
 
 		/**
 		 * \brief 是否处于活动状态

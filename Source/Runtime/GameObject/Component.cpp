@@ -2,11 +2,6 @@
 
 namespace SaplingEngine
 {
-	Component::Component()
-	{
-	}
-
-	Component::~Component()
-	{
-	}
+	Component::Component() = default;
+	Component::~Component() = default;
 }

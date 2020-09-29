@@ -20,7 +20,7 @@ namespace SaplingEngine
 		 */
 		static constexpr uint32_t GetComponentType()
 		{
-			return 1;
+			return ComponentType_Transform;
 		}		
 
 	private:

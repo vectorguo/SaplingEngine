@@ -3,7 +3,11 @@
 #include "SaplingEnginePch.h"
 
 namespace SaplingEngine
-{	
+{
+	constexpr uint32_t ComponentType_Camera = 1;
+	constexpr uint32_t ComponentType_Renderer = 2;
+	constexpr uint32_t ComponentType_Transform = 3;
+	
 	class Component
 	{
 		friend class GameObject;

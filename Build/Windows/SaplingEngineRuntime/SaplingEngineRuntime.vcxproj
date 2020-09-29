@@ -99,8 +99,10 @@
     <ClInclude Include="..\..\..\Source\Runtime\Graphics\Material.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Graphics\Mesh.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Graphics\Shader.h" />
+    <ClInclude Include="..\..\..\Source\Runtime\Math\Color.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Math\Matrix4x4.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Math\Quaternion.h" />
+    <ClInclude Include="..\..\..\Source\Runtime\Math\Vector2.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Math\Vector3.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Math\Vector4.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Process\Process.h" />
@@ -125,8 +127,10 @@
     <ClCompile Include="..\..\..\Source\Runtime\Graphics\Material.cpp" />
     <ClCompile Include="..\..\..\Source\Runtime\Graphics\Mesh.cpp" />
     <ClCompile Include="..\..\..\Source\Runtime\Graphics\Shader.cpp" />
+    <ClCompile Include="..\..\..\Source\Runtime\Math\Color.cpp" />
     <ClCompile Include="..\..\..\Source\Runtime\Math\Matrix4x4.cpp" />
     <ClCompile Include="..\..\..\Source\Runtime\Math\Quaternion.cpp" />
+    <ClCompile Include="..\..\..\Source\Runtime\Math\Vector2.cpp" />
     <ClCompile Include="..\..\..\Source\Runtime\Math\Vector3.cpp" />
     <ClCompile Include="..\..\..\Source\Runtime\Math\Vector4.cpp" />
     <ClCompile Include="..\..\..\Source\Runtime\Process\Process.cpp" />

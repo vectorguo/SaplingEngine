@@ -31,9 +31,18 @@
 /*
  * math
  */
+#include "Math/Color.h"
 #include "Math/Matrix4x4.h"
 #include "Math/Quaternion.h"
+#include "Math/Vector2.h"
 #include "Math/Vector3.h"
 #include "Math/Vector4.h"
 
 #include "Utility/Time.h"
+
+using SaplingEngine::Math::Color;
+using SaplingEngine::Math::Matrix4x4;
+using SaplingEngine::Math::Quaternion;
+using SaplingEngine::Math::Vector2;
+using SaplingEngine::Math::Vector3;
+using SaplingEngine::Math::Vector4;

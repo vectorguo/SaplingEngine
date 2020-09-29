@@ -35,19 +35,16 @@ namespace SaplingEngine
 			 */
 			Matrix4x4 operator* (const Matrix4x4& m) const
 			{
-				return Matrix4x4(XMMatrixMultiply(Value(), m.Value()));
+				return Matrix4x4(XMMatrixMultiply(XMLoadFloat4x4(&m_Value), XMLoadFloat4x4(&m.m_Value)));
 			}
 
 			Matrix4x4& operator*= (const Matrix4x4& m)
 			{
-				XMStoreFloat4x4(&m_Value, XMMatrixMultiply(Value(), m.Value()));
+				XMStoreFloat4x4(&m_Value, XMMatrixMultiply(XMLoadFloat4x4(&m_Value), XMLoadFloat4x4(&m.m_Value)));
 				return *this;
 			}
 			
-			/*
-			 * convert to matrix
-			*/
-			XMMATRIX Value() const
+			operator XMMATRIX() const
 			{
 				return XMLoadFloat4x4(&m_Value);
 			}
@@ -57,7 +54,7 @@ namespace SaplingEngine
 			 */
 			Matrix4x4 Inverse() const
 			{
-				const auto matrix = Value();
+				const auto matrix = XMLoadFloat4x4(&m_Value);
 				auto determinant = XMMatrixDeterminant(matrix);
 				return Matrix4x4(XMMatrixInverse(&determinant, matrix));
 			}
@@ -67,7 +64,7 @@ namespace SaplingEngine
 			 */
 			Matrix4x4 Transpose() const
 			{
-				return Matrix4x4(XMMatrixTranspose(Value()));
+				return Matrix4x4(XMMatrixTranspose(XMLoadFloat4x4(&m_Value)));
 			}
 
 			/*
@@ -75,12 +72,12 @@ namespace SaplingEngine
 			 */
 			Vector3 MultiplyPoint(const Vector3& v) const
 			{
-				return Vector3(XMVector3TransformCoord(v.Value(), Value()));
+				return Vector3(XMVector3TransformCoord(v, XMLoadFloat4x4(&m_Value)));
 			}
 			
 			Vector3 MultiplyVector(const Vector3& v) const
 			{
-				return Vector3(XMVector3TransformNormal(v.Value(), Value()));
+				return Vector3(XMVector3TransformNormal(v, XMLoadFloat4x4(&m_Value)));
 			}
 
 			/*
@@ -104,7 +101,7 @@ namespace SaplingEngine
 			 */
 			static Matrix4x4 LookAt(const Vector3& eyePosition, const Vector3& focusPosition, const Vector3& upDirection)
 			{
-				return Matrix4x4(XMMatrixLookAtLH(eyePosition.Value(), focusPosition.Value(), upDirection.Value()));
+				return Matrix4x4(XMMatrixLookAtLH(eyePosition, focusPosition, upDirection));
 			}
 
 			/*
@@ -112,7 +109,7 @@ namespace SaplingEngine
 			 */
 			static Matrix4x4 LookTo(const Vector3& eyePosition, const Vector3& eyeDirection, const Vector3& upDirection)
 			{
-				return Matrix4x4(XMMatrixLookToLH(eyePosition.Value(), eyeDirection.Value(), upDirection.Value()));
+				return Matrix4x4(XMMatrixLookToLH(eyePosition, eyeDirection, upDirection));
 			}
 			
 			/*
@@ -135,12 +132,12 @@ namespace SaplingEngine
 
 			static Matrix4x4 Rotate(const Vector3& axis, const float angle)
 			{
-				return Matrix4x4(XMMatrixRotationAxis(axis.Value(), angle));
+				return Matrix4x4(XMMatrixRotationAxis(axis, angle));
 			}
 
 			static Matrix4x4 Rotate(const Quaternion& q)
 			{
-				return Matrix4x4(XMMatrixRotationQuaternion(q.Value()));
+				return Matrix4x4(XMMatrixRotationQuaternion(q));
 			}
 
 			static Matrix4x4 RotateRollPitchYaw(const float pitch, const float yaw, const float roll)
@@ -150,7 +147,7 @@ namespace SaplingEngine
 
 			static Matrix4x4 RotateRollPitchYaw(const Vector3& v)
 			{
-				return Matrix4x4(XMMatrixRotationRollPitchYawFromVector(v.Value()));
+				return Matrix4x4(XMMatrixRotationRollPitchYawFromVector(v));
 			}
 			
 			/*
@@ -163,7 +160,7 @@ namespace SaplingEngine
 			
 			static Matrix4x4 Scale(const Vector3& scale)
 			{
-				return Matrix4x4(XMMatrixScalingFromVector(scale.Value()));
+				return Matrix4x4(XMMatrixScalingFromVector(scale));
 			}
 
 			/*
@@ -176,7 +173,7 @@ namespace SaplingEngine
 
 			static Matrix4x4 Translate(const Vector3& v)
 			{
-				return Matrix4x4(XMMatrixTranslationFromVector(v.Value()));
+				return Matrix4x4(XMMatrixTranslationFromVector(v));
 			}
 			
 		public:

@@ -4,10 +4,6 @@
 
 namespace SaplingEngine
 {
-	using Math::Matrix4x4;
-	using Math::Quaternion;
-	using Math::Vector3;
-	
 	class Transform final : public Component
 	{
 	public:

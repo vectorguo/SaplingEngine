@@ -78,6 +78,12 @@
     <ClInclude Include="..\..\..\Source\Runtime\Camera\CameraManager.h">
       <Filter>Camera</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Math\Vector2.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Math\Color.h">
+      <Filter>Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Source\Runtime\SaplingEngineMain.cpp" />
@@ -143,6 +149,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Source\Runtime\Camera\CameraManager.cpp">
       <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Runtime\Math\Vector2.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Runtime\Math\Color.cpp">
+      <Filter>Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

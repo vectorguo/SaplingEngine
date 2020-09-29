@@ -6,22 +6,21 @@ namespace SaplingEngine
 {
 	namespace Math
 	{
-		class Vector3
+		struct Vector3
 		{
-		public:
-			Vector3() : m_Value()
+			Vector3() : value()
 			{
 				
 			}
 
-			Vector3(const float x, const float y, const float z): m_Value(x, y, z)
+			Vector3(const float x, const float y, const float z): value(x, y, z)
 			{
 				
 			}
 			
-			explicit Vector3(FXMVECTOR v): m_Value()
+			explicit Vector3(FXMVECTOR v): value()
 			{
-				XMStoreFloat3(&m_Value, v);
+				XMStoreFloat3(&value, v);
 			}
 
 			/*
@@ -29,133 +28,138 @@ namespace SaplingEngine
 			 */
 			Vector3 operator+ (const Vector3& v) const
 			{
-				return Vector3(XMLoadFloat3(&m_Value) + XMLoadFloat3(&v.m_Value));
+				return Vector3(XMLoadFloat3(&value) + XMLoadFloat3(&v.value));
 			}
 
 			Vector3 operator- (const Vector3& v) const
 			{
-				return Vector3(XMLoadFloat3(&m_Value) - XMLoadFloat3(&v.m_Value));
+				return Vector3(XMLoadFloat3(&value) - XMLoadFloat3(&v.value));
 			}
 
 			Vector3 operator* (const Vector3& v) const
 			{
-				return Vector3(XMLoadFloat3(&m_Value) * XMLoadFloat3(&v.m_Value));
+				return Vector3(XMLoadFloat3(&value) * XMLoadFloat3(&v.value));
 			}
 
 			Vector3 operator/ (const Vector3& v) const
 			{
-				return Vector3(XMLoadFloat3(&m_Value) / XMLoadFloat3(&v.m_Value));
+				return Vector3(XMLoadFloat3(&value) / XMLoadFloat3(&v.value));
 			}
 
 			Vector3 operator* (const float s) const
 			{
-				return Vector3(XMLoadFloat3(&m_Value) * s);
+				return Vector3(XMLoadFloat3(&value) * s);
 			}
 
 			Vector3 operator/ (const float s) const
 			{
-				return Vector3(XMLoadFloat3(&m_Value) / s);
+				return Vector3(XMLoadFloat3(&value) / s);
 			}
 
 			Vector3& operator+= (const Vector3& v)
 			{
-				Vector3(XMLoadFloat3(&m_Value) + XMLoadFloat3(&v.m_Value));
+				Vector3(XMLoadFloat3(&value) + XMLoadFloat3(&v.value));
 				return *this;
 			}
 
 			Vector3& operator-= (const Vector3& v)
 			{
-				XMStoreFloat3(&m_Value, XMLoadFloat3(&m_Value) - XMLoadFloat3(&v.m_Value));
+				XMStoreFloat3(&value, XMLoadFloat3(&value) - XMLoadFloat3(&v.value));
 				return *this;
 			}
 
 			Vector3& operator*= (const Vector3& v)
 			{
-				XMStoreFloat3(&m_Value, XMLoadFloat3(&m_Value) * XMLoadFloat3(&v.m_Value));
+				XMStoreFloat3(&value, XMLoadFloat3(&value) * XMLoadFloat3(&v.value));
 				return *this;
 			}
 
 			Vector3& operator/= (const Vector3& v)
 			{
-				XMStoreFloat3(&m_Value, XMLoadFloat3(&m_Value) / XMLoadFloat3(&v.m_Value));
+				XMStoreFloat3(&value, XMLoadFloat3(&value) / XMLoadFloat3(&v.value));
 				return *this;
 			}
 
 			Vector3& operator*= (const float s)
 			{
-				XMStoreFloat3(&m_Value, XMLoadFloat3(&m_Value) * s);
+				XMStoreFloat3(&value, XMLoadFloat3(&value) * s);
 				return *this;
 			}
 
 			Vector3& operator/= (const float s)
 			{
-				XMStoreFloat3(&m_Value, XMLoadFloat3(&m_Value) / s);
+				XMStoreFloat3(&value, XMLoadFloat3(&value) / s);
 				return *this;
 			}
 
 			bool operator== (const Vector3& v) const
 			{
-				return XMVector3Equal(Value(), v.Value());
+				return XMVector3Equal(XMLoadFloat3(&value), XMLoadFloat3(&v.value));
 			}
 
 			bool operator!= (const Vector3& v) const
 			{
-				return XMVector3NotEqual(Value(), v.Value());
+				return XMVector3NotEqual(XMLoadFloat3(&value), XMLoadFloat3(&v.value));
 			}
-			
-			/*
-			 * convert to vector
-			 */
-			XMVECTOR Value() const
+
+			operator XMVECTOR() const
 			{
-				return XMLoadFloat3(&m_Value);
+				return XMLoadFloat3(&value);
 			}
 
 			float Length() const
 			{
-				return XMVectorGetX(XMVector3Length(XMLoadFloat3(&m_Value)));
+				return XMVectorGetX(XMVector3Length(XMLoadFloat3(&value)));
 			}
 
 			float LengthSq() const
 			{
-				return XMVectorGetX(XMVector3LengthSq(XMLoadFloat3(&m_Value)));
+				return XMVectorGetX(XMVector3LengthSq(XMLoadFloat3(&value)));
 			}
 			
 			Vector3& Normalize()
 			{
-				XMVector3Normalize(XMLoadFloat3(&m_Value));
+				XMVector3Normalize(XMLoadFloat3(&value));
 				return *this;
 			}
 			
 			float Dot(const Vector3* v) const
 			{
-				return XMVectorGetX(XMVector3Dot(XMLoadFloat3(&m_Value), XMLoadFloat3(&v->m_Value)));
+				return XMVectorGetX(XMVector3Dot(XMLoadFloat3(&value), XMLoadFloat3(&v->value)));
 			}
 
 			float Dot(const Vector3& v) const
 			{
-				return XMVectorGetX(XMVector3Dot(XMLoadFloat3(&m_Value), XMLoadFloat3(&v.m_Value)));
+				return XMVectorGetX(XMVector3Dot(XMLoadFloat3(&value), XMLoadFloat3(&v.value)));
 			}
 			
 			Vector3 Cross(const Vector3* v) const
 			{
-				return Vector3(XMVector3Cross(XMLoadFloat3(&m_Value), XMLoadFloat3(&v->m_Value)));
+				return Vector3(XMVector3Cross(XMLoadFloat3(&value), XMLoadFloat3(&v->value)));
 			}
 
 			Vector3 Cross(const Vector3& v) const
 			{
-				return Vector3(XMVector3Cross(XMLoadFloat3(&m_Value), XMLoadFloat3(&v.m_Value)));
+				return Vector3(XMVector3Cross(XMLoadFloat3(&value), XMLoadFloat3(&v.value)));
 			}
 
-		public:
 			const static Vector3 Zero;
 			const static Vector3 One;
 			const static Vector3 Forward;
 			const static Vector3 Right;
 			const static Vector3 Up;
 			
-		private:
-			XMFLOAT3 m_Value;
+			union
+			{
+				XMFLOAT3 value;
+
+				struct
+				{
+					float x;
+					float y;
+					float z;
+				};
+			};
 		};
 	}
 }

@@ -64,7 +64,7 @@ namespace SaplingEngine
 		//清除后台缓冲区和深度模板缓冲区
 		const auto rtv = CurrentBackBufferView();
 		const auto dsv = DepthStencilBufferView();
-		m_CommandList->ClearRenderTargetView(rtv, Colors::LightBlue, 0, nullptr);
+		m_CommandList->ClearRenderTargetView(rtv, Color::LightBlue, 0, nullptr);
 		m_CommandList->ClearDepthStencilView(dsv, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
 
 		//指定要渲染的缓冲区

@@ -84,6 +84,9 @@
     <ClInclude Include="..\..\..\Source\Runtime\Math\Color.h">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Input\Input.h">
+      <Filter>Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Source\Runtime\SaplingEngineMain.cpp" />
@@ -156,6 +159,9 @@
     <ClCompile Include="..\..\..\Source\Runtime\Math\Color.cpp">
       <Filter>Math</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\Runtime\Input\Input.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utility">
@@ -193,6 +199,9 @@
     </Filter>
     <Filter Include="RenderPipeline\Renderer">
       <UniqueIdentifier>{58594f87-2058-4297-8961-034e3ec01d4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{5f52dfc7-76b4-4f64-b261-b0163c38a301}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -28,15 +28,35 @@ namespace SaplingEngine
 		virtual bool InitializeApplication(HINSTANCE hInstance)
 		{
 			m_AppInstance = hInstance;
-			return true;
-		}
+			const auto result = InitializeWindow() && InitializeGraphics();
+			if (result)
+			{
+				OnResize();
 
+				ShowWindow(m_MainWindow, SW_SHOW);
+				UpdateWindow(m_MainWindow);
+			}
+			return result;
+		}
+		
 		/*
 		 * 运行
 		 */
 		int Run();
 
 	protected:
+		/**
+		 * \brief 初始化窗口
+		 * \return 是否初始化成功
+		 */
+		virtual bool InitializeWindow();
+
+		/**
+		 * \brief 初始化图形引擎
+		 * \return 是否初始化成功
+		 */
+		virtual bool InitializeGraphics() = 0;
+		
 		/*
 		 * 更新
 		 */
@@ -47,23 +67,68 @@ namespace SaplingEngine
 		 */
 		virtual void Render() = 0;
 
+		/*
+		 * 窗口变化回调
+		 */
+		virtual void OnResize() = 0;
+
+	private:
+		/*
+		 * 消息处理回调
+		 */
+		static LRESULT CALLBACK MainWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+		/*
+		 * 消息处理
+		 */
+		LRESULT MessageProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 	protected:
 		static GameApplication* s_Instance;
 
-		/*
-		 * Application 句柄
+		/**
+		 * \brief Application 句柄
 		 */
 		HINSTANCE m_AppInstance = nullptr;
 
-		/*
-		 * 窗口句柄
+		/**
+		 * \brief 窗口句柄
 		 */
 		HWND m_MainWindow = nullptr;
 
-		/*
-		 * 窗口宽和高
+		/**
+		 * \brief 窗口宽度
 		 */
 		uint32_t m_Width = 0;
+		
+		/**
+		 * \brief 窗口高度
+		 */
 		uint32_t m_Height = 0;
+
+		/**
+		 * \brief 是否处于激活状态
+		 */
+		bool m_IsActive = false;
+		
+		/**
+		 * \brief 窗口是否最小化
+		 */
+		bool m_IsMinimized = false;
+		
+		/**
+		 * \brief 窗口是否最大化
+		 */
+		bool m_IsMaximized = false;
+		
+		/**
+		 * \brief 窗口是否正在改变大小
+		 */
+		bool m_IsResizing = false;
+		
+		/**
+		 * \brief 是否全屏状态
+		 */
+		bool m_IsFullscreen = false;
 	};
 }

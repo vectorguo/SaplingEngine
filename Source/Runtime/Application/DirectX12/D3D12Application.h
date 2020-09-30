@@ -20,7 +20,6 @@ namespace SaplingEngine
 		 * 初始化
 		 */
 		bool InitializeConfig() override;
-		bool InitializeApplication(HINSTANCE hInstance) override;
 		
 		/*
 		 * 更新
@@ -32,21 +31,16 @@ namespace SaplingEngine
 		 */
 		void Render() override;
 
-	private:
 		/*
-		 * 消息处理回调
+		 * 窗口变化回调
 		 */
-		static LRESULT CALLBACK MainWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-		
-		/*
-		 * 初始化窗口
-		 */
-		bool InitializeWindow();
+		void OnResize() override;
 
+	private:
 		/*
 		 * 初始化DirectX12
 		 */
-		bool InitializeDirectX12();
+		bool InitializeGraphics() override;
 
 		/**
 		 * \brief 创建渲染缓冲视图
@@ -96,16 +90,6 @@ namespace SaplingEngine
 		{
 			return m_DsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
 		}
-
-		/*
-		 * 消息处理
-		 */
-		LRESULT MessageProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
-		/*
-		 * 窗口变化回调
-		 */
-		void OnResize();
 
 	private:
 		static constexpr  int						SwapChainBufferCount = 2;

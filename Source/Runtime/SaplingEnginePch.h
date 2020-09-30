@@ -4,6 +4,7 @@
  * Windows
  */
 #include <Windows.h>
+#include <windowsx.h>
 #include <wrl.h>
 
 #include <algorithm>
@@ -38,6 +39,7 @@
 #include "Math/Vector3.h"
 #include "Math/Vector4.h"
 
+#include "Utility/Singleton.h"
 #include "Utility/Time.h"
 
 using SaplingEngine::Math::Color;

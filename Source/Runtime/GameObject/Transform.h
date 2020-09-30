@@ -44,6 +44,16 @@ namespace SaplingEngine
 		 * \brief local scale
 		 */
 		Quaternion m_LocalScale;
+
+		/**
+		 * \brief 局部变换矩阵
+		 */
+		Matrix4x4 m_LocalMatrix;
+
+		/**
+		 * \brief 局部到世界坐标变换矩阵
+		 */
+		Matrix4x4 m_LocalToWorldMatrix;
 	};
 
 	using TransformPtr = std::shared_ptr<Transform>;

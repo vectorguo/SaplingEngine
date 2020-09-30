@@ -4,7 +4,9 @@
 
 namespace SaplingEngine
 {
-	class MeshRenderer : public Renderer
+	class Mesh;
+	
+	class MeshRenderer final : public Renderer
 	{
 	public:
 		MeshRenderer();
@@ -18,5 +20,8 @@ namespace SaplingEngine
 		{
 			return ComponentType_Renderer;
 		}
+
+	private:
+		Mesh* m_pMesh = nullptr;
 	};
 }

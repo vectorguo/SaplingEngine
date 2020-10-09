@@ -96,7 +96,79 @@ namespace SaplingEngine
 		//Reset ScissorRect
 		m_ScissorRect = { 0, 0, static_cast<long>(m_Width), static_cast<long>(m_Height) };
 	}
-	
+
+	/**
+	 * \brief 销毁
+	 */
+	void D3D12Application::Destroy()
+	{
+		GameApplication::Destroy();
+		
+		if (m_D3D12Device != nullptr)
+		{
+			FlushCommandQueue();
+		}
+	}
+
+	/**
+	 * \brief 创建默认缓冲区
+	 * \param initData 初始化数据
+	 * \param byteSize 数据大小
+	 * \param uploadBuffer uploadBuffer
+	 * \return 默认缓冲区
+	 */
+	ComPtr<ID3D12Resource> D3D12Application::CreateDefaultBuffer(const void* initData, uint64_t byteSize, ComPtr<ID3D12Resource>& uploadBuffer) const
+	{
+		ComPtr<ID3D12Resource> defaultBuffer;
+
+		//设置存储资源的堆（GPU显存）的属性
+		D3D12_HEAP_PROPERTIES heapProperties
+		{
+			D3D12_HEAP_TYPE_DEFAULT,
+			D3D12_CPU_PAGE_PROPERTY_UNKNOWN,
+			D3D12_MEMORY_POOL_UNKNOWN,
+			1,1
+		};
+
+		//创建资源描述
+		D3D12_RESOURCE_DESC bufferDesc
+		{
+			D3D12_RESOURCE_DIMENSION_BUFFER,
+			0,
+			byteSize,
+			1,
+			1,
+			1,
+			DXGI_FORMAT_UNKNOWN,
+			{1, 0},
+			D3D12_TEXTURE_LAYOUT_ROW_MAJOR,
+			D3D12_RESOURCE_FLAG_NONE
+		};
+
+		ThrowIfFailed(m_D3D12Device->CreateCommittedResource(&heapProperties, D3D12_HEAP_FLAG_NONE, &bufferDesc, D3D12_RESOURCE_STATE_COMMON, nullptr, IID_PPV_ARGS(defaultBuffer.GetAddressOf())));
+
+		//创建上传堆
+		heapProperties.Type = D3D12_HEAP_TYPE_UPLOAD;
+		ThrowIfFailed(m_D3D12Device->CreateCommittedResource(&heapProperties, D3D12_HEAP_FLAG_NONE, &bufferDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(uploadBuffer.GetAddressOf())));
+
+		//描述我们希望复制到默认缓冲区的数据
+		D3D12_SUBRESOURCE_DATA subResourceData =
+		{
+			initData,
+			static_cast<LONG_PTR>(byteSize),
+			static_cast<LONG_PTR>(byteSize),
+		};
+
+		//将数据复制到默认缓冲区
+		auto resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(defaultBuffer.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_COPY_DEST);
+		m_CommandList->ResourceBarrier(1, &resourceBarrier);
+		UpdateSubresources<1>(m_CommandList.Get(), defaultBuffer.Get(), uploadBuffer.Get(), 0, 0, 1, &subResourceData);
+		resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(defaultBuffer.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_GENERIC_READ);
+		m_CommandList->ResourceBarrier(1, &resourceBarrier);
+
+		return defaultBuffer;
+	}
+
 	/**
 	 * \brief 初始化DirectX12
 	 * \return 是否初始化成功
@@ -128,11 +200,6 @@ namespace SaplingEngine
 		//创建围栏
 		ThrowIfFailed(m_D3D12Device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_Fence)));
 
-		//查询描述符大小
-		m_RtvDescriptorSize = m_D3D12Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
-		m_DsvDescriptorSize = m_D3D12Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
-		m_CbvDescriptorSize = m_D3D12Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-		
 		//创建命令队列/命令分配器和命令列表
 		D3D12_COMMAND_QUEUE_DESC commandQueueDesc = {};
 		commandQueueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
@@ -161,7 +228,7 @@ namespace SaplingEngine
 		sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 		m_DXGIFactory->CreateSwapChain(m_CommandQueue.Get(), &sd, m_SwapChain.GetAddressOf());
 
-		//创建RTV描述符堆和RTV描述符
+		//创建RTV描述符堆
 		D3D12_DESCRIPTOR_HEAP_DESC heapDesc;
 		heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
 		heapDesc.NumDescriptors = SwapChainBufferCount;
@@ -176,7 +243,37 @@ namespace SaplingEngine
 		heapDesc.NodeMask = 0;
 		ThrowIfFailed(m_D3D12Device->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(m_DsvDescriptorHeap.GetAddressOf())));
 
+		//常量缓冲区描述符/着色器资源描述符/无需访问描述符堆
+		heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+		heapDesc.NumDescriptors = 1;
+		heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+		heapDesc.NodeMask = 0;
+		ThrowIfFailed(m_D3D12Device->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(m_CbvDescriptorHeap.GetAddressOf())));
+
+		//查询描述符大小
+		m_RtvDescriptorSize = m_D3D12Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+		m_DsvDescriptorSize = m_D3D12Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
+		m_CbvDescriptorSize = m_D3D12Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+		
 		return true;
+	}
+
+	/**
+	 * \brief 初始化shader以及其对应的输入布局
+	 */
+	void D3D12Application::InitializeShaders()
+	{
+		//TODO: 后面修改成读取配置里面的Shader已经对应的InputLayout，方便支持不同Shader
+
+		//加载Shader
+
+		//初始化InputLayout
+		m_InputLayout.reserve(5);
+		m_InputLayout.push_back({ "POSITION",	0, DXGI_FORMAT_R32G32B32_FLOAT,		0, 0,  D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 });
+		m_InputLayout.push_back({ "NORMAL",		0, DXGI_FORMAT_R32G32B32_FLOAT,		0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 });
+		m_InputLayout.push_back({ "COLOR",		0, DXGI_FORMAT_R32G32B32A32_FLOAT,	0, 24, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 });
+		m_InputLayout.push_back({ "TEXCOORD",	0, DXGI_FORMAT_R32G32_FLOAT,		0, 40, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 });
+		m_InputLayout.push_back({ "TEXCOORD",	1, DXGI_FORMAT_R32G32_FLOAT,		0, 40, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 });
 	}
 
 	/**
@@ -265,6 +362,14 @@ namespace SaplingEngine
 		// Transition the resource from its initial state to be used as a depth buffer.
 		auto resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(m_DepthStencilBuffer.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_DEPTH_WRITE);
 		m_CommandList->ResourceBarrier(1, &resourceBarrier);
+	}
+
+	/**
+	 * \brief 创建常量缓冲区描述符
+	 */
+	void D3D12Application::CreateConstantBufferViews()
+	{
+		
 	}
 
 	/**

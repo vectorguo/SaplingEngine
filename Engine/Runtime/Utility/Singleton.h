@@ -6,9 +6,9 @@ namespace SaplingEngine
 	class Singleton
 	{
 	protected:
-		Singleton() {}
-		virtual ~Singleton() {}
-		
+		Singleton() = default;
+		virtual ~Singleton() = default;
+
 	public:
 		static T* Instance()
 		{

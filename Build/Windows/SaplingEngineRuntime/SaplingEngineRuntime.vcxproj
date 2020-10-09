@@ -45,12 +45,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>../../../Source/Runtime;$(IncludePath)</IncludePath>
+    <IncludePath>../../../Engine/Runtime;$(IncludePath)</IncludePath>
     <IntDir>../../../Temp/$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>../../../Source/Runtime;$(IncludePath)</IncludePath>
+    <IncludePath>../../../Engine/Runtime;$(IncludePath)</IncludePath>
     <IntDir>../../../Temp/$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -86,63 +86,64 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Source\Runtime\Application\DirectX12\D3D12Application.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\Application\DirectX12\D3D12Exception.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\Application\DirectX12\D3D12Header.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\Application\DirectX12\d3dx12.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\Application\GameApplication.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\Camera\Camera.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\Camera\CameraManager.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\GameObject\Component.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\GameObject\GameObject.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\GameObject\Transform.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\Graphics\Material.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\Graphics\Mesh.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\Graphics\Shader.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\Input\Input.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\Math\Color.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\Math\Matrix4x4.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\Math\Quaternion.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\Math\Vector2.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\Math\Vector3.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\Math\Vector4.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\Process\Process.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\Process\ProcessManager.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\RenderPipeline\Renderer\MeshRenderer.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\RenderPipeline\Renderer\Renderer.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\SaplingEngineHeader.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\SaplingEnginePch.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\Scene\Scene.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\Scene\SceneManager.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\Utility\Singleton.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\Utility\Time.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Application\DirectX12\D3D12Application.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Application\DirectX12\D3D12Exception.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Application\DirectX12\D3D12Header.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Application\DirectX12\d3dx12.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Application\DirectX12\D3D12UploadBuffer.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Application\GameApplication.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Camera\Camera.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Camera\CameraManager.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\GameObject\Component.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\GameObject\GameObject.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\GameObject\Transform.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Material.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Mesh.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Shader.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Input\Input.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Math\Color.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Math\Matrix4x4.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Math\Quaternion.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Math\Vector2.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Math\Vector3.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Math\Vector4.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Process\Process.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Process\ProcessManager.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\Renderer\MeshRenderer.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\Renderer\Renderer.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\SaplingEngineHeader.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\SaplingEnginePch.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Scene\Scene.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Scene\SceneManager.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Utility\Singleton.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Utility\Time.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Source\Runtime\Application\DirectX12\D3D12Application.cpp" />
-    <ClCompile Include="..\..\..\Source\Runtime\Application\GameApplication.cpp" />
-    <ClCompile Include="..\..\..\Source\Runtime\Camera\Camera.cpp" />
-    <ClCompile Include="..\..\..\Source\Runtime\Camera\CameraManager.cpp" />
-    <ClCompile Include="..\..\..\Source\Runtime\GameObject\Component.cpp" />
-    <ClCompile Include="..\..\..\Source\Runtime\GameObject\GameObject.cpp" />
-    <ClCompile Include="..\..\..\Source\Runtime\GameObject\Transform.cpp" />
-    <ClCompile Include="..\..\..\Source\Runtime\Graphics\Material.cpp" />
-    <ClCompile Include="..\..\..\Source\Runtime\Graphics\Mesh.cpp" />
-    <ClCompile Include="..\..\..\Source\Runtime\Graphics\Shader.cpp" />
-    <ClCompile Include="..\..\..\Source\Runtime\Input\Input.cpp" />
-    <ClCompile Include="..\..\..\Source\Runtime\Math\Color.cpp" />
-    <ClCompile Include="..\..\..\Source\Runtime\Math\Matrix4x4.cpp" />
-    <ClCompile Include="..\..\..\Source\Runtime\Math\Quaternion.cpp" />
-    <ClCompile Include="..\..\..\Source\Runtime\Math\Vector2.cpp" />
-    <ClCompile Include="..\..\..\Source\Runtime\Math\Vector3.cpp" />
-    <ClCompile Include="..\..\..\Source\Runtime\Math\Vector4.cpp" />
-    <ClCompile Include="..\..\..\Source\Runtime\Process\Process.cpp" />
-    <ClCompile Include="..\..\..\Source\Runtime\Process\ProcessManager.cpp" />
-    <ClCompile Include="..\..\..\Source\Runtime\RenderPipeline\Renderer\MeshRenderer.cpp" />
-    <ClCompile Include="..\..\..\Source\Runtime\RenderPipeline\Renderer\Renderer.cpp" />
-    <ClCompile Include="..\..\..\Source\Runtime\SaplingEngineMain.cpp" />
-    <ClCompile Include="..\..\..\Source\Runtime\Scene\Scene.cpp" />
-    <ClCompile Include="..\..\..\Source\Runtime\Scene\SceneManager.cpp" />
-    <ClCompile Include="..\..\..\Source\Runtime\Utility\Time.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Application\DirectX12\D3D12Application.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Application\GameApplication.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Camera\Camera.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Camera\CameraManager.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\GameObject\Component.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\GameObject\GameObject.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\GameObject\Transform.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Material.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Mesh.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Shader.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Input\Input.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Math\Color.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Math\Matrix4x4.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Math\Quaternion.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Math\Vector2.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Math\Vector3.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Math\Vector4.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Process\Process.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Process\ProcessManager.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\Renderer\MeshRenderer.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\Renderer\Renderer.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\SaplingEngineMain.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Scene\Scene.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Scene\SceneManager.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Utility\Time.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

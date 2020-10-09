@@ -5,7 +5,7 @@
 
 namespace SaplingEngine
 {
-	class D3D12Application : public GameApplication
+	class D3D12Application final : public GameApplication
 	{
 	public:
 		D3D12Application();
@@ -15,32 +15,54 @@ namespace SaplingEngine
 		D3D12Application(D3D12Application&&) = delete;
 		D3D12Application& operator=(const D3D12Application&) = delete;
 		D3D12Application& operator=(D3D12Application&&) = delete;
-		
-		/*
-		 * 初始化
+
+		/**
+		 * \brief 初始化配置
+		 * \return 是否初始化成功
 		 */
 		bool InitializeConfig() override;
 		
-		/*
-		 * 更新
+		/**
+		 * \brief 更新
 		 */
 		void Update() override;
 
-		/*
-		 * 绘制
+		/**
+		 * \brief 绘制
 		 */
 		void Render() override;
 
-		/*
-		 * 窗口变化回调
+		/**
+		 * \brief 窗口变化回调
 		 */
 		void OnResize() override;
 
+		/**
+		 * \brief 销毁
+		 */
+		void Destroy() override;
+
+		/**
+		 * \brief 创建默认缓冲区
+		 * \param initData 初始化数据
+		 * \param byteSize 数据大小
+		 * \param uploadBuffer uploadBuffer
+		 * \return 默认缓冲区
+		 */
+		ComPtr<ID3D12Resource> CreateDefaultBuffer(const void* initData, uint64_t byteSize, ComPtr<ID3D12Resource>& uploadBuffer) const;
+
 	private:
-		/*
-		 * 初始化DirectX12
+		
+		/**
+		 * \brief 初始化DirectX12
+		 * \return 是否初始化成功
 		 */
 		bool InitializeGraphics() override;
+
+		/**
+		 * \brief 初始化shader以及其对应的输入布局
+		 */
+		void InitializeShaders();
 
 		/**
 		 * \brief 创建渲染缓冲视图
@@ -51,6 +73,11 @@ namespace SaplingEngine
 		 * \brief 创建深度模板缓冲视图
 		 */
 		void CreateDepthStencilView();
+
+		/**
+		 * \brief 创建常量缓冲区描述符
+		 */
+		void CreateConstantBufferViews();
 
 		/**
 		 * \brief 执行命令
@@ -114,6 +141,7 @@ namespace SaplingEngine
 		ComPtr<ID3D12DescriptorHeap>				m_RtvDescriptorHeap;					//渲染对象描述符堆
 		ComPtr<ID3D12DescriptorHeap>				m_DsvDescriptorHeap;					//深度/模板描述符堆
 		ComPtr<ID3D12DescriptorHeap>				m_CbvDescriptorHeap;					//常量缓冲区描述符堆
+		uint32_t									m_CbvBufferViewCount = 100;				//常量缓冲区描述符数量
 
 		ComPtr<IDXGISwapChain>						m_SwapChain;							//交换链
 		ComPtr<ID3D12Resource>						m_SwapChainBuffer[SwapChainBufferCount];//交换链缓冲区
@@ -124,5 +152,7 @@ namespace SaplingEngine
 		D3D12_RECT									m_ScissorRect;							//裁剪矩形
 
 		D3D_DRIVER_TYPE								m_DriverType = D3D_DRIVER_TYPE_HARDWARE;
+
+		std::vector<D3D12_INPUT_ELEMENT_DESC>		m_InputLayout;							//Shader输入布局
 	};
 }

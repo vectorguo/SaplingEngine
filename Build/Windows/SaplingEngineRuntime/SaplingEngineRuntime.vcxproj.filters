@@ -1,165 +1,168 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="..\..\..\Source\Runtime\Utility\Time.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\Utility\Time.h">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\Application\GameApplication.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\Application\GameApplication.h">
       <Filter>Application</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\GameObject\GameObject.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\GameObject\GameObject.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\SaplingEnginePch.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\SaplingEngineHeader.h" />
-    <ClInclude Include="..\..\..\Source\Runtime\Process\Process.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\SaplingEnginePch.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\SaplingEngineHeader.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Process\Process.h">
       <Filter>Process</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\Process\ProcessManager.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\Process\ProcessManager.h">
       <Filter>Process</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\Utility\Singleton.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\Utility\Singleton.h">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\Application\DirectX12\D3D12Application.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\Application\DirectX12\D3D12Application.h">
       <Filter>Application\DirectX12</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\Application\DirectX12\d3dx12.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\Application\DirectX12\d3dx12.h">
       <Filter>Application\DirectX12</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\Application\DirectX12\D3D12Header.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\Application\DirectX12\D3D12Header.h">
       <Filter>Application\DirectX12</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\Math\Vector3.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\Math\Vector3.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\Math\Vector4.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\Math\Vector4.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\Math\Matrix4x4.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\Math\Matrix4x4.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\Math\Quaternion.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\Math\Quaternion.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\Scene\Scene.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\Scene\Scene.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\Application\DirectX12\D3D12Exception.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\Application\DirectX12\D3D12Exception.h">
       <Filter>Application\DirectX12</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\Graphics\Mesh.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Mesh.h">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\Graphics\Material.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Material.h">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\Graphics\Shader.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Shader.h">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\Scene\SceneManager.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\Scene\SceneManager.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\GameObject\Component.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\GameObject\Component.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\GameObject\Transform.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\GameObject\Transform.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\Camera\Camera.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\Camera\Camera.h">
       <Filter>Camera</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\RenderPipeline\Renderer\Renderer.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\Renderer\Renderer.h">
       <Filter>RenderPipeline\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\RenderPipeline\Renderer\MeshRenderer.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\Renderer\MeshRenderer.h">
       <Filter>RenderPipeline\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\Camera\CameraManager.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\Camera\CameraManager.h">
       <Filter>Camera</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\Math\Vector2.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\Math\Vector2.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\Math\Color.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\Math\Color.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Runtime\Input\Input.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\Input\Input.h">
       <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Application\DirectX12\D3D12UploadBuffer.h">
+      <Filter>Application\DirectX12</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Source\Runtime\SaplingEngineMain.cpp" />
-    <ClCompile Include="..\..\..\Source\Runtime\Utility\Time.cpp">
+    <ClCompile Include="..\..\..\Engine\Runtime\SaplingEngineMain.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Utility\Time.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\Runtime\Application\GameApplication.cpp">
+    <ClCompile Include="..\..\..\Engine\Runtime\Application\GameApplication.cpp">
       <Filter>Application</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\Runtime\GameObject\GameObject.cpp">
+    <ClCompile Include="..\..\..\Engine\Runtime\GameObject\GameObject.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\Runtime\Process\Process.cpp">
+    <ClCompile Include="..\..\..\Engine\Runtime\Process\Process.cpp">
       <Filter>Process</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\Runtime\Process\ProcessManager.cpp">
+    <ClCompile Include="..\..\..\Engine\Runtime\Process\ProcessManager.cpp">
       <Filter>Process</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\Runtime\Application\DirectX12\D3D12Application.cpp">
+    <ClCompile Include="..\..\..\Engine\Runtime\Application\DirectX12\D3D12Application.cpp">
       <Filter>Application\DirectX12</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\Runtime\Math\Matrix4x4.cpp">
+    <ClCompile Include="..\..\..\Engine\Runtime\Math\Matrix4x4.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\Runtime\Math\Vector3.cpp">
+    <ClCompile Include="..\..\..\Engine\Runtime\Math\Vector3.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\Runtime\Math\Vector4.cpp">
+    <ClCompile Include="..\..\..\Engine\Runtime\Math\Vector4.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\Runtime\Math\Quaternion.cpp">
+    <ClCompile Include="..\..\..\Engine\Runtime\Math\Quaternion.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\Runtime\Scene\Scene.cpp">
+    <ClCompile Include="..\..\..\Engine\Runtime\Scene\Scene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\Runtime\Graphics\Mesh.cpp">
+    <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Mesh.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\Runtime\Graphics\Material.cpp">
+    <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Material.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\Runtime\Graphics\Shader.cpp">
+    <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Shader.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\Runtime\Scene\SceneManager.cpp">
+    <ClCompile Include="..\..\..\Engine\Runtime\Scene\SceneManager.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\Runtime\GameObject\Component.cpp">
+    <ClCompile Include="..\..\..\Engine\Runtime\GameObject\Component.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\Runtime\GameObject\Transform.cpp">
+    <ClCompile Include="..\..\..\Engine\Runtime\GameObject\Transform.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\Runtime\Camera\Camera.cpp">
+    <ClCompile Include="..\..\..\Engine\Runtime\Camera\Camera.cpp">
       <Filter>Camera</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\Runtime\RenderPipeline\Renderer\Renderer.cpp">
+    <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\Renderer\Renderer.cpp">
       <Filter>RenderPipeline\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\Runtime\RenderPipeline\Renderer\MeshRenderer.cpp">
+    <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\Renderer\MeshRenderer.cpp">
       <Filter>RenderPipeline\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\Runtime\Camera\CameraManager.cpp">
+    <ClCompile Include="..\..\..\Engine\Runtime\Camera\CameraManager.cpp">
       <Filter>Camera</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\Runtime\Math\Vector2.cpp">
+    <ClCompile Include="..\..\..\Engine\Runtime\Math\Vector2.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\Runtime\Math\Color.cpp">
+    <ClCompile Include="..\..\..\Engine\Runtime\Math\Color.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\Runtime\Input\Input.cpp">
+    <ClCompile Include="..\..\..\Engine\Runtime\Input\Input.cpp">
       <Filter>Input</Filter>
     </ClCompile>
   </ItemGroup>

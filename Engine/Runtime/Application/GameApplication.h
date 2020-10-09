@@ -8,6 +8,8 @@ namespace SaplingEngine
 	{
 	protected:
 		GameApplication();
+
+	public:
 		virtual ~GameApplication();
 
 	public:
@@ -25,24 +27,17 @@ namespace SaplingEngine
 		 * 初始化
 		 */
 		virtual bool InitializeConfig() = 0;
-		virtual bool InitializeApplication(HINSTANCE hInstance)
-		{
-			m_AppInstance = hInstance;
-			const auto result = InitializeWindow() && InitializeGraphics();
-			if (result)
-			{
-				OnResize();
+		virtual bool InitializeApplication(HINSTANCE hInstance);
 
-				ShowWindow(m_MainWindow, SW_SHOW);
-				UpdateWindow(m_MainWindow);
-			}
-			return result;
-		}
-		
 		/*
 		 * 运行
 		 */
-		int Run();
+		void Run();
+
+		/**
+		 * \brief 销毁
+		 */
+		virtual void Destroy();
 
 	protected:
 		/**

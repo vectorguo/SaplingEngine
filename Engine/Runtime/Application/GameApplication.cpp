@@ -13,9 +13,28 @@ namespace SaplingEngine
 	GameApplication::~GameApplication() = default;
 
 	/**
+	 * \brief 初始化App
+	 * \param hInstance app句柄
+	 * \return 是否初始化成功
+	 */
+	bool GameApplication::InitializeApplication(HINSTANCE hInstance)
+	{
+		m_AppInstance = hInstance;
+		const auto result = InitializeWindow() && InitializeGraphics();
+		if (result)
+		{
+			OnResize();
+
+			ShowWindow(m_MainWindow, SW_SHOW);
+			UpdateWindow(m_MainWindow);
+		}
+		return result;
+	}
+
+	/**
 	 * \brief 运行
 	 */
-	int GameApplication::Run()
+	void GameApplication::Run()
 	{
 		Time::Initialize();
 		
@@ -35,8 +54,14 @@ namespace SaplingEngine
 				Render();
 			}
 		}
+	}
 
-		return static_cast<int>(msg.wParam);
+	/**
+	 * \brief 销毁
+	 */
+	void GameApplication::Destroy()
+	{
+		Input::Release();
 	}
 
 	/**

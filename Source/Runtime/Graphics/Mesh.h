@@ -4,6 +4,15 @@
 
 namespace SaplingEngine
 {
+	struct VertexData
+	{
+		XMFLOAT3 PositionOS;		//Vertex Position in Object Space
+		XMFLOAT3 NormalOS;			//Normal in Object Space
+		XMFLOAT4 Color;				//Vertex Color
+		XMFLOAT2 UV0;				//UV0
+		XMFLOAT2 UV1;				//UV1
+	};
+	
 	class Mesh
 	{
 	public:
@@ -29,10 +38,10 @@ namespace SaplingEngine
 			m_Vertices = std::move(vertices);
 		}
 		
-		void SetVertices(Vector3* pVertices, const int32_t size)
+		void SetVertices(Vector3* pVertices, const uint32_t size)
 		{
 			m_Vertices.reserve(size);
-			for (auto i = 0; i < size; ++i)
+			for (uint32_t i = 0; i < size; ++i)
 			{
 				m_Vertices.emplace_back(*(pVertices + i));
 			}
@@ -58,10 +67,10 @@ namespace SaplingEngine
 			m_Normals = std::move(normals);
 		}
 		
-		void SetNormals(Vector3* pNormals, const int32_t size)
+		void SetNormals(Vector3* pNormals, const uint32_t size)
 		{
 			m_Normals.reserve(size);
-			for (auto i = 0; i < size; ++i)
+			for (uint32_t i = 0; i < size; ++i)
 			{
 				m_Normals.emplace_back(*(pNormals + i));
 			}
@@ -87,10 +96,10 @@ namespace SaplingEngine
 			m_Colors = std::move(colors);
 		}
 		
-		void SetColors(Color* pColors, const int32_t size)
+		void SetColors(Color* pColors, const uint32_t size)
 		{
 			m_Colors.reserve(size);
-			for (auto i = 0; i < size; ++i)
+			for (uint32_t i = 0; i < size; ++i)
 			{
 				m_Colors.emplace_back(*(pColors + i));
 			}
@@ -122,12 +131,12 @@ namespace SaplingEngine
 			}
 		}
 		
-		void SetUvs(const int32_t channel, Vector2* pUvs, const int32_t size)
+		void SetUvs(const int32_t channel, Vector2* pUvs, const uint32_t size)
 		{
 			if (channel == 0)
 			{
 				m_Uv0.reserve(size);
-				for (auto i = 0; i < size; ++i)
+				for (uint32_t i = 0; i < size; ++i)
 				{
 					m_Uv0.emplace_back(*(pUvs + i));
 				}
@@ -154,10 +163,10 @@ namespace SaplingEngine
 			m_Indices = std::move(indices);
 		}
 		
-		void SetIndices(uint32_t* pIndices, const int32_t size)
+		void SetIndices(uint32_t* pIndices, const uint32_t size)
 		{
 			m_Indices.reserve(size);
-			for (auto i = 0; i < size; ++i)
+			for (uint32_t i = 0; i < size; ++i)
 			{
 				m_Indices.emplace_back(*(pIndices + i));
 			}

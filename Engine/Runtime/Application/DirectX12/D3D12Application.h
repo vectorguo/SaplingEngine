@@ -1,10 +1,15 @@
 #pragma once
 
 #include "Application/GameApplication.h"
+#include "Graphics/ConstantData.h"
 #include "D3D12Header.h"
+#include "D3D12UploadBuffer.h"
 
 namespace SaplingEngine
 {
+	using ObjectConstantBufferPtr = std::unique_ptr<D3D12UploadBuffer<ObjectConstantData>>;
+	using PassConstantBufferPtr = std::unique_ptr<D3D12UploadBuffer<PassConstantData>>;
+	
 	class D3D12Application final : public GameApplication
 	{
 	public:
@@ -60,10 +65,20 @@ namespace SaplingEngine
 		bool InitializeGraphics() override;
 
 		/**
+		 * \brief 初始化PSO
+		 */
+		void InitializePso();
+		
+		/**
+		 * \brief 初始化根签名
+		 */
+		void InitializeRootSignature();
+		
+		/**
 		 * \brief 初始化shader以及其对应的输入布局
 		 */
 		void InitializeShaders();
-
+		
 		/**
 		 * \brief 创建渲染缓冲视图
 		 */
@@ -135,18 +150,24 @@ namespace SaplingEngine
 		uint32_t									m_DsvDescriptorSize = 0;				//深度/模板视图大小
 		uint32_t									m_CbvDescriptorSize = 0;				//常量缓冲区视图大小
 
-		DXGI_FORMAT									m_SwapChainBufferFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
-		DXGI_FORMAT									m_DepthStencilViewFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
-
 		ComPtr<ID3D12DescriptorHeap>				m_RtvDescriptorHeap;					//渲染对象描述符堆
 		ComPtr<ID3D12DescriptorHeap>				m_DsvDescriptorHeap;					//深度/模板描述符堆
 		ComPtr<ID3D12DescriptorHeap>				m_CbvDescriptorHeap;					//常量缓冲区描述符堆
 		uint32_t									m_CbvBufferViewCount = 100;				//常量缓冲区描述符数量
-
+		
 		ComPtr<IDXGISwapChain>						m_SwapChain;							//交换链
 		ComPtr<ID3D12Resource>						m_SwapChainBuffer[SwapChainBufferCount];//交换链缓冲区
 		int32_t										m_BackBufferIndex = 0;					//交换链中前台缓冲索引
 		ComPtr<ID3D12Resource>						m_DepthStencilBuffer;					//深度/模板缓冲区
+
+		DXGI_FORMAT									m_SwapChainBufferFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
+		DXGI_FORMAT									m_DepthStencilViewFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+
+		ObjectConstantBufferPtr						m_ObjConstantBuffer = nullptr;
+		PassConstantBufferPtr						m_PassConstantBuffer = nullptr;
+		uint32_t									m_PassCbvOffset = 0;
+
+		ComPtr<ID3D12RootSignature>					m_RootSignature = nullptr;				//跟签名和描述符
 
 		D3D12_VIEWPORT								m_Viewport;								//视图窗口
 		D3D12_RECT									m_ScissorRect;							//裁剪矩形

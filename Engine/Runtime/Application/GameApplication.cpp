@@ -1,4 +1,7 @@
 #include "Application/GameApplication.h"
+
+#include "Camera/CameraManager.h"
+#include "Graphics/ShaderManager.h"
 #include "Input/Input.h"
 
 namespace SaplingEngine
@@ -61,7 +64,9 @@ namespace SaplingEngine
 	 */
 	void GameApplication::Destroy()
 	{
+		CameraManager::Release();
 		Input::Release();
+		ShaderManager::Release();
 	}
 
 	/**

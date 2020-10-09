@@ -97,9 +97,11 @@
     <ClInclude Include="..\..\..\Engine\Runtime\GameObject\Component.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\GameObject\GameObject.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\GameObject\Transform.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\ConstantData.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Material.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Mesh.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Shader.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\ShaderManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Input\Input.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Math\Color.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Math\Matrix4x4.h" />
@@ -129,6 +131,7 @@
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Material.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Mesh.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Shader.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Graphics\ShaderManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Input\Input.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Math\Color.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Math\Matrix4x4.cpp" />

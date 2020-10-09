@@ -44,3 +44,27 @@ constexpr void ThrowIfFailed(const HRESULT result, std::string&& message)
 		throw D3D12Exception(std::move(message));
 	}
 }
+
+static D3D12_CPU_DESCRIPTOR_HANDLE GetCPUHandleFromDescriptorHeap(ID3D12DescriptorHeap* pHeap)
+{
+	return pHeap->GetCPUDescriptorHandleForHeapStart();
+}
+
+static D3D12_CPU_DESCRIPTOR_HANDLE GetCPUHandleFromDescriptorHeap(ID3D12DescriptorHeap* pHeap, int32_t offset, int32_t descriptorSize)
+{
+	auto cbvHeapHandle = pHeap->GetCPUDescriptorHandleForHeapStart();
+	cbvHeapHandle.ptr += offset * descriptorSize;
+	return cbvHeapHandle;
+}
+
+static D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandleFromDescriptorHeap(ID3D12DescriptorHeap* pHeap)
+{
+	return pHeap->GetGPUDescriptorHandleForHeapStart();
+}
+
+static D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandleFromDescriptorHeap(ID3D12DescriptorHeap* pHeap, int32_t offset, int32_t descriptorSize)
+{
+	auto cbvHeapHandle = pHeap->GetGPUDescriptorHandleForHeapStart();
+	cbvHeapHandle.ptr += offset * descriptorSize;
+	return cbvHeapHandle;
+}

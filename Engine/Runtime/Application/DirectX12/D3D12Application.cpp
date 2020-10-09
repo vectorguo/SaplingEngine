@@ -51,6 +51,12 @@ namespace SaplingEngine
 		//指定要渲染的缓冲区
 		m_CommandList->OMSetRenderTargets(1, &rtv, true, &dsv);
 
+		//设置跟描述符表和常量缓冲区，将常量缓冲区绑定到渲染流水线上
+		ID3D12DescriptorHeap* descriptorHeaps[] = { m_CbvDescriptorHeap.Get() };
+		m_CommandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
+		m_CommandList->SetGraphicsRootSignature(m_RootSignature.Get());
+		m_CommandList->SetGraphicsRootDescriptorTable(1, GetGPUHandleFromDescriptorHeap(m_CbvDescriptorHeap.Get(), m_PassCbvOffset, m_CbvDescriptorSize));
+		
 		//渲染物体
 		//TODO
 		
@@ -245,7 +251,7 @@ namespace SaplingEngine
 
 		//常量缓冲区描述符/着色器资源描述符/无需访问描述符堆
 		heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-		heapDesc.NumDescriptors = 1;
+		heapDesc.NumDescriptors = m_CbvBufferViewCount + 1;		//Object常量缓冲区和Pass常量缓冲区
 		heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 		heapDesc.NodeMask = 0;
 		ThrowIfFailed(m_D3D12Device->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(m_CbvDescriptorHeap.GetAddressOf())));
@@ -254,8 +260,64 @@ namespace SaplingEngine
 		m_RtvDescriptorSize = m_D3D12Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 		m_DsvDescriptorSize = m_D3D12Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
 		m_CbvDescriptorSize = m_D3D12Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+
+		//初始化
+		InitializeRootSignature();
+		InitializeShaders();
+		InitializePso();
+		
+		//创建常量缓冲区
+		CreateConstantBufferViews();
 		
 		return true;
+	}
+
+	/**
+	 * \brief 初始化PSO
+	 */
+	void D3D12Application::InitializePso()
+	{
+		
+	}
+
+	/**
+	 * \brief 初始化根签名
+	 */
+	void D3D12Application::InitializeRootSignature()
+	{
+		D3D12_DESCRIPTOR_RANGE cbvTable0
+		{
+			D3D12_DESCRIPTOR_RANGE_TYPE_CBV,
+			1,
+			0,
+			0,
+			D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND
+		};
+
+		D3D12_DESCRIPTOR_RANGE cbvTable1
+		{
+			D3D12_DESCRIPTOR_RANGE_TYPE_CBV,
+			1,
+			1,
+			0,
+			D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND
+		};
+
+		CD3DX12_ROOT_PARAMETER slotRootParameter[2];
+		slotRootParameter[0].InitAsDescriptorTable(1, &cbvTable0);
+		slotRootParameter[1].InitAsDescriptorTable(1, &cbvTable1);
+		CD3DX12_ROOT_SIGNATURE_DESC rootSigDesc(2, slotRootParameter, 0, nullptr,
+			D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+
+		ComPtr<ID3DBlob> serializedRootSig = nullptr;
+		ComPtr<ID3DBlob> errorBlob = nullptr;
+		const auto hr = D3D12SerializeRootSignature(&rootSigDesc, D3D_ROOT_SIGNATURE_VERSION_1, serializedRootSig.GetAddressOf(), errorBlob.GetAddressOf());
+		if (errorBlob != nullptr)
+		{
+			OutputDebugStringA(static_cast<char*>(errorBlob->GetBufferPointer()));
+		}
+		ThrowIfFailed(hr);
+		ThrowIfFailed(m_D3D12Device->CreateRootSignature(0, serializedRootSig->GetBufferPointer(), serializedRootSig->GetBufferSize(), IID_PPV_ARGS(&m_RootSignature)));
 	}
 
 	/**
@@ -275,7 +337,7 @@ namespace SaplingEngine
 		m_InputLayout.push_back({ "TEXCOORD",	0, DXGI_FORMAT_R32G32_FLOAT,		0, 40, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 });
 		m_InputLayout.push_back({ "TEXCOORD",	1, DXGI_FORMAT_R32G32_FLOAT,		0, 40, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 });
 	}
-
+	
 	/**
 	 * \brief 创建渲染缓冲视图
 	 */
@@ -369,7 +431,23 @@ namespace SaplingEngine
 	 */
 	void D3D12Application::CreateConstantBufferViews()
 	{
+		m_ObjConstantBuffer = std::make_unique<D3D12UploadBuffer<ObjectConstantData>>(m_D3D12Device.Get(), m_CbvBufferViewCount, true);
+		m_PassConstantBuffer = std::make_unique<D3D12UploadBuffer<PassConstantData>>(m_D3D12Device.Get(), 1, true);
+		m_PassCbvOffset = m_CbvBufferViewCount;
 		
+		D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc;
+		
+		const auto elementSize = m_ObjConstantBuffer->GetElementSize();
+		for (uint32_t i = 0; i < m_CbvBufferViewCount; ++i)
+		{
+			cbvDesc.BufferLocation = m_ObjConstantBuffer->GetGpuVirtualAddress(i);
+			cbvDesc.SizeInBytes = elementSize;
+			m_D3D12Device->CreateConstantBufferView(&cbvDesc, GetCPUHandleFromDescriptorHeap(m_CbvDescriptorHeap.Get(), i, m_CbvDescriptorSize));
+		}
+
+		cbvDesc.BufferLocation = m_PassConstantBuffer->GetGpuVirtualAddress();
+		cbvDesc.SizeInBytes = m_PassConstantBuffer->GetElementSize();
+		m_D3D12Device->CreateConstantBufferView(&cbvDesc, GetCPUHandleFromDescriptorHeap(m_CbvDescriptorHeap.Get(), m_PassCbvOffset, m_CbvDescriptorSize));
 	}
 
 	/**

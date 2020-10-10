@@ -26,7 +26,8 @@ namespace SaplingEngine
 		/*
 		 * ≥ı ºªØ
 		 */
-		virtual bool InitializeConfig() = 0;
+		virtual bool InitializeApplicationConfig() = 0;
+		virtual bool InitializeSceneConfig() = 0;
 		virtual bool InitializeApplication(HINSTANCE hInstance);
 
 		/*

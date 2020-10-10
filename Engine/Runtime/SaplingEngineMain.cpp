@@ -10,7 +10,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 #endif
 
 	GameApplication* pApp = new D3D12Application();
-	if (pApp->InitializeConfig() && pApp->InitializeApplication(hInstance))
+	if (pApp->InitializeApplicationConfig() && pApp->InitializeApplication(hInstance))
 	{
 		pApp->Run();
 		pApp->Destroy();

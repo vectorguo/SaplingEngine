@@ -7,7 +7,7 @@ namespace SaplingEngine
 	 */
 	void ShaderManager::Initialize()
 	{
-		auto* pShader = new Shader("Color", L"../../../Resources/Shaders/color.hlsl");
+		auto* pShader = new Shader("Color", L"Resources/Shaders/color.hlsl");
 		m_Shaders.insert({ pShader->GetName(), pShader });
 	}
 

@@ -49,6 +49,13 @@
 #include "Utility/Singleton.h"
 #include "Utility/Time.h"
 
+/*
+ * XML
+ */
+#include "Utility/RapidXml/rapidxml.hpp"
+#include "Utility/RapidXml/rapidxml_utils.hpp"
+#include "Utility/RapidXml/rapidxml_print.hpp"
+
 using SaplingEngine::Math::Color;
 using SaplingEngine::Math::Matrix4x4;
 using SaplingEngine::Math::Quaternion;

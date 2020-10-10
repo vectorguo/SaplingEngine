@@ -102,6 +102,18 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Utility\Log.h">
       <Filter>Utility</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Utility\RapidXml\rapidxml.hpp">
+      <Filter>Utility\RapidXml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Utility\RapidXml\rapidxml_iterators.hpp">
+      <Filter>Utility\RapidXml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Utility\RapidXml\rapidxml_print.hpp">
+      <Filter>Utility\RapidXml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Utility\RapidXml\rapidxml_utils.hpp">
+      <Filter>Utility\RapidXml</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Runtime\SaplingEngineMain.cpp" />
@@ -223,6 +235,9 @@
     </Filter>
     <Filter Include="Input">
       <UniqueIdentifier>{5f52dfc7-76b4-4f64-b261-b0163c38a301}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\RapidXml">
+      <UniqueIdentifier>{344a87b3-5cbf-4119-aaf4-b34778f416bb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

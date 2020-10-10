@@ -2,8 +2,7 @@
 
 #include "Application/GameApplication.h"
 #include "Graphics/ConstantData.h"
-#include "D3D12Header.h"
-#include "D3D12UploadBuffer.h"
+#include "SaplingEnginePch.h"
 
 namespace SaplingEngine
 {
@@ -73,11 +72,6 @@ namespace SaplingEngine
 		 * \brief 初始化根签名
 		 */
 		void InitializeRootSignature();
-		
-		/**
-		 * \brief 初始化shader以及其对应的输入布局
-		 */
-		void InitializeShaders();
 		
 		/**
 		 * \brief 创建渲染缓冲视图
@@ -153,7 +147,7 @@ namespace SaplingEngine
 		ComPtr<ID3D12DescriptorHeap>				m_RtvDescriptorHeap;					//渲染对象描述符堆
 		ComPtr<ID3D12DescriptorHeap>				m_DsvDescriptorHeap;					//深度/模板描述符堆
 		ComPtr<ID3D12DescriptorHeap>				m_CbvDescriptorHeap;					//常量缓冲区描述符堆
-		uint32_t									m_CbvBufferViewCount = 100;				//常量缓冲区描述符数量
+		uint32_t									m_CbvBufferViewCount = 1;				//常量缓冲区描述符数量
 		
 		ComPtr<IDXGISwapChain>						m_SwapChain;							//交换链
 		ComPtr<ID3D12Resource>						m_SwapChainBuffer[SwapChainBufferCount];//交换链缓冲区
@@ -168,12 +162,11 @@ namespace SaplingEngine
 		uint32_t									m_PassCbvOffset = 0;
 
 		ComPtr<ID3D12RootSignature>					m_RootSignature = nullptr;				//跟签名和描述符
-
+		ComPtr<ID3D12PipelineState>					m_PipelineState = nullptr;				//流水线状态
+		
 		D3D12_VIEWPORT								m_Viewport;								//视图窗口
 		D3D12_RECT									m_ScissorRect;							//裁剪矩形
 
 		D3D_DRIVER_TYPE								m_DriverType = D3D_DRIVER_TYPE_HARDWARE;
-
-		std::vector<D3D12_INPUT_ELEMENT_DESC>		m_InputLayout;							//Shader输入布局
 	};
 }

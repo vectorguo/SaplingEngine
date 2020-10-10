@@ -1,7 +1,5 @@
 #pragma once
 
-#include "D3D12Header.h"
-
 namespace SaplingEngine
 {
 	template <typename T>

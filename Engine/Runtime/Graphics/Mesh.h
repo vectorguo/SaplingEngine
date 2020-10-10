@@ -16,6 +16,7 @@ namespace SaplingEngine
 	class Mesh
 	{
 	public:
+		Mesh() = default;
 		~Mesh();
 		
 		Mesh(const Mesh&) = delete;
@@ -51,14 +52,23 @@ namespace SaplingEngine
 			return m_VertexDatas;
 		}
 
+		uint32_t GetVertexCount() const
+		{
+			return static_cast<uint32_t>(m_VertexDatas.size());
+		}
+
 		void SetVertexDatas(const std::vector<VertexData>& vertices)
 		{
 			m_VertexDatas = vertices;
+
+			CreateVertexBufferView();
 		}
 
 		void SetVertexDatas(std::vector<VertexData>&& vertices)
 		{
 			m_VertexDatas = std::move(vertices);
+
+			CreateVertexBufferView();
 		}
 
 		void SetVertexDatas(VertexData* pVertices, const uint32_t size)
@@ -68,6 +78,8 @@ namespace SaplingEngine
 			{
 				m_VertexDatas.emplace_back(*(pVertices + i));
 			}
+
+			CreateVertexBufferView();
 		}
 		
 		const std::vector<uint16_t>& GetIndices() const
@@ -80,14 +92,23 @@ namespace SaplingEngine
 			return m_Indices;
 		}
 
+		uint32_t GetIndexCount() const
+		{
+			return static_cast<uint32_t>(m_Indices.size());
+		}
+
 		void SetIndices(const std::vector<uint16_t>& indices)
 		{
 			m_Indices = indices;
+
+			CreateIndexBufferView();
 		}
 
 		void SetIndices(std::vector<uint16_t>&& indices)
 		{
 			m_Indices = std::move(indices);
+
+			CreateIndexBufferView();
 		}
 
 		void SetIndices(uint16_t* pIndices, const uint32_t size)
@@ -97,6 +118,8 @@ namespace SaplingEngine
 			{
 				m_Indices.emplace_back(*(pIndices + i));
 			}
+
+			CreateIndexBufferView();
 		}
 
 	private:

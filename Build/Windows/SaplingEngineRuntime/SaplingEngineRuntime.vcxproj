@@ -100,6 +100,7 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\ConstantData.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Material.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Mesh.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\MeshHelper.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Shader.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\ShaderManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Input\Input.h" />
@@ -117,6 +118,7 @@
     <ClInclude Include="..\..\..\Engine\Runtime\SaplingEnginePch.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Scene\Scene.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Scene\SceneManager.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Utility\Log.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Utility\Singleton.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Utility\Time.h" />
   </ItemGroup>
@@ -130,6 +132,7 @@
     <ClCompile Include="..\..\..\Engine\Runtime\GameObject\Transform.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Material.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Mesh.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Graphics\MeshHelper.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Shader.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\ShaderManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Input\Input.cpp" />

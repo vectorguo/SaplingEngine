@@ -1,7 +1,12 @@
 #include "D3D12Application.h"
 
+#include "Graphics/MeshHelper.h"
+#include "Graphics/ShaderManager.h"
+
 namespace SaplingEngine
 {
+	std::unique_ptr<Mesh> g_pMesh;
+	
 	D3D12Application::D3D12Application() : GameApplication(), m_Viewport(), m_ScissorRect()
 	{
 	}
@@ -24,6 +29,10 @@ namespace SaplingEngine
 	 */
 	void D3D12Application::Update()
 	{
+		ObjectConstantData data;
+		data.ModelViewProj = Matrix4x4::Translate(0, 0, 1.0f);// Matrix4x4::Scale(0.5f, 0.5f, 0.5f);
+		data.ModelViewProj = data.ModelViewProj.Transpose();
+		m_ObjConstantBuffer->CopyData(0, data);
 	}
 
 	/**
@@ -32,7 +41,7 @@ namespace SaplingEngine
 	void D3D12Application::Render()
 	{
 		ThrowIfFailed(m_CommandAllocator->Reset());
-		ThrowIfFailed(m_CommandList->Reset(m_CommandAllocator.Get(), nullptr));
+		ThrowIfFailed(m_CommandList->Reset(m_CommandAllocator.Get(), m_PipelineState.Get()));
 		
 		//切换渲染状态
 		auto resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(CurrentBackBuffer(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
@@ -59,6 +68,11 @@ namespace SaplingEngine
 		
 		//渲染物体
 		//TODO
+		m_CommandList->IASetVertexBuffers(0, 1, g_pMesh->GetVertexBufferView());
+		m_CommandList->IASetIndexBuffer(g_pMesh->GetIndexBufferView());
+		m_CommandList->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		m_CommandList->SetGraphicsRootDescriptorTable(0, GetGPUHandleFromDescriptorHeap(m_CbvDescriptorHeap.Get()));
+		m_CommandList->DrawIndexedInstanced(g_pMesh->GetIndexCount(), 1, 0, 0, 0);
 		
 		//将当前的后台缓冲区从渲染目标状态设置为呈现状态
 		resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(CurrentBackBuffer(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
@@ -88,6 +102,12 @@ namespace SaplingEngine
 		CreateRenderTargetViews();
 		CreateDepthStencilView();
 
+		//TODO TEST Create Box Mesh
+		if (g_pMesh == nullptr)
+		{
+			g_pMesh = MeshHelper::CreateBoxMesh();
+		}
+		
 		ExecuteCommandList();
 		FlushCommandQueue();
 
@@ -260,10 +280,10 @@ namespace SaplingEngine
 		m_RtvDescriptorSize = m_D3D12Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 		m_DsvDescriptorSize = m_D3D12Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
 		m_CbvDescriptorSize = m_D3D12Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-
+		
 		//初始化
 		InitializeRootSignature();
-		InitializeShaders();
+		ShaderManager::Instance()->Initialize();
 		InitializePso();
 		
 		//创建常量缓冲区
@@ -277,7 +297,34 @@ namespace SaplingEngine
 	 */
 	void D3D12Application::InitializePso()
 	{
+		const auto* pShader = ShaderManager::Instance()->GetShader("Color");
+		const auto* pShaderInputLayout = pShader->GetInputLayout();
 		
+		D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc;
+		ZeroMemory(&psoDesc, sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC));
+		psoDesc.InputLayout = { pShaderInputLayout->data(), static_cast<uint32_t>(pShaderInputLayout->size()) };
+		psoDesc.pRootSignature = m_RootSignature.Get();
+		psoDesc.VS =
+		{
+			static_cast<BYTE*>(pShader->GetVsShader()->GetBufferPointer()),
+			pShader->GetVsShader()->GetBufferSize()
+		};
+		psoDesc.PS =
+		{
+			static_cast<BYTE*>(pShader->GetPsShader()->GetBufferPointer()),
+			pShader->GetPsShader()->GetBufferSize()
+		};
+		psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+		psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
+		psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
+		psoDesc.SampleMask = UINT_MAX;
+		psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+		psoDesc.NumRenderTargets = 1;
+		psoDesc.RTVFormats[0] = m_SwapChainBufferFormat;
+		psoDesc.SampleDesc.Count = 1;
+		psoDesc.SampleDesc.Quality = 0;
+		psoDesc.DSVFormat = m_DepthStencilViewFormat;
+		ThrowIfFailed(m_D3D12Device->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&m_PipelineState)));
 	}
 
 	/**
@@ -318,24 +365,6 @@ namespace SaplingEngine
 		}
 		ThrowIfFailed(hr);
 		ThrowIfFailed(m_D3D12Device->CreateRootSignature(0, serializedRootSig->GetBufferPointer(), serializedRootSig->GetBufferSize(), IID_PPV_ARGS(&m_RootSignature)));
-	}
-
-	/**
-	 * \brief 初始化shader以及其对应的输入布局
-	 */
-	void D3D12Application::InitializeShaders()
-	{
-		//TODO: 后面修改成读取配置里面的Shader已经对应的InputLayout，方便支持不同Shader
-
-		//加载Shader
-
-		//初始化InputLayout
-		m_InputLayout.reserve(5);
-		m_InputLayout.push_back({ "POSITION",	0, DXGI_FORMAT_R32G32B32_FLOAT,		0, 0,  D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 });
-		m_InputLayout.push_back({ "NORMAL",		0, DXGI_FORMAT_R32G32B32_FLOAT,		0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 });
-		m_InputLayout.push_back({ "COLOR",		0, DXGI_FORMAT_R32G32B32A32_FLOAT,	0, 24, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 });
-		m_InputLayout.push_back({ "TEXCOORD",	0, DXGI_FORMAT_R32G32_FLOAT,		0, 40, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 });
-		m_InputLayout.push_back({ "TEXCOORD",	1, DXGI_FORMAT_R32G32_FLOAT,		0, 40, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 });
 	}
 	
 	/**

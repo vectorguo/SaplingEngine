@@ -7,16 +7,12 @@ namespace SaplingEngine
 	{
 		if (m_pVertexBufferView != nullptr)
 		{
-			m_VertexBufferUploader->Unmap(0, nullptr);
-			
 			delete m_pVertexBufferView;
 			m_pVertexBufferView = nullptr;
 		}
 
 		if (m_pIndexBufferView != nullptr)
 		{
-			m_IndexBufferUploader->Unmap(0, nullptr);
-			
 			delete m_pIndexBufferView;
 			m_pIndexBufferView = nullptr;
 		}

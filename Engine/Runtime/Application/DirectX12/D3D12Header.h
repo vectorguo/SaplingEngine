@@ -11,8 +11,9 @@
 #include <DirectXPackedVector.h>
 #include <dxgi1_4.h>
 
-#include "D3D12Exception.h"
 #include "d3dx12.h"
+
+#include "D3D12Exception.h"
 
 #pragma comment(lib,"d3dcompiler.lib")
 #pragma comment(lib, "D3D12.lib")
@@ -53,7 +54,8 @@ static D3D12_CPU_DESCRIPTOR_HANDLE GetCPUHandleFromDescriptorHeap(ID3D12Descript
 static D3D12_CPU_DESCRIPTOR_HANDLE GetCPUHandleFromDescriptorHeap(ID3D12DescriptorHeap* pHeap, int32_t offset, int32_t descriptorSize)
 {
 	auto cbvHeapHandle = pHeap->GetCPUDescriptorHandleForHeapStart();
-	cbvHeapHandle.ptr += offset * descriptorSize;
+	const auto cbvHeapHandleOffset = offset * descriptorSize;
+	cbvHeapHandle.ptr += static_cast<uint64_t>(cbvHeapHandleOffset);
 	return cbvHeapHandle;
 }
 
@@ -65,6 +67,7 @@ static D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandleFromDescriptorHeap(ID3D12Descript
 static D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandleFromDescriptorHeap(ID3D12DescriptorHeap* pHeap, int32_t offset, int32_t descriptorSize)
 {
 	auto cbvHeapHandle = pHeap->GetGPUDescriptorHandleForHeapStart();
-	cbvHeapHandle.ptr += offset * descriptorSize;
+	const auto cbvHeapHandleOffset = offset * descriptorSize;
+	cbvHeapHandle.ptr += static_cast<uint64_t>(cbvHeapHandleOffset);
 	return cbvHeapHandle;
 }

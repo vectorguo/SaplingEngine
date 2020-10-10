@@ -30,6 +30,12 @@
 #endif
 
 /*
+* direct
+*/
+#include "Application/DirectX12/D3D12Header.h"
+#include "Application/DirectX12/D3D12UploadBuffer.h"
+
+/*
  * math
  */
 #include "Math/Color.h"
@@ -39,6 +45,7 @@
 #include "Math/Vector3.h"
 #include "Math/Vector4.h"
 
+#include "Utility/Log.h"
 #include "Utility/Singleton.h"
 #include "Utility/Time.h"
 

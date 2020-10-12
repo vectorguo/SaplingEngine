@@ -14,26 +14,6 @@ namespace SaplingEngine
 	D3D12Application::~D3D12Application() = default;
 
 	/**
-	 * \brief 初始化配置
-	 * \return 是否初始化成功
-	 */
-	bool D3D12Application::InitializeApplicationConfig()
-	{
-		m_Width = 1280;
-		m_Height = 720;
-		return true;
-	}
-
-	/**
-	 * \brief 初始化场景配置
-	 * \return 是否初始化成功
-	 */
-	bool D3D12Application::InitializeSceneConfig()
-	{
-		return true;
-	}
-
-	/**
 	 * \brief 更新
 	 */
 	void D3D12Application::Update()

@@ -19,18 +19,6 @@ namespace SaplingEngine
 		D3D12Application(D3D12Application&&) = delete;
 		D3D12Application& operator=(const D3D12Application&) = delete;
 		D3D12Application& operator=(D3D12Application&&) = delete;
-
-		/**
-		 * \brief 初始化程序配置
-		 * \return 是否初始化成功
-		 */
-		bool InitializeApplicationConfig() override;
-
-		/**
-		 * \brief 初始化场景配置
-		 * \return 是否初始化成功
-		 */
-		bool InitializeSceneConfig() override;
 		
 		/**
 		 * \brief 更新

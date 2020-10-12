@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <applicationName>Sapling</applicationName>
+    <windowWidth>1280</windowWidth>
+    <windowHeight>720</windowHeight>
+    <startScene>Resources/Configs/Scenes/GameWorld.xml</startScene>
+</root>

@@ -62,3 +62,8 @@ using SaplingEngine::Math::Quaternion;
 using SaplingEngine::Math::Vector2;
 using SaplingEngine::Math::Vector3;
 using SaplingEngine::Math::Vector4;
+
+using XmlDocumentFile	= rapidxml::file<>;
+using XmlDocument		= rapidxml::xml_document<>;
+using XmlNode			= rapidxml::xml_node<>;
+using XmlAttribute		= rapidxml::xml_attribute<>;

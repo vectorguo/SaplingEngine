@@ -16,6 +16,31 @@ namespace SaplingEngine
 	GameApplication::~GameApplication() = default;
 
 	/**
+	 * \brief 初始化程序配置
+	 * \return 是否初始化成功
+	 */
+	bool GameApplication::InitializeConfig()
+	{
+		//加载XML配置
+		XmlDocumentFile documentFile("Resources/Configs/ApplicationConfig.xml");
+		m_ConfigXmlDocument.parse<0>(documentFile.data());
+
+		//读取root节点
+		auto* pRoot = m_ConfigXmlDocument.first_node();
+
+		//读取窗口宽度和高度
+		auto* pWindowWidthNode = pRoot->first_node("windowWidth");
+		auto* pWindowHeightNode = pRoot->first_node("windowHeight");
+		m_Width = std::stoi(pWindowWidthNode->value());
+		m_Height = std::stoi(pWindowHeightNode->value());
+
+		//读取启动场景配置
+		auto* pSceneNode = pRoot->first_node("startScene");
+		
+		return true;
+	}
+
+	/**
 	 * \brief 初始化App
 	 * \param hInstance app句柄
 	 * \return 是否初始化成功

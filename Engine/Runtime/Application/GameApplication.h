@@ -18,16 +18,23 @@ namespace SaplingEngine
 		GameApplication& operator=(const GameApplication&) = delete;
 		GameApplication& operator=(GameApplication&&) = delete;
 
-		/*
-		 * 单例
+		/**
+		 * \brief 单例
+		 * \return 单例
 		 */
 		static GameApplication* Instance() { return s_Instance; }
 
-		/*
-		 * 初始化
+		/**
+		 * \brief 初始化程序配置
+		 * \return 是否初始化成功
 		 */
-		virtual bool InitializeApplicationConfig() = 0;
-		virtual bool InitializeSceneConfig() = 0;
+		virtual bool InitializeConfig();
+
+		/**
+		 * \brief 初始化App
+		 * \param hInstance app句柄
+		 * \return 是否初始化成功
+		 */
 		virtual bool InitializeApplication(HINSTANCE hInstance);
 
 		/*
@@ -126,5 +133,10 @@ namespace SaplingEngine
 		 * \brief 是否全屏状态
 		 */
 		bool m_IsFullscreen = false;
+
+		/**
+		 * \brief 程序配置
+		 */
+		XmlDocument m_ConfigXmlDocument;
 	};
 }

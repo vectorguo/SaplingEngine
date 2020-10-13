@@ -47,15 +47,28 @@ namespace SaplingEngine
 	bool GameApplication::InitializeApplication(HINSTANCE hInstance)
 	{
 		m_AppInstance = hInstance;
-		const auto result = InitializeWindow() && D3D12GraphicsManager::Instance()->InitializeGraphics(m_MainWindow, m_Width, m_Height);
-		if (result)
-		{
-			D3D12GraphicsManager::Instance()->OnResize(m_Width, m_Height);
 
-			ShowWindow(m_MainWindow, SW_SHOW);
-			UpdateWindow(m_MainWindow);
+		//初始化窗口
+		auto result = InitializeWindow();
+		if (!result)
+		{
+			//窗口初始化失败
+			return false;
 		}
-		return result;
+
+		//初始化Graphics
+		result = D3D12GraphicsManager::Instance()->InitializeGraphics(m_MainWindow, m_Width, m_Height);
+		if (!result)
+		{
+			//Graphics初始化失败
+			return false;
+		}
+
+		//显示并更新窗口
+		ShowWindow(m_MainWindow, SW_SHOW);
+		UpdateWindow(m_MainWindow);
+		
+		return true;
 	}
 
 	/**
@@ -132,7 +145,7 @@ namespace SaplingEngine
 			MessageBox(nullptr, L"CreateWindow Failed.", nullptr, 0);
 			return false;
 		}
-
+		
 		return true;
 	}
 

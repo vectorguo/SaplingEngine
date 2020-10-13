@@ -280,6 +280,8 @@ namespace SaplingEngine
 		//创建常量缓冲区
 		CreateConstantBufferViews();
 
+		//Resize
+		OnResize(width, height);
 		return true;
 	}
 

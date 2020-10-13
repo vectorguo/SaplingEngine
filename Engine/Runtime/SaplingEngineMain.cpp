@@ -9,15 +9,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
-	auto* pApp = new GameApplication();
-	if (pApp->InitializeConfig() && pApp->InitializeApplication(hInstance))
+	if (GameSetting::Instance()->Initialize())
 	{
-		pApp->Run();
-		pApp->Destroy();
-		
-		//运行结束，销毁GameApplication
-		delete pApp;
+		auto* pApp = new GameApplication();
+		if (pApp->InitializeApplication(hInstance))
+		{
+			pApp->Run();
+			pApp->Destroy();
+
+			//运行结束，销毁GameApplication
+			delete pApp;
+		}
 	}
-	
+
     return 0;
 }

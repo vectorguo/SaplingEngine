@@ -1,5 +1,6 @@
 #include "D3D12GraphicsManager.h"
 
+#include "Application/GameSetting.h"
 #include "Graphics/MeshHelper.h"
 #include "Graphics/ShaderManager.h"
 
@@ -95,7 +96,7 @@ namespace SaplingEngine
 	/**
 	 * \brief 窗口变化的回调函数
 	 */
-	void D3D12GraphicsManager::OnResize(uint32_t width, uint32_t height)
+	void D3D12GraphicsManager::OnResize()
 	{
 		FlushCommandQueue();
 
@@ -103,6 +104,8 @@ namespace SaplingEngine
 		ThrowIfFailed(m_CommandList->Reset(m_CommandAllocator.Get(), nullptr));
 
 		//Resize SwapChain Buffer
+		const auto width = GameSetting::Instance()->ScreenWidth();
+		const auto height = GameSetting::Instance()->ScreenHeight();
 		CreateRenderTargetViews(width, height);
 		CreateDepthStencilView(width, height);
 
@@ -190,7 +193,7 @@ namespace SaplingEngine
 	 * \brief 初始化DirectX12
 	 * \return 是否初始化成功
 	 */
-	bool D3D12GraphicsManager::InitializeGraphics(HWND hWnd, uint32_t width, uint32_t height)
+	bool D3D12GraphicsManager::InitializeGraphics(HWND hWnd)
 	{
 #if defined(DEBUG) || defined(_DEBUG) 
 		{// Enable the D3D12 debug layer.
@@ -228,8 +231,8 @@ namespace SaplingEngine
 
 		//创建交换链
 		DXGI_SWAP_CHAIN_DESC sd;
-		sd.BufferDesc.Width = width;
-		sd.BufferDesc.Height = height;
+		sd.BufferDesc.Width = GameSetting::Instance()->ScreenWidth();
+		sd.BufferDesc.Height = GameSetting::Instance()->ScreenHeight();
 		sd.BufferDesc.RefreshRate.Numerator = 60;
 		sd.BufferDesc.RefreshRate.Denominator = 1;
 		sd.BufferDesc.Format = m_SwapChainBufferFormat;
@@ -281,7 +284,7 @@ namespace SaplingEngine
 		CreateConstantBufferViews();
 
 		//Resize
-		OnResize(width, height);
+		OnResize();
 		return true;
 	}
 

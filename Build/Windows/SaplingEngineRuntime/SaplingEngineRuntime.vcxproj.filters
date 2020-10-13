@@ -112,6 +112,9 @@
       <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\SaplingEngineGraphicsPch.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Application\GameSetting.h">
+      <Filter>Application</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Runtime\SaplingEngineMain.cpp" />
@@ -192,6 +195,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\DirectX12\D3D12GraphicsManager.cpp">
       <Filter>Graphics\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Application\GameSetting.cpp">
+      <Filter>Application</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

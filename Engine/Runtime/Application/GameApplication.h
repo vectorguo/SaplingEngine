@@ -10,7 +10,6 @@ namespace SaplingEngine
 		GameApplication();
 		~GameApplication() = default;
 
-	public:
 		GameApplication(const GameApplication&) = delete;
 		GameApplication(GameApplication&&) = delete;
 		GameApplication& operator=(const GameApplication&) = delete;
@@ -21,12 +20,6 @@ namespace SaplingEngine
 		 * \return 单例
 		 */
 		static GameApplication* Instance() { return s_Instance; }
-
-		/**
-		 * \brief 初始化程序配置
-		 * \return 是否初始化成功
-		 */
-		bool InitializeConfig();
 
 		/**
 		 * \brief 初始化App
@@ -79,16 +72,6 @@ namespace SaplingEngine
 		 * \brief 窗口句柄
 		 */
 		HWND m_MainWindow = nullptr;
-
-		/**
-		 * \brief 窗口宽度
-		 */
-		uint32_t m_Width = 0;
-		
-		/**
-		 * \brief 窗口高度
-		 */
-		uint32_t m_Height = 0;
 
 		/**
 		 * \brief 是否处于激活状态

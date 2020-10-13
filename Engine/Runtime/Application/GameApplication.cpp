@@ -1,4 +1,5 @@
-#include "Application/GameApplication.h"
+#include "GameApplication.h"
+#include "GameSetting.h"
 
 #include "Camera/CameraManager.h"
 #include "Graphics/DirectX12/D3D12GraphicsManager.h"
@@ -12,31 +13,6 @@ namespace SaplingEngine
 	GameApplication::GameApplication()
 	{
 		s_Instance = this;
-	}
-
-	/**
-	 * \brief 初始化程序配置
-	 * \return 是否初始化成功
-	 */
-	bool GameApplication::InitializeConfig()
-	{
-		//加载XML配置
-		XmlDocumentFile documentFile("Resources/Configs/ApplicationConfig.xml");
-		m_ConfigXmlDocument.parse<0>(documentFile.data());
-
-		//读取root节点
-		auto* pRoot = m_ConfigXmlDocument.first_node();
-
-		//读取窗口宽度和高度
-		auto* pWindowWidthNode = pRoot->first_node("windowWidth");
-		auto* pWindowHeightNode = pRoot->first_node("windowHeight");
-		m_Width = std::stoi(pWindowWidthNode->value());
-		m_Height = std::stoi(pWindowHeightNode->value());
-
-		//读取启动场景配置
-		auto* pSceneNode = pRoot->first_node("startScene");
-		
-		return true;
 	}
 
 	/**
@@ -57,13 +33,15 @@ namespace SaplingEngine
 		}
 
 		//初始化Graphics
-		result = D3D12GraphicsManager::Instance()->InitializeGraphics(m_MainWindow, m_Width, m_Height);
+		result = D3D12GraphicsManager::Instance()->InitializeGraphics(m_MainWindow);
 		if (!result)
 		{
 			//Graphics初始化失败
 			return false;
 		}
 
+		//初始化场景
+		
 		//显示并更新窗口
 		ShowWindow(m_MainWindow, SW_SHOW);
 		UpdateWindow(m_MainWindow);
@@ -134,7 +112,7 @@ namespace SaplingEngine
 			return false;
 		}
 
-		RECT rect = { 0, 0, static_cast<long>(m_Width), static_cast<long>(m_Height) };
+		RECT rect = { 0, 0, static_cast<long>(GameSetting::Instance()->ScreenWidth()), static_cast<long>(GameSetting::Instance()->ScreenHeight()) };
 		AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, false);
 		const int width = rect.right - rect.left;
 		const int height = rect.bottom - rect.top;
@@ -188,8 +166,7 @@ namespace SaplingEngine
 			return 0;
 			
 		case WM_SIZE:
-			m_Width = LOWORD(lParam);
-			m_Height = HIWORD(lParam);
+			GameSetting::Instance()->SetScreenSize(LOWORD(lParam), HIWORD(lParam));
 			if (wParam == SIZE_MINIMIZED)
 			{
 				m_IsActive = false;
@@ -201,7 +178,7 @@ namespace SaplingEngine
 				m_IsActive = true;
 				m_IsMinimized = false;
 				m_IsMaximized = true;
-				D3D12GraphicsManager::Instance()->OnResize(m_Width, m_Height);
+				D3D12GraphicsManager::Instance()->OnResize();
 			}
 			else if (wParam == SIZE_RESTORED)
 			{
@@ -209,20 +186,20 @@ namespace SaplingEngine
 				{
 					m_IsActive = true;
 					m_IsMinimized = false;
-					D3D12GraphicsManager::Instance()->OnResize(m_Width, m_Height);
+					D3D12GraphicsManager::Instance()->OnResize();
 				}
 				else if (m_IsMaximized)
 				{
 					m_IsActive = true;
 					m_IsMaximized = false;
-					D3D12GraphicsManager::Instance()->OnResize(m_Width, m_Height);
+					D3D12GraphicsManager::Instance()->OnResize();
 				}
 				else if (m_IsResizing)
 				{
 				}
 				else
 				{
-					D3D12GraphicsManager::Instance()->OnResize(m_Width, m_Height);
+					D3D12GraphicsManager::Instance()->OnResize();
 				}
 			}
 			return 0;
@@ -237,7 +214,7 @@ namespace SaplingEngine
 			m_IsActive = true;
 			m_IsResizing = false;
 			Time::Start();
-			D3D12GraphicsManager::Instance()->OnResize(m_Width, m_Height);
+			D3D12GraphicsManager::Instance()->OnResize();
 			return 0;
 
 		case WM_LBUTTONDOWN:

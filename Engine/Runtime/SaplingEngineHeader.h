@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Application/GameApplication.h"
+#include "Application/GameSetting.h"
 
 #include "Camera/Camera.h"
 

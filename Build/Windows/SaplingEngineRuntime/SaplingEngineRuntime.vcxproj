@@ -87,6 +87,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Engine\Runtime\Application\GameApplication.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Application\GameSetting.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Camera\Camera.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Camera\CameraManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\GameObject\Component.h" />
@@ -128,6 +129,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Runtime\Application\GameApplication.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Application\GameSetting.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Camera\Camera.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Camera\CameraManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\GameObject\Component.cpp" />

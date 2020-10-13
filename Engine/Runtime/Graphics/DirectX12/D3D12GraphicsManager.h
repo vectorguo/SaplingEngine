@@ -24,7 +24,7 @@ namespace SaplingEngine
 		 * \brief 初始化DirectX12
 		 * \return 是否初始化成功
 		 */
-		bool InitializeGraphics(HWND hWnd, uint32_t width, uint32_t height);
+		bool InitializeGraphics(HWND hWnd);
 		
 		/**
 		 * \brief 绘制
@@ -34,7 +34,7 @@ namespace SaplingEngine
 		/**
 		 * \brief 窗口变化回调
 		 */
-		void OnResize(uint32_t width, uint32_t height);
+		void OnResize();
 
 		/**
 		 * \brief 创建默认缓冲区

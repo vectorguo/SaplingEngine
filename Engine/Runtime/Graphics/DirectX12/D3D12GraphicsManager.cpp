@@ -1,4 +1,4 @@
-#include "D3D12Application.h"
+#include "D3D12GraphicsManager.h"
 
 #include "Graphics/MeshHelper.h"
 #include "Graphics/ShaderManager.h"
@@ -6,32 +6,47 @@
 namespace SaplingEngine
 {
 	std::unique_ptr<Mesh> g_pMesh;
+
+	static D3D12_CPU_DESCRIPTOR_HANDLE GetCPUHandleFromDescriptorHeap(ID3D12DescriptorHeap* pHeap)
+	{
+		return pHeap->GetCPUDescriptorHandleForHeapStart();
+	}
+
+	static D3D12_CPU_DESCRIPTOR_HANDLE GetCPUHandleFromDescriptorHeap(ID3D12DescriptorHeap* pHeap, int32_t offset, int32_t descriptorSize)
+	{
+		auto cbvHeapHandle = pHeap->GetCPUDescriptorHandleForHeapStart();
+		const auto cbvHeapHandleOffset = offset * descriptorSize;
+		cbvHeapHandle.ptr += static_cast<uint64_t>(cbvHeapHandleOffset);
+		return cbvHeapHandle;
+	}
+
+	static D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandleFromDescriptorHeap(ID3D12DescriptorHeap* pHeap)
+	{
+		return pHeap->GetGPUDescriptorHandleForHeapStart();
+	}
+
+	static D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandleFromDescriptorHeap(ID3D12DescriptorHeap* pHeap, int32_t offset, int32_t descriptorSize)
+	{
+		auto cbvHeapHandle = pHeap->GetGPUDescriptorHandleForHeapStart();
+		const auto cbvHeapHandleOffset = offset * descriptorSize;
+		cbvHeapHandle.ptr += static_cast<uint64_t>(cbvHeapHandleOffset);
+		return cbvHeapHandle;
+	}
 	
-	D3D12Application::D3D12Application() : GameApplication(), m_Viewport(), m_ScissorRect()
+	D3D12GraphicsManager::D3D12GraphicsManager() : m_Viewport(), m_ScissorRect()
 	{
 	}
 
-	D3D12Application::~D3D12Application() = default;
-
-	/**
-	 * \brief 更新
-	 */
-	void D3D12Application::Update()
-	{
-		ObjectConstantData data;
-		data.ModelViewProj = Matrix4x4::Translate(0, 0, 1.0f);// Matrix4x4::Scale(0.5f, 0.5f, 0.5f);
-		data.ModelViewProj = data.ModelViewProj.Transpose();
-		m_ObjConstantBuffer->CopyData(0, data);
-	}
+	D3D12GraphicsManager::~D3D12GraphicsManager() = default;
 
 	/**
 	 * \brief 绘制
 	 */
-	void D3D12Application::Render()
+	void D3D12GraphicsManager::Render()
 	{
 		ThrowIfFailed(m_CommandAllocator->Reset());
 		ThrowIfFailed(m_CommandList->Reset(m_CommandAllocator.Get(), m_PipelineState.Get()));
-		
+
 		//切换渲染状态
 		auto resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(CurrentBackBuffer(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
 		m_CommandList->ResourceBarrier(1, &resourceBarrier);
@@ -54,7 +69,7 @@ namespace SaplingEngine
 		m_CommandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
 		m_CommandList->SetGraphicsRootSignature(m_RootSignature.Get());
 		m_CommandList->SetGraphicsRootDescriptorTable(1, GetGPUHandleFromDescriptorHeap(m_CbvDescriptorHeap.Get(), m_PassCbvOffset, m_CbvDescriptorSize));
-		
+
 		//渲染物体
 		//TODO
 		m_CommandList->IASetVertexBuffers(0, 1, g_pMesh->GetVertexBufferView());
@@ -62,7 +77,7 @@ namespace SaplingEngine
 		m_CommandList->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		m_CommandList->SetGraphicsRootDescriptorTable(0, GetGPUHandleFromDescriptorHeap(m_CbvDescriptorHeap.Get()));
 		m_CommandList->DrawIndexedInstanced(g_pMesh->GetIndexCount(), 1, 0, 0, 0);
-		
+
 		//将当前的后台缓冲区从渲染目标状态设置为呈现状态
 		resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(CurrentBackBuffer(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
 		m_CommandList->ResourceBarrier(1, &resourceBarrier);
@@ -80,7 +95,7 @@ namespace SaplingEngine
 	/**
 	 * \brief 窗口变化的回调函数
 	 */
-	void D3D12Application::OnResize()
+	void D3D12GraphicsManager::OnResize(uint32_t width, uint32_t height)
 	{
 		FlushCommandQueue();
 
@@ -88,41 +103,28 @@ namespace SaplingEngine
 		ThrowIfFailed(m_CommandList->Reset(m_CommandAllocator.Get(), nullptr));
 
 		//Resize SwapChain Buffer
-		CreateRenderTargetViews();
-		CreateDepthStencilView();
+		CreateRenderTargetViews(width, height);
+		CreateDepthStencilView(width, height);
 
 		//TODO TEST Create Box Mesh
 		if (g_pMesh == nullptr)
 		{
 			g_pMesh = MeshHelper::CreateBoxMesh();
 		}
-		
+
 		ExecuteCommandList();
 		FlushCommandQueue();
 
 		//Reset ViewPort
 		m_Viewport.TopLeftX = 0;
 		m_Viewport.TopLeftY = 0;
-		m_Viewport.Width = static_cast<float>(m_Width);
-		m_Viewport.Height = static_cast<float>(m_Height);
+		m_Viewport.Width = static_cast<float>(width);
+		m_Viewport.Height = static_cast<float>(height);
 		m_Viewport.MinDepth = 0.0f;
 		m_Viewport.MaxDepth = 1.0f;
 
 		//Reset ScissorRect
-		m_ScissorRect = { 0, 0, static_cast<long>(m_Width), static_cast<long>(m_Height) };
-	}
-
-	/**
-	 * \brief 销毁
-	 */
-	void D3D12Application::Destroy()
-	{
-		GameApplication::Destroy();
-		
-		if (m_D3D12Device != nullptr)
-		{
-			FlushCommandQueue();
-		}
+		m_ScissorRect = { 0, 0, static_cast<long>(width), static_cast<long>(height) };
 	}
 
 	/**
@@ -132,7 +134,7 @@ namespace SaplingEngine
 	 * \param uploadBuffer uploadBuffer
 	 * \return 默认缓冲区
 	 */
-	ComPtr<ID3D12Resource> D3D12Application::CreateDefaultBuffer(const void* initData, uint64_t byteSize, ComPtr<ID3D12Resource>& uploadBuffer) const
+	ComPtr<ID3D12Resource> D3D12GraphicsManager::CreateDefaultBuffer(const void* initData, uint64_t byteSize, ComPtr<ID3D12Resource>& uploadBuffer) const
 	{
 		ComPtr<ID3D12Resource> defaultBuffer;
 
@@ -188,7 +190,7 @@ namespace SaplingEngine
 	 * \brief 初始化DirectX12
 	 * \return 是否初始化成功
 	 */
-	bool D3D12Application::InitializeGraphics()
+	bool D3D12GraphicsManager::InitializeGraphics(HWND hWnd, uint32_t width, uint32_t height)
 	{
 #if defined(DEBUG) || defined(_DEBUG) 
 		{// Enable the D3D12 debug layer.
@@ -226,8 +228,8 @@ namespace SaplingEngine
 
 		//创建交换链
 		DXGI_SWAP_CHAIN_DESC sd;
-		sd.BufferDesc.Width = m_Width;
-		sd.BufferDesc.Height = m_Height;
+		sd.BufferDesc.Width = width;
+		sd.BufferDesc.Height = height;
 		sd.BufferDesc.RefreshRate.Numerator = 60;
 		sd.BufferDesc.RefreshRate.Denominator = 1;
 		sd.BufferDesc.Format = m_SwapChainBufferFormat;
@@ -237,7 +239,7 @@ namespace SaplingEngine
 		sd.SampleDesc.Quality = 0;
 		sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 		sd.BufferCount = SwapChainBufferCount;
-		sd.OutputWindow = m_MainWindow;
+		sd.OutputWindow = hWnd;
 		sd.Windowed = true;
 		sd.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 		sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
@@ -269,26 +271,26 @@ namespace SaplingEngine
 		m_RtvDescriptorSize = m_D3D12Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 		m_DsvDescriptorSize = m_D3D12Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
 		m_CbvDescriptorSize = m_D3D12Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-		
+
 		//初始化
 		InitializeRootSignature();
 		ShaderManager::Instance()->Initialize();
 		InitializePso();
-		
+
 		//创建常量缓冲区
 		CreateConstantBufferViews();
-		
+
 		return true;
 	}
 
 	/**
 	 * \brief 初始化PSO
 	 */
-	void D3D12Application::InitializePso()
+	void D3D12GraphicsManager::InitializePso()
 	{
 		const auto* pShader = ShaderManager::Instance()->GetShader("Color");
 		const auto* pShaderInputLayout = pShader->GetInputLayout();
-		
+
 		D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc;
 		ZeroMemory(&psoDesc, sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC));
 		psoDesc.InputLayout = { pShaderInputLayout->data(), static_cast<uint32_t>(pShaderInputLayout->size()) };
@@ -319,7 +321,7 @@ namespace SaplingEngine
 	/**
 	 * \brief 初始化根签名
 	 */
-	void D3D12Application::InitializeRootSignature()
+	void D3D12GraphicsManager::InitializeRootSignature()
 	{
 		D3D12_DESCRIPTOR_RANGE cbvTable0
 		{
@@ -355,14 +357,14 @@ namespace SaplingEngine
 		ThrowIfFailed(hr);
 		ThrowIfFailed(m_D3D12Device->CreateRootSignature(0, serializedRootSig->GetBufferPointer(), serializedRootSig->GetBufferSize(), IID_PPV_ARGS(&m_RootSignature)));
 	}
-	
+
 	/**
 	 * \brief 创建渲染缓冲视图
 	 */
-	void D3D12Application::CreateRenderTargetViews()
+	void D3D12GraphicsManager::CreateRenderTargetViews(uint32_t width, uint32_t height)
 	{
 		m_BackBufferIndex = 0;
-		
+
 		//释放之前的缓存
 		for (auto& buffer : m_SwapChainBuffer)
 		{
@@ -370,7 +372,7 @@ namespace SaplingEngine
 		}
 
 		//重新设置交换链Buffer大小
-		ThrowIfFailed(m_SwapChain->ResizeBuffers(SwapChainBufferCount, m_Width, m_Height, m_SwapChainBufferFormat, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH));
+		ThrowIfFailed(m_SwapChain->ResizeBuffers(SwapChainBufferCount, width, height, m_SwapChainBufferFormat, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH));
 
 		auto rtvHeapHandle = m_RtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
 		for (auto i = 0; i < SwapChainBufferCount; ++i)
@@ -389,7 +391,7 @@ namespace SaplingEngine
 	/**
 	 * \brief 创建深度模板缓冲视图
 	 */
-	void D3D12Application::CreateDepthStencilView()
+	void D3D12GraphicsManager::CreateDepthStencilView(uint32_t width, uint32_t height)
 	{
 		//释放之前的缓存
 		m_DepthStencilBuffer.Reset();
@@ -398,8 +400,8 @@ namespace SaplingEngine
 		D3D12_RESOURCE_DESC depthStencilDesc;
 		depthStencilDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
 		depthStencilDesc.Alignment = 0;
-		depthStencilDesc.Width = m_Width;
-		depthStencilDesc.Height = m_Height;
+		depthStencilDesc.Width = width;
+		depthStencilDesc.Height = height;
 		depthStencilDesc.DepthOrArraySize = 1;
 		depthStencilDesc.MipLevels = 1;
 		depthStencilDesc.Format = DXGI_FORMAT_R24G8_TYPELESS;
@@ -447,14 +449,14 @@ namespace SaplingEngine
 	/**
 	 * \brief 创建常量缓冲区描述符
 	 */
-	void D3D12Application::CreateConstantBufferViews()
+	void D3D12GraphicsManager::CreateConstantBufferViews()
 	{
 		m_ObjConstantBuffer = std::make_unique<D3D12UploadBuffer<ObjectConstantData>>(m_D3D12Device.Get(), m_CbvBufferViewCount, true);
 		m_PassConstantBuffer = std::make_unique<D3D12UploadBuffer<PassConstantData>>(m_D3D12Device.Get(), 1, true);
 		m_PassCbvOffset = m_CbvBufferViewCount;
-		
+
 		D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc;
-		
+
 		const auto elementSize = m_ObjConstantBuffer->GetElementSize();
 		for (uint32_t i = 0; i < m_CbvBufferViewCount; ++i)
 		{
@@ -466,12 +468,17 @@ namespace SaplingEngine
 		cbvDesc.BufferLocation = m_PassConstantBuffer->GetGpuVirtualAddress();
 		cbvDesc.SizeInBytes = m_PassConstantBuffer->GetElementSize();
 		m_D3D12Device->CreateConstantBufferView(&cbvDesc, GetCPUHandleFromDescriptorHeap(m_CbvDescriptorHeap.Get(), m_PassCbvOffset, m_CbvDescriptorSize));
+
+		ObjectConstantData data;
+		data.ModelViewProj = Matrix4x4::Translate(0, 0, 1.0f);// Matrix4x4::Scale(0.5f, 0.5f, 0.5f);
+		data.ModelViewProj = data.ModelViewProj.Transpose();
+		m_ObjConstantBuffer->CopyData(0, data);
 	}
 
 	/**
 	 * \brief 执行命令
 	 */
-	void D3D12Application::ExecuteCommandList() const
+	void D3D12GraphicsManager::ExecuteCommandList() const
 	{
 		//完成并执行渲染命令
 		ThrowIfFailed(m_CommandList->Close());
@@ -479,17 +486,17 @@ namespace SaplingEngine
 		m_CommandQueue->ExecuteCommandLists(_countof(commands), commands);
 	}
 
-	void D3D12Application::FlushCommandQueue()
+	void D3D12GraphicsManager::FlushCommandQueue()
 	{
 		m_CurrentFence++;
 		ThrowIfFailed(m_CommandQueue->Signal(m_Fence.Get(), m_CurrentFence));
-		
+
 		if (m_Fence->GetCompletedValue() < m_CurrentFence)
 		{
 			HANDLE eventHandle = CreateEventEx(nullptr, nullptr, false, EVENT_ALL_ACCESS);
-			
+
 			ThrowIfFailed(m_Fence->SetEventOnCompletion(m_CurrentFence, eventHandle));
-			
+
 			WaitForSingleObject(eventHandle, INFINITE);
 			CloseHandle(eventHandle);
 		}

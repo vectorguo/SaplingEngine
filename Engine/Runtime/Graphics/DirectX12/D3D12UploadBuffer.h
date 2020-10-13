@@ -1,5 +1,8 @@
 #pragma once
 
+#include "SaplingEngineGraphicsPch.h"
+#include "Utility/Exception.h"
+
 namespace SaplingEngine
 {
 	template <typename T>

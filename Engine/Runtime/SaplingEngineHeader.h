@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Application/DirectX12/D3D12Application.h"
+#include "Application/GameApplication.h"
 
 #include "Camera/Camera.h"
 

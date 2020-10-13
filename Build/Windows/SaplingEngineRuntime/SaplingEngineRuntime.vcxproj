@@ -86,11 +86,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Engine\Runtime\Application\DirectX12\D3D12Application.h" />
-    <ClInclude Include="..\..\..\Engine\Runtime\Application\DirectX12\D3D12Exception.h" />
-    <ClInclude Include="..\..\..\Engine\Runtime\Application\DirectX12\D3D12Header.h" />
-    <ClInclude Include="..\..\..\Engine\Runtime\Application\DirectX12\d3dx12.h" />
-    <ClInclude Include="..\..\..\Engine\Runtime\Application\DirectX12\D3D12UploadBuffer.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Application\GameApplication.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Camera\Camera.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Camera\CameraManager.h" />
@@ -98,6 +93,9 @@
     <ClInclude Include="..\..\..\Engine\Runtime\GameObject\GameObject.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\GameObject\Transform.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\ConstantData.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\DirectX12\D3D12GraphicsManager.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\DirectX12\D3D12UploadBuffer.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\DirectX12\d3dx12.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Material.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Mesh.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\MeshHelper.h" />
@@ -114,10 +112,12 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Process\ProcessManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\Renderer\MeshRenderer.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\Renderer\Renderer.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\SaplingEngineGraphicsPch.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\SaplingEngineHeader.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\SaplingEnginePch.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Scene\Scene.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Scene\SceneManager.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Utility\Exception.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Utility\Log.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Utility\RapidXml\rapidxml.hpp" />
     <ClInclude Include="..\..\..\Engine\Runtime\Utility\RapidXml\rapidxml_iterators.hpp" />
@@ -127,13 +127,13 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Utility\Time.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Engine\Runtime\Application\DirectX12\D3D12Application.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Application\GameApplication.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Camera\Camera.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Camera\CameraManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\GameObject\Component.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\GameObject\GameObject.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\GameObject\Transform.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Graphics\DirectX12\D3D12GraphicsManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Material.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Mesh.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\MeshHelper.cpp" />

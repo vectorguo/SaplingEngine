@@ -1,6 +1,7 @@
 #include "Application/GameApplication.h"
 
 #include "Camera/CameraManager.h"
+#include "Graphics/DirectX12/D3D12GraphicsManager.h"
 #include "Graphics/ShaderManager.h"
 #include "Input/Input.h"
 
@@ -12,8 +13,6 @@ namespace SaplingEngine
 	{
 		s_Instance = this;
 	}
-
-	GameApplication::~GameApplication() = default;
 
 	/**
 	 * \brief 初始化程序配置
@@ -48,10 +47,10 @@ namespace SaplingEngine
 	bool GameApplication::InitializeApplication(HINSTANCE hInstance)
 	{
 		m_AppInstance = hInstance;
-		const auto result = InitializeWindow() && InitializeGraphics();
+		const auto result = InitializeWindow() && D3D12GraphicsManager::Instance()->InitializeGraphics(m_MainWindow, m_Width, m_Height);
 		if (result)
 		{
-			OnResize();
+			D3D12GraphicsManager::Instance()->OnResize(m_Width, m_Height);
 
 			ShowWindow(m_MainWindow, SW_SHOW);
 			UpdateWindow(m_MainWindow);
@@ -78,8 +77,11 @@ namespace SaplingEngine
 			{
 				Time::Tick();
 
+				//逻辑更新
 				Update();
-				Render();
+
+				//渲染
+				D3D12GraphicsManager::Instance()->Render();
 			}
 		}
 	}
@@ -92,6 +94,7 @@ namespace SaplingEngine
 		CameraManager::Release();
 		Input::Release();
 		ShaderManager::Release();
+		D3D12GraphicsManager::Release();
 	}
 
 	/**
@@ -131,6 +134,14 @@ namespace SaplingEngine
 		}
 
 		return true;
+	}
+
+	/**
+	 * \brief 更新
+	 */
+	void GameApplication::Update()
+	{
+		
 	}
 
 	/**
@@ -177,7 +188,7 @@ namespace SaplingEngine
 				m_IsActive = true;
 				m_IsMinimized = false;
 				m_IsMaximized = true;
-				OnResize();
+				D3D12GraphicsManager::Instance()->OnResize(m_Width, m_Height);
 			}
 			else if (wParam == SIZE_RESTORED)
 			{
@@ -185,20 +196,20 @@ namespace SaplingEngine
 				{
 					m_IsActive = true;
 					m_IsMinimized = false;
-					OnResize();
+					D3D12GraphicsManager::Instance()->OnResize(m_Width, m_Height);
 				}
 				else if (m_IsMaximized)
 				{
 					m_IsActive = true;
 					m_IsMaximized = false;
-					OnResize();
+					D3D12GraphicsManager::Instance()->OnResize(m_Width, m_Height);
 				}
 				else if (m_IsResizing)
 				{
 				}
 				else
 				{
-					OnResize();
+					D3D12GraphicsManager::Instance()->OnResize(m_Width, m_Height);
 				}
 			}
 			return 0;
@@ -213,7 +224,7 @@ namespace SaplingEngine
 			m_IsActive = true;
 			m_IsResizing = false;
 			Time::Start();
-			OnResize();
+			D3D12GraphicsManager::Instance()->OnResize(m_Width, m_Height);
 			return 0;
 
 		case WM_LBUTTONDOWN:

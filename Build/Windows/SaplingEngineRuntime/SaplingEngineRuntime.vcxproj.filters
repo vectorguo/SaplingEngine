@@ -21,15 +21,6 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Utility\Singleton.h">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\Application\DirectX12\D3D12Application.h">
-      <Filter>Application\DirectX12</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\Application\DirectX12\d3dx12.h">
-      <Filter>Application\DirectX12</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\Application\DirectX12\D3D12Header.h">
-      <Filter>Application\DirectX12</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\Math\Vector3.h">
       <Filter>Math</Filter>
     </ClInclude>
@@ -44,9 +35,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\Scene\Scene.h">
       <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\Application\DirectX12\D3D12Exception.h">
-      <Filter>Application\DirectX12</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Mesh.h">
       <Filter>Graphics</Filter>
@@ -87,9 +75,6 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Input\Input.h">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\Application\DirectX12\D3D12UploadBuffer.h">
-      <Filter>Application\DirectX12</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\ConstantData.h">
       <Filter>Graphics</Filter>
     </ClInclude>
@@ -114,6 +99,19 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Utility\RapidXml\rapidxml_utils.hpp">
       <Filter>Utility\RapidXml</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\DirectX12\D3D12GraphicsManager.h">
+      <Filter>Graphics\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\DirectX12\D3D12UploadBuffer.h">
+      <Filter>Graphics\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\DirectX12\d3dx12.h">
+      <Filter>Graphics\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Utility\Exception.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\SaplingEngineGraphicsPch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Runtime\SaplingEngineMain.cpp" />
@@ -131,9 +129,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\Process\ProcessManager.cpp">
       <Filter>Process</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Engine\Runtime\Application\DirectX12\D3D12Application.cpp">
-      <Filter>Application\DirectX12</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\Math\Matrix4x4.cpp">
       <Filter>Math</Filter>
@@ -195,6 +190,9 @@
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\MeshHelper.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Graphics\DirectX12\D3D12GraphicsManager.cpp">
+      <Filter>Graphics\DirectX12</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utility">
@@ -208,9 +206,6 @@
     </Filter>
     <Filter Include="Process">
       <UniqueIdentifier>{8348b504-2b1d-4f6a-9990-d8f59d277f74}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\DirectX12">
-      <UniqueIdentifier>{fee63b76-c97a-45ca-b594-937ad6bdd7d0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Math">
       <UniqueIdentifier>{fce7708f-c443-4457-8ce4-b4e5bddd7d68}</UniqueIdentifier>
@@ -238,6 +233,9 @@
     </Filter>
     <Filter Include="Utility\RapidXml">
       <UniqueIdentifier>{344a87b3-5cbf-4119-aaf4-b34778f416bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\DirectX12">
+      <UniqueIdentifier>{c88ba191-ed79-4479-8978-6fc190cf379f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

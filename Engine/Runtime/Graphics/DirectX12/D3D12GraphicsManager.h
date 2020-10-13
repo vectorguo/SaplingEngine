@@ -1,44 +1,40 @@
 #pragma once
 
-#include "Application/GameApplication.h"
-#include "Graphics/ConstantData.h"
+#include "D3D12UploadBuffer.h"
 #include "SaplingEnginePch.h"
+#include "Graphics/ConstantData.h"
 
 namespace SaplingEngine
 {
 	using ObjectConstantBufferPtr = std::unique_ptr<D3D12UploadBuffer<ObjectConstantData>>;
 	using PassConstantBufferPtr = std::unique_ptr<D3D12UploadBuffer<PassConstantData>>;
 	
-	class D3D12Application final : public GameApplication
+	class D3D12GraphicsManager final : public Singleton<D3D12GraphicsManager>
 	{
 	public:
-		D3D12Application();
-		~D3D12Application() override;
+		D3D12GraphicsManager();
+		~D3D12GraphicsManager() override;
 
-		D3D12Application(const D3D12Application&) = delete;
-		D3D12Application(D3D12Application&&) = delete;
-		D3D12Application& operator=(const D3D12Application&) = delete;
-		D3D12Application& operator=(D3D12Application&&) = delete;
-		
+		D3D12GraphicsManager(const D3D12GraphicsManager&) = delete;
+		D3D12GraphicsManager(D3D12GraphicsManager&&) = delete;
+		D3D12GraphicsManager& operator=(const D3D12GraphicsManager&) = delete;
+		D3D12GraphicsManager& operator=(D3D12GraphicsManager&&) = delete;
+
 		/**
-		 * \brief 更新
+		 * \brief 初始化DirectX12
+		 * \return 是否初始化成功
 		 */
-		void Update() override;
-
+		bool InitializeGraphics(HWND hWnd, uint32_t width, uint32_t height);
+		
 		/**
 		 * \brief 绘制
 		 */
-		void Render() override;
+		void Render();
 
 		/**
 		 * \brief 窗口变化回调
 		 */
-		void OnResize() override;
-
-		/**
-		 * \brief 销毁
-		 */
-		void Destroy() override;
+		void OnResize(uint32_t width, uint32_t height);
 
 		/**
 		 * \brief 创建默认缓冲区
@@ -50,32 +46,25 @@ namespace SaplingEngine
 		ComPtr<ID3D12Resource> CreateDefaultBuffer(const void* initData, uint64_t byteSize, ComPtr<ID3D12Resource>& uploadBuffer) const;
 
 	private:
-		
-		/**
-		 * \brief 初始化DirectX12
-		 * \return 是否初始化成功
-		 */
-		bool InitializeGraphics() override;
-
 		/**
 		 * \brief 初始化PSO
 		 */
 		void InitializePso();
-		
+
 		/**
 		 * \brief 初始化根签名
 		 */
 		void InitializeRootSignature();
-		
+
 		/**
 		 * \brief 创建渲染缓冲视图
 		 */
-		void CreateRenderTargetViews();
-		
+		void CreateRenderTargetViews(uint32_t width, uint32_t height);
+
 		/**
 		 * \brief 创建深度模板缓冲视图
 		 */
-		void CreateDepthStencilView();
+		void CreateDepthStencilView(uint32_t width, uint32_t height);
 
 		/**
 		 * \brief 创建常量缓冲区描述符
@@ -86,12 +75,12 @@ namespace SaplingEngine
 		 * \brief 执行命令
 		 */
 		void ExecuteCommandList() const;
-		
+
 		/**
 		 * \brief 刷新渲染队列
 		 */
 		void FlushCommandQueue();
-		
+
 		/**
 		 * \brief 获取当前的后台缓冲
 		 * \return 后台缓冲
@@ -123,7 +112,7 @@ namespace SaplingEngine
 
 	private:
 		static constexpr  int						SwapChainBufferCount = 2;
-		
+
 		ComPtr<IDXGIFactory4>						m_DXGIFactory;
 		ComPtr<ID3D12Device>						m_D3D12Device;
 
@@ -142,7 +131,7 @@ namespace SaplingEngine
 		ComPtr<ID3D12DescriptorHeap>				m_DsvDescriptorHeap;					//深度/模板描述符堆
 		ComPtr<ID3D12DescriptorHeap>				m_CbvDescriptorHeap;					//常量缓冲区描述符堆
 		uint32_t									m_CbvBufferViewCount = 1;				//常量缓冲区描述符数量
-		
+
 		ComPtr<IDXGISwapChain>						m_SwapChain;							//交换链
 		ComPtr<ID3D12Resource>						m_SwapChainBuffer[SwapChainBufferCount];//交换链缓冲区
 		int32_t										m_BackBufferIndex = 0;					//交换链中前台缓冲索引
@@ -157,7 +146,7 @@ namespace SaplingEngine
 
 		ComPtr<ID3D12RootSignature>					m_RootSignature = nullptr;				//跟签名和描述符
 		ComPtr<ID3D12PipelineState>					m_PipelineState = nullptr;				//流水线状态
-		
+
 		D3D12_VIEWPORT								m_Viewport;								//视图窗口
 		D3D12_RECT									m_ScissorRect;							//裁剪矩形
 

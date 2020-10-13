@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Application/DirectX12/D3D12Header.h"
+#include "SaplingEngineGraphicsPch.h"
 
 namespace SaplingEngine
 {

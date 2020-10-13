@@ -6,11 +6,9 @@ namespace SaplingEngine
 {
 	class GameApplication
 	{
-	protected:
-		GameApplication();
-
 	public:
-		virtual ~GameApplication();
+		GameApplication();
+		~GameApplication() = default;
 
 	public:
 		GameApplication(const GameApplication&) = delete;
@@ -28,14 +26,14 @@ namespace SaplingEngine
 		 * \brief 初始化程序配置
 		 * \return 是否初始化成功
 		 */
-		virtual bool InitializeConfig();
+		bool InitializeConfig();
 
 		/**
 		 * \brief 初始化App
 		 * \param hInstance app句柄
 		 * \return 是否初始化成功
 		 */
-		virtual bool InitializeApplication(HINSTANCE hInstance);
+		bool InitializeApplication(HINSTANCE hInstance);
 
 		/*
 		 * 运行
@@ -45,37 +43,20 @@ namespace SaplingEngine
 		/**
 		 * \brief 销毁
 		 */
-		virtual void Destroy();
+		void Destroy();
 
-	protected:
+	private:
 		/**
 		 * \brief 初始化窗口
 		 * \return 是否初始化成功
 		 */
-		virtual bool InitializeWindow();
+		bool InitializeWindow();
 
 		/**
-		 * \brief 初始化图形引擎
-		 * \return 是否初始化成功
+		 * \brief 更新
 		 */
-		virtual bool InitializeGraphics() = 0;
-		
-		/*
-		 * 更新
-		 */
-		virtual void Update() = 0;
+		void Update();
 
-		/*
-		 * 绘制
-		 */
-		virtual void Render() = 0;
-
-		/*
-		 * 窗口变化回调
-		 */
-		virtual void OnResize() = 0;
-
-	private:
 		/*
 		 * 消息处理回调
 		 */
@@ -86,7 +67,7 @@ namespace SaplingEngine
 		 */
 		LRESULT MessageProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-	protected:
+	private:
 		static GameApplication* s_Instance;
 
 		/**

@@ -30,10 +30,9 @@
 #endif
 
 /*
-* direct
-*/
-#include "Application/DirectX12/D3D12Header.h"
-#include "Application/DirectX12/D3D12UploadBuffer.h"
+ * Graphics
+ */
+#include "SaplingEngineGraphicsPch.h"
 
 /*
  * math
@@ -45,6 +44,7 @@
 #include "Math/Vector3.h"
 #include "Math/Vector4.h"
 
+#include "Utility/Exception.h"
 #include "Utility/Log.h"
 #include "Utility/Singleton.h"
 #include "Utility/Time.h"

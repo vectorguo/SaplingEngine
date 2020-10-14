@@ -2,6 +2,7 @@
 
 #include "Application/GameSetting.h"
 #include "Graphics/MeshHelper.h"
+#include "Graphics/Shader.h"
 #include "Graphics/ShaderManager.h"
 
 namespace SaplingEngine
@@ -37,8 +38,6 @@ namespace SaplingEngine
 	D3D12GraphicsManager::D3D12GraphicsManager() : m_Viewport(), m_ScissorRect()
 	{
 	}
-
-	D3D12GraphicsManager::~D3D12GraphicsManager() = default;
 
 	/**
 	 * \brief »æÖÆ
@@ -286,6 +285,14 @@ namespace SaplingEngine
 		//Resize
 		OnResize();
 		return true;
+	}
+
+	/**
+	 * \brief Ïú»Ù
+	 */
+	void D3D12GraphicsManager::Destroy()
+	{
+		
 	}
 
 	/**

@@ -1,11 +1,17 @@
 #pragma once
 
-#include "Utility/Singleton.h"
-#include "Scene.h"
+#include "SaplingEnginePch.h"
 
 namespace SaplingEngine
 {
-	class SceneManager : public Singleton<SceneManager>
+	class Scene;
+	
+	class SceneManager
 	{
+	public:
+		SceneManager() = default;
+		~SceneManager() = default;
+
+		SINGLETON(SceneManager)
 	};
 }

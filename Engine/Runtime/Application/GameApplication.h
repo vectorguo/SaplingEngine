@@ -10,23 +10,14 @@ namespace SaplingEngine
 		GameApplication();
 		~GameApplication() = default;
 
-		GameApplication(const GameApplication&) = delete;
-		GameApplication(GameApplication&&) = delete;
-		GameApplication& operator=(const GameApplication&) = delete;
-		GameApplication& operator=(GameApplication&&) = delete;
-
-		/**
-		 * \brief 单例
-		 * \return 单例
-		 */
-		static GameApplication* Instance() { return s_Instance; }
+		SINGLETON(GameApplication)
 
 		/**
 		 * \brief 初始化App
 		 * \param hInstance app句柄
 		 * \return 是否初始化成功
 		 */
-		bool InitializeApplication(HINSTANCE hInstance);
+		bool Initialize(HINSTANCE hInstance);
 
 		/*
 		 * 运行

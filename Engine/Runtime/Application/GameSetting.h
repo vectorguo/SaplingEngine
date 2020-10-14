@@ -4,16 +4,13 @@
 
 namespace SaplingEngine
 {
-	class GameSetting : public Singleton<GameSetting>
+	class GameSetting final
 	{
 	public:
 		GameSetting() = default;
 		~GameSetting() = default;
 
-		GameSetting(const GameSetting&) = delete;
-		GameSetting(GameSetting&&) = delete;
-		GameSetting& operator=(const GameSetting&) = delete;
-		GameSetting& operator=(GameSetting&&) = delete;
+		SINGLETON(GameSetting)
 		
 		/**
 		 * \brief ≥ı ºªØ

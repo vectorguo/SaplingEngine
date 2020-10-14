@@ -26,7 +26,7 @@ namespace SaplingEngine
 		KeyPress,
 	};
 	
-	class Input final : public Singleton<Input>
+	class Input final
 	{
 		friend class GameApplication;
 		
@@ -36,6 +36,13 @@ namespace SaplingEngine
 			
 		}
 
+		SINGLETON(Input)
+
+		/**
+		 * \brief 销毁
+		 */
+		void Destroy();
+		
 		/**
 		 * \brief 获取鼠标按钮状态
 		 * \return 鼠标按钮状态

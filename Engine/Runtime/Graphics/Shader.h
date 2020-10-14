@@ -4,16 +4,13 @@
 
 namespace SaplingEngine
 {
-	using std::string;
-	using std::wstring;
-	
 	class Shader
 	{
 	public:
-		Shader(const string& name, const wstring& path);
-		Shader(string&& name, const wstring& path);
-		Shader(const string& name, const wstring& path, const string& vEntryPoint, const string& pEntryPoint);
-		Shader(string&& name, const wstring& path, const string& vEntryPoint, const string& pEntryPoint);
+		Shader(const std::string& name, const std::wstring& path);
+		Shader(std::string&& name, const std::wstring& path);
+		Shader(const std::string& name, const std::wstring& path, const std::string& vEntryPoint, const std::string& pEntryPoint);
+		Shader(std::string&& name, const std::wstring& path, const std::string& vEntryPoint, const std::string& pEntryPoint);
 		~Shader();
 		
 		Shader(const Shader&) = delete;
@@ -25,7 +22,7 @@ namespace SaplingEngine
 		 * \brief 获取Shader名称
 		 * \return Shader名称
 		 */
-		const string& GetName() const
+		const std::string& GetName() const
 		{
 			return m_Name;
 		}
@@ -58,7 +55,7 @@ namespace SaplingEngine
 		}
 		
 	private:
-		string m_Name;
+		std::string m_Name;
 		ComPtr<ID3DBlob> m_VsShader;
 		ComPtr<ID3DBlob> m_PsShader;
 

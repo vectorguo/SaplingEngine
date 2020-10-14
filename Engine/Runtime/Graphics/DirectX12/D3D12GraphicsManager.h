@@ -9,22 +9,24 @@ namespace SaplingEngine
 	using ObjectConstantBufferPtr = std::unique_ptr<D3D12UploadBuffer<ObjectConstantData>>;
 	using PassConstantBufferPtr = std::unique_ptr<D3D12UploadBuffer<PassConstantData>>;
 	
-	class D3D12GraphicsManager final : public Singleton<D3D12GraphicsManager>
+	class D3D12GraphicsManager final
 	{
 	public:
 		D3D12GraphicsManager();
-		~D3D12GraphicsManager() override;
+		~D3D12GraphicsManager() = default;
 
-		D3D12GraphicsManager(const D3D12GraphicsManager&) = delete;
-		D3D12GraphicsManager(D3D12GraphicsManager&&) = delete;
-		D3D12GraphicsManager& operator=(const D3D12GraphicsManager&) = delete;
-		D3D12GraphicsManager& operator=(D3D12GraphicsManager&&) = delete;
+		SINGLETON(D3D12GraphicsManager)
 
 		/**
 		 * \brief 初始化DirectX12
 		 * \return 是否初始化成功
 		 */
 		bool InitializeGraphics(HWND hWnd);
+
+		/**
+		 * \brief 销毁
+		 */
+		void Destroy();
 		
 		/**
 		 * \brief 绘制

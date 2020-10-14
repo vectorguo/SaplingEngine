@@ -2,6 +2,14 @@
 
 namespace SaplingEngine
 {
+	/**
+	 * \brief Ïú»Ù
+	 */
+	void CameraManager::Destroy()
+	{
+		
+	}
+
 	void CameraManager::AddCamera(CameraPtr&& pCamera)
 	{
 		m_Cameras.push_back(pCamera);

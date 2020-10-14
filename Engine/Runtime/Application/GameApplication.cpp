@@ -20,7 +20,7 @@ namespace SaplingEngine
 	 * \param hInstance app句柄
 	 * \return 是否初始化成功
 	 */
-	bool GameApplication::InitializeApplication(HINSTANCE hInstance)
+	bool GameApplication::Initialize(HINSTANCE hInstance)
 	{
 		m_AppInstance = hInstance;
 
@@ -82,10 +82,10 @@ namespace SaplingEngine
 	 */
 	void GameApplication::Destroy()
 	{
-		CameraManager::Release();
-		Input::Release();
-		ShaderManager::Release();
-		D3D12GraphicsManager::Release();
+		CameraManager::Instance()->Destroy();
+		Input::Instance()->Destroy();
+		ShaderManager::Instance()->Destroy();
+		D3D12GraphicsManager::Instance()->Destroy();
 	}
 
 	/**

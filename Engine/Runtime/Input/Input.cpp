@@ -3,6 +3,14 @@
 namespace SaplingEngine
 {
 	/**
+	 * \brief 销毁
+	 */
+	void Input::Destroy()
+	{
+		
+	}
+
+	/**
 	 * \brief 设置鼠标状态与位置
 	 * \param buttonState 鼠标按钮状态
 	 * \param x 鼠标X轴位置

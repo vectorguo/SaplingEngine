@@ -4,7 +4,12 @@
 
 namespace SaplingEngine
 {
-	class ProcessManager : public Singleton<ProcessManager>
+	class ProcessManager
 	{
+	public:
+		ProcessManager() = default;
+		~ProcessManager() = default;
+
+		SINGLETON(ProcessManager)
 	};
 }

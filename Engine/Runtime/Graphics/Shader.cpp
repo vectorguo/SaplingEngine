@@ -10,7 +10,7 @@ namespace SaplingEngine
 	 * \param target °æ±¾
 	 * \return Shader
 	 */
-	ComPtr<ID3DBlob> CompileShader(const wstring& fileName, const D3D_SHADER_MACRO* defines, const string& entryPoint, const string& target)
+	ComPtr<ID3DBlob> CompileShader(const std::wstring& fileName, const D3D_SHADER_MACRO* defines, const std::string& entryPoint, const std::string& target)
 	{
 		uint32_t compileFlags = 0;
 
@@ -31,16 +31,16 @@ namespace SaplingEngine
 		return byteCode;
 	}
 
-	Shader::Shader(const string& name, const wstring& path) : Shader(name, path, "Vert", "Frag")
+	Shader::Shader(const std::string& name, const std::wstring& path) : Shader(name, path, "Vert", "Frag")
 	{
 		
 	}
 
-	Shader::Shader(string&& name, const wstring& path) : Shader(std::move(name), path, "Vert", "Frag")
+	Shader::Shader(std::string&& name, const std::wstring& path) : Shader(std::move(name), path, "Vert", "Frag")
 	{
 	}
 
-	Shader::Shader(const string& name, const wstring& path, const string& vEntryPoint, const string& pEntryPoint) : m_Name(name)
+	Shader::Shader(const std::string& name, const std::wstring& path, const std::string& vEntryPoint, const std::string& pEntryPoint) : m_Name(name)
 	{
 		m_VsShader = CompileShader(path, nullptr, vEntryPoint, "vs_5_1");
 		m_PsShader = CompileShader(path, nullptr, pEntryPoint, "ps_5_1");
@@ -53,7 +53,7 @@ namespace SaplingEngine
 		m_InputLayout.push_back({ "TEXCOORD",	1, DXGI_FORMAT_R32G32_FLOAT,		0, 40, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 });
 	}
 
-	Shader::Shader(string&& name, const wstring& path, const string& vEntryPoint, const string& pEntryPoint) : m_Name(std::move(name))
+	Shader::Shader(std::string&& name, const std::wstring& path, const std::string& vEntryPoint, const std::string& pEntryPoint) : m_Name(std::move(name))
 	{
 		m_VsShader = CompileShader(path, nullptr, vEntryPoint, "vs_5_1");
 		m_PsShader = CompileShader(path, nullptr, pEntryPoint, "ps_5_1");

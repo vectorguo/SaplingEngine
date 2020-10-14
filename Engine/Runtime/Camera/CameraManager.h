@@ -5,9 +5,19 @@
 
 namespace SaplingEngine
 {
-	class CameraManager final : public Singleton<CameraManager>
+	class CameraManager final
 	{
 		friend class Camera;
+	public:
+		CameraManager() = default;
+		~CameraManager() = default;
+		
+		SINGLETON(CameraManager)
+
+		/**
+		 * \brief Ïú»Ù
+		 */
+		void Destroy();
 		
 	private:
 		void AddCamera(CameraPtr&& pCamera);

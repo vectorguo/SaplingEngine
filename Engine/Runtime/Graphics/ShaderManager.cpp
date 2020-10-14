@@ -1,3 +1,4 @@
+#include "Shader.h"
 #include "ShaderManager.h"
 
 namespace SaplingEngine
@@ -20,5 +21,16 @@ namespace SaplingEngine
 		{
 			delete iter->second;
 		}
+	}
+
+	/**
+	 * \brief »ñÈ¡Shader
+	 * \param shaderName ShaderÃû³Æ
+	 * \return Shader
+	 */
+	const Shader* ShaderManager::GetShader(const std::string& shaderName) const
+	{
+		const auto iter = m_Shaders.find(shaderName);
+		return iter == m_Shaders.end() ? nullptr : iter->second;
 	}
 }

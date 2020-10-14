@@ -47,6 +47,24 @@ namespace SaplingEngine
 			m_ScreenHeight = height;
 		}
 
+		/**
+		 * \brief 获取启动场景名称
+		 * \return 启动场景名称
+		 */
+		const std::string& StartSceneName() const
+		{
+			return m_StartSceneName;
+		}
+		
+		/**
+		 * \brief 获取启动场景路径
+		 * \return 启动场景路径
+		 */
+		const std::string& StartScenePath() const
+		{
+			return m_StartScenePath;
+		}
+
 	private:
 		/**
 		 * \brief Xml配置信息
@@ -63,6 +81,11 @@ namespace SaplingEngine
 		 */
 		uint32_t m_ScreenHeight = 0;
 
+		/**
+		 * \brief 起始场景名称
+		 */
+		std::string m_StartSceneName;
+		
 		/**
 		 * \brief 起始场景路径
 		 */

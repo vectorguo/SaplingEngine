@@ -23,7 +23,8 @@ namespace SaplingEngine
 
 		//¶ÁÈ¡Æô¶¯³¡¾°ÅäÖÃ
 		auto* pSceneNode = pRoot->first_node("startScene");
-		m_StartScenePath = pSceneNode->value();
+		m_StartSceneName = pSceneNode->first_attribute("sceneName")->value();
+		m_StartScenePath = pSceneNode->first_attribute("scenePath")->value();
 
 		return true;
 	}

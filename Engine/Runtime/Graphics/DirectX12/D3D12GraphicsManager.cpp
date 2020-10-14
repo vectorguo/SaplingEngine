@@ -192,7 +192,7 @@ namespace SaplingEngine
 	 * \brief 初始化DirectX12
 	 * \return 是否初始化成功
 	 */
-	bool D3D12GraphicsManager::InitializeGraphics(HWND hWnd)
+	bool D3D12GraphicsManager::Initialize(HWND hWnd)
 	{
 #if defined(DEBUG) || defined(_DEBUG) 
 		{// Enable the D3D12 debug layer.

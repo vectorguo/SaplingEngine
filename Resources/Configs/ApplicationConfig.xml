@@ -3,5 +3,5 @@
     <applicationName>Sapling</applicationName>
     <windowWidth>1280</windowWidth>
     <windowHeight>720</windowHeight>
-    <startScene>Resources/Configs/Scenes/GameWorld.xml</startScene>
+    <startScene sceneName="GameWorld" scenePath="Resources/Configs/Scenes/GameWorld.xml"/>
 </root>

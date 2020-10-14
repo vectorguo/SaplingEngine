@@ -21,7 +21,7 @@ namespace SaplingEngine
 		 * \brief 初始化DirectX12
 		 * \return 是否初始化成功
 		 */
-		bool InitializeGraphics(HWND hWnd);
+		bool Initialize(HWND hWnd);
 
 		/**
 		 * \brief 销毁

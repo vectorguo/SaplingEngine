@@ -5,6 +5,7 @@
 #include "Graphics/DirectX12/D3D12GraphicsManager.h"
 #include "Graphics/ShaderManager.h"
 #include "Input/Input.h"
+#include "Scene/SceneManager.h"
 
 namespace SaplingEngine
 {
@@ -33,7 +34,7 @@ namespace SaplingEngine
 		}
 
 		//初始化Graphics
-		result = D3D12GraphicsManager::Instance()->InitializeGraphics(m_MainWindow);
+		result = D3D12GraphicsManager::Instance()->Initialize(m_MainWindow);
 		if (!result)
 		{
 			//Graphics初始化失败
@@ -41,6 +42,7 @@ namespace SaplingEngine
 		}
 
 		//初始化场景
+		SceneManager::Instance()->Initialize();
 		
 		//显示并更新窗口
 		ShowWindow(m_MainWindow, SW_SHOW);

@@ -6,13 +6,16 @@ namespace SaplingEngine
 {
 	/**
 	 * \brief 初始化
+	 * \return 是否初始化成功
 	 */
-	void SceneManager::Initialize()
+	bool SceneManager::Initialize()
 	{
 		//加载启动场景
 		const auto& startSceneName = GameSetting::Instance()->StartSceneName();
 		const auto& startScenePath = GameSetting::Instance()->StartScenePath();
 		LoadScene(startSceneName, startScenePath, false);
+		
+		return true;
 	}
 
 	/**
@@ -23,6 +26,12 @@ namespace SaplingEngine
 	 */
 	void SceneManager::LoadScene(const std::string& sceneName, const std::string& scenePath, bool additive)
 	{
+		//加载XML配置
+		XmlDocumentFile documentFile(scenePath.data());
+		XmlDocument document;
+		document.parse<0>(documentFile.data());
+
+		
 	}
 
 	/**
@@ -31,5 +40,6 @@ namespace SaplingEngine
 	 */
 	void SceneManager::UnloadScene(const std::string& sceneName)
 	{
+		
 	}
 }

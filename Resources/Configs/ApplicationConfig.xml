@@ -4,4 +4,7 @@
     <windowWidth>1280</windowWidth>
     <windowHeight>720</windowHeight>
     <startScene sceneName="GameWorld" scenePath="Resources/Configs/Scenes/GameWorld.xml"/>
+    <shaders>
+        <shader name="Color" path="Resources/Shaders/color.hlsl"/>
+    </shaders>
 </root>

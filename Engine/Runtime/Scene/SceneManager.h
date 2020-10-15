@@ -17,7 +17,7 @@ namespace SaplingEngine
 		/**
 		 * \brief 初始化
 		 */
-		void Initialize();
+		bool Initialize();
 
 		/**
 		 * \brief 加载场景

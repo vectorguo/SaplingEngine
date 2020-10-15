@@ -42,7 +42,12 @@ namespace SaplingEngine
 		}
 
 		//初始化场景
-		SceneManager::Instance()->Initialize();
+		result = SceneManager::Instance()->Initialize();
+		if (!result)
+		{
+			//场景初始化失败
+			return false;
+		}
 		
 		//显示并更新窗口
 		ShowWindow(m_MainWindow, SW_SHOW);

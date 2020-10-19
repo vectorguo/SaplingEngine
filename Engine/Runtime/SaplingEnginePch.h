@@ -48,6 +48,7 @@
 #include "Utility/Log.h"
 #include "Utility/Singleton.h"
 #include "Utility/Time.h"
+#include "Utility/Utility.h"
 
 /*
  * XML

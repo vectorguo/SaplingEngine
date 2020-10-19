@@ -2,6 +2,8 @@
 
 namespace SaplingEngine
 {
+	const char* InputLayoutSemanticNames[4] = { "POSITION", "NORMAL", "COLOR", "TEXCOORD" };
+	
 	/**
 	 * \brief 编译Shader
 	 * \param fileName Shader所在的文件路径
@@ -31,39 +33,32 @@ namespace SaplingEngine
 		return byteCode;
 	}
 
-	Shader::Shader(const std::string& name, const std::wstring& path) : Shader(name, path, "Vert", "Frag")
+	Shader::Shader(const XmlNode* pShaderNode) : m_Name(pShaderNode->first_attribute("name")->value())
 	{
-		
-	}
+		const auto path = CharToWChar(pShaderNode->first_attribute("path")->value());
+		m_VsShader = CompileShader(path, nullptr, pShaderNode->first_attribute("vert")->value(), "vs_5_1");
+		m_PsShader = CompileShader(path, nullptr, pShaderNode->first_attribute("frag")->value(), "ps_5_1");
 
-	Shader::Shader(std::string&& name, const std::wstring& path) : Shader(std::move(name), path, "Vert", "Frag")
-	{
-	}
-
-	Shader::Shader(const std::string& name, const std::wstring& path, const std::string& vEntryPoint, const std::string& pEntryPoint) : m_Name(name)
-	{
-		m_VsShader = CompileShader(path, nullptr, vEntryPoint, "vs_5_1");
-		m_PsShader = CompileShader(path, nullptr, pEntryPoint, "ps_5_1");
-		
-		m_InputLayout.reserve(5);
-		m_InputLayout.push_back({ "POSITION",	0, DXGI_FORMAT_R32G32B32_FLOAT,		0, 0,  D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 });
-		m_InputLayout.push_back({ "NORMAL",		0, DXGI_FORMAT_R32G32B32_FLOAT,		0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 });
-		m_InputLayout.push_back({ "COLOR",		0, DXGI_FORMAT_R32G32B32A32_FLOAT,	0, 24, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 });
-		m_InputLayout.push_back({ "TEXCOORD",	0, DXGI_FORMAT_R32G32_FLOAT,		0, 40, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 });
-		m_InputLayout.push_back({ "TEXCOORD",	1, DXGI_FORMAT_R32G32_FLOAT,		0, 40, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 });
-	}
-
-	Shader::Shader(std::string&& name, const std::wstring& path, const std::string& vEntryPoint, const std::string& pEntryPoint) : m_Name(std::move(name))
-	{
-		m_VsShader = CompileShader(path, nullptr, vEntryPoint, "vs_5_1");
-		m_PsShader = CompileShader(path, nullptr, pEntryPoint, "ps_5_1");
-
-		m_InputLayout.reserve(5);
-		m_InputLayout.push_back({ "POSITION",	0, DXGI_FORMAT_R32G32B32_FLOAT,		0, 0,  D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 });
-		m_InputLayout.push_back({ "NORMAL",		0, DXGI_FORMAT_R32G32B32_FLOAT,		0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 });
-		m_InputLayout.push_back({ "COLOR",		0, DXGI_FORMAT_R32G32B32A32_FLOAT,	0, 24, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 });
-		m_InputLayout.push_back({ "TEXCOORD",	0, DXGI_FORMAT_R32G32_FLOAT,		0, 40, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 });
-		m_InputLayout.push_back({ "TEXCOORD",	1, DXGI_FORMAT_R32G32_FLOAT,		0, 40, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 });
+		m_InputLayout.reserve(std::stoi(pShaderNode->first_attribute("inputLayoutCount")->value()));
+		for (auto* pChild = pShaderNode->first_node(); pChild; pChild = pChild->next_sibling())
+		{
+			const auto* name = pChild->first_attribute("name")->value();
+			const auto* index = pChild->first_attribute("index")->value();
+			const auto* format = pChild->first_attribute("format")->value();
+			const auto* inputSlot = pChild->first_attribute("inputSlot")->value();
+			const auto* offset = pChild->first_attribute("offset")->value();
+			const auto* inputSlotClass = pChild->first_attribute("inputSlotClass")->value();
+			const auto* stepRate = pChild->first_attribute("stepRate")->value();
+			
+			m_InputLayout.push_back({
+				InputLayoutSemanticNames[std::stoi(name)],
+				static_cast<uint32_t>(std::stoi(index)),
+				static_cast<DXGI_FORMAT>(std::stoi(format)),
+				static_cast<uint32_t>(std::stoi(inputSlot)),
+				static_cast<uint32_t>(std::stoi(offset)),
+				static_cast<D3D12_INPUT_CLASSIFICATION>(std::stoi(inputSlotClass)),
+				static_cast<uint32_t>(std::stoi(stepRate))});
+		}
 	}
 
 	Shader::~Shader() = default;

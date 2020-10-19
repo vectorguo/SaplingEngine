@@ -115,6 +115,9 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Application\GameSetting.h">
       <Filter>Application</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Utility\Utility.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Runtime\SaplingEngineMain.cpp" />

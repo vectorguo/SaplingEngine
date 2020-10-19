@@ -1,6 +1,8 @@
 #include "Shader.h"
 #include "ShaderManager.h"
 
+#include "Application/GameSetting.h"
+
 namespace SaplingEngine
 {
 	/**
@@ -8,8 +10,12 @@ namespace SaplingEngine
 	 */
 	void ShaderManager::Initialize()
 	{
-		auto* pShader = new Shader("Color", L"Resources/Shaders/color.hlsl");
-		m_Shaders.insert({ pShader->GetName(), pShader });
+		const auto* pShadersNode = GameSetting::Instance()->GetNode("shaders");
+		for (auto* pChild = pShadersNode->first_node(); pChild; pChild = pChild->next_sibling())
+		{
+			auto* pShader = new Shader(pChild);
+			m_Shaders.insert({ pShader->GetName(), pShader });
+		}
 	}
 
 	/**

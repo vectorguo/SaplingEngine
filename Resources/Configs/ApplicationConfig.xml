@@ -5,6 +5,12 @@
     <windowHeight>720</windowHeight>
     <startScene sceneName="GameWorld" scenePath="Resources/Configs/Scenes/GameWorld.xml"/>
     <shaders>
-        <shader name="Color" path="Resources/Shaders/color.hlsl"/>
+        <shader name="Color" path="Resources/Shaders/color.hlsl" vert="Vert" frag="Frag" inputLayoutCount="5">
+            <inputLayout name="0" index="0" format="6" inputSlot="0" offset="0" inputSlotClass="0" stepRate="0"/>
+            <inputLayout name="1" index="0" format="6" inputSlot="0" offset="12" inputSlotClass="0" stepRate="0"/>
+            <inputLayout name="2" index="0" format="2" inputSlot="0" offset="24" inputSlotClass="0" stepRate="0"/>
+            <inputLayout name="3" index="0" format="16" inputSlot="0" offset="40" inputSlotClass="0" stepRate="0"/>
+            <inputLayout name="3" index="1" format="16" inputSlot="0" offset="48" inputSlotClass="0" stepRate="0"/>
+        </shader>
     </shaders>
 </root>

@@ -7,10 +7,7 @@ namespace SaplingEngine
 	class Shader
 	{
 	public:
-		Shader(const std::string& name, const std::wstring& path);
-		Shader(std::string&& name, const std::wstring& path);
-		Shader(const std::string& name, const std::wstring& path, const std::string& vEntryPoint, const std::string& pEntryPoint);
-		Shader(std::string&& name, const std::wstring& path, const std::string& vEntryPoint, const std::string& pEntryPoint);
+		explicit Shader(const XmlNode* pShaderNode);
 		~Shader();
 		
 		Shader(const Shader&) = delete;

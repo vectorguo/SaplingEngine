@@ -27,33 +27,28 @@ namespace SaplingEngine
 
 		//初始化窗口
 		auto result = InitializeWindow();
-		if (!result)
+		if (result)
 		{
-			//窗口初始化失败
-			return false;
+			//初始化Graphics
+			result = D3D12GraphicsManager::Instance()->InitializeDevice(m_MainWindow);
+			if (result)
+			{
+				//初始化Shader
+				ShaderManager::Instance()->Initialize();
+				
+				//初始化场景
+				SceneManager::Instance()->Initialize();
+				
+				//初始化D3D12PSO
+
+				//显示并更新窗口
+				ShowWindow(m_MainWindow, SW_SHOW);
+				UpdateWindow(m_MainWindow);
+				return true;
+			}
 		}
 
-		//初始化Graphics
-		result = D3D12GraphicsManager::Instance()->Initialize(m_MainWindow);
-		if (!result)
-		{
-			//Graphics初始化失败
-			return false;
-		}
-
-		//初始化场景
-		result = SceneManager::Instance()->Initialize();
-		if (!result)
-		{
-			//场景初始化失败
-			return false;
-		}
-		
-		//显示并更新窗口
-		ShowWindow(m_MainWindow, SW_SHOW);
-		UpdateWindow(m_MainWindow);
-		
-		return true;
+		return false;
 	}
 
 	/**

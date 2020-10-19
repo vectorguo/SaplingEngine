@@ -192,8 +192,10 @@ namespace SaplingEngine
 	 * \brief 初始化DirectX12
 	 * \return 是否初始化成功
 	 */
-	bool D3D12GraphicsManager::Initialize(HWND hWnd)
+	bool D3D12GraphicsManager::InitializeDevice(HWND hWnd)
 	{
+		ShaderManager::Instance()->Initialize();
+		
 #if defined(DEBUG) || defined(_DEBUG) 
 		{// Enable the D3D12 debug layer.
 			ComPtr<ID3D12Debug> debugController;
@@ -276,7 +278,6 @@ namespace SaplingEngine
 
 		//初始化
 		InitializeRootSignature();
-		ShaderManager::Instance()->Initialize();
 		InitializePso();
 
 		//创建常量缓冲区
@@ -285,14 +286,6 @@ namespace SaplingEngine
 		//Resize
 		OnResize();
 		return true;
-	}
-
-	/**
-	 * \brief 销毁
-	 */
-	void D3D12GraphicsManager::Destroy()
-	{
-		
 	}
 
 	/**
@@ -328,6 +321,14 @@ namespace SaplingEngine
 		psoDesc.SampleDesc.Quality = 0;
 		psoDesc.DSVFormat = m_DepthStencilViewFormat;
 		ThrowIfFailed(m_D3D12Device->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&m_PipelineState)));
+	}
+	
+	/**
+	 * \brief 销毁
+	 */
+	void D3D12GraphicsManager::Destroy()
+	{
+		
 	}
 
 	/**

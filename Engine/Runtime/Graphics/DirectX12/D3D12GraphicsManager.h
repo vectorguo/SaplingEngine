@@ -18,11 +18,16 @@ namespace SaplingEngine
 		SINGLETON(D3D12GraphicsManager)
 
 		/**
-		 * \brief 初始化DirectX12
+		 * \brief 初始化DirectX12 Device
 		 * \return 是否初始化成功
 		 */
-		bool Initialize(HWND hWnd);
+		bool InitializeDevice(HWND hWnd);
 
+		/**
+		 * \brief 初始化PSO
+		 */
+		void InitializePso();
+		
 		/**
 		 * \brief 销毁
 		 */
@@ -48,11 +53,6 @@ namespace SaplingEngine
 		ComPtr<ID3D12Resource> CreateDefaultBuffer(const void* initData, uint64_t byteSize, ComPtr<ID3D12Resource>& uploadBuffer) const;
 
 	private:
-		/**
-		 * \brief 初始化PSO
-		 */
-		void InitializePso();
-
 		/**
 		 * \brief 初始化根签名
 		 */

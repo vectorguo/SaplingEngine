@@ -126,6 +126,7 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Utility\RapidXml\rapidxml_utils.hpp" />
     <ClInclude Include="..\..\..\Engine\Runtime\Utility\Singleton.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Utility\Time.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Utility\Utility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Runtime\Application\GameApplication.cpp" />

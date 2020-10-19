@@ -192,7 +192,7 @@ namespace SaplingEngine
 	 * \brief 初始化DirectX12
 	 * \return 是否初始化成功
 	 */
-	bool D3D12GraphicsManager::InitializeDevice(HWND hWnd)
+	void D3D12GraphicsManager::BeginInitialize(HWND hWnd)
 	{
 		ShaderManager::Instance()->Initialize();
 		
@@ -275,7 +275,10 @@ namespace SaplingEngine
 		m_RtvDescriptorSize = m_D3D12Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 		m_DsvDescriptorSize = m_D3D12Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
 		m_CbvDescriptorSize = m_D3D12Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	}
 
+	void D3D12GraphicsManager::EndInitialize()
+	{
 		//初始化
 		InitializeRootSignature();
 		InitializePso();
@@ -285,44 +288,8 @@ namespace SaplingEngine
 
 		//Resize
 		OnResize();
-		return true;
 	}
 
-	/**
-	 * \brief 初始化PSO
-	 */
-	void D3D12GraphicsManager::InitializePso()
-	{
-		const auto* pShader = ShaderManager::Instance()->GetShader("Color");
-		const auto* pShaderInputLayout = pShader->GetInputLayout();
-
-		D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc;
-		ZeroMemory(&psoDesc, sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC));
-		psoDesc.InputLayout = { pShaderInputLayout->data(), static_cast<uint32_t>(pShaderInputLayout->size()) };
-		psoDesc.pRootSignature = m_RootSignature.Get();
-		psoDesc.VS =
-		{
-			static_cast<BYTE*>(pShader->GetVsShader()->GetBufferPointer()),
-			pShader->GetVsShader()->GetBufferSize()
-		};
-		psoDesc.PS =
-		{
-			static_cast<BYTE*>(pShader->GetPsShader()->GetBufferPointer()),
-			pShader->GetPsShader()->GetBufferSize()
-		};
-		psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-		psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
-		psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
-		psoDesc.SampleMask = UINT_MAX;
-		psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-		psoDesc.NumRenderTargets = 1;
-		psoDesc.RTVFormats[0] = m_SwapChainBufferFormat;
-		psoDesc.SampleDesc.Count = 1;
-		psoDesc.SampleDesc.Quality = 0;
-		psoDesc.DSVFormat = m_DepthStencilViewFormat;
-		ThrowIfFailed(m_D3D12Device->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&m_PipelineState)));
-	}
-	
 	/**
 	 * \brief 销毁
 	 */
@@ -369,6 +336,41 @@ namespace SaplingEngine
 		}
 		ThrowIfFailed(hr);
 		ThrowIfFailed(m_D3D12Device->CreateRootSignature(0, serializedRootSig->GetBufferPointer(), serializedRootSig->GetBufferSize(), IID_PPV_ARGS(&m_RootSignature)));
+	}
+
+	/**
+	 * \brief 初始化PSO
+	 */
+	void D3D12GraphicsManager::InitializePso()
+	{
+		const auto* pShader = ShaderManager::Instance()->GetShader("Color");
+		const auto* pShaderInputLayout = pShader->GetInputLayout();
+
+		D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc;
+		ZeroMemory(&psoDesc, sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC));
+		psoDesc.InputLayout = { pShaderInputLayout->data(), static_cast<uint32_t>(pShaderInputLayout->size()) };
+		psoDesc.pRootSignature = m_RootSignature.Get();
+		psoDesc.VS =
+		{
+			static_cast<BYTE*>(pShader->GetVsShader()->GetBufferPointer()),
+			pShader->GetVsShader()->GetBufferSize()
+		};
+		psoDesc.PS =
+		{
+			static_cast<BYTE*>(pShader->GetPsShader()->GetBufferPointer()),
+			pShader->GetPsShader()->GetBufferSize()
+		};
+		psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+		psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
+		psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
+		psoDesc.SampleMask = UINT_MAX;
+		psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+		psoDesc.NumRenderTargets = 1;
+		psoDesc.RTVFormats[0] = m_SwapChainBufferFormat;
+		psoDesc.SampleDesc.Count = 1;
+		psoDesc.SampleDesc.Quality = 0;
+		psoDesc.DSVFormat = m_DepthStencilViewFormat;
+		ThrowIfFailed(m_D3D12Device->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&m_PipelineState)));
 	}
 
 	/**

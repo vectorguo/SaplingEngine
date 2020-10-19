@@ -18,15 +18,16 @@ namespace SaplingEngine
 		SINGLETON(D3D12GraphicsManager)
 
 		/**
-		 * \brief 初始化DirectX12 Device
+		 * \brief 开始初始化DirectX12
 		 * \return 是否初始化成功
 		 */
-		bool InitializeDevice(HWND hWnd);
+		void BeginInitialize(HWND hWnd);
 
 		/**
-		 * \brief 初始化PSO
+		 * \brief 结束初始化
+		 * \return 是否初始化成功
 		 */
-		void InitializePso();
+		void EndInitialize();
 		
 		/**
 		 * \brief 销毁
@@ -57,6 +58,11 @@ namespace SaplingEngine
 		 * \brief 初始化根签名
 		 */
 		void InitializeRootSignature();
+
+		/**
+		 * \brief 初始化PSO
+		 */
+		void InitializePso();
 
 		/**
 		 * \brief 创建渲染缓冲视图

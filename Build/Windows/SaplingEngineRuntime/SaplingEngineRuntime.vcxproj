@@ -91,6 +91,7 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Camera\Camera.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Camera\CameraManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\GameObject\Component.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\GameObject\ComponentFactory.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\GameObject\GameObject.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\GameObject\Transform.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\ConstantData.h" />
@@ -134,6 +135,7 @@
     <ClCompile Include="..\..\..\Engine\Runtime\Camera\Camera.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Camera\CameraManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\GameObject\Component.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\GameObject\ComponentFactory.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\GameObject\GameObject.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\GameObject\Transform.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\DirectX12\D3D12GraphicsManager.cpp" />

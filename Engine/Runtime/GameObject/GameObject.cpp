@@ -1,4 +1,7 @@
-#include "GameObject/GameObject.h"
+#include "GameObject.h"
+#include "ComponentFactory.h"
+#include "Scene/Scene.h"
+#include "Scene/SceneManager.h"
 
 namespace SaplingEngine
 {
@@ -25,11 +28,19 @@ namespace SaplingEngine
 
 	/**
 	 * \brief 初始化
+	 * \param isDeserialized 是否时反序列化的GameObject初始化
 	 * \return 是否初始化成功
 	 */
-	bool GameObject::Initialize()
+	bool GameObject::Initialize(bool isDeserialized)
 	{
-		m_Transform = AddComponent<Transform>();
+		if (isDeserialized)
+		{
+			
+		}
+		else
+		{
+			m_Transform = AddComponent<Transform>();
+		}
 		return true;
 	}
 
@@ -129,6 +140,33 @@ namespace SaplingEngine
 	}
 
 	/**
+	 * \brief 设置parent
+	 * \param parent parent
+	 */
+	void GameObject::SetParent(const GameObjectPtr& parent)
+	{
+		if (m_Parent == parent)
+		{
+			return;
+		}
+
+		if (m_Parent != nullptr)
+		{
+			m_Parent->m_Children.erase(std::find_if(m_Parent->m_Children.begin(), m_Parent->m_Children.end(), [this](const GameObjectPtr& pChild)
+			{
+				return pChild.get() == this;
+			}));
+		}
+
+		m_Parent = parent;
+
+		if (m_Parent != nullptr)
+		{
+			m_Parent->m_Children.push_back(shared_from_this());
+		}
+	}
+
+	/**
 	 * \brief 序列化
 	 */
 	void GameObject::Serialize()
@@ -139,15 +177,64 @@ namespace SaplingEngine
 	/**
 	 * \brief 反序列化
 	 * \param pNode 配置节点指针
-	 * \param parent 父节点指针
 	 * \return 反序列化是否成功
 	 */
-	bool GameObject::Deserialize(const XmlNode* pNode, GameObject* parent)
+	bool GameObject::Deserialize(const XmlNode* pNode)
 	{
 		m_Name		= XmlGetAttributeValue<char*>(pNode, "name");
 		m_LayerMask = XmlGetAttributeValue<int32_t>(pNode, "layerMask");
 		m_IsActive	= XmlGetAttributeValue<bool>(pNode, "isActive");
+		m_IsDestroyed = false;
+
+		//序列化Component
+		auto* pCmpNodes = pNode->first_node("components");
+		if (pCmpNodes)
+		{
+			for (const auto* pCmpNode = pCmpNodes->first_node(); pCmpNode; pCmpNode = pCmpNode->next_sibling())
+			{
+				const auto componentType = XmlGetAttributeValue<uint32_t>(pCmpNode, "type");
+				auto* pComponent = ComponentFactory::Instance()->CreateComponent(componentType);
+				AddComponent(componentType, pComponent);
+				pComponent->Deserialize(pCmpNode);
+			}
+		}
+		else
+		{
+			//一个组件都没有，反序列化失败
+			return false;
+		}
+
+		//序列化子节点
+		auto* pChildNodes = pNode->first_node("children");
+		if (pChildNodes)
+		{
+			auto* pActiveScene = SceneManager::Instance()->GetActiveScene();
+			for (const auto* pChildNode = pChildNodes->first_node(); pChildNode; pChildNode = pChildNode->next_sibling())
+			{
+				auto pChild = pActiveScene->CreateGameObjectInternal();
+				pChild->Deserialize(pChildNode);
+				pChild->SetParent(shared_from_this());
+			}
+		}
+		
 		return true;
+	}
+
+	/**
+	 * \brief 添加组件，只能添加通过ComponentFactory创建的组件
+	 * \param componentType 组件类型
+	 * \param pComponent 要被添加的组件指针
+	 */
+	void GameObject::AddComponent(uint32_t componentType, Component* pComponent)
+	{
+		if (m_NewComponents.find(componentType) == m_NewComponents.end() && m_Components.find(componentType) == m_Components.end())
+		{
+			//没有添加相同类型的组件
+			std::shared_ptr<Component> componentPtr(pComponent);
+			componentPtr->SetOwner(shared_from_this());
+			m_NewComponents.insert_or_assign(componentType, componentPtr);
+			m_NewComponents[componentType]->Awake();
+		}
 	}
 
 	/**

@@ -6,6 +6,8 @@ namespace SaplingEngine
 {
 	class Scene
 	{
+		friend class GameObject;
+		
 	public:
 		explicit Scene(const std::string& sceneName);
 		~Scene();
@@ -45,6 +47,34 @@ namespace SaplingEngine
 		 * \param active 是否时活动状态
 		 */
 		void SetActive(bool active);
+
+		/**
+		 * \brief 创建GameObject
+		 * \return GameObject
+		 */
+		GameObjectPtr CreateGameObject();
+
+		
+		/**
+		 * \brief 创建GameObject
+		 * \param name GameObject名称
+		 * \return GameObject
+		 */
+		GameObjectPtr CreateGameObject(const std::string& name);
+
+		/**
+		 * \brief 创建GameObject
+		 * \param name GameObject名称
+		 * \return GameObject
+		 */
+		GameObjectPtr CreateGameObject(std::string&& name);
+
+	private:
+		/**
+		 * \brief 创建GameObject
+		 * \return GameObject
+		 */
+		GameObjectPtr CreateGameObjectInternal();
 		
 	private:
 		/**

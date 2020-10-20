@@ -30,8 +30,8 @@ namespace SaplingEngine
 	{
 		for (auto* pChild = pNode->first_node(); pChild != nullptr; pChild = pChild->next_sibling())
 		{
-			auto gameObject = std::make_shared<GameObject>(GameObjectId);
-			gameObject->Deserialize(pChild, nullptr);
+			auto gameObject = std::make_shared<GameObject>(GameObjectId++);
+			gameObject->Deserialize(pChild);
 			m_GameObjects.push_back(gameObject);
 		}
 	}
@@ -69,5 +69,54 @@ namespace SaplingEngine
 		{
 			//TODO
 		}
+	}
+
+	/**
+	 * \brief 创建GameObject
+	 * \return GameObject
+	 */
+	GameObjectPtr Scene::CreateGameObject()
+	{
+		auto gameObject = std::make_shared<GameObject>(GameObjectId++);
+		gameObject->Initialize();
+		m_GameObjects.push_back(gameObject);
+		return gameObject;
+	}
+
+	/**
+	 * \brief 创建GameObject
+	 * \param name GameObject名称
+	 * \return GameObject
+	 */
+	GameObjectPtr Scene::CreateGameObject(const std::string& name)
+	{
+		auto gameObject = std::make_shared<GameObject>(GameObjectId++, name);
+		gameObject->Initialize();
+		m_GameObjects.push_back(gameObject);
+		return gameObject;
+	}
+
+	/**
+	 * \brief 创建GameObject
+	 * \param name GameObject名称
+	 * \return GameObject
+	 */
+	GameObjectPtr Scene::CreateGameObject(std::string&& name)
+	{
+		auto gameObject = std::make_shared<GameObject>(GameObjectId++, std::move(name));
+		gameObject->Initialize();
+		m_GameObjects.push_back(gameObject);
+		return gameObject;
+	}
+
+	/**
+	 * \brief 创建GameObject
+	 * \return GameObject
+	 */
+	GameObjectPtr Scene::CreateGameObjectInternal()
+	{
+		auto gameObject = std::make_shared<GameObject>(GameObjectId++);
+		m_GameObjects.push_back(gameObject);
+		return gameObject;
 	}
 }

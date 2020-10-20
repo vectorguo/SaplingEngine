@@ -7,6 +7,7 @@ namespace SaplingEngine
 	constexpr uint32_t ComponentType_Camera = 1;
 	constexpr uint32_t ComponentType_Renderer = 2;
 	constexpr uint32_t ComponentType_Transform = 3;
+	constexpr uint32_t ComponentType_InternalLimit = ComponentType_Transform;
 	
 	class Component : public std::enable_shared_from_this<Component>
 	{

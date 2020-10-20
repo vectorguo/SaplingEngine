@@ -35,9 +35,10 @@ namespace SaplingEngine
 		
 		/**
 		 * \brief 初始化
+		 * \param isDeserialized 是否时反序列化的GameObject初始化
 		 * \return 初始化是否成功
 		 */
-		bool Initialize();
+		bool Initialize(bool isDeserialized = false);
 		
 		/**
 		 * \brief 更新
@@ -101,6 +102,12 @@ namespace SaplingEngine
 		void DestroyComponent();
 
 		/**
+		 * \brief 设置parent
+		 * \param parent parent
+		 */
+		void SetParent(const GameObjectPtr& parent);
+
+		/**
 		 * \brief 序列化
 		 */
 		void Serialize();
@@ -108,12 +115,18 @@ namespace SaplingEngine
 		/**
 		 * \brief 反序列化
 		 * \param pNode 配置节点指针
-		 * \param parent 父节点指针
 		 * \return 反序列化是否成功
 		 */
-		bool Deserialize(const XmlNode* pNode, GameObject* parent);
+		bool Deserialize(const XmlNode* pNode);
 
 	private:
+		/**
+		 * \brief 添加组件，只能添加通过ComponentFactory创建的组件
+		 * \param componentType 组件类型
+		 * \param pComponent 要被添加的组件指针
+		 */
+		void AddComponent(uint32_t componentType, Component* pComponent);
+		
 		/**
 		 * \brief 销毁
 		 */

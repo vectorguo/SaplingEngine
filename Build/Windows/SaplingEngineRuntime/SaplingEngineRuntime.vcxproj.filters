@@ -118,6 +118,9 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Utility\Utility.h">
       <Filter>Utility</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\GameObject\ComponentFactory.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Runtime\SaplingEngineMain.cpp" />
@@ -201,6 +204,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\Application\GameSetting.cpp">
       <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\GameObject\ComponentFactory.cpp">
+      <Filter>GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

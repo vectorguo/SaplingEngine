@@ -29,7 +29,7 @@ namespace SaplingEngine
 		void Update();
 
 		/**
-		 * \brief Ïú»Ù
+		 * \brief Ïú»Ù³¡¾°
 		 */
 		void Destroy();
 		

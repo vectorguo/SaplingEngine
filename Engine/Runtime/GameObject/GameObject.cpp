@@ -26,6 +26,8 @@ namespace SaplingEngine
 	{
 	}
 
+	GameObject::~GameObject() = default;
+
 	/**
 	 * \brief 初始化
 	 * \param isDeserialized 是否时反序列化的GameObject初始化

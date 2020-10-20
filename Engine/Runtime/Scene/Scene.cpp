@@ -52,6 +52,11 @@ namespace SaplingEngine
 	 */
 	void Scene::Destroy()
 	{
+		//销毁场景中的对象
+		for (auto iter = m_GameObjects.begin(); iter != m_GameObjects.end(); ++iter)
+		{
+			(*iter)->Destroy();
+		}
 	}
 
 	/**

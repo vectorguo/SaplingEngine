@@ -5,6 +5,15 @@
 
 namespace SaplingEngine
 {
+	SceneManager::~SceneManager()
+	{
+		//销毁场景
+		for (auto iter = m_Scenes.begin(); iter != m_Scenes.end(); ++iter)
+		{
+			delete iter->second;
+		}
+	}
+
 	/**
 	 * \brief 初始化
 	 */
@@ -33,7 +42,10 @@ namespace SaplingEngine
 	 */
 	void SceneManager::Destroy()
 	{
-		
+		for (auto iter = m_Scenes.begin(); iter != m_Scenes.end(); ++iter)
+		{
+			iter->second->Destroy();
+		}
 	}
 
 	/**

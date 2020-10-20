@@ -23,7 +23,7 @@ namespace SaplingEngine
 		explicit GameObject(uint32_t id);
 		GameObject(uint32_t id, const std::string& name);
 		GameObject(uint32_t id, std::string&& name);
-		~GameObject() = default;
+		~GameObject();
 
 		/*
 		 * ½ûÖ¹¿½±´ºÍÒÆ¶¯

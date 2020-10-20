@@ -10,7 +10,7 @@ namespace SaplingEngine
 	{
 	public:
 		SceneManager() = default;
-		~SceneManager() = default;
+		~SceneManager();
 
 		SINGLETON(SceneManager)
 

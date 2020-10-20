@@ -1,4 +1,4 @@
-ï»¿#include "GameObject/Component.h"
+#include "GameObject/Component.h"
 
 namespace SaplingEngine
 {
@@ -6,8 +6,8 @@ namespace SaplingEngine
 	Component::~Component() = default;
 
 	/**
-	 * \brief ï¿½ï¿½ï¿½Ã»î¶¯×´Ì¬
-	 * \param enabled ï¿½Ç·ï¿½Ê¹ï¿½î¶¯×´Ì¬
+	 * \brief ÉèÖÃ»î¶¯×´Ì¬
+	 * \param enabled ÊÇ·ñÊ¹»î¶¯×´Ì¬
 	 */
 	void Component::SetEnabled(const bool enabled)
 	{
@@ -27,7 +27,7 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief åºåˆ—åŒ–
+	 * \brief ĞòÁĞ»¯
 	 */
 	void Component::Serialize()
 	{
@@ -35,9 +35,9 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief ååºåˆ—åŒ–
-	 * \param pNode é…ç½®èŠ‚ç‚¹æŒ‡é’ˆ
-	 * \return ååºåˆ—åŒ–æ˜¯å¦æˆåŠŸ
+	 * \brief ·´ĞòÁĞ»¯
+	 * \param pNode ÅäÖÃ½ÚµãÖ¸Õë
+	 * \return ·´ĞòÁĞ»¯ÊÇ·ñ³É¹¦
 	 */
 	bool Component::Deserialize(const XmlNode* pNode)
 	{

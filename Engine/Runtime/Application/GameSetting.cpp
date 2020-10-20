@@ -28,8 +28,8 @@ namespace SaplingEngine
 
 		//¶ÁÈ¡Æô¶¯³¡¾°ÅäÖÃ
 		const auto* pSceneNode = m_pRootNode->first_node("startScene");
-		m_StartSceneName = XmlGetAttributeValue<char*>(pSceneNode, "sceneName");
-		m_StartScenePath = XmlGetAttributeValue<char*>(pSceneNode, "scenePath");
+		m_StartSceneName = XmlGetAttributeValue<const char*>(pSceneNode, "sceneName");
+		m_StartScenePath = XmlGetAttributeValue<const char*>(pSceneNode, "scenePath");
 
 		return true;
 	}

@@ -95,7 +95,7 @@ namespace SaplingEngine
 	 * \return 属性值
 	 */
 	template<>
-	inline char* XmlGetAttributeValue<char*>(const XmlNode* pNode, const char* attributeName)
+	inline const char* XmlGetAttributeValue<const char*>(const XmlNode* pNode, const char* attributeName)
 	{
 		const auto* pAttribute = pNode->first_attribute(attributeName);
 		return pAttribute ? pAttribute->value() : nullptr;
@@ -160,7 +160,7 @@ namespace SaplingEngine
 	 * \return 属性值
 	 */
 	template<>
-	inline char* XmlGetAttributeValue<char*>(const XmlNode* pNode, const std::string& attributeName)
+	inline const char* XmlGetAttributeValue<const char*>(const XmlNode* pNode, const std::string& attributeName)
 	{
 		const auto* pAttribute = pNode->first_attribute(attributeName.data());
 		return pAttribute ? pAttribute->value() : nullptr;

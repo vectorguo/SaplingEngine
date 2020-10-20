@@ -107,6 +107,13 @@ namespace SaplingEngine
 				return XMLoadFloat3(&value);
 			}
 
+			void Set(const float x, const float y, const float z)
+			{
+				this->x = x;
+				this->y = y;
+				this->z = z;
+			}
+			
 			float Length() const
 			{
 				return XMVectorGetX(XMVector3Length(XMLoadFloat3(&value)));

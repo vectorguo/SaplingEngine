@@ -33,11 +33,11 @@ namespace SaplingEngine
 		return byteCode;
 	}
 
-	Shader::Shader(const XmlNode* pShaderNode) : m_Name(XmlGetAttributeValue<char*>(pShaderNode, "name"))
+	Shader::Shader(const XmlNode* pShaderNode) : m_Name(XmlGetAttributeValue<const char*>(pShaderNode, "name"))
 	{
 		const auto path = CharToWChar(pShaderNode->first_attribute("path")->value());
-		m_VsShader = CompileShader(path, nullptr, XmlGetAttributeValue<char*>(pShaderNode, "vert"), "vs_5_1");
-		m_PsShader = CompileShader(path, nullptr, XmlGetAttributeValue<char*>(pShaderNode, "frag"), "ps_5_1");
+		m_VsShader = CompileShader(path, nullptr, XmlGetAttributeValue<const char*>(pShaderNode, "vert"), "vs_5_1");
+		m_PsShader = CompileShader(path, nullptr, XmlGetAttributeValue<const char*>(pShaderNode, "frag"), "ps_5_1");
 
 		m_InputLayout.reserve(std::stoi(pShaderNode->first_attribute("inputLayoutCount")->value()));
 		for (auto* pChild = pShaderNode->first_node(); pChild; pChild = pChild->next_sibling())

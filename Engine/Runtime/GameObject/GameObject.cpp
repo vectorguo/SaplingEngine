@@ -181,7 +181,7 @@ namespace SaplingEngine
 	 */
 	bool GameObject::Deserialize(const XmlNode* pNode)
 	{
-		m_Name		= XmlGetAttributeValue<char*>(pNode, "name");
+		m_Name		= XmlGetAttributeValue<const char*>(pNode, "name");
 		m_LayerMask = XmlGetAttributeValue<int32_t>(pNode, "layerMask");
 		m_IsActive	= XmlGetAttributeValue<bool>(pNode, "isActive");
 		m_IsDestroyed = false;

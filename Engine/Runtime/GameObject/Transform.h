@@ -17,7 +17,14 @@ namespace SaplingEngine
 		static constexpr uint32_t GetComponentType()
 		{
 			return ComponentType_Transform;
-		}		
+		}
+
+		/**
+		 * \brief 反序列化
+		 * \param pNode 配置节点指针
+		 * \return 反序列化是否成功
+		 */
+		bool Deserialize(const XmlNode* pNode) override;
 
 	private:
 		/**
@@ -43,7 +50,7 @@ namespace SaplingEngine
 		/**
 		 * \brief local scale
 		 */
-		Quaternion m_LocalScale;
+		Vector3 m_LocalScale;
 
 		/**
 		 * \brief 局部变换矩阵

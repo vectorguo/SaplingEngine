@@ -3,6 +3,33 @@
 
 namespace SaplingEngine
 {
+	/**
+	 * \brief 反序列化
+	 * \param pNode 配置节点指针
+	 * \return 反序列化是否成功
+	 */
+	bool Camera::Deserialize(const XmlNode* pNode)
+	{
+		m_Projection = static_cast<EProjection>(XmlGetAttributeValue<int32_t>(pNode, "projection"));
+		if (m_Projection == EProjection::Perspective)
+		{
+			//透视投影
+			m_Fov = XmlGetAttributeValue<float>(pNode, "fov");
+			m_NearClippingPlanes = XmlGetAttributeValue<float>(pNode, "near");
+			m_FarClippingPlanes = XmlGetAttributeValue<float>(pNode, "far");
+		}
+		else
+		{
+			//平行投影
+			m_Size = XmlGetAttributeValue<float>(pNode, "size");
+		}
+
+		m_Priority = XmlGetAttributeValue<int32_t>(pNode, "priority");
+		m_CullingMask = XmlGetAttributeValue<int32_t>(pNode, "cullingMask");
+
+		return true;
+	}
+
 	void Camera::Awake()
 	{
 		CameraManager::Instance()->AddCamera(std::static_pointer_cast<Camera>(shared_from_this()));

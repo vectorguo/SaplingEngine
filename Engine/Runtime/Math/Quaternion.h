@@ -43,6 +43,12 @@ namespace SaplingEngine
 				return m_Value;
 			}
 
+			void Set(const float x, const float y, const float z, const float w)
+			{
+				XMFLOAT4 v(x, y, z, w);
+				m_Value = XMLoadFloat4(&v);
+			}
+
 			void Normalize()
 			{
 				m_Value = XMQuaternionNormalize(m_Value);

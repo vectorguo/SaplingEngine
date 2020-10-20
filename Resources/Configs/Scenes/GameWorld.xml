@@ -2,8 +2,8 @@
 <root>
     <gameObject name="cube" layerMask="1" isActive="1">
         <components>
-            <component type="1" localPosition="0,0,0" localRotation="0,0,0" localScale="1,1,1"/>
-            <component type="2" />
+            <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
+            <component type="3" />
         </components>
         <children>
         </children>
@@ -12,8 +12,8 @@
     
     <gameObject name="camera" layerMask="1" isActive="1">
         <components>
-            <component type="1" localPosition="0,0,10" localRotation="0,0,0" localScale="1,1,1"/>
-            <component type="3" projection="1" fov="60.0" near="0.3" far="100.0" priority="0" cullingMask=""/>
+            <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
+            <component type="2" projection="1" fov="60.0" near="0.3" far="100.0" priority="0" cullingMask="1"/>
         </components>
     </gameObject>
     

@@ -85,6 +85,7 @@ namespace SaplingEngine
 	{
 		CameraManager::Instance()->Destroy();
 		Input::Instance()->Destroy();
+		SceneManager::Instance()->Destroy();
 		ShaderManager::Instance()->Destroy();
 		D3D12GraphicsManager::Instance()->Destroy();
 	}
@@ -133,7 +134,7 @@ namespace SaplingEngine
 	 */
 	void GameApplication::Update()
 	{
-		
+		SceneManager::Instance()->Update();
 	}
 
 	/**

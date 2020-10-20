@@ -19,13 +19,11 @@ namespace SaplingEngine
 
 		/**
 		 * \brief 开始初始化DirectX12
-		 * \return 是否初始化成功
 		 */
 		void BeginInitialize(HWND hWnd);
 
 		/**
 		 * \brief 结束初始化
-		 * \return 是否初始化成功
 		 */
 		void EndInitialize();
 		

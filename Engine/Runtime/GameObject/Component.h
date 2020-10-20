@@ -47,6 +47,18 @@ namespace SaplingEngine
 		 * \param enabled 是否使活动状态
 		 */
 		void SetEnabled(bool enabled);
+
+		/**
+		 * \brief 序列化
+		 */
+		virtual void Serialize();
+
+		/**
+		 * \brief 反序列化
+		 * \param pNode 配置节点指针
+		 * \return 反序列化是否成功
+		 */
+		virtual bool Deserialize(const XmlNode* pNode);
 		
 	protected:
 		virtual void Awake()

@@ -190,12 +190,9 @@ namespace SaplingEngine
 
 	/**
 	 * \brief 初始化DirectX12
-	 * \return 是否初始化成功
 	 */
 	void D3D12GraphicsManager::BeginInitialize(HWND hWnd)
 	{
-		ShaderManager::Instance()->Initialize();
-		
 #if defined(DEBUG) || defined(_DEBUG) 
 		{// Enable the D3D12 debug layer.
 			ComPtr<ID3D12Debug> debugController;
@@ -277,6 +274,9 @@ namespace SaplingEngine
 		m_CbvDescriptorSize = m_D3D12Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	}
 
+	/**
+	 * \brief 结束初始化
+	 */
 	void D3D12GraphicsManager::EndInitialize()
 	{
 		//初始化

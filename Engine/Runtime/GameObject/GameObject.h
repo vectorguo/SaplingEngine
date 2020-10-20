@@ -33,8 +33,20 @@ namespace SaplingEngine
 		GameObject& operator= (const GameObject&) = delete;
 		GameObject& operator= (GameObject&&) = delete;
 		
+		/**
+		 * \brief 初始化
+		 * \return 初始化是否成功
+		 */
 		bool Initialize();
+		
+		/**
+		 * \brief 更新
+		 */
 		void Update();
+		
+		/**
+		 * \brief 销毁
+		 */
 		void Destroy();
 
 		/**
@@ -87,6 +99,19 @@ namespace SaplingEngine
 		 */
 		template<typename T>
 		void DestroyComponent();
+
+		/**
+		 * \brief 序列化
+		 */
+		void Serialize();
+
+		/**
+		 * \brief 反序列化
+		 * \param pNode 配置节点指针
+		 * \param parent 父节点指针
+		 * \return 反序列化是否成功
+		 */
+		bool Deserialize(const XmlNode* pNode, GameObject* parent);
 
 	private:
 		/**

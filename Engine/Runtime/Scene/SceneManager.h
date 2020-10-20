@@ -17,22 +17,46 @@ namespace SaplingEngine
 		/**
 		 * \brief 初始化
 		 */
-		bool Initialize();
+		void Initialize();
+
+		/**
+		 * \brief 更新
+		 */
+		void Update();
+
+		/**
+		 * \brief 销毁
+		 */
+		void Destroy();
 
 		/**
 		 * \brief 加载场景
 		 * \param sceneName 场景名称
 		 * \param scenePath 场景路径
-		 * \param additive 是否已叠加模式加载
 		 */
-		void LoadScene(const std::string& sceneName, const std::string& scenePath, bool additive);
+		void LoadScene(const std::string& sceneName, const std::string& scenePath);
 
 		/**
 		 * \brief 卸载场景
 		 * \param sceneName 场景名称
 		 */
 		void UnloadScene(const std::string& sceneName);
+
+		/**
+		 * \brief 获取活动场景
+		 * \return 活动场景指针
+		 */
+		Scene* GetActiveScene() const
+		{
+			return m_pActiveScene;
+		}
 		
+		/**
+		 * \brief 设置活动场景
+		 * \param sceneName 场景名称
+		 */
+		void SetActiveScene(const std::string& sceneName);
+
 	private:
 		/**
 		 * \brief 所有加载完成的场景

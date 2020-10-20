@@ -33,31 +33,23 @@ namespace SaplingEngine
 		return byteCode;
 	}
 
-	Shader::Shader(const XmlNode* pShaderNode) : m_Name(pShaderNode->first_attribute("name")->value())
+	Shader::Shader(const XmlNode* pShaderNode) : m_Name(XmlGetAttributeValue<char*>(pShaderNode, "name"))
 	{
 		const auto path = CharToWChar(pShaderNode->first_attribute("path")->value());
-		m_VsShader = CompileShader(path, nullptr, pShaderNode->first_attribute("vert")->value(), "vs_5_1");
-		m_PsShader = CompileShader(path, nullptr, pShaderNode->first_attribute("frag")->value(), "ps_5_1");
+		m_VsShader = CompileShader(path, nullptr, XmlGetAttributeValue<char*>(pShaderNode, "vert"), "vs_5_1");
+		m_PsShader = CompileShader(path, nullptr, XmlGetAttributeValue<char*>(pShaderNode, "frag"), "ps_5_1");
 
 		m_InputLayout.reserve(std::stoi(pShaderNode->first_attribute("inputLayoutCount")->value()));
 		for (auto* pChild = pShaderNode->first_node(); pChild; pChild = pChild->next_sibling())
 		{
-			const auto* name = pChild->first_attribute("name")->value();
-			const auto* index = pChild->first_attribute("index")->value();
-			const auto* format = pChild->first_attribute("format")->value();
-			const auto* inputSlot = pChild->first_attribute("inputSlot")->value();
-			const auto* offset = pChild->first_attribute("offset")->value();
-			const auto* inputSlotClass = pChild->first_attribute("inputSlotClass")->value();
-			const auto* stepRate = pChild->first_attribute("stepRate")->value();
-			
 			m_InputLayout.push_back({
-				InputLayoutSemanticNames[std::stoi(name)],
-				static_cast<uint32_t>(std::stoi(index)),
-				static_cast<DXGI_FORMAT>(std::stoi(format)),
-				static_cast<uint32_t>(std::stoi(inputSlot)),
-				static_cast<uint32_t>(std::stoi(offset)),
-				static_cast<D3D12_INPUT_CLASSIFICATION>(std::stoi(inputSlotClass)),
-				static_cast<uint32_t>(std::stoi(stepRate))});
+				InputLayoutSemanticNames[XmlGetAttributeValue<int32_t>(pChild, "name")],
+				XmlGetAttributeValue<uint32_t>(pChild, "index"),
+				static_cast<DXGI_FORMAT>(XmlGetAttributeValue<int32_t>(pChild, "format")),
+				XmlGetAttributeValue<uint32_t>(pChild, "inputSlot"),
+				XmlGetAttributeValue<uint32_t>(pChild, "offset"),
+				static_cast<D3D12_INPUT_CLASSIFICATION>(XmlGetAttributeValue<int32_t>(pChild, "inputSlotClass")),
+				XmlGetAttributeValue<uint32_t>(pChild, "stepRate"), });
 		}
 	}
 

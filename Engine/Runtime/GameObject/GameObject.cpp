@@ -129,6 +129,28 @@ namespace SaplingEngine
 	}
 
 	/**
+	 * \brief 序列化
+	 */
+	void GameObject::Serialize()
+	{
+		
+	}
+
+	/**
+	 * \brief 反序列化
+	 * \param pNode 配置节点指针
+	 * \param parent 父节点指针
+	 * \return 反序列化是否成功
+	 */
+	bool GameObject::Deserialize(const XmlNode* pNode, GameObject* parent)
+	{
+		m_Name		= XmlGetAttributeValue<char*>(pNode, "name");
+		m_LayerMask = XmlGetAttributeValue<int32_t>(pNode, "layerMask");
+		m_IsActive	= XmlGetAttributeValue<bool>(pNode, "isActive");
+		return true;
+	}
+
+	/**
 	 * \brief 销毁子节点
 	 */
 	void GameObject::DestroyInternal()

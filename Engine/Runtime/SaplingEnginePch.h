@@ -50,21 +50,9 @@
 #include "Utility/Time.h"
 #include "Utility/Utility.h"
 
-/*
- * XML
- */
-#include "Utility/RapidXml/rapidxml.hpp"
-#include "Utility/RapidXml/rapidxml_utils.hpp"
-#include "Utility/RapidXml/rapidxml_print.hpp"
-
 using SaplingEngine::Math::Color;
 using SaplingEngine::Math::Matrix4x4;
 using SaplingEngine::Math::Quaternion;
 using SaplingEngine::Math::Vector2;
 using SaplingEngine::Math::Vector3;
 using SaplingEngine::Math::Vector4;
-
-using XmlDocumentFile	= rapidxml::file<>;
-using XmlDocument		= rapidxml::xml_document<>;
-using XmlNode			= rapidxml::xml_node<>;
-using XmlAttribute		= rapidxml::xml_attribute<>;

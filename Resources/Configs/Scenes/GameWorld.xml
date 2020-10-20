@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
+    <gameObject name="cube" layerMask="1" isActive="1">
+        <component type="1" localPosition="0,0,0" localRotation="0,0,0" localScale="1,1,1"/>
+        <component type="2" />
+        <children>
+        </children>
+    </gameObject>
+    
+    
+    <gameObject name="camera" layerMask="1" isActive="1">
+        <component type="1" localPosition="0,0,10" localRotation="0,0,0" localScale="1,1,1"/>
+        <component type="3" projection="1" fov="60.0" near="0.3" far="100.0" priority="0" cullingMask=""/>
+    </gameObject>
     
 </root>

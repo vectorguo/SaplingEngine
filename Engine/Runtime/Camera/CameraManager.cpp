@@ -32,6 +32,9 @@ namespace SaplingEngine
 
 	void CameraManager::SortCamera()
 	{
-		std::sort(m_Cameras.begin(), m_Cameras.end());
+		std::sort(m_Cameras.begin(), m_Cameras.end(), [](const CameraPtr& c1, const CameraPtr& c2)
+			{
+				return c1->GetPriority() < c2->GetPriority();
+			});
 	}
 }

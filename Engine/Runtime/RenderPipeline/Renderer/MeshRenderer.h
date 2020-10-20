@@ -10,6 +10,7 @@ namespace SaplingEngine
 	{
 	public:
 		MeshRenderer();
+		~MeshRenderer() override;
 
 		/*
 		 * 获取组件类型
@@ -21,6 +22,13 @@ namespace SaplingEngine
 			return ComponentType_Renderer;
 		}
 
+		/**
+		 * \brief 反序列化
+		 * \param pNode 配置节点指针
+		 * \return 反序列化是否成功
+		 */
+		bool Deserialize(const XmlNode* pNode) override;
+		
 	private:
 		Mesh* m_pMesh = nullptr;
 	};

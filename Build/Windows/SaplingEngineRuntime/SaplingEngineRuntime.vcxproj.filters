@@ -121,6 +121,12 @@
     <ClInclude Include="..\..\..\Engine\Runtime\GameObject\ComponentFactory.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPass\RenderPass.h">
+      <Filter>RenderPipeline\RenderPass</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPipeline.h">
+      <Filter>RenderPipeline</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Runtime\SaplingEngineMain.cpp" />
@@ -207,6 +213,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\GameObject\ComponentFactory.cpp">
       <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPass\RenderPass.cpp">
+      <Filter>RenderPipeline\RenderPass</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPipeline.cpp">
+      <Filter>RenderPipeline</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

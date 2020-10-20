@@ -13,6 +13,14 @@ namespace SaplingEngine
 		XMFLOAT2 UV1;				//UV1
 	};
 
+	/**
+	 * \brief Mesh基本类型
+	 */
+	enum class EMeshPrimitiveType
+	{
+		Cube,
+	};
+	
 	class Mesh
 	{
 	public:
@@ -122,6 +130,14 @@ namespace SaplingEngine
 			CreateIndexBufferView();
 		}
 
+	public:
+		/**
+		 * \brief 创建基本类型的mesh
+		 * \param type mesh类型
+		 * \return mesh指针
+		 */
+		static Mesh* CreatePrimitive(EMeshPrimitiveType type);
+		
 	private:
 		/**
 		 * \brief 创建顶点缓冲区描述符
@@ -134,7 +150,19 @@ namespace SaplingEngine
 		void CreateIndexBufferView();
 		
 	private:
+		/**
+		 * \brief 顶点和索引数据是否已经上传到默认缓冲区
+		 */
+		bool m_IsReady = false;
+		
+		/**
+		 * \brief 顶点数据
+		 */
 		std::vector<VertexData> m_VertexDatas;
+		
+		/**
+		 * \brief 索引数据
+		 */
 		std::vector<uint16_t> m_Indices;
 
 		ComPtr<ID3D12Resource> m_VertexBufferOnGpu = nullptr;

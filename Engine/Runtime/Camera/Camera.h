@@ -40,7 +40,7 @@ namespace SaplingEngine
 		 * \brief 获取相机的投影类型
 		 * \return 相机的投影类型
 		 */
-		EProjection Projection() const
+		EProjection GetProjection() const
 		{
 			return m_Projection;
 		}
@@ -61,7 +61,7 @@ namespace SaplingEngine
 		 * \brief 获取相机fov
 		 * \return fov
 		 */
-		float Fov() const
+		float GetFov() const
 		{
 			return m_Fov;
 		}
@@ -82,7 +82,7 @@ namespace SaplingEngine
 		 * \brief 获取相机size
 		 * \return size
 		 */
-		float Size() const
+		float GetSize() const
 		{
 			return m_Size;
 		}
@@ -103,7 +103,7 @@ namespace SaplingEngine
 		 * \brief 获取相机近投影面
 		 * \return 近投影面
 		 */
-		float NearClippingPlanes() const
+		float GetNearClippingPlanes() const
 		{
 			return m_NearClippingPlanes;
 		}
@@ -124,7 +124,7 @@ namespace SaplingEngine
 		 * \brief 获取相机远投影面
 		 * \return 远投影面
 		 */
-		float FarClippingPlanes() const
+		float GetFarClippingPlanes() const
 		{
 			return m_FarClippingPlanes;
 		}
@@ -145,7 +145,7 @@ namespace SaplingEngine
 		 * \brief 获取相机优先级
 		 * \return 优先级
 		 */
-		int32_t Priority() const
+		int32_t GetPriority() const
 		{
 			return m_Priority;
 		}
@@ -160,7 +160,7 @@ namespace SaplingEngine
 		 * \brief 获取相机剔除标记
 		 * \return 剔除标记
 		 */
-		int32_t CullingMask() const
+		int32_t GetCullingMask() const
 		{
 			return m_CullingMask;
 		}

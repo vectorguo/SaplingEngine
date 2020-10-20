@@ -46,7 +46,7 @@ namespace SaplingEngine
 	{
 		ThrowIfFailed(m_CommandAllocator->Reset());
 		ThrowIfFailed(m_CommandList->Reset(m_CommandAllocator.Get(), m_PipelineState.Get()));
-
+		
 		//ÇÐ»»äÖÈ¾×´Ì¬
 		auto resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(CurrentBackBuffer(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
 		m_CommandList->ResourceBarrier(1, &resourceBarrier);

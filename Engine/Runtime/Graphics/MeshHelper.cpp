@@ -10,14 +10,14 @@ namespace SaplingEngine
 	{
 		std::vector<VertexData> vertices =
 		{
-			VertexData({ XMFLOAT3(-1.0f, -1.0f, -1.0), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT4(Colors::White),	XMFLOAT2(0, 0), XMFLOAT2(0, 0) }),
-			VertexData({ XMFLOAT3(-1.0f, +1.0f, -1.0), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT4(Colors::Black),	XMFLOAT2(0, 0), XMFLOAT2(0, 0) }),
-			VertexData({ XMFLOAT3(+1.0f, +1.0f, -1.0), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT4(Colors::Red),	XMFLOAT2(0, 0), XMFLOAT2(0, 0) }),
-			VertexData({ XMFLOAT3(+1.0f, -1.0f, -1.0), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT4(Colors::Green),	XMFLOAT2(0, 0), XMFLOAT2(0, 0) }),
-			VertexData({ XMFLOAT3(-1.0f, -1.0f, +1.0), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT4(Colors::Blue),	XMFLOAT2(0, 0), XMFLOAT2(0, 0) }),
+			VertexData({ XMFLOAT3(-1.0f, -1.0f, -1.0), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT4(Colors::White),		XMFLOAT2(0, 0), XMFLOAT2(0, 0) }),
+			VertexData({ XMFLOAT3(-1.0f, +1.0f, -1.0), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT4(Colors::Black),		XMFLOAT2(0, 0), XMFLOAT2(0, 0) }),
+			VertexData({ XMFLOAT3(+1.0f, +1.0f, -1.0), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT4(Colors::Red),		XMFLOAT2(0, 0), XMFLOAT2(0, 0) }),
+			VertexData({ XMFLOAT3(+1.0f, -1.0f, -1.0), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT4(Colors::Green),		XMFLOAT2(0, 0), XMFLOAT2(0, 0) }),
+			VertexData({ XMFLOAT3(-1.0f, -1.0f, +1.0), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT4(Colors::Blue),		XMFLOAT2(0, 0), XMFLOAT2(0, 0) }),
 			VertexData({ XMFLOAT3(-1.0f, +1.0f, +1.0), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT4(Colors::Yellow),	XMFLOAT2(0, 0), XMFLOAT2(0, 0) }),
-			VertexData({ XMFLOAT3(+1.0f, +1.0f, +1.0), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT4(Colors::Cyan),	XMFLOAT2(0, 0), XMFLOAT2(0, 0) }),
-			VertexData({ XMFLOAT3(+1.0f, -1.0f, +1.0), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT4(Colors::Magenta),XMFLOAT2(0, 0), XMFLOAT2(0, 0) })
+			VertexData({ XMFLOAT3(+1.0f, +1.0f, +1.0), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT4(Colors::Cyan),		XMFLOAT2(0, 0), XMFLOAT2(0, 0) }),
+			VertexData({ XMFLOAT3(+1.0f, -1.0f, +1.0), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT4(Colors::Magenta),	XMFLOAT2(0, 0), XMFLOAT2(0, 0) })
 		};
 
 		std::vector<std::uint16_t> indices =

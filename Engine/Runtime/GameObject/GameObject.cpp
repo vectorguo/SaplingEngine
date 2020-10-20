@@ -195,7 +195,8 @@ namespace SaplingEngine
 			for (const auto* pCmpNode = pCmpNodes->first_node(); pCmpNode; pCmpNode = pCmpNode->next_sibling())
 			{
 				const auto componentType = XmlGetAttributeValue<uint32_t>(pCmpNode, "type");
-				auto* pComponent = ComponentFactory::Instance()->CreateComponent(componentType);
+				const auto componentSubType = XmlGetAttributeValue<uint32_t>(pCmpNode, "subType");
+				auto* pComponent = ComponentFactory::Instance()->CreateComponent(componentType, componentSubType);
 				AddComponent(componentType, pComponent);
 				pComponent->Deserialize(pCmpNode);
 			}

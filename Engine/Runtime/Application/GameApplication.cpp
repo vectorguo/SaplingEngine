@@ -5,6 +5,7 @@
 #include "Graphics/DirectX12/D3D12GraphicsManager.h"
 #include "Graphics/ShaderManager.h"
 #include "Input/Input.h"
+#include "RenderPipeline/RenderPipeline.h"
 #include "Scene/SceneManager.h"
 
 namespace SaplingEngine
@@ -28,17 +29,17 @@ namespace SaplingEngine
 		//初始化窗口
 		if (InitializeWindow())
 		{
-			//开始初始化Graphics
-			D3D12GraphicsManager::Instance()->BeginInitialize(m_MainWindow);
+			//渲染管线开始初始化
+			RenderPipeline::Instance()->BeginInitialize(m_MainWindow);
 			
 			//初始化Shader
 			ShaderManager::Instance()->Initialize();
 			
 			//初始化场景
 			SceneManager::Instance()->Initialize();
-			
-			//结束初始化Graphics
-			D3D12GraphicsManager::Instance()->EndInitialize();
+
+			//渲染管线结束初始化
+			RenderPipeline::Instance()->EndInitialize();
 			
 			//显示并更新窗口
 			ShowWindow(m_MainWindow, SW_SHOW);
@@ -87,7 +88,7 @@ namespace SaplingEngine
 		Input::Instance()->Destroy();
 		SceneManager::Instance()->Destroy();
 		ShaderManager::Instance()->Destroy();
-		D3D12GraphicsManager::Instance()->Destroy();
+		RenderPipeline::Instance()->Destroy();
 	}
 
 	/**

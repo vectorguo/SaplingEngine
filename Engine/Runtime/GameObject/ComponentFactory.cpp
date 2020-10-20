@@ -10,10 +10,10 @@ namespace SaplingEngine
 	/**
 	 * \brief 根据组件类型创建组件
 	 * \param componentType 组件类型
-	 * \param param 额外参数
+	 * \param componentSubType 组件子类型
 	 * \return 组件指针
 	 */
-	Component* ComponentFactory::CreateComponent(uint32_t componentType, int32_t param) const
+	Component* ComponentFactory::CreateComponent(uint32_t componentType, int32_t componentSubType) const
 	{
 		switch (componentType)
 		{
@@ -22,11 +22,11 @@ namespace SaplingEngine
 		case ComponentType_Camera:
 			return new Camera();
 		case ComponentType_Renderer:
-			return new MeshRenderer();
+			return componentSubType == 0 ? new MeshRenderer() : nullptr;
 		case ComponentType_Transform:
 			return new Transform();
 		default:
-			return m_CustomCreator(componentType, param);
+			return m_CustomCreator(componentType, componentSubType);
 		}
 	}
 }

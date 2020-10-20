@@ -48,7 +48,7 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief Ïú»Ù
+	 * \brief Ïú»Ù³¡¾°
 	 */
 	void Scene::Destroy()
 	{

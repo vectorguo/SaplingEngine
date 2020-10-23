@@ -1,5 +1,6 @@
 #pragma once
 
+#include "GraphicsLibrary/DirectX12/Dx12CommandManager.h"
 #include "GraphicsLibrary/DirectX12/Dx12GraphicsManager.h"
 #include "RenderPass/RenderPass.h"
 #include "SaplingEnginePch.h"
@@ -20,12 +21,12 @@ namespace SaplingEngine
 		/**
 		 * \brief 开始初始化
 		 */
-		void BeginInitialize(HWND hWnd);
+		void BeginInitialize();
 
 		/**
 		 * \brief 结束初始化
 		 */
-		void EndInitialize();
+		void EndInitialize(HWND hWnd);
 
 		/**
 		 * \brief 渲染
@@ -79,6 +80,11 @@ namespace SaplingEngine
 		void SortRenderPass();
 		
 	private:
+		/**
+		 * \brief DX12命令管理器
+		 */
+		Dx12CommandManager m_CommandManager;
+		
 		/**
 		 * \brief DX12图形管理器
 		 */

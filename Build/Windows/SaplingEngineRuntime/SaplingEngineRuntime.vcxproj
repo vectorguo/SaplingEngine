@@ -94,6 +94,7 @@
     <ClInclude Include="..\..\..\Engine\Runtime\GameObject\ComponentFactory.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\GameObject\GameObject.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\GameObject\Transform.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\Dx12CommandManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\Dx12GraphicsManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\Dx12GraphicsPch.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\Dx12UploadBuffer.h" />
@@ -140,6 +141,7 @@
     <ClCompile Include="..\..\..\Engine\Runtime\GameObject\ComponentFactory.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\GameObject\GameObject.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\GameObject\Transform.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\Dx12CommandManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\Dx12GraphicsManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Material.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Mesh.cpp" />

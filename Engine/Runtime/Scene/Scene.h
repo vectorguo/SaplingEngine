@@ -69,6 +69,13 @@ namespace SaplingEngine
 		 */
 		GameObjectPtr CreateGameObject(std::string&& name);
 
+		/**
+		 * \brief 获取对象
+		 * \param name 对象名称
+		 * \return 对象只能指针
+		 */
+		GameObjectPtr GetGameObject(const std::string& name);
+
 	private:
 		/**
 		 * \brief 创建GameObject

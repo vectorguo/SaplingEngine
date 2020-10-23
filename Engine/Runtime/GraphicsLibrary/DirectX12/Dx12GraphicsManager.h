@@ -22,34 +22,6 @@ namespace SaplingEngine
 		Dx12GraphicsManager(Dx12GraphicsManager&&) = delete;
 		Dx12GraphicsManager& operator=(const Dx12GraphicsManager&) = delete;
 		Dx12GraphicsManager& operator=(Dx12GraphicsManager&&) = delete;
-		
-		/**
-		 * \brief 执行命令
-		 */
-		void ExecuteCommandList();
-
-		/**
-		 * \brief 获取命令列表
-		 * \return 命令列表
-		 */
-		ID3D12GraphicsCommandList* GetCommandList() const
-		{
-			return m_CommandList.Get();
-		}
-
-		/**
-		 * \brief 重置命令列表
-		 */
-		// ReSharper disable once CppMemberFunctionMayBeConst
-		void ResetCommandList(bool usePso = false)
-		{
-			ThrowIfFailed(m_CommandList->Reset(m_CommandAllocator.Get(), usePso ? m_PipelineState.Get() : nullptr));
-		}
-
-		/**
-		 * \brief 等待命令完成
-		 */
-		void CompleteCommand();
 
 		/**
 		 * \brief 创建默认缓冲区并上传数据
@@ -79,32 +51,9 @@ namespace SaplingEngine
 		
 	private:
 		/**
-		 * \brief 初始化DX环境
-		 * \param hWnd 窗口句柄
-		 * \param width 窗口宽度
-		 * \param height 窗口高度
-		 */
-		void BeginInitializeDxEnvironment(HWND hWnd, uint32_t width, uint32_t height);
-
-		/**
-		 * \brief 结束初始化
-		 */
-		void EndInitializeDxEnvironment(uint32_t width, uint32_t height);
-		
-		/**
 		 * \brief 创建DX12 Device
 		 */
 		void CreateDevice();
-
-		/**
-		 * \brief 创建Fence
-		 */
-		void CreateFence();
-
-		/**
-		 * \brief 创建命令系统
-		 */
-		void CreateCommandSystem();
 
 		/**
 		 * \brief 创建交换链
@@ -150,16 +99,6 @@ namespace SaplingEngine
 		void Render();
 
 		/**
-		 * \brief 执行渲染前的准备工作
-		 */
-		void PreRender();
-
-		/**
-		 * \brief 执行渲染后的清理工作
-		 */
-		void PostRender();
-
-		/**
 		 * \brief 销毁
 		 */
 		void Destroy();
@@ -168,6 +107,15 @@ namespace SaplingEngine
 		 * \brief 重置大小
 		 */
 		void Resize(uint32_t width, uint32_t height);
+
+		/**
+		 * \brief 获取后台缓存
+		 * \return 后台缓存
+		 */
+		ID3D12Resource* CurrentBackBuffer() const
+		{
+			return m_SwapChainBuffer[m_BackBufferIndex].Get();
+		}
 		
 		/**
 		 * \brief 获取当前后台缓冲区视图
@@ -179,7 +127,7 @@ namespace SaplingEngine
 			rtvHeapHandle.ptr += static_cast<int64_t>(m_BackBufferIndex) * static_cast<int64_t>(m_RtvDescriptorSize);
 			return rtvHeapHandle;
 		}
-
+		
 		/**
 		 * \brief 获取深度模板缓冲区试图
 		 * \return 深度模板缓冲区试图
@@ -189,18 +137,20 @@ namespace SaplingEngine
 			return m_DsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
 		}
 
+		/**
+		 * \brief 呈现当前这一帧的绘制内容
+		 */
+		void Present()
+		{
+			ThrowIfFailed(m_SwapChain->Present(0, 0));
+			m_BackBufferIndex = (m_BackBufferIndex + 1) % SwapChainBufferCount;
+		}
+
 	private:
 		static constexpr  int						SwapChainBufferCount = 2;
 
 		ComPtr<IDXGIFactory4>						m_DXGIFactory;
 		ComPtr<ID3D12Device>						m_D3D12Device;
-
-		ComPtr<ID3D12Fence>							m_Fence;
-		uint64_t									m_CurrentFence = 0;
-
-		ComPtr<ID3D12CommandQueue>					m_CommandQueue;
-		ComPtr<ID3D12CommandAllocator>				m_CommandAllocator;
-		ComPtr<ID3D12GraphicsCommandList>			m_CommandList;
 
 		uint32_t									m_RtvDescriptorSize = 0;				//渲染目标视图大小
 		uint32_t									m_DsvDescriptorSize = 0;				//深度/模板视图大小

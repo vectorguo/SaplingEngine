@@ -129,6 +129,9 @@
     <ClInclude Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\Dx12GraphicsPch.h">
       <Filter>GraphicsLibrary\DirectX12</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\Dx12CommandManager.h">
+      <Filter>GraphicsLibrary\DirectX12</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Runtime\SaplingEngineMain.cpp" />
@@ -220,6 +223,9 @@
       <Filter>RenderPipeline</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\Dx12GraphicsManager.cpp">
+      <Filter>GraphicsLibrary\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\Dx12CommandManager.cpp">
       <Filter>GraphicsLibrary\DirectX12</Filter>
     </ClCompile>
   </ItemGroup>

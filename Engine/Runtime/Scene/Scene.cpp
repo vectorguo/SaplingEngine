@@ -115,6 +115,20 @@ namespace SaplingEngine
 	}
 
 	/**
+	 * \brief 获取对象
+	 * \param name 对象名称
+	 * \return 对象只能指针
+	 */
+	GameObjectPtr Scene::GetGameObject(const std::string& name)
+	{
+		const auto iter = std::find_if(m_GameObjects.begin(), m_GameObjects.end(), [&name](const GameObjectPtr& pObject)
+		{
+			return pObject->GetName() == name;
+		});
+		return iter == m_GameObjects.end() ? nullptr : *iter;
+	}
+
+	/**
 	 * \brief 创建GameObject
 	 * \return GameObject
 	 */

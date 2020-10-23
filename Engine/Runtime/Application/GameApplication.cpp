@@ -29,7 +29,7 @@ namespace SaplingEngine
 		if (InitializeWindow())
 		{
 			//渲染管线开始初始化
-			RenderPipeline::Instance()->BeginInitialize(m_MainWindow);
+			RenderPipeline::Instance()->BeginInitialize();
 			
 			//初始化Shader
 			ShaderManager::Instance()->Initialize();
@@ -38,7 +38,7 @@ namespace SaplingEngine
 			SceneManager::Instance()->Initialize();
 
 			//渲染管线结束初始化
-			RenderPipeline::Instance()->EndInitialize();
+			RenderPipeline::Instance()->EndInitialize(m_MainWindow);
 			
 			//显示并更新窗口
 			ShowWindow(m_MainWindow, SW_SHOW);

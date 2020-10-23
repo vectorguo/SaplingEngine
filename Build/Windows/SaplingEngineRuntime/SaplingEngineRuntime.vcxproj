@@ -116,6 +116,7 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Process\ProcessManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\Renderer\MeshRenderer.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\Renderer\Renderer.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPass\RenderOpaquePass.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPass\RenderPass.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPipeline.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\SaplingEngineHeader.h" />
@@ -159,6 +160,7 @@
     <ClCompile Include="..\..\..\Engine\Runtime\Process\ProcessManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\Renderer\MeshRenderer.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\Renderer\Renderer.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPass\RenderOpaquePass.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPass\RenderPass.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPipeline.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\SaplingEngineMain.cpp" />

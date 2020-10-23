@@ -132,6 +132,9 @@
     <ClInclude Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\Dx12CommandManager.h">
       <Filter>GraphicsLibrary\DirectX12</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPass\RenderOpaquePass.h">
+      <Filter>RenderPipeline\RenderPass</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Runtime\SaplingEngineMain.cpp" />
@@ -227,6 +230,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\Dx12CommandManager.cpp">
       <Filter>GraphicsLibrary\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPass\RenderOpaquePass.cpp">
+      <Filter>RenderPipeline\RenderPass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

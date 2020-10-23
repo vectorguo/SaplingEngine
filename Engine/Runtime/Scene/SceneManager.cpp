@@ -45,7 +45,9 @@ namespace SaplingEngine
 		for (auto iter = m_Scenes.begin(); iter != m_Scenes.end(); ++iter)
 		{
 			iter->second->Destroy();
+			delete iter->second;
 		}
+		m_Scenes.clear();
 	}
 
 	/**

@@ -31,11 +31,6 @@
 #endif
 
 /*
- * Graphics
- */
-#include "SaplingEngineGraphicsPch.h"
-
-/*
  * math
  */
 #include "Math/Color.h"

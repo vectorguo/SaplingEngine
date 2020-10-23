@@ -1,41 +1,49 @@
 #include "Mesh.h"
-#include "Graphics/DirectX12/D3D12GraphicsManager.h"
+
+#include "RenderPipeline/RenderPipeline.h"
 
 namespace SaplingEngine
 {
+	std::vector<Mesh*> Mesh::m_NotUploadedMeshes;
+	
+	Mesh::Mesh() : m_IsReady(false)
+	{
+		m_NotUploadedMeshes.push_back(this);
+	}
+
 	Mesh::~Mesh()
 	{
-		if (m_pVertexBufferView != nullptr)
-		{
-			delete m_pVertexBufferView;
-			m_pVertexBufferView = nullptr;
-		}
+		delete m_pVertexBufferView;
+		delete m_pIndexBufferView;
 
-		if (m_pIndexBufferView != nullptr)
+		if (!m_IsReady)
 		{
-			delete m_pIndexBufferView;
-			m_pIndexBufferView = nullptr;
+			m_NotUploadedMeshes.erase(std::find(m_NotUploadedMeshes.begin(), m_NotUploadedMeshes.end(), this));
 		}
 	}
 
 	/**
-	 * \brief 创建顶点缓冲区描述符
+	 * \brief 上传Mesh数据到GPU
 	 */
-	void Mesh::CreateVertexBufferView()
+	void Mesh::UploadMeshDatas()
 	{
-		const auto vertexSize = static_cast<uint32_t>(m_VertexDatas.size() * sizeof(VertexData));
-		m_VertexBufferOnGpu = D3D12GraphicsManager::Instance()->CreateDefaultBuffer(m_VertexDatas.data(), vertexSize, m_VertexBufferUploader);
-		m_pVertexBufferView = new D3D12_VERTEX_BUFFER_VIEW{ m_VertexBufferOnGpu->GetGPUVirtualAddress(), vertexSize, sizeof(VertexData) };
-	}
-
-	/**
-	 * \brief 创建索引缓冲区描述符
-	 */
-	void Mesh::CreateIndexBufferView()
-	{
-		const auto indexSize = static_cast<uint32_t>(m_Indices.size() * sizeof(uint16_t));
-		m_IndexBufferOnGpu = D3D12GraphicsManager::Instance()->CreateDefaultBuffer(m_Indices.data(), indexSize, m_IndexBufferUploader);
-		m_pIndexBufferView = new D3D12_INDEX_BUFFER_VIEW{ m_IndexBufferOnGpu->GetGPUVirtualAddress(), indexSize, DXGI_FORMAT_R16_UINT };
+		auto& graphicsManager = RenderPipeline::Instance()->GetGraphicsManager();
+		for (auto iter = m_NotUploadedMeshes.begin(); iter != m_NotUploadedMeshes.end(); ++iter)
+		{
+			auto* pMesh = *iter;
+			pMesh->m_IsReady = true;
+			
+			//创建顶点缓冲区描述符
+			const auto vertexSize = static_cast<uint32_t>(pMesh->m_VertexDatas.size() * sizeof(VertexData));
+			pMesh->m_VertexBufferOnGpu = graphicsManager.CreateDefaultBufferAndUploadData(pMesh->m_VertexDatas.data(), vertexSize);
+			pMesh->m_pVertexBufferView = new D3D12_VERTEX_BUFFER_VIEW{ pMesh->m_VertexBufferOnGpu->GetGPUVirtualAddress(), vertexSize, sizeof(VertexData) };
+			
+			//创建索引缓冲区描述符
+			const auto indexSize = static_cast<uint32_t>(pMesh->m_Indices.size() * sizeof(uint16_t));
+			pMesh->m_IndexBufferOnGpu = graphicsManager.CreateDefaultBufferAndUploadData(pMesh->m_Indices.data(), indexSize);
+			pMesh->m_pIndexBufferView = new D3D12_INDEX_BUFFER_VIEW{ pMesh->m_IndexBufferOnGpu->GetGPUVirtualAddress(), indexSize, DXGI_FORMAT_R16_UINT };
+		}
+		m_NotUploadedMeshes.clear();
 	}
 
 	/**

@@ -2,7 +2,6 @@
 #include "GameSetting.h"
 
 #include "Camera/CameraManager.h"
-#include "Graphics/DirectX12/D3D12GraphicsManager.h"
 #include "Graphics/ShaderManager.h"
 #include "Input/Input.h"
 #include "RenderPipeline/RenderPipeline.h"
@@ -74,7 +73,7 @@ namespace SaplingEngine
 				Update();
 
 				//äÖÈ¾
-				D3D12GraphicsManager::Instance()->Render();
+				RenderPipeline::Instance()->Render();
 			}
 		}
 	}
@@ -181,7 +180,7 @@ namespace SaplingEngine
 				m_IsActive = true;
 				m_IsMinimized = false;
 				m_IsMaximized = true;
-				D3D12GraphicsManager::Instance()->OnResize();
+				RenderPipeline::Instance()->Resize();
 			}
 			else if (wParam == SIZE_RESTORED)
 			{
@@ -189,20 +188,20 @@ namespace SaplingEngine
 				{
 					m_IsActive = true;
 					m_IsMinimized = false;
-					D3D12GraphicsManager::Instance()->OnResize();
+					RenderPipeline::Instance()->Resize();
 				}
 				else if (m_IsMaximized)
 				{
 					m_IsActive = true;
 					m_IsMaximized = false;
-					D3D12GraphicsManager::Instance()->OnResize();
+					RenderPipeline::Instance()->Resize();
 				}
 				else if (m_IsResizing)
 				{
 				}
 				else
 				{
-					D3D12GraphicsManager::Instance()->OnResize();
+					RenderPipeline::Instance()->Resize();
 				}
 			}
 			return 0;
@@ -217,7 +216,7 @@ namespace SaplingEngine
 			m_IsActive = true;
 			m_IsResizing = false;
 			Time::Start();
-			D3D12GraphicsManager::Instance()->OnResize();
+			RenderPipeline::Instance()->Resize();
 			return 0;
 
 		case WM_LBUTTONDOWN:

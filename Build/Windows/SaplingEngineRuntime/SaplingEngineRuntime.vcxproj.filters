@@ -99,19 +99,9 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Utility\RapidXml\rapidxml_utils.hpp">
       <Filter>Utility\RapidXml</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\DirectX12\D3D12GraphicsManager.h">
-      <Filter>Graphics\DirectX12</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\DirectX12\D3D12UploadBuffer.h">
-      <Filter>Graphics\DirectX12</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\DirectX12\d3dx12.h">
-      <Filter>Graphics\DirectX12</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\Utility\Exception.h">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\SaplingEngineGraphicsPch.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Application\GameSetting.h">
       <Filter>Application</Filter>
     </ClInclude>
@@ -126,6 +116,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPipeline.h">
       <Filter>RenderPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\d3dx12.h">
+      <Filter>GraphicsLibrary\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\Dx12GraphicsManager.h">
+      <Filter>GraphicsLibrary\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\Dx12UploadBuffer.h">
+      <Filter>GraphicsLibrary\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\Dx12GraphicsPch.h">
+      <Filter>GraphicsLibrary\DirectX12</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -205,9 +207,6 @@
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\MeshHelper.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Engine\Runtime\Graphics\DirectX12\D3D12GraphicsManager.cpp">
-      <Filter>Graphics\DirectX12</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\Application\GameSetting.cpp">
       <Filter>Application</Filter>
     </ClCompile>
@@ -219,6 +218,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPipeline.cpp">
       <Filter>RenderPipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\Dx12GraphicsManager.cpp">
+      <Filter>GraphicsLibrary\DirectX12</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -261,8 +263,11 @@
     <Filter Include="Utility\RapidXml">
       <UniqueIdentifier>{344a87b3-5cbf-4119-aaf4-b34778f416bb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Graphics\DirectX12">
-      <UniqueIdentifier>{c88ba191-ed79-4479-8978-6fc190cf379f}</UniqueIdentifier>
+    <Filter Include="GraphicsLibrary">
+      <UniqueIdentifier>{dc70ad88-f8f7-430f-97c8-049a22964536}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GraphicsLibrary\DirectX12">
+      <UniqueIdentifier>{d11231cb-bec2-49e1-aeda-75add68055f2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

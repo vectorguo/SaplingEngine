@@ -1,15 +1,15 @@
 #pragma once
 
-#include "SaplingEngineGraphicsPch.h"
+#include "GraphicsLibrary/DirectX12/Dx12GraphicsPch.h"
 #include "Utility/Exception.h"
 
 namespace SaplingEngine
 {
 	template <typename T>
-	class D3D12UploadBuffer
+	class Dx12UploadBuffer
 	{
 	public:
-		D3D12UploadBuffer(ID3D12Device* device, uint32_t elementCount, bool isConstant) : m_ElementSize(isConstant ? (sizeof(T) + 255 & ~255) : sizeof(T))
+		Dx12UploadBuffer(ID3D12Device* device, uint32_t elementCount, bool isConstant) : m_ElementSize(isConstant ? (sizeof(T) + 255 & ~255) : sizeof(T))
 		{
 			D3D12_HEAP_PROPERTIES headProperties
 			{
@@ -37,12 +37,12 @@ namespace SaplingEngine
 			ThrowIfFailed(m_UploadBuffer->Map(0, nullptr, reinterpret_cast<void**>(&m_pMappedData)));
 		}
 
-		D3D12UploadBuffer(const D3D12UploadBuffer&) = delete;
-		D3D12UploadBuffer(D3D12UploadBuffer&&) = delete;
-		D3D12UploadBuffer& operator=(const D3D12UploadBuffer&) = delete;
-		D3D12UploadBuffer& operator=(D3D12UploadBuffer&&) = delete;
+		Dx12UploadBuffer(const Dx12UploadBuffer&) = delete;
+		Dx12UploadBuffer(Dx12UploadBuffer&&) = delete;
+		Dx12UploadBuffer& operator=(const Dx12UploadBuffer&) = delete;
+		Dx12UploadBuffer& operator=(Dx12UploadBuffer&&) = delete;
 
-		~D3D12UploadBuffer()
+		~Dx12UploadBuffer()
 		{
 			if (m_UploadBuffer != nullptr)
 			{

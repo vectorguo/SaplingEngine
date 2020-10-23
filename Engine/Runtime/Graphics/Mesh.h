@@ -24,7 +24,7 @@ namespace SaplingEngine
 	class Mesh
 	{
 	public:
-		Mesh() = default;
+		Mesh();
 		~Mesh();
 		
 		Mesh(const Mesh&) = delete;
@@ -32,6 +32,15 @@ namespace SaplingEngine
 		Mesh& operator=(const Mesh&) = delete;
 		Mesh& operator=(Mesh&&) = delete;
 
+		/**
+		 * \brief 顶点和索引数据是否已经上传到默认缓冲区
+		 * \return 顶点和索引数据是否已经上传到默认缓冲区
+		 */
+		bool IsReady() const
+		{
+			return m_IsReady;
+		}
+		
 		/**
 		 * \brief 获取顶点缓冲区描述符
 		 * \return 顶点缓冲区描述符
@@ -68,15 +77,11 @@ namespace SaplingEngine
 		void SetVertexDatas(const std::vector<VertexData>& vertices)
 		{
 			m_VertexDatas = vertices;
-
-			CreateVertexBufferView();
 		}
 
 		void SetVertexDatas(std::vector<VertexData>&& vertices)
 		{
 			m_VertexDatas = std::move(vertices);
-
-			CreateVertexBufferView();
 		}
 
 		void SetVertexDatas(VertexData* pVertices, const uint32_t size)
@@ -86,8 +91,6 @@ namespace SaplingEngine
 			{
 				m_VertexDatas.emplace_back(*(pVertices + i));
 			}
-
-			CreateVertexBufferView();
 		}
 		
 		const std::vector<uint16_t>& GetIndices() const
@@ -108,15 +111,11 @@ namespace SaplingEngine
 		void SetIndices(const std::vector<uint16_t>& indices)
 		{
 			m_Indices = indices;
-
-			CreateIndexBufferView();
 		}
 
 		void SetIndices(std::vector<uint16_t>&& indices)
 		{
 			m_Indices = std::move(indices);
-
-			CreateIndexBufferView();
 		}
 
 		void SetIndices(uint16_t* pIndices, const uint32_t size)
@@ -126,11 +125,14 @@ namespace SaplingEngine
 			{
 				m_Indices.emplace_back(*(pIndices + i));
 			}
-
-			CreateIndexBufferView();
 		}
 
 	public:
+		/**
+		 * \brief 上传Mesh数据到GPU
+		 */
+		static void UploadMeshDatas();
+		
 		/**
 		 * \brief 创建基本类型的mesh
 		 * \param type mesh类型
@@ -139,21 +141,16 @@ namespace SaplingEngine
 		static Mesh* CreatePrimitive(EMeshPrimitiveType type);
 		
 	private:
-		/**
-		 * \brief 创建顶点缓冲区描述符
-		 */
-		void CreateVertexBufferView();
-
-		/**
-		 * \brief 创建索引缓冲区描述符
-		 */
-		void CreateIndexBufferView();
 		
-	private:
+		/**
+		 * \brief 数据没有上传到GPU的Mesh
+		 */
+		static std::vector<Mesh*> m_NotUploadedMeshes;
+		
 		/**
 		 * \brief 顶点和索引数据是否已经上传到默认缓冲区
 		 */
-		bool m_IsReady = false;
+		bool m_IsReady;
 		
 		/**
 		 * \brief 顶点数据
@@ -166,11 +163,9 @@ namespace SaplingEngine
 		std::vector<uint16_t> m_Indices;
 
 		ComPtr<ID3D12Resource> m_VertexBufferOnGpu = nullptr;
-		ComPtr<ID3D12Resource> m_VertexBufferUploader = nullptr;
 		D3D12_VERTEX_BUFFER_VIEW* m_pVertexBufferView = nullptr;
 		
 		ComPtr<ID3D12Resource> m_IndexBufferOnGpu = nullptr;
-		ComPtr<ID3D12Resource> m_IndexBufferUploader = nullptr;
 		D3D12_INDEX_BUFFER_VIEW* m_pIndexBufferView = nullptr;
 	};
 	

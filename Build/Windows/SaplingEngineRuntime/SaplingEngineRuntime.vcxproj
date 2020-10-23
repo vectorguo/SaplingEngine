@@ -94,10 +94,11 @@
     <ClInclude Include="..\..\..\Engine\Runtime\GameObject\ComponentFactory.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\GameObject\GameObject.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\GameObject\Transform.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\Dx12GraphicsManager.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\Dx12GraphicsPch.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\Dx12UploadBuffer.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\d3dx12.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\ConstantData.h" />
-    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\DirectX12\D3D12GraphicsManager.h" />
-    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\DirectX12\D3D12UploadBuffer.h" />
-    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\DirectX12\d3dx12.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Material.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Mesh.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\MeshHelper.h" />
@@ -116,7 +117,6 @@
     <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\Renderer\Renderer.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPass\RenderPass.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPipeline.h" />
-    <ClInclude Include="..\..\..\Engine\Runtime\SaplingEngineGraphicsPch.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\SaplingEngineHeader.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\SaplingEnginePch.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Scene\Scene.h" />
@@ -140,7 +140,7 @@
     <ClCompile Include="..\..\..\Engine\Runtime\GameObject\ComponentFactory.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\GameObject\GameObject.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\GameObject\Transform.cpp" />
-    <ClCompile Include="..\..\..\Engine\Runtime\Graphics\DirectX12\D3D12GraphicsManager.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\Dx12GraphicsManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Material.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Mesh.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\MeshHelper.cpp" />

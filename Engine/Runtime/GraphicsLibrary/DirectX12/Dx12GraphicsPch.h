@@ -15,7 +15,7 @@
 #pragma comment(lib, "D3D12.lib")
 #pragma comment(lib, "dxgi.lib")
 
-#include "Graphics/DirectX12/d3dx12.h"
+#include "d3dx12.h"
 
 using namespace DirectX;
 using Microsoft::WRL::ComPtr;

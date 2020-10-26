@@ -1,5 +1,5 @@
-#include "Dx12GraphicsManager.h"
 #include "Dx12CommandManager.h"
+#include "Dx12GraphicsManager.h"
 
 #include "Application/GameSetting.h"
 #include "Graphics/MeshHelper.h"
@@ -37,12 +37,113 @@ namespace SaplingEngine
 		return cbvHeapHandle;
 	}
 	
-	Dx12GraphicsManager::Dx12GraphicsManager() : m_Viewport(), m_ScissorRect()
+	Dx12GraphicsManager::Dx12GraphicsManager()
+		: GraphicsManager(), m_Viewport(), m_ScissorRect()
 	{
 	}
 
 	Dx12GraphicsManager::~Dx12GraphicsManager() = default;
 
+	/**
+	 * \brief 开始初始化
+	 * \param hWnd 窗口句柄
+	 * \param width 窗口宽度
+	 * \param height 窗口高度
+	 */
+	void Dx12GraphicsManager::BeginInitialize(HWND hWnd, uint32_t width, uint32_t height)
+	{
+		CreateDevice();
+		CreateDescriptorHeaps();
+	}
+
+	/**
+	 * \brief 结束初始化
+	 * \param hWnd 窗口句柄
+	 * \param width 窗口宽度
+	 * \param height 窗口高度
+	 */
+	void Dx12GraphicsManager::EndInitialize(HWND hWnd, uint32_t width, uint32_t height)
+	{
+		CreateSwapChain(hWnd, width, height);
+		CreateRootSignature();
+		CreatePipelineState();
+		CreateRtv();
+		CreateDsv(width, height);
+		CreateCbv();
+	}
+
+	/**
+	 * \brief 绘制
+	 */
+	void Dx12GraphicsManager::Render()
+	{
+		auto* pCommandList = m_pCommandManager->m_CommandList.Get();
+
+		//清除后台缓冲区和深度模板缓冲区
+		const auto rtv = CurrentBackBufferView();
+		const auto dsv = DepthStencilBufferView();
+		pCommandList->ClearRenderTargetView(rtv, Color::LightBlue, 0, nullptr);
+		pCommandList->ClearDepthStencilView(dsv, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
+
+		//指定要渲染的缓冲区
+		pCommandList->OMSetRenderTargets(1, &rtv, true, &dsv);
+
+		//设置跟描述符表和常量缓冲区，将常量缓冲区绑定到渲染流水线上
+		ID3D12DescriptorHeap* descriptorHeaps[] = { m_CbvDescriptorHeap.Get() };
+		pCommandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
+		pCommandList->SetGraphicsRootSignature(m_RootSignature.Get());
+		pCommandList->SetGraphicsRootDescriptorTable(1, GetGPUHandleFromDescriptorHeap(m_CbvDescriptorHeap.Get(), m_PassCbvOffset, m_CbvDescriptorSize));
+
+		//渲染物体
+		//TODO
+		auto* pActiveScene = SceneManager::Instance()->GetActiveScene();
+		auto pObject = pActiveScene->GetGameObject("cube");
+		auto* pMesh = pObject->GetComponent<MeshRenderer>()->GetMesh();
+		pCommandList->IASetVertexBuffers(0, 1, pMesh->GetVertexBufferView());
+		pCommandList->IASetIndexBuffer(pMesh->GetIndexBufferView());
+		pCommandList->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		pCommandList->SetGraphicsRootDescriptorTable(0, GetGPUHandleFromDescriptorHeap(m_CbvDescriptorHeap.Get()));
+		pCommandList->DrawIndexedInstanced(pMesh->GetIndexCount(), 1, 0, 0, 0);
+	}
+	
+	/**
+	 * \brief 重置大小
+	 */
+	void Dx12GraphicsManager::Resize(uint32_t width, uint32_t height)
+	{
+		//释放之前的缓存
+		for (auto& buffer : m_SwapChainBuffer)
+		{
+			buffer.Reset();
+		}
+		m_DepthStencilBuffer.Reset();
+
+		//Resize
+		m_Viewport.TopLeftX = 0;
+		m_Viewport.TopLeftY = 0;
+		m_Viewport.Width = static_cast<float>(width);
+		m_Viewport.Height = static_cast<float>(height);
+		m_Viewport.MinDepth = 0.0f;
+		m_Viewport.MaxDepth = 1.0f;
+		m_ScissorRect = { 0, 0, static_cast<long>(width), static_cast<long>(height) };
+
+		//Resize SwapChain
+		m_BackBufferIndex = 0;
+		ThrowIfFailed(m_SwapChain->ResizeBuffers(SwapChainBufferCount, width, height, m_SwapChainBufferFormat, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH));
+
+		//重新创建Rtv和Dsv
+		CreateRtv();
+		CreateDsv(width, height);
+	}
+
+	/**
+	 * \brief 销毁
+	 */
+	void Dx12GraphicsManager::Destroy()
+	{
+
+	}
+	
 	/**
 	 * \brief 创建默认缓冲区
 	 * \param initData 初始化数据
@@ -91,10 +192,9 @@ namespace SaplingEngine
 		};
 
 		//将数据复制到默认缓冲区
-		auto* pCommandManager = Dx12CommandManager::Instance();
-		pCommandManager->ResourceBarrierTransition(defaultBuffer.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_COPY_DEST);
-		UpdateSubresources<1>(pCommandManager->GetCommandList(), defaultBuffer.Get(), uploadBuffer, 0, 0, 1, &subResourceData);
-		pCommandManager->ResourceBarrierTransition(defaultBuffer.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_GENERIC_READ);
+		m_pCommandManager->ResourceBarrierTransition(defaultBuffer.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_COPY_DEST);
+		UpdateSubresources<1>(m_pCommandManager->GetCommandList(), defaultBuffer.Get(), uploadBuffer, 0, 0, 1, &subResourceData);
+		m_pCommandManager->ResourceBarrierTransition(defaultBuffer.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_GENERIC_READ);
 
 		return defaultBuffer;
 	}
@@ -175,78 +275,6 @@ namespace SaplingEngine
 		}
 		m_UsedUploadBuffers.clear();
 	}
-
-	/**
-	 * \brief 绘制
-	 */
-	void Dx12GraphicsManager::Render()
-	{
-		auto* pCommandList = Dx12CommandManager::Instance()->GetCommandList();
-		
-		//清除后台缓冲区和深度模板缓冲区
-		const auto rtv = CurrentBackBufferView();
-		const auto dsv = DepthStencilBufferView();
-		pCommandList->ClearRenderTargetView(rtv, Color::LightBlue, 0, nullptr);
-		pCommandList->ClearDepthStencilView(dsv, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
-
-		//指定要渲染的缓冲区
-		pCommandList->OMSetRenderTargets(1, &rtv, true, &dsv);
-
-		//设置跟描述符表和常量缓冲区，将常量缓冲区绑定到渲染流水线上
-		ID3D12DescriptorHeap* descriptorHeaps[] = { m_CbvDescriptorHeap.Get() };
-		pCommandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
-		pCommandList->SetGraphicsRootSignature(m_RootSignature.Get());
-		pCommandList->SetGraphicsRootDescriptorTable(1, GetGPUHandleFromDescriptorHeap(m_CbvDescriptorHeap.Get(), m_PassCbvOffset, m_CbvDescriptorSize));
-
-		//渲染物体
-		//TODO
-		auto* pActiveScene = SceneManager::Instance()->GetActiveScene();
-		auto pObject = pActiveScene->GetGameObject("cube");
-		auto pMesh = pObject->GetComponent<MeshRenderer>()->GetMesh();
-		pCommandList->IASetVertexBuffers(0, 1, pMesh->GetVertexBufferView());
-		pCommandList->IASetIndexBuffer(pMesh->GetIndexBufferView());
-		pCommandList->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		pCommandList->SetGraphicsRootDescriptorTable(0, GetGPUHandleFromDescriptorHeap(m_CbvDescriptorHeap.Get()));
-		pCommandList->DrawIndexedInstanced(pMesh->GetIndexCount(), 1, 0, 0, 0);
-	}
-
-	/**
-	 * \brief 销毁
-	 */
-	void Dx12GraphicsManager::Destroy()
-	{
-		
-	}
-	
-	/**
-	 * \brief 重置大小
-	 */
-	void Dx12GraphicsManager::Resize(uint32_t width, uint32_t height)
-	{
-		//释放之前的缓存
-		for (auto& buffer : m_SwapChainBuffer)
-		{
-			buffer.Reset();
-		}
-		m_DepthStencilBuffer.Reset();
-
-		//Resize
-		m_Viewport.TopLeftX = 0;
-		m_Viewport.TopLeftY = 0;
-		m_Viewport.Width = static_cast<float>(width);
-		m_Viewport.Height = static_cast<float>(height);
-		m_Viewport.MinDepth = 0.0f;
-		m_Viewport.MaxDepth = 1.0f;
-		m_ScissorRect = { 0, 0, static_cast<long>(width), static_cast<long>(height) };
-
-		//Resize SwapChain
-		m_BackBufferIndex = 0;
-		ThrowIfFailed(m_SwapChain->ResizeBuffers(SwapChainBufferCount, width, height, m_SwapChainBufferFormat, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH));
-
-		//重新创建Rtv和Dsv
-		CreateRtv();
-		CreateDsv(width, height);
-	}
 	
 	/**
 	 * \brief 创建DX12 Device
@@ -311,7 +339,7 @@ namespace SaplingEngine
 		sd.Windowed = true;
 		sd.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 		sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
-		m_DXGIFactory->CreateSwapChain(Dx12CommandManager::Instance()->GetCommandQueue(), &sd, m_SwapChain.GetAddressOf());
+		m_DXGIFactory->CreateSwapChain(m_pCommandManager->GetCommandQueue(), &sd, m_SwapChain.GetAddressOf());
 	}
 
 	/**
@@ -497,7 +525,7 @@ namespace SaplingEngine
 		m_D3D12Device->CreateDepthStencilView(m_DepthStencilBuffer.Get(), &dsvDesc, m_DsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
 
 		//资源转换
-		Dx12CommandManager::Instance()->CacheResourceBarrierTransition(m_DepthStencilBuffer.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_DEPTH_WRITE);
+		m_pCommandManager->ResourceBarrierTransition(m_DepthStencilBuffer.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_DEPTH_WRITE);
 	}
 
 	/**

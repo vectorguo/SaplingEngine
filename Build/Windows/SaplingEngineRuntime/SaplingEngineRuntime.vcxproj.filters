@@ -117,23 +117,29 @@
     <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPipeline.h">
       <Filter>RenderPipeline</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\d3dx12.h">
-      <Filter>GraphicsLibrary\DirectX12</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\Dx12GraphicsManager.h">
-      <Filter>GraphicsLibrary\DirectX12</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\Dx12UploadBuffer.h">
-      <Filter>GraphicsLibrary\DirectX12</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\Dx12GraphicsPch.h">
-      <Filter>GraphicsLibrary\DirectX12</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\Dx12CommandManager.h">
-      <Filter>GraphicsLibrary\DirectX12</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPass\RenderOpaquePass.h">
       <Filter>RenderPipeline\RenderPass</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\RenderLibrary\DirectX12\d3dx12.h">
+      <Filter>RenderPipeline\RenderLibrary\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\RenderLibrary\DirectX12\Dx12CommandManager.h">
+      <Filter>RenderPipeline\RenderLibrary\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\RenderLibrary\DirectX12\Dx12GraphicsManager.h">
+      <Filter>RenderPipeline\RenderLibrary\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\RenderLibrary\DirectX12\Dx12UploadBuffer.h">
+      <Filter>RenderPipeline\RenderLibrary\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\CommandManager.h">
+      <Filter>RenderPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\GraphicsManager.h">
+      <Filter>RenderPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\GraphicsPch.h">
+      <Filter>RenderPipeline</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -225,14 +231,20 @@
     <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPipeline.cpp">
       <Filter>RenderPipeline</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\Dx12GraphicsManager.cpp">
-      <Filter>GraphicsLibrary\DirectX12</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Engine\Runtime\GraphicsLibrary\DirectX12\Dx12CommandManager.cpp">
-      <Filter>GraphicsLibrary\DirectX12</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPass\RenderOpaquePass.cpp">
       <Filter>RenderPipeline\RenderPass</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\RenderLibrary\DirectX12\Dx12CommandManager.cpp">
+      <Filter>RenderPipeline\RenderLibrary\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\RenderLibrary\DirectX12\Dx12GraphicsManager.cpp">
+      <Filter>RenderPipeline\RenderLibrary\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\CommandManager.cpp">
+      <Filter>RenderPipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\GraphicsManager.cpp">
+      <Filter>RenderPipeline</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -275,11 +287,11 @@
     <Filter Include="Utility\RapidXml">
       <UniqueIdentifier>{344a87b3-5cbf-4119-aaf4-b34778f416bb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GraphicsLibrary">
-      <UniqueIdentifier>{dc70ad88-f8f7-430f-97c8-049a22964536}</UniqueIdentifier>
+    <Filter Include="RenderPipeline\RenderLibrary">
+      <UniqueIdentifier>{564bde73-d060-4452-968c-4d11904704ce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GraphicsLibrary\DirectX12">
-      <UniqueIdentifier>{d11231cb-bec2-49e1-aeda-75add68055f2}</UniqueIdentifier>
+    <Filter Include="RenderPipeline\RenderLibrary\DirectX12">
+      <UniqueIdentifier>{e6993383-421a-4603-8f0f-f8ea9a2e2dd8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

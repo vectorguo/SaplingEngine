@@ -1,8 +1,8 @@
 #pragma once
 
-#include "GraphicsLibrary/DirectX12/Dx12CommandManager.h"
-#include "GraphicsLibrary/DirectX12/Dx12GraphicsManager.h"
-#include "RenderPass/RenderPass.h"
+#include "RenderPipeline/CommandManager.h"
+#include "RenderPipeline/GraphicsManager.h"
+#include "RenderPipeline/RenderPass/RenderPass.h"
 #include "SaplingEnginePch.h"
 
 namespace SaplingEngine
@@ -21,7 +21,7 @@ namespace SaplingEngine
 		/**
 		 * \brief 开始初始化
 		 */
-		void BeginInitialize();
+		void BeginInitialize(HWND hWnd);
 
 		/**
 		 * \brief 结束初始化
@@ -54,15 +54,7 @@ namespace SaplingEngine
 		 * \param renderPassName RenderPass名称
 		 */
 		void RemoveRenderPass(const std::string& renderPassName);
-
-		/**
-		 * \brief 获取Graphics Manager
-		 * \return Graphics Manager
-		 */
-		Dx12GraphicsManager& GetGraphicsManager()
-		{
-			return m_GraphicsManager;
-		}
+		
 	private:
 		/**
 		 * \brief 执行渲染前的准备工作
@@ -83,12 +75,12 @@ namespace SaplingEngine
 		/**
 		 * \brief DX12命令管理器
 		 */
-		Dx12CommandManager m_CommandManager;
+		CommandManager* m_pCommandManager = nullptr;
 		
 		/**
 		 * \brief DX12图形管理器
 		 */
-		Dx12GraphicsManager m_GraphicsManager;
+		GraphicsManager* m_pGraphicsManager = nullptr;
 
 		/**
 		 * \brief 屏幕宽度

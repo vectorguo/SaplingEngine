@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Dx12GraphicsPch.h"
 #include "Dx12UploadBuffer.h"
 #include "Graphics/ConstantData.h"
+#include "RenderPipeline/GraphicsManager.h"
 #include "SaplingEnginePch.h"
 
 namespace SaplingEngine
@@ -10,9 +10,9 @@ namespace SaplingEngine
 	using ObjectConstantBufferPtr = std::unique_ptr<Dx12UploadBuffer<ObjectConstantData>>;
 	using PassConstantBufferPtr = std::unique_ptr<Dx12UploadBuffer<PassConstantData>>;
 	
-	class Dx12GraphicsManager final
+	class Dx12GraphicsManager final : public GraphicsManager
 	{
-		friend class RenderPipeline;
+		friend class Dx12CommandManager;
 		
 	public:
 		Dx12GraphicsManager();
@@ -23,6 +23,55 @@ namespace SaplingEngine
 		Dx12GraphicsManager& operator=(const Dx12GraphicsManager&) = delete;
 		Dx12GraphicsManager& operator=(Dx12GraphicsManager&&) = delete;
 
+		/**
+		 * \brief 开始初始化
+		 * \param hWnd 窗口句柄
+		 * \param width 窗口宽度
+		 * \param height 窗口高度
+		 */
+		void BeginInitialize(HWND hWnd, uint32_t width, uint32_t height) override;
+
+		/**
+		 * \brief 结束初始化
+		 * \param hWnd 窗口句柄
+		 * \param width 窗口宽度
+		 * \param height 窗口高度
+		 */
+		void EndInitialize(HWND hWnd, uint32_t width, uint32_t height) override;
+
+		/**
+		 * \brief 绘制
+		 */
+		void Render() override;
+		
+		/**
+		 * \brief 重置大小
+		 */
+		void Resize(uint32_t width, uint32_t height) override;
+		
+		/**
+		 * \brief 销毁
+		 */
+		void Destroy() override;
+
+		/**
+		 * \brief 获取Dx12设备
+		 * \return Dx12设备
+		 */
+		ID3D12Device* GetDx12Device() const
+		{
+			return m_D3D12Device.Get();
+		}
+
+		/**
+		 * \brief 获取渲染管线状态
+		 * \return 渲染管线状态
+		 */
+		ID3D12PipelineState* GetPipelineState() const
+		{
+			return m_PipelineState.Get();
+		}
+		
 		/**
 		 * \brief 创建默认缓冲区并上传数据
 		 * \param initData 初始化数据
@@ -92,21 +141,6 @@ namespace SaplingEngine
 		 * \brief 创建Cbv
 		 */
 		void CreateCbv();
-
-		/**
-		 * \brief 绘制
-		 */
-		void Render();
-
-		/**
-		 * \brief 销毁
-		 */
-		void Destroy();
-		
-		/**
-		 * \brief 重置大小
-		 */
-		void Resize(uint32_t width, uint32_t height);
 
 		/**
 		 * \brief 获取后台缓存
@@ -181,5 +215,7 @@ namespace SaplingEngine
 
 		std::map<ComPtr<ID3D12Resource>, uint64_t>	m_UnusedUploadBuffers;					//未使用的上传缓存堆
 		std::map<ComPtr<ID3D12Resource>, uint64_t>	m_UsedUploadBuffers;					//已经使用的上传缓存堆
+
+		Dx12CommandManager*							m_pCommandManager = nullptr;			//DX12命令管理
 	};
 }

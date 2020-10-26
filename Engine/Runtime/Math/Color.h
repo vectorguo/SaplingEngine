@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GraphicsLibrary/DirectX12/Dx12GraphicsPch.h"
+#include "RenderPipeline/GraphicsPch.h"
 
 namespace SaplingEngine
 {

@@ -4,6 +4,9 @@
 
 namespace SaplingEngine
 {
+	class Camera;
+	class Scene;
+	
 	class RenderPass
 	{
 	protected:
@@ -18,6 +21,13 @@ namespace SaplingEngine
 		RenderPass& operator=(const RenderPass&) = delete;
 		RenderPass& operator=(RenderPass&&) = delete;
 
+		/**
+		 * \brief 渲染
+		 * \param pCamera 渲染使用的相机
+		 * \param pScene 被渲染场景
+		 */
+		virtual void Render(const Camera* pCamera, const Scene* pScene) = 0;
+		
 		/**
 		 * \brief 获取RenderPass名称
 		 * \return RenderPass名称
@@ -45,6 +55,6 @@ namespace SaplingEngine
 		/**
 		 * \brief RenderPass的渲染优先级
 		 */
-		int32_t m_Priority;
+		int32_t m_Priority = 0;
 	};
 }

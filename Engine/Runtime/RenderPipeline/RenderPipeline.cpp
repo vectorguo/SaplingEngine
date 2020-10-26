@@ -1,9 +1,12 @@
 #include "RenderPipeline.h"
 
 #include "Application/GameSetting.h"
+#include "Camera/CameraManager.h"
 #include "Graphics/Mesh.h"
 #include "RenderLibrary/DirectX12/Dx12CommandManager.h"
 #include "RenderLibrary/DirectX12/Dx12GraphicsManager.h"
+#include "RenderPass/RenderOpaquePass.h"
+#include "Scene/SceneManager.h"
 
 namespace SaplingEngine
 {
@@ -30,6 +33,11 @@ namespace SaplingEngine
 		//创建并初始化Command Manager
 		m_pCommandManager = new Dx12CommandManager();
 		m_pCommandManager->BeginInitialize();
+
+		//初始化渲染管线
+		auto* pOpaquePass = new RenderOpaquePass("Render Opaque");
+		pOpaquePass->SetBackgroundColor(Color::LightBlue);
+		m_RenderPasses.push_back(pOpaquePass);
 	}
 
 	/**
@@ -47,7 +55,18 @@ namespace SaplingEngine
 	void RenderPipeline::Render()
 	{
 		PreRender();
-		m_pGraphicsManager->Render();
+
+		//渲染
+		const auto* pActiveScene = SceneManager::Instance()->GetActiveScene();
+		const auto& cameras = CameraManager::Instance()->GetCameras();
+		for (const auto& pCamera : cameras)
+		{
+			for (auto iter = m_RenderPasses.begin(); iter != m_RenderPasses.end(); ++iter)
+			{
+				(*iter)->Render(pCamera.get(), pActiveScene);
+			}
+		}
+		
 		PostRender();
 	}
 
@@ -56,6 +75,12 @@ namespace SaplingEngine
 	 */
 	void RenderPipeline::Destroy()
 	{
+		for (auto iter = m_RenderPasses.begin(); iter != m_RenderPasses.end(); ++iter)
+		{
+			delete* iter;
+		}
+		m_RenderPasses.clear();
+		
 		m_pCommandManager->Destroy();
 		delete m_pCommandManager;
 		m_pCommandManager = nullptr;
@@ -82,17 +107,17 @@ namespace SaplingEngine
 
 	/**
 	 * \brief 添加RenderPass
-	 * \param renderPassPtr RenderPass的unique_ptr
+	 * \param pRenderPass 渲染管线指针,Add之后由RenderPipeline管理每个Pass的生命周期
 	 */
-	void RenderPipeline::AddRenderPass(std::unique_ptr<RenderPass>&& renderPassPtr)
+	void RenderPipeline::AddRenderPass(RenderPass* pRenderPass)
 	{
-		const auto iter = std::find_if(m_RenderPasses.begin(), m_RenderPasses.end(), [&renderPassPtr](const std::unique_ptr<RenderPass>& rp)
+		const auto iter = std::find_if(m_RenderPasses.begin(), m_RenderPasses.end(), [pRenderPass](const RenderPass* rp)
 			{
-				return rp->GetName() == renderPassPtr->GetName();
+				return rp->GetName() == pRenderPass->GetName();
 			});
 		if (iter == m_RenderPasses.end())
 		{
-			m_RenderPasses.push_back(std::move(renderPassPtr));
+			m_RenderPasses.push_back(pRenderPass);
 		}
 	}
 	
@@ -102,7 +127,7 @@ namespace SaplingEngine
 	 */
 	void RenderPipeline::RemoveRenderPass(const std::string& renderPassName)
 	{
-		const auto iter = std::find_if(m_RenderPasses.begin(), m_RenderPasses.end(), [&renderPassName](const std::unique_ptr<RenderPass>& rp)
+		const auto iter = std::find_if(m_RenderPasses.begin(), m_RenderPasses.end(), [&renderPassName](const RenderPass* rp)
 			{
 				return rp->GetName() == renderPassName;
 			});
@@ -136,7 +161,7 @@ namespace SaplingEngine
 	 */
 	void RenderPipeline::SortRenderPass()
 	{
-		std::sort(m_RenderPasses.begin(), m_RenderPasses.end(), [](const std::unique_ptr<RenderPass>& rp1, const std::unique_ptr<RenderPass>& rp2)
+		std::sort(m_RenderPasses.begin(), m_RenderPasses.end(), [](const RenderPass* rp1, const RenderPass* rp2)
 			{
 				return rp1->GetPriority() < rp2->GetPriority();
 			});

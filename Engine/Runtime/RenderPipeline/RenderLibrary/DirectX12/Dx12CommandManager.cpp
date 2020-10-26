@@ -1,5 +1,6 @@
 #include "Dx12CommandManager.h"
 #include "Dx12GraphicsManager.h"
+#include "Graphics/Mesh.h"
 
 namespace SaplingEngine
 {
@@ -80,6 +81,56 @@ namespace SaplingEngine
 	void Dx12CommandManager::Destroy()
 	{
 		CompleteCommand();
+	}
+
+	/**
+	 * \brief 清理缓冲
+	 * \param clearColor 是否清理颜色缓冲
+	 * \param clearDepth 是否清理深度缓冲
+	 * \param color 默认颜色
+	 */
+	void Dx12CommandManager::ClearRenderTargets(bool clearColor, bool clearDepth, const Color& color)
+	{
+		const auto rtv = m_pGraphicsManager->CurrentBackBufferView();
+		const auto dsv = m_pGraphicsManager->DepthStencilBufferView();
+		
+		if (clearColor)
+		{
+			m_CommandList->ClearRenderTargetView(rtv, Color::LightBlue, 0, nullptr);
+		}
+
+		if (clearDepth)
+		{
+			m_CommandList->ClearDepthStencilView(dsv, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
+		}
+
+		m_CommandList->OMSetRenderTargets(1, &rtv, true, &dsv);
+	}
+
+	/**
+	 * \brief 设置根描述符表
+	 */
+	void Dx12CommandManager::SetRootSignature()
+	{
+		//设置跟描述符表和常量缓冲区，将常量缓冲区绑定到渲染流水线上
+		ID3D12DescriptorHeap* descriptorHeaps[] = { m_pGraphicsManager->m_CbvDescriptorHeap.Get() };
+		m_CommandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
+		m_CommandList->SetGraphicsRootSignature(m_pGraphicsManager->m_RootSignature.Get());
+		m_CommandList->SetGraphicsRootDescriptorTable(1, GetGPUHandleFromDescriptorHeap(m_pGraphicsManager->m_CbvDescriptorHeap.Get(), m_pGraphicsManager->m_PassCbvOffset, m_pGraphicsManager->m_CbvDescriptorSize));
+	}
+
+	/**
+	 * \brief 绘制物体
+	 * \param pMesh Mesh
+	 * \param pMaterial Material
+	 */
+	void Dx12CommandManager::DrawIndexedInstanced(const Mesh* pMesh, const Material* pMaterial)
+	{
+		m_CommandList->IASetVertexBuffers(0, 1, pMesh->GetVertexBufferView());
+		m_CommandList->IASetIndexBuffer(pMesh->GetIndexBufferView());
+		m_CommandList->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		m_CommandList->SetGraphicsRootDescriptorTable(0, GetGPUHandleFromDescriptorHeap(m_pGraphicsManager->m_CbvDescriptorHeap.Get()));
+		m_CommandList->DrawIndexedInstanced(pMesh->GetIndexCount(), 1, 0, 0, 0);
 	}
 
 	/**

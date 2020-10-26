@@ -1,7 +1,12 @@
 #pragma once
 
+#include "SaplingEnginePch.h"
+
 namespace SaplingEngine
 {
+	class Material;
+	class Mesh;
+	
 	class CommandManager
 	{
 	public:
@@ -46,6 +51,26 @@ namespace SaplingEngine
 		 * \brief 销毁
 		 */
 		virtual void Destroy() {}
+
+		/**
+		 * \brief 清理缓冲
+		 * \param clearColor 是否清理颜色缓冲
+		 * \param clearDepth 是否清理深度缓冲
+		 * \param color 默认颜色
+		 */
+		virtual void ClearRenderTargets(bool clearColor, bool clearDepth, const Color& color) = 0;
+
+		/**
+		 * \brief 设置根描述符表
+		 */
+		virtual void SetRootSignature() = 0;
+
+		/**
+		 * \brief 绘制物体
+		 * \param pMesh Mesh
+		 * \param pMaterial Material
+		 */
+		virtual void DrawIndexedInstanced(const Mesh* pMesh, const Material* pMaterial) = 0;
 
 	private:
 		/**

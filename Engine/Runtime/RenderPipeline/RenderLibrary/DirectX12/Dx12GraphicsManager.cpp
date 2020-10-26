@@ -11,32 +11,6 @@
 
 namespace SaplingEngine
 {
-	static D3D12_CPU_DESCRIPTOR_HANDLE GetCPUHandleFromDescriptorHeap(ID3D12DescriptorHeap* pHeap)
-	{
-		return pHeap->GetCPUDescriptorHandleForHeapStart();
-	}
-
-	static D3D12_CPU_DESCRIPTOR_HANDLE GetCPUHandleFromDescriptorHeap(ID3D12DescriptorHeap* pHeap, int32_t offset, int32_t descriptorSize)
-	{
-		auto cbvHeapHandle = pHeap->GetCPUDescriptorHandleForHeapStart();
-		const auto cbvHeapHandleOffset = offset * descriptorSize;
-		cbvHeapHandle.ptr += static_cast<uint64_t>(cbvHeapHandleOffset);
-		return cbvHeapHandle;
-	}
-
-	static D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandleFromDescriptorHeap(ID3D12DescriptorHeap* pHeap)
-	{
-		return pHeap->GetGPUDescriptorHandleForHeapStart();
-	}
-
-	static D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandleFromDescriptorHeap(ID3D12DescriptorHeap* pHeap, int32_t offset, int32_t descriptorSize)
-	{
-		auto cbvHeapHandle = pHeap->GetGPUDescriptorHandleForHeapStart();
-		const auto cbvHeapHandleOffset = offset * descriptorSize;
-		cbvHeapHandle.ptr += static_cast<uint64_t>(cbvHeapHandleOffset);
-		return cbvHeapHandle;
-	}
-	
 	Dx12GraphicsManager::Dx12GraphicsManager()
 		: GraphicsManager(), m_Viewport(), m_ScissorRect()
 	{
@@ -78,15 +52,6 @@ namespace SaplingEngine
 	void Dx12GraphicsManager::Render()
 	{
 		auto* pCommandList = m_pCommandManager->m_CommandList.Get();
-
-		//清除后台缓冲区和深度模板缓冲区
-		const auto rtv = CurrentBackBufferView();
-		const auto dsv = DepthStencilBufferView();
-		pCommandList->ClearRenderTargetView(rtv, Color::LightBlue, 0, nullptr);
-		pCommandList->ClearDepthStencilView(dsv, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
-
-		//指定要渲染的缓冲区
-		pCommandList->OMSetRenderTargets(1, &rtv, true, &dsv);
 
 		//设置跟描述符表和常量缓冲区，将常量缓冲区绑定到渲染流水线上
 		ID3D12DescriptorHeap* descriptorHeaps[] = { m_CbvDescriptorHeap.Get() };
@@ -131,9 +96,17 @@ namespace SaplingEngine
 		m_BackBufferIndex = 0;
 		ThrowIfFailed(m_SwapChain->ResizeBuffers(SwapChainBufferCount, width, height, m_SwapChainBufferFormat, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH));
 
+		//重置命令
+		ThrowIfFailed(m_pCommandManager->m_CommandAllocator->Reset());
+		ThrowIfFailed(m_pCommandManager->m_CommandList->Reset(m_pCommandManager->m_CommandAllocator.Get(), nullptr));
+		
 		//重新创建Rtv和Dsv
 		CreateRtv();
 		CreateDsv(width, height);
+
+		//执行并等待命令结束
+		m_pCommandManager->ExecuteCommandList();
+		m_pCommandManager->CompleteCommand();
 	}
 
 	/**

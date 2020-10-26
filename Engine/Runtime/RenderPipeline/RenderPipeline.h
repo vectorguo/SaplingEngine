@@ -45,9 +45,9 @@ namespace SaplingEngine
 		
 		/**
 		 * \brief 添加RenderPass
-		 * \param renderPassPtr RenderPass的unique_ptr
+		 * \param pRenderPass 渲染管线指针,Add之后由RenderPipeline管理每个Pass的生命周期
 		 */
-		void AddRenderPass(std::unique_ptr<RenderPass>&& renderPassPtr);
+		void AddRenderPass(RenderPass* pRenderPass);
 
 		/**
 		 * \brief 删除RenderPass
@@ -95,6 +95,6 @@ namespace SaplingEngine
 		/**
 		 * \brief 所有RenderPass
 		 */
-		std::vector<std::unique_ptr<RenderPass>> m_RenderPasses{};
+		std::vector<RenderPass*> m_RenderPasses{};
 	};
 }

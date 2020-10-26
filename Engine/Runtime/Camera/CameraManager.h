@@ -15,6 +15,15 @@ namespace SaplingEngine
 		SINGLETON(CameraManager)
 
 		/**
+		 * \brief 获取所有相机
+		 * \return 相机列表
+		 */
+		const CameraList& GetCameras() const
+		{
+			return m_Cameras;
+		}
+		
+		/**
 		 * \brief 销毁
 		 */
 		void Destroy();

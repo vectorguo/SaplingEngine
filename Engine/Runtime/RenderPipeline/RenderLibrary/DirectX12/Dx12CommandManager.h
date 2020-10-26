@@ -64,6 +64,26 @@ namespace SaplingEngine
 		{
 			return m_CommandQueue.Get();
 		}
+
+		/**
+		 * \brief 清理缓冲
+		 * \param clearColor 是否清理颜色缓冲
+		 * \param clearDepth 是否清理深度缓冲
+		 * \param color 默认颜色
+		 */
+		void ClearRenderTargets(bool clearColor, bool clearDepth, const Color& color) override;		
+
+		/**
+		 * \brief 设置根描述符表
+		 */
+		void SetRootSignature() override;
+
+		/**
+		 * \brief 绘制物体
+		 * \param pMesh Mesh
+		 * \param pMaterial Material
+		 */
+		void DrawIndexedInstanced(const Mesh* pMesh, const Material* pMaterial) override;
 		
 		/**
 		 * \brief 缓存资源转换
@@ -82,19 +102,6 @@ namespace SaplingEngine
 		 * \brief 执行命令
 		 */
 		void ExecuteCommandList();
-
-		/**
-		 * \brief 重置命令列表
-		 */
-		void ResetCommandList()
-		{
-			ThrowIfFailed(m_CommandList->Reset(m_CommandAllocator.Get(), nullptr));
-		}
-
-		void ResetCommandList(ID3D12PipelineState* pPipelineState)
-		{
-			ThrowIfFailed(m_CommandList->Reset(m_CommandAllocator.Get(), pPipelineState));
-		}
 
 		/**
 		 * \brief 等待命令完成

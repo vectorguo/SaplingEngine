@@ -4,6 +4,7 @@
 
 namespace SaplingEngine
 {
+	class Material;
 	class Mesh;
 	
 	class MeshRenderer final : public Renderer
@@ -23,6 +24,15 @@ namespace SaplingEngine
 		}
 
 		/**
+		 * \brief 获取Material
+		 * \return Material
+		 */
+		Material* GetMaterial() const
+		{
+			return m_pMaterial;
+		}
+		
+		/**
 		 * \brief 获取Mesh
 		 * \return Mesh
 		 */
@@ -39,6 +49,7 @@ namespace SaplingEngine
 		bool Deserialize(const XmlNode* pNode) override;
 		
 	private:
+		Material* m_pMaterial = nullptr;
 		Mesh* m_pMesh = nullptr;
 	};
 }

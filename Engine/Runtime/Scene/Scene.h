@@ -53,7 +53,6 @@ namespace SaplingEngine
 		 * \return GameObject
 		 */
 		GameObjectPtr CreateGameObject();
-
 		
 		/**
 		 * \brief 创建GameObject
@@ -75,6 +74,15 @@ namespace SaplingEngine
 		 * \return 对象只能指针
 		 */
 		GameObjectPtr GetGameObject(const std::string& name);
+
+		/**
+		 * \brief 获取所有游戏对象
+		 * \return 游戏对象
+		 */
+		const std::vector<GameObjectPtr>& GetGameObjects() const
+		{
+			return m_GameObjects;
+		}
 
 	private:
 		/**

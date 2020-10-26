@@ -1,4 +1,5 @@
 #include "MeshRenderer.h"
+#include "Graphics/Material.h"
 #include "Graphics/Mesh.h"
 
 namespace SaplingEngine
@@ -7,7 +8,7 @@ namespace SaplingEngine
 
 	MeshRenderer::~MeshRenderer()
 	{
-		// Õ∑≈Mesh
+		delete m_pMaterial;
 		delete m_pMesh;
 	}
 

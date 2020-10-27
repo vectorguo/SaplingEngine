@@ -38,11 +38,6 @@ namespace SaplingEngine
 		 * \param height 窗口高度
 		 */
 		void EndInitialize(HWND hWnd, uint32_t width, uint32_t height) override;
-
-		/**
-		 * \brief 绘制
-		 */
-		void Render() override;
 		
 		/**
 		 * \brief 重置大小

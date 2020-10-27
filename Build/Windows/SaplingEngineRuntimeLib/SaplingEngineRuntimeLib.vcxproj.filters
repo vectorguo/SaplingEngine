@@ -143,7 +143,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Engine\Runtime\SaplingEngineMain.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Utility\Time.cpp">
       <Filter>Utility</Filter>
     </ClCompile>

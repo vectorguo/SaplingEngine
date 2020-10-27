@@ -4,9 +4,10 @@
 // Transforms and colors geometry.
 //***************************************************************************************
 
-cbuffer cbPerObject : register(b0)
+cbuffer CBufferPerObject : register(b0)
 {
-	float4x4 gWorldViewProj; 
+	float4x4 SAPLING_MATRIX_M;			//局部坐标到世界坐标的变换矩阵
+	float4x4 SAPLING_MATRIX_VP;			//世界坐标到投影坐标的变换矩阵
 };
 
 struct VertexIn
@@ -20,26 +21,26 @@ struct VertexIn
 
 struct VertexOut
 {
-	float4 PosH  : SV_POSITION;
-    float4 Color : COLOR;
+	float4 PositionCS  	: SV_POSITION;
+    float4 Color 		: COLOR;
 };
 
-VertexOut Vert(VertexIn vin)
+VertexOut Vert(VertexIn input)
 {
-	VertexOut vout;
+	VertexOut output;
 	
 	// Transform to homogeneous clip space.
-	vout.PosH = mul(float4(vin.PositionOS, 1.0f), gWorldViewProj);
+	output.PositionCS = mul(mul(float4(input.PositionOS, 1.0f), SAPLING_MATRIX_M), SAPLING_MATRIX_VP);
 	
 	// Just pass vertex color into the pixel shader.
-    vout.Color = vin.Color;
+    output.Color = input.Color;
     
-    return vout;
+    return output;
 }
 
-float4 Frag(VertexOut pin) : SV_Target
+float4 Frag(VertexOut input) : SV_Target
 {
-    return pin.Color;
+    return input.Color;
 }
 
 

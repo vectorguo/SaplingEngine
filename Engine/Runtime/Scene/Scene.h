@@ -84,6 +84,15 @@ namespace SaplingEngine
 			return m_GameObjects;
 		}
 
+		/**
+		 * \brief 获取所有游戏对象
+		 * \return 游戏对象
+		 */
+		std::vector<GameObjectPtr>& GetGameObjects()
+		{
+			return m_GameObjects;
+		}
+
 	private:
 		/**
 		 * \brief 创建GameObject

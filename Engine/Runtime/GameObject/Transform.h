@@ -20,11 +20,39 @@ namespace SaplingEngine
 		}
 
 		/**
+		 * \brief 获取局部坐标到世界坐标的变换矩阵
+		 * \return 局部坐标到世界坐标的变换矩阵
+		 */
+		const Matrix4x4& GetLocalToWorldMatrix()
+		{
+			if (m_IsDirty)
+			{
+				RefreshMatrix();
+			}
+			return m_LocalToWorldMatrix;
+		}
+		
+		/**
+		 * \brief 数据是否有变化
+		 * \return 数据是否有变化
+		 */
+		bool IsDirty() const
+		{
+			return m_IsDirty;
+		}
+		
+		/**
 		 * \brief 反序列化
 		 * \param pNode 配置节点指针
 		 * \return 反序列化是否成功
 		 */
 		bool Deserialize(const XmlNode* pNode) override;
+
+	private:
+		/**
+		 * \brief 刷新变换矩阵
+		 */
+		void RefreshMatrix();
 
 	private:
 		/**
@@ -61,6 +89,11 @@ namespace SaplingEngine
 		 * \brief 局部到世界坐标变换矩阵
 		 */
 		Matrix4x4 m_LocalToWorldMatrix;
+
+		/**
+		 * \brief 数据是否有变化
+		 */
+		bool m_IsDirty;
 	};
 
 	using TransformPtr = std::shared_ptr<Transform>;

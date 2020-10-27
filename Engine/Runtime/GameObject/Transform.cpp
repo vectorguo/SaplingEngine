@@ -17,4 +17,9 @@ namespace SaplingEngine
 		
 		return true;
 	}
+
+	void Transform::RefreshMatrix()
+	{
+		
+	}
 }

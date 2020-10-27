@@ -8,7 +8,8 @@ namespace SaplingEngine
 	
 	struct ObjectConstantData
 	{
-		Matrix4x4 ModelViewProj = Matrix4x4::Identity;
+		Matrix4x4 ModelToWorldMatrix = Matrix4x4::Identity;
+		Matrix4x4 WorldToProjectionMatrix = Matrix4x4::Identity;
 	};
 
 	struct PassConstantData

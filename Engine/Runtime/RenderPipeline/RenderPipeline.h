@@ -70,6 +70,13 @@ namespace SaplingEngine
 		 * \brief 根据优先级对RenderPass进行排序
 		 */
 		void SortRenderPass();
+
+		/**
+		 * \brief 更新常量缓冲区
+		 * \param pCamera 渲染使用的相机
+		 * \param pActiveScene 当前活动场景
+		 */
+		void UpdateConstantBuffer(const Camera* pCamera, Scene* pActiveScene);
 		
 	private:
 		/**

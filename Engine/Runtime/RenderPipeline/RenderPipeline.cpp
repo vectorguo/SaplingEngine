@@ -6,6 +6,7 @@
 #include "RenderLibrary/DirectX12/Dx12CommandManager.h"
 #include "RenderLibrary/DirectX12/Dx12GraphicsManager.h"
 #include "RenderPass/RenderOpaquePass.h"
+#include "Scene/Scene.h"
 #include "Scene/SceneManager.h"
 
 namespace SaplingEngine
@@ -56,11 +57,15 @@ namespace SaplingEngine
 	{
 		PreRender();
 
-		//渲染
-		const auto* pActiveScene = SceneManager::Instance()->GetActiveScene();
+		//更新常量缓冲区
+		auto* pActiveScene = SceneManager::Instance()->GetActiveScene();
+		
+		//执行Render Pass
 		const auto& cameras = CameraManager::Instance()->GetCameras();
 		for (const auto& pCamera : cameras)
 		{
+			//TODO PASSCB和OBJECTCB要拆分开
+			UpdateConstantBuffer(pCamera.get(), pActiveScene);
 			for (auto iter = m_RenderPasses.begin(); iter != m_RenderPasses.end(); ++iter)
 			{
 				(*iter)->Render(pCamera.get(), pActiveScene);
@@ -165,5 +170,27 @@ namespace SaplingEngine
 			{
 				return rp1->GetPriority() < rp2->GetPriority();
 			});
+	}
+
+	/**
+	 * \brief 更新常量缓冲区
+	 * \param pCamera 渲染使用的相机
+	 * \param pActiveScene 当前活动场景
+	 */
+	void RenderPipeline::UpdateConstantBuffer(const Camera* pCamera, Scene* pActiveScene)
+	{
+		auto& objects = pActiveScene->GetGameObjects();
+		for (auto iter = objects.begin(); iter != objects.end(); ++iter)
+		{
+			auto* pTransform = (*iter)->GetComponent<Transform>().get();
+			
+			// auto localToWorldMatrix = pTransform->GetLocalToWorldMatrix().Transpose();
+			// auto worldToProjectMatrix = XM
+			//
+			// ObjectConstantData data;
+			// data.ModelToWorldMatrix = Matrix4x4::Translate(0, 0, 1.0f);// Matrix4x4::Scale(0.5f, 0.5f, 0.5f);
+			// data.ModelToWorldMatrix = data.ModelToWorldMatrix.Transpose();
+			// m_ObjConstantBuffer->CopyData(0, data);
+		}
 	}
 }

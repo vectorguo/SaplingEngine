@@ -39,11 +39,6 @@ namespace SaplingEngine
 		{
 			
 		}
-
-		/**
-		 * \brief »æÖÆ
-		 */
-		virtual void Render() {}
 		
 		/**
 		 * \brief Ïú»Ù

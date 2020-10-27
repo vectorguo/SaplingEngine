@@ -45,31 +45,6 @@ namespace SaplingEngine
 		CreateDsv(width, height);
 		CreateCbv();
 	}
-
-	/**
-	 * \brief 绘制
-	 */
-	void Dx12GraphicsManager::Render()
-	{
-		auto* pCommandList = m_pCommandManager->m_CommandList.Get();
-
-		//设置跟描述符表和常量缓冲区，将常量缓冲区绑定到渲染流水线上
-		ID3D12DescriptorHeap* descriptorHeaps[] = { m_CbvDescriptorHeap.Get() };
-		pCommandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
-		pCommandList->SetGraphicsRootSignature(m_RootSignature.Get());
-		pCommandList->SetGraphicsRootDescriptorTable(1, GetGPUHandleFromDescriptorHeap(m_CbvDescriptorHeap.Get(), m_PassCbvOffset, m_CbvDescriptorSize));
-
-		//渲染物体
-		//TODO
-		auto* pActiveScene = SceneManager::Instance()->GetActiveScene();
-		auto pObject = pActiveScene->GetGameObject("cube");
-		auto* pMesh = pObject->GetComponent<MeshRenderer>()->GetMesh();
-		pCommandList->IASetVertexBuffers(0, 1, pMesh->GetVertexBufferView());
-		pCommandList->IASetIndexBuffer(pMesh->GetIndexBufferView());
-		pCommandList->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		pCommandList->SetGraphicsRootDescriptorTable(0, GetGPUHandleFromDescriptorHeap(m_CbvDescriptorHeap.Get()));
-		pCommandList->DrawIndexedInstanced(pMesh->GetIndexCount(), 1, 0, 0, 0);
-	}
 	
 	/**
 	 * \brief 重置大小
@@ -526,8 +501,8 @@ namespace SaplingEngine
 		m_D3D12Device->CreateConstantBufferView(&cbvDesc, GetCPUHandleFromDescriptorHeap(m_CbvDescriptorHeap.Get(), m_PassCbvOffset, m_CbvDescriptorSize));
 
 		ObjectConstantData data;
-		data.ModelViewProj = Matrix4x4::Translate(0, 0, 1.0f);// Matrix4x4::Scale(0.5f, 0.5f, 0.5f);
-		data.ModelViewProj = data.ModelViewProj.Transpose();
+		data.ModelToWorldMatrix = Matrix4x4::Translate(0, 0, 1.0f);// Matrix4x4::Scale(0.5f, 0.5f, 0.5f);
+		data.ModelToWorldMatrix = data.ModelToWorldMatrix.Transpose();
 		m_ObjConstantBuffer->CopyData(0, data);
 	}
 }

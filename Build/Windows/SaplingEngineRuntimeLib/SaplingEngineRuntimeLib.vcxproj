@@ -13,19 +13,19 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{eea64b1e-d0e5-482b-8679-d4e176b87271}</ProjectGuid>
-    <RootNamespace>SaplingEngineRuntime</RootNamespace>
+    <ProjectGuid>{d973b2dd-2832-41e1-aa7f-0a04662623ee}</ProjectGuid>
+    <RootNamespace>SaplingEngineRuntimeLib</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -45,27 +45,33 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IntDir>../../../Temp/EngineRuntimeLib/$(Platform)\$(Configuration)\</IntDir>
     <IncludePath>../../../Engine/Runtime;$(IncludePath)</IncludePath>
-    <IntDir>../../../Temp/$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>SaplingEngineRuntime</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IntDir>../../../Temp/EngineRuntimeLib/$(Platform)\$(Configuration)\</IntDir>
     <IncludePath>../../../Engine/Runtime;$(IncludePath)</IncludePath>
-    <IntDir>../../../Temp/$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>SaplingEngineRuntime</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <DisableSpecificWarnings>
-      </DisableSpecificWarnings>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>copy $(SolutionDir)$(Platform)\$(Configuration)\SaplingEngineRuntime.lib $(SolutionDir)..\..\..\Lib\SaplingEngineRuntime\$(Configuration)\SaplingEngineRuntime.lib /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -73,17 +79,21 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <DisableSpecificWarnings>
-      </DisableSpecificWarnings>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>copy $(SolutionDir)$(Platform)\$(Configuration)\SaplingEngineRuntime.lib $(SolutionDir)..\..\..\Lib\SaplingEngineRuntime\$(Configuration)\SaplingEngineRuntime.lib /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Engine\Runtime\Application\GameApplication.h" />
@@ -167,7 +177,6 @@
     <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPass\RenderOpaquePass.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPass\RenderPass.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPipeline.cpp" />
-    <ClCompile Include="..\..\..\Engine\Runtime\SaplingEngineMain.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Scene\Scene.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Scene\SceneManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Utility\Time.cpp" />

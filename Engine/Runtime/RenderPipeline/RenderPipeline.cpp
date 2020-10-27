@@ -98,7 +98,7 @@ namespace SaplingEngine
 	/**
 	 * \brief 设置宽度和高度
 	 */
-	void RenderPipeline::Resize()
+	void RenderPipeline::OnWindowResize()
 	{
 		const auto width = GameSetting::Instance()->ScreenWidth();
 		const auto height = GameSetting::Instance()->ScreenHeight();
@@ -106,7 +106,7 @@ namespace SaplingEngine
 		{
 			m_ScreenWidth = width;
 			m_ScreenHeight = height;
-			m_pGraphicsManager->Resize(m_ScreenWidth, m_ScreenHeight);
+			m_pGraphicsManager->OnWindowResize(m_ScreenWidth, m_ScreenHeight);
 		}
 	}
 

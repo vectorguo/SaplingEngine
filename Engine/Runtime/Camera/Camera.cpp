@@ -20,8 +20,6 @@ namespace SaplingEngine
 		}
 		else
 		{
-			//平行投影
-			m_Size = XmlGetAttributeValue<float>(pNode, "size");
 		}
 
 		m_Priority = XmlGetAttributeValue<int32_t>(pNode, "priority");

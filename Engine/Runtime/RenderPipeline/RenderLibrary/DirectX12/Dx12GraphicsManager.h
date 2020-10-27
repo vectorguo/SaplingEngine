@@ -42,7 +42,7 @@ namespace SaplingEngine
 		/**
 		 * \brief 重置大小
 		 */
-		void Resize(uint32_t width, uint32_t height) override;
+		void OnWindowResize(uint32_t width, uint32_t height) override;
 		
 		/**
 		 * \brief 销毁

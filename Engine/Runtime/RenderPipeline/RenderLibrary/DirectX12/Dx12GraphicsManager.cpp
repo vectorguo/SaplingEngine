@@ -49,7 +49,7 @@ namespace SaplingEngine
 	/**
 	 * \brief 重置大小
 	 */
-	void Dx12GraphicsManager::Resize(uint32_t width, uint32_t height)
+	void Dx12GraphicsManager::OnWindowResize(uint32_t width, uint32_t height)
 	{
 		//释放之前的缓存
 		for (auto& buffer : m_SwapChainBuffer)

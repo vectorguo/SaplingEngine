@@ -11,9 +11,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Game\SaplingGameMain.cpp" />
+    <ClCompile Include="..\..\..\Game\Input\ChessWarInput.cpp" />
+    <ClCompile Include="..\..\..\Game\ChessWarMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Game\ChessWarEnum.h" />
+    <ClInclude Include="..\..\..\Game\Input\ChessWarInput.h" />
     <ClInclude Include="..\..\..\Game\Utility\ChessWarComponentFactory.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

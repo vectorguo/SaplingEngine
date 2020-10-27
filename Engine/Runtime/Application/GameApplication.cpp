@@ -180,7 +180,8 @@ namespace SaplingEngine
 				m_IsActive = true;
 				m_IsMinimized = false;
 				m_IsMaximized = true;
-				RenderPipeline::Instance()->Resize();
+				CameraManager::Instance()->OnWindowResize();
+				RenderPipeline::Instance()->OnWindowResize();
 			}
 			else if (wParam == SIZE_RESTORED)
 			{
@@ -188,20 +189,23 @@ namespace SaplingEngine
 				{
 					m_IsActive = true;
 					m_IsMinimized = false;
-					RenderPipeline::Instance()->Resize();
+					CameraManager::Instance()->OnWindowResize();
+					RenderPipeline::Instance()->OnWindowResize();
 				}
 				else if (m_IsMaximized)
 				{
 					m_IsActive = true;
 					m_IsMaximized = false;
-					RenderPipeline::Instance()->Resize();
+					CameraManager::Instance()->OnWindowResize();
+					RenderPipeline::Instance()->OnWindowResize();
 				}
 				else if (m_IsResizing)
 				{
 				}
 				else
 				{
-					RenderPipeline::Instance()->Resize();
+					CameraManager::Instance()->OnWindowResize();
+					RenderPipeline::Instance()->OnWindowResize();
 				}
 			}
 			return 0;
@@ -216,7 +220,8 @@ namespace SaplingEngine
 			m_IsActive = true;
 			m_IsResizing = false;
 			Time::Start();
-			RenderPipeline::Instance()->Resize();
+			CameraManager::Instance()->OnWindowResize();
+			RenderPipeline::Instance()->OnWindowResize();
 			return 0;
 
 		case WM_LBUTTONDOWN:

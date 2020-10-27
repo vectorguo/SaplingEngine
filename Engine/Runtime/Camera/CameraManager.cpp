@@ -1,5 +1,7 @@
 #include "CameraManager.h"
 
+#include "Application/GameSetting.h"
+
 namespace SaplingEngine
 {
 	/**
@@ -8,6 +10,19 @@ namespace SaplingEngine
 	void CameraManager::Destroy()
 	{
 		
+	}
+
+	/**
+	 * \brief ÆÁÄ»³ß´çÐÞ¸Ä
+	 */
+	void CameraManager::OnWindowResize()
+	{
+		const auto width = GameSetting::Instance()->ScreenWidth();
+		const auto height = GameSetting::Instance()->ScreenHeight();
+		for (auto iter = m_Cameras.begin(); iter != m_Cameras.end(); ++iter)
+		{
+			(*iter)->SetWindowSize(width, height);
+		}
 	}
 
 	void CameraManager::AddCamera(CameraPtr&& pCamera)

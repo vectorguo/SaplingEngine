@@ -41,7 +41,7 @@ namespace SaplingEngine
 		/**
 		 * \brief 设置宽度和高度
 		 */
-		void Resize();
+		void OnWindowResize();
 		
 		/**
 		 * \brief 添加RenderPass

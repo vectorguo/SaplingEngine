@@ -43,7 +43,7 @@ namespace SaplingEngine
 		/**
 		 * \brief Ïú»Ù
 		 */
-		virtual void Resize(uint32_t width, uint32_t height)
+		virtual void OnWindowResize(uint32_t width, uint32_t height)
 		{
 
 		}

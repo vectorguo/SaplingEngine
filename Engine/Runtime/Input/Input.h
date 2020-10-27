@@ -36,6 +36,8 @@ namespace SaplingEngine
 			
 		}
 
+		~Input() = default;
+
 		SINGLETON(Input)
 
 		/**

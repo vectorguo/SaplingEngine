@@ -54,7 +54,7 @@ namespace SaplingEngine
 			m_Projection = projection;
 
 			//刷新投影矩阵
-			//TODO
+			m_IsDirty = true;
 		}
 
 		/**
@@ -73,32 +73,9 @@ namespace SaplingEngine
 		void SetFov(const float fov)
 		{
 			m_Fov = fov;
-
-			//刷新投影矩阵
-			//TODO
+			m_IsDirty = true;
 		}
-
-		/**
-		 * \brief 获取相机size
-		 * \return size
-		 */
-		float GetSize() const
-		{
-			return m_Size;
-		}
-
-		/**
-		 * \brief 设置相机size
-		 * \param size size
-		 */
-		void SetSize(const float size)
-		{
-			m_Size = size;
-
-			//刷新投影矩阵
-			//TODO
-		}
-
+		
 		/**
 		 * \brief 获取相机近投影面
 		 * \return 近投影面
@@ -115,9 +92,7 @@ namespace SaplingEngine
 		void SetNearClippingPlanes(const float nearClippingPlanes)
 		{
 			m_NearClippingPlanes = nearClippingPlanes;
-
-			//刷新投影矩阵
-			//TODO
+			m_IsDirty = true;
 		}
 
 		/**
@@ -136,9 +111,45 @@ namespace SaplingEngine
 		void SetFarClippingPlanes(const float farClippingPlanes)
 		{
 			m_FarClippingPlanes = farClippingPlanes;
+			m_IsDirty = true;
+		}
 
-			//刷新投影矩阵
-			//TODO
+		/**
+		 * \brief 设置窗口的宽高比
+		 * \param width 屏幕宽度
+		 * \param height 屏幕高度
+		 */
+		void SetWindowSize(const uint32_t width, const uint32_t height)
+		{
+			m_WindowWidth = static_cast<float>(width);
+			m_WindowHeight = static_cast<float>(height);
+			m_IsDirty = true;
+		}
+
+		/**
+		 * \brief 获取视图矩阵
+		 * \return 投影视图
+		 */
+		Matrix4x4& GetWorldToViewMatrix()
+		{
+			if (m_IsDirty)
+			{
+				RefreshMatrix();
+			}
+			return m_WorldToViewMatrix;
+		}
+		
+		/**
+		 * \brief 获取投影矩阵
+		 * \return 投影矩阵
+		 */
+		Matrix4x4& GetViewToProjMatrix()
+		{
+			if (m_IsDirty)
+			{
+				RefreshMatrix();
+			}
+			return m_ViewToProjMatrix;
 		}
 
 		/**
@@ -176,13 +187,39 @@ namespace SaplingEngine
 		void Awake() override;
 		void OnDestroy() override;
 
+		/**
+		 * \brief 刷新矩阵
+		 */
+		void RefreshMatrix()
+		{
+			//计算视图矩阵
+
+			
+			//计算投影矩阵
+			m_ViewToProjMatrix = m_Projection == EProjection::Orthographic
+				? Matrix4x4::Orthographic(m_WindowWidth, m_WindowHeight, m_NearClippingPlanes, m_FarClippingPlanes)
+				: Matrix4x4::Perspective(m_Fov, m_WindowWidth / m_WindowHeight, m_NearClippingPlanes, m_FarClippingPlanes);
+		}
+
 	private:
 		EProjection m_Projection = EProjection::Perspective;
 		float m_Fov = 60.0f;
-		float m_Size = 5.0f;
+		float m_WindowWidth = 5.0f;
+		float m_WindowHeight = 5.0f;
 		float m_NearClippingPlanes = 0.3f;
 		float m_FarClippingPlanes = 100.0f;
+		bool m_IsDirty = true;
 
+		/**
+		 * \brief 世界坐标到视图坐标的变换矩阵
+		 */
+		Matrix4x4 m_WorldToViewMatrix;
+		
+		/**
+		 * \brief 视图坐标到投影坐标的变换矩阵
+		 */
+		Matrix4x4 m_ViewToProjMatrix;
+		
 		/**
 		 * \brief 相机渲染优先级
 		 */

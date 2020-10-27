@@ -1,19 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\..\..\Game\SaplingGameMain.cpp" />
+    <ClCompile Include="..\..\..\Game\Input\ChessWarInput.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Game\ChessWarMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utility">
       <UniqueIdentifier>{492e42dc-f1a5-4a08-b36e-67e915203f5f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Camera">
-      <UniqueIdentifier>{21d7372b-822f-4900-85cf-9681d523fa3c}</UniqueIdentifier>
+    <Filter Include="Input">
+      <UniqueIdentifier>{1436d701-64d4-42a4-b112-abd97d3b975a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Game\Utility\ChessWarComponentFactory.h">
       <Filter>Utility</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Game\Input\ChessWarInput.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Game\ChessWarEnum.h" />
   </ItemGroup>
 </Project>

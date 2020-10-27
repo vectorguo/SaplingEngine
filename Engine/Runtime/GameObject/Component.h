@@ -99,13 +99,13 @@ namespace SaplingEngine
 		}
 
 	private:
-		void SetOwner(std::shared_ptr<GameObject> pOwner)
+		void SetGameObject(std::shared_ptr<GameObject> pOwner)
 		{
-			m_pOwner.swap(pOwner);
+			m_pGameObject.swap(pOwner);
 		}
 		
 	protected:
-		std::shared_ptr<GameObject> m_pOwner;
+		std::shared_ptr<GameObject> m_pGameObject;
 
 		/**
 		 * \brief 是否处于活动状态

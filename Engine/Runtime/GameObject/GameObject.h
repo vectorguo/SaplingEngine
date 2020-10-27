@@ -192,16 +192,14 @@ namespace SaplingEngine
 		{
 			//没有添加相同类型的组件
 			auto componentPtr = std::make_shared<T>();
-			componentPtr->SetOwner(shared_from_this());
+			componentPtr->SetGameObject(shared_from_this());
 			m_NewComponents.insert_or_assign(componentType, componentPtr);
 			m_NewComponents[componentType]->Awake();
 			return componentPtr;
 		}
-		else
-		{
-			//已经添加相同类型的组件
-			return nullptr;
-		}
+
+		//已经添加相同类型的组件
+		return nullptr;
 	}
 
 	template <typename T>

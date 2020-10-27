@@ -27,6 +27,11 @@ namespace SaplingEngine
 		 * \brief Ïú»Ù
 		 */
 		void Destroy();
+
+		/**
+		 * \brief ÆÁÄ»³ß´çÐÞ¸Ä
+		 */
+		void OnWindowResize();
 		
 	private:
 		void AddCamera(CameraPtr&& pCamera);

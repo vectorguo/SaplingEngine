@@ -234,7 +234,7 @@ namespace SaplingEngine
 		{
 			//没有添加相同类型的组件
 			std::shared_ptr<Component> componentPtr(pComponent);
-			componentPtr->SetOwner(shared_from_this());
+			componentPtr->SetGameObject(shared_from_this());
 			m_NewComponents.insert_or_assign(componentType, componentPtr);
 			m_NewComponents[componentType]->Awake();
 		}
@@ -249,14 +249,14 @@ namespace SaplingEngine
 		for (auto iter = m_NewComponents.begin(); iter != m_NewComponents.end(); ++iter)
 		{
 			iter->second->OnDestroy();
-			iter->second->m_pOwner = nullptr;
+			iter->second->m_pGameObject = nullptr;
 		}
 		m_NewComponents.clear();
 
 		for (auto iter = m_Components.begin(); iter != m_Components.end(); ++iter)
 		{
 			iter->second->OnDestroy();
-			iter->second->m_pOwner = nullptr;
+			iter->second->m_pGameObject = nullptr;
 		}
 		m_Components.clear();
 

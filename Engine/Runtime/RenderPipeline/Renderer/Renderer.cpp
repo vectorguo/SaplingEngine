@@ -17,19 +17,28 @@ namespace SaplingEngine
 	{
 		delete m_pMaterial;
 		delete m_pMesh;
-		
-		GraphicsManager::Instance()->ReturnObjectConstantBufferIndex(m_ConstantBufferIndex);
+
+		if (m_ConstantBufferIndex >= 0)
+		{
+			GraphicsManager::Instance()->ReturnObjectConstantBufferIndex(m_ConstantBufferIndex);
+		}
 	}
 
 	void Renderer::Start()
 	{
-		auto* pActiveScene = m_pGameObject->GetScene();
-		pActiveScene->AddRenderItem(this);
+		if (m_ConstantBufferIndex >= 0)
+		{
+			auto* pActiveScene = m_pGameObject->GetScene();
+			pActiveScene->AddRenderItem(this);
+		}
 	}
 
 	void Renderer::OnDestroy()
 	{
-		auto* pActiveScene = m_pGameObject->GetScene();
-		pActiveScene->RemoveRenderItem(this);
+		if (m_ConstantBufferIndex >= 0)
+		{
+			auto* pActiveScene = m_pGameObject->GetScene();
+			pActiveScene->RemoveRenderItem(this);
+		}
 	}
 }

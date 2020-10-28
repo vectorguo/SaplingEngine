@@ -97,9 +97,16 @@ namespace SaplingEngine
 	 */
 	int32_t Dx12GraphicsManager::GetObjectConstantBufferIndex()
 	{
-		const auto index = *m_CbvBufferIndices.rbegin();
-		m_CbvBufferIndices.pop_back();
-		return index;
+		if (m_CbvBufferIndices.empty())
+		{
+			return -1;
+		}
+		else
+		{
+			const auto index = *m_CbvBufferIndices.rbegin();
+			m_CbvBufferIndices.pop_back();
+			return index;
+		}
 	}
 
 	/**

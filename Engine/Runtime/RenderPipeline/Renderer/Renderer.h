@@ -30,7 +30,7 @@ namespace SaplingEngine
 		{
 			return ComponentType_Renderer;
 		}
-
+		
 		/**
 		 * \brief 获取常量缓冲区的索引
 		 * \return 常量缓冲区的索引

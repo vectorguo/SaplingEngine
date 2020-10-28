@@ -7,6 +7,8 @@
 namespace SaplingEngine
 {
 	class GameObject;
+	class Scene;
+	
 	using GameObjectPtr = std::shared_ptr<GameObject>;
 	using GameObjectList = std::vector<GameObjectPtr>;
 	
@@ -35,10 +37,11 @@ namespace SaplingEngine
 		
 		/**
 		 * \brief 初始化
+		 * \param pScene 所属场景
 		 * \param isDeserialized 是否时反序列化的GameObject初始化
 		 * \return 初始化是否成功
 		 */
-		bool Initialize(bool isDeserialized = false);
+		bool Initialize(Scene* pScene, bool isDeserialized = false);
 		
 		/**
 		 * \brief 更新
@@ -162,6 +165,15 @@ namespace SaplingEngine
 		void SetParent(const GameObjectPtr& parent);
 
 		/**
+		 * \brief 获取所在场景指针
+		 * \return 场景指针
+		 */
+		Scene* GetScene() const
+		{
+			return m_pScene;
+		}
+		
+		/**
 		 * \brief 序列化
 		 */
 		void Serialize();
@@ -233,6 +245,11 @@ namespace SaplingEngine
 		 * \brief 父节点
 		 */
 		GameObjectPtr m_Parent;
+
+		/**
+		 * \brief 所在场景的指针
+		 */
+		Scene* m_pScene = nullptr;
 	};
 
 	/*

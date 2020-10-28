@@ -17,10 +17,7 @@ namespace SaplingEngine
 		
 	}
 
-	Scene::~Scene()
-	{
-		
-	}
+	Scene::~Scene() = default;
 
 	/**
 	 * \brief ≥ı ºªØ≥°æ∞
@@ -32,6 +29,7 @@ namespace SaplingEngine
 		{
 			auto gameObject = std::make_shared<GameObject>(GameObjectId++);
 			gameObject->Deserialize(pChild);
+			gameObject->Initialize(this, true);
 			m_GameObjects.push_back(gameObject);
 		}
 	}
@@ -83,7 +81,7 @@ namespace SaplingEngine
 	GameObjectPtr Scene::CreateGameObject()
 	{
 		auto gameObject = std::make_shared<GameObject>(GameObjectId++);
-		gameObject->Initialize();
+		gameObject->Initialize(this);
 		m_GameObjects.push_back(gameObject);
 		return gameObject;
 	}
@@ -96,7 +94,7 @@ namespace SaplingEngine
 	GameObjectPtr Scene::CreateGameObject(const std::string& name)
 	{
 		auto gameObject = std::make_shared<GameObject>(GameObjectId++, name);
-		gameObject->Initialize();
+		gameObject->Initialize(this);
 		m_GameObjects.push_back(gameObject);
 		return gameObject;
 	}
@@ -109,7 +107,7 @@ namespace SaplingEngine
 	GameObjectPtr Scene::CreateGameObject(std::string&& name)
 	{
 		auto gameObject = std::make_shared<GameObject>(GameObjectId++, std::move(name));
-		gameObject->Initialize();
+		gameObject->Initialize(this);
 		m_GameObjects.push_back(gameObject);
 		return gameObject;
 	}

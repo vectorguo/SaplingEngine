@@ -17,14 +17,10 @@ namespace SaplingEngine
 		pCommandManager->ClearRenderTargets(true, true, m_BackgroundColor);
 		pCommandManager->SetRootSignature();
 
-		const auto& objects = pActiveScene->GetGameObjects();
-		for (auto iter = objects.begin(); iter != objects.end(); ++iter)
+		const auto& renderItems = pActiveScene->GetRenderItems();
+		for (auto iter = renderItems.begin(); iter != renderItems.end(); ++iter)
 		{
-			const auto pMeshRenderer = (*iter)->GetComponent<MeshRenderer>();
-			if (pMeshRenderer != nullptr)
-			{
-				pCommandManager->DrawIndexedInstanced(pMeshRenderer->GetMesh(), pMeshRenderer->GetMaterial());
-			}
+			pCommandManager->DrawIndexedInstanced(*iter);
 		}
 	}
 }

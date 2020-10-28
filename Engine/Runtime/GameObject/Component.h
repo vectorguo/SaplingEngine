@@ -11,6 +11,9 @@ namespace SaplingEngine
 	constexpr uint32_t ComponentType_InternalLimit = ComponentType_Renderer;
 
 	class GameObject;
+	class Transform;
+	using TransformPtr = std::shared_ptr<Transform>;
+	
 	class Component : public std::enable_shared_from_this<Component>
 	{
 		friend class GameObject;
@@ -46,6 +49,9 @@ namespace SaplingEngine
 		{
 			return m_pGameObject;
 		}
+
+		Transform* GetTransform() const;
+		TransformPtr& GetTransformPtr() const;
 
 		/**
 		 * \brief 是否是活动状态

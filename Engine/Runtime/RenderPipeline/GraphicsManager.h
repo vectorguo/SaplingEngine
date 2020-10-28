@@ -51,6 +51,24 @@ namespace SaplingEngine
 		}
 
 		/**
+		 * \brief 获取Object常量缓冲区索引
+		 * \return 常量缓冲区索引
+		 */
+		virtual int32_t GetObjectConstantBufferIndex()
+		{
+			return -1;
+		}
+
+		/**
+		 * \brief 归还常量缓冲区索引
+		 * \param index 常量缓冲区索引
+		 */
+		virtual void ReturnObjectConstantBufferIndex(int32_t index)
+		{
+			
+		}
+		
+		/**
 		 * \brief 更新物体常量缓冲区数据
 		 * \param pActiveScene 当前活动场景
 		 */

@@ -45,6 +45,18 @@ namespace SaplingEngine
 		void OnWindowResize(uint32_t width, uint32_t height) override;
 
 		/**
+		 * \brief 获取Object常量缓冲区索引
+		 * \return 常量缓冲区索引
+		 */
+		int32_t GetObjectConstantBufferIndex() override;
+
+		/**
+		 * \brief 归还常量缓冲区索引
+		 * \param index 常量缓冲区索引
+		 */
+		void ReturnObjectConstantBufferIndex(int32_t index) override;
+		
+		/**
 		 * \brief 更新物体常量缓冲区数据
 		 * \param pActiveScene 当前活动场景
 		 */
@@ -200,7 +212,7 @@ namespace SaplingEngine
 		ComPtr<ID3D12DescriptorHeap>				m_RtvDescriptorHeap;					//渲染对象描述符堆
 		ComPtr<ID3D12DescriptorHeap>				m_DsvDescriptorHeap;					//深度/模板描述符堆
 		ComPtr<ID3D12DescriptorHeap>				m_CbvDescriptorHeap;					//常量缓冲区描述符堆
-		uint32_t									m_CbvBufferViewCount = 1;				//常量缓冲区描述符数量
+		std::vector<uint32_t>						m_CbvBufferIndices;						//常量缓冲区描述符数量
 
 		ComPtr<IDXGISwapChain>						m_SwapChain;							//交换链
 		ComPtr<ID3D12Resource>						m_SwapChainBuffer[SwapChainBufferCount];//交换链缓冲区

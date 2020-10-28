@@ -1,6 +1,7 @@
 #include "Dx12CommandManager.h"
 #include "Dx12GraphicsManager.h"
 #include "Graphics/Mesh.h"
+#include "RenderPipeline/Renderer/Renderer.h"
 
 namespace SaplingEngine
 {
@@ -121,15 +122,17 @@ namespace SaplingEngine
 
 	/**
 	 * \brief 绘制物体
-	 * \param pMesh Mesh
-	 * \param pMaterial Material
+	 * \param pRenderer renderer
 	 */
-	void Dx12CommandManager::DrawIndexedInstanced(const Mesh* pMesh, const Material* pMaterial)
+	void Dx12CommandManager::DrawIndexedInstanced(const Renderer* pRenderer)
 	{
+		const auto* pMesh = pRenderer->GetMesh();
 		m_CommandList->IASetVertexBuffers(0, 1, pMesh->GetVertexBufferView());
 		m_CommandList->IASetIndexBuffer(pMesh->GetIndexBufferView());
 		m_CommandList->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		m_CommandList->SetGraphicsRootDescriptorTable(0, GetGPUHandleFromDescriptorHeap(m_pGraphicsManager->m_CbvDescriptorHeap.Get()));
+
+		//获取该Renderer所对应的常量缓冲区描述符
+		m_CommandList->SetGraphicsRootDescriptorTable(0, GetGPUHandleFromDescriptorHeap(m_pGraphicsManager->m_CbvDescriptorHeap.Get(), pRenderer->GetConstantBufferIndex(), m_pGraphicsManager->m_CbvDescriptorSize));
 		m_CommandList->DrawIndexedInstanced(pMesh->GetIndexCount(), 1, 0, 0, 0);
 	}
 

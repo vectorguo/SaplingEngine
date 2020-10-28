@@ -3,6 +3,7 @@
 
 #include "Application/GameSetting.h"
 #include "Camera/Camera.h"
+#include "GameObject/Transform.h"
 #include "Graphics/Shader.h"
 #include "Graphics/ShaderManager.h"
 #include "RenderPipeline/Renderer/MeshRenderer.h"
@@ -10,9 +11,16 @@
 
 namespace SaplingEngine
 {
+	constexpr int32_t CbvBufferIndexCount = 500;
+	
 	Dx12GraphicsManager::Dx12GraphicsManager()
 		: GraphicsManager(), m_Viewport(), m_ScissorRect()
 	{
+		m_CbvBufferIndices.reserve(CbvBufferIndexCount);
+		for (auto i = CbvBufferIndexCount - 1; i >= 0; --i)
+		{
+			m_CbvBufferIndices.emplace_back(i);
+		}
 	}
 
 	Dx12GraphicsManager::~Dx12GraphicsManager() = default;
@@ -84,21 +92,37 @@ namespace SaplingEngine
 	}
 
 	/**
+	 * \brief 获取Object常量缓冲区索引
+	 * \return 常量缓冲区索引
+	 */
+	int32_t Dx12GraphicsManager::GetObjectConstantBufferIndex()
+	{
+		const auto index = *m_CbvBufferIndices.rbegin();
+		m_CbvBufferIndices.pop_back();
+		return index;
+	}
+
+	/**
+	 * \brief 归还常量缓冲区索引
+	 * \param index 常量缓冲区索引
+	 */
+	void Dx12GraphicsManager::ReturnObjectConstantBufferIndex(int32_t index)
+	{
+		m_CbvBufferIndices.push_back(index);
+	}
+
+	/**
 	 * \brief 更新物体常量缓冲区数据
 	 * \param pActiveScene 当前活动场景
 	 */
 	void Dx12GraphicsManager::UpdateObjectConstantBuffer(Scene* pActiveScene)
 	{
-		auto& objects = pActiveScene->GetGameObjects();
-		for (auto iter = objects.begin(); iter != objects.end(); ++iter)
+		const auto& renderItems = pActiveScene->GetRenderItems();
+		for (auto iter = renderItems.begin(); iter != renderItems.end(); ++iter)
 		{
-			if ((*iter)->GetComponent<MeshRenderer>() == nullptr)
-			{
-				continue;
-			}
-			
-			auto* pTransform = (*iter)->GetTransform();
-			m_ObjConstantBuffer->CopyData(0,
+			auto* pRenderer = *iter;
+			auto* pTransform = pRenderer->GetTransform();
+			m_ObjConstantBuffer->CopyData(pRenderer->GetConstantBufferIndex(),
 				{
 					pTransform->GetLocalToWorldMatrix().Transpose()
 				});
@@ -348,7 +372,7 @@ namespace SaplingEngine
 
 		//常量缓冲区描述符/着色器资源描述符/无需访问描述符堆
 		heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-		heapDesc.NumDescriptors = m_CbvBufferViewCount + 1;		//Object常量缓冲区和Pass常量缓冲区
+		heapDesc.NumDescriptors = CbvBufferIndexCount + 1;		//Object常量缓冲区和Pass常量缓冲区
 		heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 		heapDesc.NodeMask = 0;
 		ThrowIfFailed(m_D3D12Device->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(m_CbvDescriptorHeap.GetAddressOf())));
@@ -518,14 +542,14 @@ namespace SaplingEngine
 	void Dx12GraphicsManager::CreateCbv()
 	{
 		//创建CBV
-		m_ObjConstantBuffer = std::make_unique<Dx12UploadBuffer<ObjectConstantData>>(m_D3D12Device.Get(), m_CbvBufferViewCount, true);
+		m_ObjConstantBuffer = std::make_unique<Dx12UploadBuffer<ObjectConstantData>>(m_D3D12Device.Get(), CbvBufferIndexCount, true);
 		m_PassConstantBuffer = std::make_unique<Dx12UploadBuffer<PassConstantData>>(m_D3D12Device.Get(), 1, true);
-		m_PassCbvOffset = m_CbvBufferViewCount;
+		m_PassCbvOffset = CbvBufferIndexCount;
 
 		D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc;
 
 		const auto elementSize = m_ObjConstantBuffer->GetElementSize();
-		for (uint32_t i = 0; i < m_CbvBufferViewCount; ++i)
+		for (uint32_t i = 0; i < CbvBufferIndexCount; ++i)
 		{
 			cbvDesc.BufferLocation = m_ObjConstantBuffer->GetGpuVirtualAddress(i);
 			cbvDesc.SizeInBytes = elementSize;

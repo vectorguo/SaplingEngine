@@ -5,12 +5,7 @@
 namespace SaplingEngine
 {
 	MeshRenderer::MeshRenderer() = default;
-
-	MeshRenderer::~MeshRenderer()
-	{
-		delete m_pMaterial;
-		delete m_pMesh;
-	}
+	MeshRenderer::~MeshRenderer() = default;
 
 	/**
 	 * \brief ·´ĞòÁĞ»¯

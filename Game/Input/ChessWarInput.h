@@ -62,9 +62,5 @@ namespace ChessWar
 		 * \brief  Û±ÍŒª÷√
 		 */
 		Vector2 m_MousePosition;
-		
-		float m_Theta = 1.5f * XM_PI;
-		float m_Phi = XM_PIDIV4;
-		float m_Radius = 10.0f;
 	};
 }

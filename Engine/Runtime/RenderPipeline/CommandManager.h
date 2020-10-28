@@ -4,8 +4,7 @@
 
 namespace SaplingEngine
 {
-	class Material;
-	class Mesh;
+	class Renderer;
 	
 	class CommandManager
 	{
@@ -67,10 +66,9 @@ namespace SaplingEngine
 
 		/**
 		 * \brief »æÖÆÎïÌå
-		 * \param pMesh Mesh
-		 * \param pMaterial Material
+		 * \param pRenderer renderer
 		 */
-		virtual void DrawIndexedInstanced(const Mesh* pMesh, const Material* pMaterial) = 0;
+		virtual void DrawIndexedInstanced(const Renderer* pRenderer) = 0;
 
 	private:
 		/**

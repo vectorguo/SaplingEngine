@@ -3,16 +3,21 @@
 #include "Renderer.h"
 
 namespace SaplingEngine
-{
-	class Material;
-	class Mesh;
-	
+{	
 	class MeshRenderer final : public Renderer
 	{
 	public:
 		MeshRenderer();
 		~MeshRenderer() override;
 
+		/*
+		 * 禁止拷贝和移动
+		 */
+		MeshRenderer(const MeshRenderer&) = delete;
+		MeshRenderer(MeshRenderer&&) = delete;
+		MeshRenderer& operator= (const MeshRenderer&) = delete;
+		MeshRenderer& operator= (MeshRenderer&&) = delete;
+		
 		/*
 		 * 获取组件类型
 		 * 每个组件都必须定义此函数
@@ -22,24 +27,6 @@ namespace SaplingEngine
 		{
 			return ComponentType_Renderer;
 		}
-
-		/**
-		 * \brief 获取Material
-		 * \return Material
-		 */
-		Material* GetMaterial() const
-		{
-			return m_pMaterial;
-		}
-		
-		/**
-		 * \brief 获取Mesh
-		 * \return Mesh
-		 */
-		Mesh* GetMesh() const
-		{
-			return m_pMesh;
-		}
 		
 		/**
 		 * \brief 反序列化
@@ -47,9 +34,5 @@ namespace SaplingEngine
 		 * \return 反序列化是否成功
 		 */
 		bool Deserialize(const XmlNode* pNode) override;
-		
-	private:
-		Material* m_pMaterial = nullptr;
-		Mesh* m_pMesh = nullptr;
 	};
 }

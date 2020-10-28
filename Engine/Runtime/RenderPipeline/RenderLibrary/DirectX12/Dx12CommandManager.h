@@ -80,10 +80,9 @@ namespace SaplingEngine
 
 		/**
 		 * \brief 绘制物体
-		 * \param pMesh Mesh
-		 * \param pMaterial Material
+		 * \param pRenderer renderer
 		 */
-		void DrawIndexedInstanced(const Mesh* pMesh, const Material* pMaterial) override;
+		void DrawIndexedInstanced(const Renderer* pRenderer) override;
 		
 		/**
 		 * \brief 缓存资源转换

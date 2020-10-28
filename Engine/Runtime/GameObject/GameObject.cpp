@@ -2,6 +2,7 @@
 #include "ComponentFactory.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneManager.h"
+#include "Transform.h"
 
 namespace SaplingEngine
 {
@@ -30,11 +31,13 @@ namespace SaplingEngine
 
 	/**
 	 * \brief 初始化
+	 * \param pScene 所属场景
 	 * \param isDeserialized 是否时反序列化的GameObject初始化
 	 * \return 是否初始化成功
 	 */
-	bool GameObject::Initialize(bool isDeserialized)
+	bool GameObject::Initialize(Scene* pScene, bool isDeserialized)
 	{
+		m_pScene = pScene;
 		if (isDeserialized)
 		{
 			

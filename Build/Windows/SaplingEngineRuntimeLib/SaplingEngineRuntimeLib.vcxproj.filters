@@ -141,6 +141,9 @@
     <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\GraphicsPch.h">
       <Filter>RenderPipeline</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Math\Math.h">
+      <Filter>Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Runtime\Utility\Time.cpp">

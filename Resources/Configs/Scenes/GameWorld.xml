@@ -2,7 +2,7 @@
 <root>
     <gameObject name="cube" layerMask="1" isActive="1">
         <components>
-            <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
+            <component type="1" lpx="0" lpy="0" lpz="1" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
             <component type="3" subType="0" isPrimitive="1" primitiveType="0">
                 <material name="Color" shader="Color"/>
             </component>
@@ -14,8 +14,8 @@
     
     <gameObject name="camera" layerMask="1" isActive="1">
         <components>
-            <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="2" projection="1" fov="60.0" near="0.3" far="100.0" priority="0" cullingMask="1"/>
+            <component type="1" lpx="0" lpy="0" lpz="-2" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
+            <component type="2" projection="1" fov="60.0" near="0.1" far="100.0" priority="0" cullingMask="1"/>
             <component type="4" />
         </components>
     </gameObject>

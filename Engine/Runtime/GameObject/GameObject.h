@@ -84,6 +84,42 @@ namespace SaplingEngine
 		}
 
 		/**
+		 * \brief 获取Transform
+		 * \return Transform
+		 */
+		const TransformPtr& GetTransformPtr() const
+		{
+			return m_Transform;
+		}
+
+		/**
+		 * \brief 获取Transform
+		 * \return Transform
+		 */
+		TransformPtr& GetTransformPtr()
+		{
+			return m_Transform;
+		}
+
+		/**
+		 * \brief 获取Transform
+		 * \return Transform
+		 */
+		const Transform* GetTransform() const
+		{
+			return m_Transform.get();
+		}
+
+		/**
+		 * \brief 获取Transform
+		 * \return Transform
+		 */
+		Transform* GetTransform()
+		{
+			return m_Transform.get();
+		}
+		
+		/**
 		 * \brief 添加组件
 		 */
 		template<typename T>
@@ -101,6 +137,24 @@ namespace SaplingEngine
 		template<typename T>
 		void DestroyComponent();
 
+		/**
+		 * \brief 获取parent
+		 * \return parent
+		 */
+		const GameObjectPtr& GetParent() const
+		{
+			return m_Parent;
+		}
+
+		/**
+		 * \brief 是否有父节点
+		 * \return 是否有父节点
+		 */
+		bool HasParent() const
+		{
+			return m_Parent != nullptr;
+		}
+		
 		/**
 		 * \brief 设置parent
 		 * \param parent parent

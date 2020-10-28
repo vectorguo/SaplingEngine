@@ -1,4 +1,5 @@
 #include "GameObject/Transform.h"
+#include "GameObject.h"
 
 namespace SaplingEngine
 {
@@ -18,8 +19,25 @@ namespace SaplingEngine
 		return true;
 	}
 
+	/**
+	 * \brief Ë¢ÐÂ±ä»»¾ØÕó
+	 */
 	void Transform::RefreshMatrix()
 	{
-		
+		if (m_IsLocalDataDirty)
+		{
+			m_LocalMatrix = Matrix4x4::Scale(m_LocalScale) * Matrix4x4::Rotate(m_LocalRotation) * Matrix4x4::Translate(m_LocalPosition);
+			if (m_pGameObject->HasParent())
+			{
+				m_LocalToWorldMatrix = m_LocalMatrix * m_pGameObject->GetParent()->GetTransform()->GetLocalToWorldMatrix();
+			}
+			else
+			{
+				m_LocalToWorldMatrix = m_LocalMatrix;
+			}
+			m_WorldToLocalMatrix = m_LocalToWorldMatrix.Inverse();
+			
+			m_IsLocalDataDirty = true;
+		}
 	}
 }

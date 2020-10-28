@@ -198,7 +198,7 @@ namespace SaplingEngine
 				const auto componentSubType = XmlGetAttributeValue<uint32_t>(pCmpNode, "subType");
 				auto* pComponent = ComponentFactory::Instance()->CreateComponent(componentType, componentSubType);
 				AddComponent(componentType, pComponent);
-				pComponent->Deserialize(pCmpNode);
+				pComponent->Deserialize(pCmpNode);				
 			}
 		}
 		else
@@ -237,6 +237,11 @@ namespace SaplingEngine
 			componentPtr->SetGameObject(shared_from_this());
 			m_NewComponents.insert_or_assign(componentType, componentPtr);
 			m_NewComponents[componentType]->Awake();
+
+			if (componentType == ComponentType_Transform)
+			{
+				m_Transform = std::static_pointer_cast<Transform>(componentPtr);
+			}
 		}
 	}
 

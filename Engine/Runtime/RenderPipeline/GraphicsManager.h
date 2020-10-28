@@ -4,6 +4,8 @@
 
 namespace SaplingEngine
 {
+	class Camera;
+	class Scene;
 	class GraphicsManager
 	{
 	public:
@@ -46,6 +48,24 @@ namespace SaplingEngine
 		virtual void OnWindowResize(uint32_t width, uint32_t height)
 		{
 
+		}
+
+		/**
+		 * \brief 更新物体常量缓冲区数据
+		 * \param pActiveScene 当前活动场景
+		 */
+		virtual void UpdateObjectConstantBuffer(Scene* pActiveScene)
+		{
+			
+		}
+		
+		/**
+		 * \brief 更新Pass常量缓冲区数据
+		 * \param pCamera 当前相机
+		 */
+		virtual void UpdatePassConstantBuffer(Camera* pCamera)
+		{
+			
 		}
 		
 		/**

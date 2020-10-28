@@ -190,16 +190,7 @@ namespace SaplingEngine
 		/**
 		 * \brief 刷新矩阵
 		 */
-		void RefreshMatrix()
-		{
-			//计算视图矩阵
-
-			
-			//计算投影矩阵
-			m_ViewToProjMatrix = m_Projection == EProjection::Orthographic
-				? Matrix4x4::Orthographic(m_WindowWidth, m_WindowHeight, m_NearClippingPlanes, m_FarClippingPlanes)
-				: Matrix4x4::Perspective(m_Fov, m_WindowWidth / m_WindowHeight, m_NearClippingPlanes, m_FarClippingPlanes);
-		}
+		void RefreshMatrix();
 
 	private:
 		EProjection m_Projection = EProjection::Perspective;

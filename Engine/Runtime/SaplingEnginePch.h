@@ -33,12 +33,7 @@
 /*
  * math
  */
-#include "Math/Color.h"
-#include "Math/Matrix4x4.h"
-#include "Math/Quaternion.h"
-#include "Math/Vector2.h"
-#include "Math/Vector3.h"
-#include "Math/Vector4.h"
+#include "Math/Math.h"
 
 #include "Utility/Exception.h"
 #include "Utility/Log.h"

@@ -1,5 +1,6 @@
 #include "Camera.h"
 #include "CameraManager.h"
+#include "GameObject/GameObject.h"
 
 namespace SaplingEngine
 {
@@ -36,6 +37,20 @@ namespace SaplingEngine
 	void Camera::OnDestroy()
 	{
 		CameraManager::Instance()->RemoveCamera(std::static_pointer_cast<Camera>(shared_from_this()));
+	}
+
+	/**
+	 * \brief À¢–¬æÿ’Û
+	 */
+	void Camera::RefreshMatrix()
+	{
+		//º∆À„ ”Õºæÿ’Û
+		m_WorldToViewMatrix = m_pGameObject->GetTransform()->GetWorldToLocalMatrix();
+
+		//º∆À„Õ∂”∞æÿ’Û
+		m_ViewToProjMatrix = m_Projection == EProjection::Orthographic
+			                     ? Matrix4x4::Orthographic(m_WindowWidth, m_WindowHeight, m_NearClippingPlanes, m_FarClippingPlanes)
+			                     : Matrix4x4::Perspective(Math::AngleToRadian(m_Fov), m_WindowWidth / m_WindowHeight, m_NearClippingPlanes, m_FarClippingPlanes);
 	}
 
 	/**

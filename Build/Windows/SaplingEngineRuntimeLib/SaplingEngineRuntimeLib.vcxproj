@@ -112,6 +112,7 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\ShaderManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Input\Input.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Math\Color.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Math\Math.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Math\Matrix4x4.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Math\Quaternion.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Math\Vector2.h" />

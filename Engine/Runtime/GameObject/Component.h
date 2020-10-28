@@ -9,7 +9,8 @@ namespace SaplingEngine
 	constexpr uint32_t ComponentType_Camera = 2;
 	constexpr uint32_t ComponentType_Renderer = 3;
 	constexpr uint32_t ComponentType_InternalLimit = ComponentType_Renderer;
-	
+
+	class GameObject;
 	class Component : public std::enable_shared_from_this<Component>
 	{
 		friend class GameObject;
@@ -34,6 +35,16 @@ namespace SaplingEngine
 		static constexpr uint32_t GetComponentType()
 		{
 			return 0;
+		}
+
+		GameObject* GetGameObject() const
+		{
+			return m_pGameObject.get();
+		}
+
+		const std::shared_ptr<GameObject>& GetGameObjectPtr() const
+		{
+			return m_pGameObject;
 		}
 
 		/**

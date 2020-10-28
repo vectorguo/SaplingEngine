@@ -43,6 +43,18 @@ namespace SaplingEngine
 		 * \brief 重置大小
 		 */
 		void OnWindowResize(uint32_t width, uint32_t height) override;
+
+		/**
+		 * \brief 更新物体常量缓冲区数据
+		 * \param pActiveScene 当前活动场景
+		 */
+		void UpdateObjectConstantBuffer(Scene* pActiveScene) override;
+
+		/**
+		 * \brief 更新Pass常量缓冲区数据
+		 * \param pCamera 当前相机
+		 */
+		void UpdatePassConstantBuffer(Camera* pCamera) override;
 		
 		/**
 		 * \brief 销毁

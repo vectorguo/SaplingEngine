@@ -1,6 +1,8 @@
 #include "ChessWarInput.h"
 #include "Camera/Camera.h"
+#include "Input/Input.h"
 
+using namespace SaplingEngine;
 namespace ChessWar
 {
 	/**
@@ -18,7 +20,7 @@ namespace ChessWar
 	 */
 	void ChessWarInput::Start()
 	{
-		m_MainCamera = m_pGameObject->GetComponent<SaplingEngine::Camera>();
+		m_MainCamera = m_pGameObject->GetComponent<Camera>();
 	}
 
 	/**
@@ -35,6 +37,25 @@ namespace ChessWar
 	 */
 	void ChessWarInput::UpdateCamera()
 	{
-		
+		const auto* pInput = Input::Instance();
+		const auto mouseState = pInput->GetMouseButtonState();
+		if (mouseState == EMouseButtonState::LeftMouseButtonDown)
+		{
+			m_MousePosition = pInput->GetMousePosition();
+		}
+		else if (mouseState == EMouseButtonState::MouseButtonMove)
+		{
+			const auto& mousePosition = pInput->GetMousePosition();
+			const auto delta = mousePosition - m_MousePosition;
+
+			auto* pCameraTransform = m_MainCamera->GetGameObject()->GetTransform();
+			auto cameraPosition = pCameraTransform->GetLocalPosition();
+			cameraPosition.z += delta.x;
+			pCameraTransform->SetLocalPosition(cameraPosition);
+			
+			Log::LogInfo(std::to_string(cameraPosition.z));
+			
+			m_MousePosition = pInput->GetMousePosition();
+		}
 	}
 }

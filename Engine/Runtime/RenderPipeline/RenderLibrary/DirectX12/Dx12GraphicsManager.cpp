@@ -2,12 +2,11 @@
 #include "Dx12GraphicsManager.h"
 
 #include "Application/GameSetting.h"
-#include "Graphics/MeshHelper.h"
+#include "Camera/Camera.h"
 #include "Graphics/Shader.h"
 #include "Graphics/ShaderManager.h"
 #include "RenderPipeline/Renderer/MeshRenderer.h"
 #include "Scene/Scene.h"
-#include "Scene/SceneManager.h"
 
 namespace SaplingEngine
 {
@@ -82,6 +81,43 @@ namespace SaplingEngine
 		//执行并等待命令结束
 		m_pCommandManager->ExecuteCommandList();
 		m_pCommandManager->CompleteCommand();
+	}
+
+	/**
+	 * \brief 更新物体常量缓冲区数据
+	 * \param pActiveScene 当前活动场景
+	 */
+	void Dx12GraphicsManager::UpdateObjectConstantBuffer(Scene* pActiveScene)
+	{
+		auto& objects = pActiveScene->GetGameObjects();
+		for (auto iter = objects.begin(); iter != objects.end(); ++iter)
+		{
+			if ((*iter)->GetComponent<MeshRenderer>() == nullptr)
+			{
+				continue;
+			}
+			
+			auto* pTransform = (*iter)->GetTransform();
+			m_ObjConstantBuffer->CopyData(0,
+				{
+					pTransform->GetLocalToWorldMatrix().Transpose()
+				});
+		}
+	}
+
+	/**
+	 * \brief 更新Pass常量缓冲区数据
+	 * \param pCamera 当前相机
+	 */
+	void Dx12GraphicsManager::UpdatePassConstantBuffer(Camera* pCamera)
+	{
+		const auto& worldToViewMatrix = pCamera->GetWorldToViewMatrix();
+		const auto& viewToProjMatrix = pCamera->GetViewToProjMatrix();
+		m_PassConstantBuffer->CopyData(0,
+			{
+				worldToViewMatrix,
+				worldToViewMatrix * viewToProjMatrix,
+			});
 	}
 
 	/**
@@ -499,10 +535,5 @@ namespace SaplingEngine
 		cbvDesc.BufferLocation = m_PassConstantBuffer->GetGpuVirtualAddress();
 		cbvDesc.SizeInBytes = m_PassConstantBuffer->GetElementSize();
 		m_D3D12Device->CreateConstantBufferView(&cbvDesc, GetCPUHandleFromDescriptorHeap(m_CbvDescriptorHeap.Get(), m_PassCbvOffset, m_CbvDescriptorSize));
-
-		ObjectConstantData data;
-		data.ModelToWorldMatrix = Matrix4x4::Translate(0, 0, 1.0f);// Matrix4x4::Scale(0.5f, 0.5f, 0.5f);
-		data.ModelToWorldMatrix = data.ModelToWorldMatrix.Transpose();
-		m_ObjConstantBuffer->CopyData(0, data);
 	}
 }

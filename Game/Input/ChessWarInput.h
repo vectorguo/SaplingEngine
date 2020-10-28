@@ -57,6 +57,11 @@ namespace ChessWar
 		 * \brief 相机
 		 */
 		SaplingEngine::CameraPtr m_MainCamera;
+
+		/**
+		 * \brief 鼠标位置
+		 */
+		Vector2 m_MousePosition;
 		
 		float m_Theta = 1.5f * XM_PI;
 		float m_Phi = XM_PIDIV4;

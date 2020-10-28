@@ -49,7 +49,7 @@ namespace SaplingEngine
 		 * \brief 获取鼠标按钮状态
 		 * \return 鼠标按钮状态
 		 */
-		EMouseButtonState MouseButtonState() const
+		EMouseButtonState GetMouseButtonState() const
 		{
 			return m_MouseButtonState;
 		}
@@ -58,7 +58,7 @@ namespace SaplingEngine
 		 * \brief 获取鼠标位置
 		 * \return 鼠标位置
 		 */
-		const Vector2& MousePosition() const
+		const Vector2& GetMousePosition() const
 		{
 			return m_MousePosition;
 		}
@@ -69,7 +69,11 @@ namespace SaplingEngine
 		 */
 		void Reset()
 		{
-			m_MouseButtonState = EMouseButtonState::None;
+			if (m_MouseButtonState == EMouseButtonState::LeftMouseButtonUp ||
+				m_MouseButtonState == EMouseButtonState::RightMouseButtonUp)
+			{
+				m_MouseButtonState = EMouseButtonState::None;
+			}
 		}
 		
 		/**

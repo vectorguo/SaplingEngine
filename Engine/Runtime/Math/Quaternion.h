@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Math.h"
 #include "Vector3.h"
 
 namespace SaplingEngine
@@ -9,14 +10,19 @@ namespace SaplingEngine
 		class Quaternion
 		{
 		public:
-			Quaternion(): m_Value()
+			Quaternion(): value()
 			{
 				
 			}
 
-			explicit Quaternion(FXMVECTOR v): m_Value(v)
+			Quaternion(const float x, const float y, const float z, const float w) : value(x, y, z, w)
 			{
-				
+
+			}
+
+			explicit Quaternion(FXMVECTOR v): value()
+			{
+				XMStoreFloat4(&value, v);
 			}
 
 			/*
@@ -24,34 +30,36 @@ namespace SaplingEngine
 			 */
 			Quaternion operator* (const Quaternion& q) const
 			{
-				return Quaternion(XMQuaternionMultiply(m_Value, q.m_Value));
+				return Quaternion(XMQuaternionMultiply(XMLoadFloat4(&value), XMLoadFloat4(&q.value)));
 			}
 
 			Quaternion& operator*= (const Quaternion& q)
 			{
-				m_Value = XMQuaternionMultiply(m_Value, q.m_Value);
+				XMStoreFloat4(&value, XMQuaternionMultiply(XMLoadFloat4(&value), XMLoadFloat4(&q.value)));
 				return *this;
 			}
 
 			Vector3 operator* (const Vector3& v) const
 			{
-				return Vector3(XMVector3TransformNormal(v, XMMatrixRotationQuaternion(m_Value)));
+				return Vector3(XMVector3TransformNormal(v, XMMatrixRotationQuaternion(XMLoadFloat4(&value))));
 			}
 
 			operator XMVECTOR() const
 			{
-				return m_Value;
+				return XMLoadFloat4(&value);
 			}
 
 			void Set(const float x, const float y, const float z, const float w)
 			{
-				XMFLOAT4 v(x, y, z, w);
-				m_Value = XMLoadFloat4(&v);
+				this->x = x;
+				this->y = y;
+				this->z = z;
+				this->w = w;
 			}
 
 			void Normalize()
 			{
-				m_Value = XMQuaternionNormalize(m_Value);
+				XMStoreFloat4(&value, XMQuaternionNormalize(XMLoadFloat4(&value)));
 			}
 			
 			/*
@@ -59,7 +67,7 @@ namespace SaplingEngine
 			 */
 			static Quaternion RotateAxis(const Vector3& axis, const float angle)
 			{
-				return Quaternion(XMQuaternionRotationAxis(axis, angle));
+				return Quaternion(XMQuaternionRotationAxis(axis, AngleToRadian(angle)));
 			}
 
 			static Quaternion RotateRollPitchYaw(const float pitch, const float yaw, const float roll)
@@ -72,14 +80,25 @@ namespace SaplingEngine
 			 */
 			static Quaternion Slerp(const Quaternion& a, const Quaternion& b, const float t)
 			{
-				return Quaternion(XMQuaternionSlerp(a.m_Value, b.m_Value, t));
+				return Quaternion(XMQuaternionSlerp(XMLoadFloat4(&a.value), XMLoadFloat4(&b.value), t));
 			}
 
 		public:
 			const static Quaternion Identity;
 			
 		private:
-			XMVECTOR m_Value;
+			union
+			{
+				XMFLOAT4 value;
+
+				struct
+				{
+					float x;
+					float y;
+					float z;
+					float w;
+				};
+			};
 		};
 	}
 }

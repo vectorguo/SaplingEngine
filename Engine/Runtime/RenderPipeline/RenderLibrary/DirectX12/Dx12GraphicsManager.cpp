@@ -143,11 +143,11 @@ namespace SaplingEngine
 	void Dx12GraphicsManager::UpdatePassConstantBuffer(Camera* pCamera)
 	{
 		const auto& worldToViewMatrix = pCamera->GetWorldToViewMatrix();
-		const auto& viewToProjMatrix = pCamera->GetViewToProjMatrix();
+		const auto& worldToProjMatrix = worldToViewMatrix * pCamera->GetViewToProjMatrix();
 		m_PassConstantBuffer->CopyData(0,
 			{
-				worldToViewMatrix,
-				worldToViewMatrix * viewToProjMatrix,
+				worldToViewMatrix.Transpose(),
+				worldToProjMatrix.Transpose(),
 			});
 	}
 

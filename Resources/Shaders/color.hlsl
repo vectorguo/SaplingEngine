@@ -35,7 +35,6 @@ VertexOut Vert(VertexIn input)
 	VertexOut output;
 	
 	// Transform to homogeneous clip space.
-	//output.PositionCS = mul(float4(input.PositionOS, 1.0f), SAPLING_MATRIX_M);
 	output.PositionCS = mul(mul(float4(input.PositionOS, 1.0f), SAPLING_MATRIX_M), SAPLING_MATRIX_VP);
 	
 	// Just pass vertex color into the pixel shader.

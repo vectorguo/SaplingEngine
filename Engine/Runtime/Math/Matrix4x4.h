@@ -93,7 +93,7 @@ namespace SaplingEngine
 			 */
 			static Matrix4x4 Perspective(const float fovAngleY, const float aspectRatio, const float nearZ, const float farZ)
 			{
-				return Matrix4x4(XMMatrixPerspectiveFovLH(fovAngleY, aspectRatio, nearZ, farZ));
+				return Matrix4x4(XMMatrixPerspectiveFovLH(Math::AngleToRadian(fovAngleY), aspectRatio, nearZ, farZ));
 			}
 			
 			/*

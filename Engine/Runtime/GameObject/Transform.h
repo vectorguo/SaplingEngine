@@ -98,7 +98,7 @@ namespace SaplingEngine
 		 * \brief 设置局部坐标下的旋转
 		 * \param localRotation 局部坐标下的旋转
 		 */
-		void SetLocalPosition(const Quaternion& localRotation)
+		void SetLocalRotation(const Quaternion& localRotation)
 		{
 			m_IsLocalDataDirty = true;
 			m_LocalRotation = localRotation;

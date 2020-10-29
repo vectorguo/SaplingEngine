@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameObject/Component.h"
+#include "GameObject/GameObject.h"
 
 namespace SaplingEngine
 {
@@ -132,10 +133,7 @@ namespace SaplingEngine
 		 */
 		Matrix4x4& GetWorldToViewMatrix()
 		{
-			if (m_IsDirty)
-			{
-				RefreshMatrix();
-			}
+			RefreshMatrix();
 			return m_WorldToViewMatrix;
 		}
 		
@@ -145,10 +143,7 @@ namespace SaplingEngine
 		 */
 		Matrix4x4& GetViewToProjMatrix()
 		{
-			if (m_IsDirty)
-			{
-				RefreshMatrix();
-			}
+			RefreshMatrix();
 			return m_ViewToProjMatrix;
 		}
 

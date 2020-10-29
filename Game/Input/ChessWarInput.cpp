@@ -48,12 +48,16 @@ namespace ChessWar
 			const auto& mousePosition = pInput->GetMousePosition();
 			const auto delta = mousePosition - m_MousePosition;
 
-			auto* pCameraTransform = m_MainCamera->GetGameObject()->GetTransform();
-			auto cameraPosition = pCameraTransform->GetLocalPosition();
-			cameraPosition.z += delta.x;
-			pCameraTransform->SetLocalPosition(cameraPosition);
+			auto* pCameraTransform = m_MainCamera->GetTransform();
+			auto cameraRotation = pCameraTransform->GetLocalRotation();
+			cameraRotation *= Quaternion::RotateAxis(Vector3::Up, delta.x);
+			pCameraTransform->SetLocalRotation(cameraRotation);
 			
-			Log::LogInfo(std::to_string(cameraPosition.z));
+			// auto* pCameraTransform = m_MainCamera->GetTransform();
+			// auto cameraPosition = pCameraTransform->GetLocalPosition();
+			// cameraPosition.z += delta.x;
+			// pCameraTransform->SetLocalPosition(cameraPosition);
+			// Log::LogInfo(std::to_string(cameraPosition.z));
 			
 			m_MousePosition = pInput->GetMousePosition();
 		}

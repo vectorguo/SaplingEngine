@@ -47,10 +47,15 @@ namespace SaplingEngine
 		//计算视图矩阵
 		m_WorldToViewMatrix = m_pGameObject->GetTransform()->GetWorldToLocalMatrix();
 
-		//计算投影矩阵
-		m_ViewToProjMatrix = m_Projection == EProjection::Orthographic
-			                     ? Matrix4x4::Orthographic(m_WindowWidth, m_WindowHeight, m_NearClippingPlanes, m_FarClippingPlanes)
-			                     : Matrix4x4::Perspective(Math::AngleToRadian(m_Fov), m_WindowWidth / m_WindowHeight, m_NearClippingPlanes, m_FarClippingPlanes);
+		if (m_IsDirty)
+		{
+			//计算投影矩阵
+			m_ViewToProjMatrix = m_Projection == EProjection::Orthographic
+				? Matrix4x4::Orthographic(m_WindowWidth, m_WindowHeight, m_NearClippingPlanes, m_FarClippingPlanes)
+				: Matrix4x4::Perspective(m_Fov, m_WindowWidth / m_WindowHeight, m_NearClippingPlanes, m_FarClippingPlanes);
+			
+			m_IsDirty = false;
+		}
 	}
 
 	/**

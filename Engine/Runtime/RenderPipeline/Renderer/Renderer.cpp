@@ -28,7 +28,7 @@ namespace SaplingEngine
 	{
 		if (m_ConstantBufferIndex >= 0)
 		{
-			auto* pActiveScene = m_pGameObject->GetScene();
+			auto* pActiveScene = m_GameObjectSptr->GetScene();
 			pActiveScene->AddRenderItem(this);
 		}
 	}
@@ -37,7 +37,7 @@ namespace SaplingEngine
 	{
 		if (m_ConstantBufferIndex >= 0)
 		{
-			auto* pActiveScene = m_pGameObject->GetScene();
+			auto* pActiveScene = m_GameObjectSptr->GetScene();
 			pActiveScene->RemoveRenderItem(this);
 		}
 	}

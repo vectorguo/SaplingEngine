@@ -191,5 +191,5 @@ namespace SaplingEngine
 		bool m_IsWorldDataDirty = true;
 	};
 
-	using TransformPtr = std::shared_ptr<Transform>;
+	using TransformSptr = std::shared_ptr<Transform>;
 }

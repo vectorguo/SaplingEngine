@@ -45,7 +45,7 @@ namespace SaplingEngine
 	void Camera::RefreshMatrix()
 	{
 		//¼ÆËãÊÓÍ¼¾ØÕó
-		m_WorldToViewMatrix = m_pGameObject->GetTransform()->GetWorldToLocalMatrix();
+		m_WorldToViewMatrix = m_GameObjectSptr->GetTransform()->GetWorldToLocalMatrix();
 
 		if (m_IsDirty)
 		{

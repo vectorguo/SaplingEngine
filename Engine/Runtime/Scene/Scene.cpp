@@ -78,7 +78,7 @@ namespace SaplingEngine
 	 * \brief 创建GameObject
 	 * \return GameObject
 	 */
-	GameObjectPtr Scene::CreateGameObject()
+	GameObjectSptr Scene::CreateGameObject()
 	{
 		auto gameObject = std::make_shared<GameObject>(GameObjectId++);
 		gameObject->Initialize(this);
@@ -91,7 +91,7 @@ namespace SaplingEngine
 	 * \param name GameObject名称
 	 * \return GameObject
 	 */
-	GameObjectPtr Scene::CreateGameObject(const std::string& name)
+	GameObjectSptr Scene::CreateGameObject(const std::string& name)
 	{
 		auto gameObject = std::make_shared<GameObject>(GameObjectId++, name);
 		gameObject->Initialize(this);
@@ -104,7 +104,7 @@ namespace SaplingEngine
 	 * \param name GameObject名称
 	 * \return GameObject
 	 */
-	GameObjectPtr Scene::CreateGameObject(std::string&& name)
+	GameObjectSptr Scene::CreateGameObject(std::string&& name)
 	{
 		auto gameObject = std::make_shared<GameObject>(GameObjectId++, std::move(name));
 		gameObject->Initialize(this);
@@ -117,9 +117,9 @@ namespace SaplingEngine
 	 * \param name 对象名称
 	 * \return 对象只能指针
 	 */
-	GameObjectPtr Scene::GetGameObject(const std::string& name)
+	GameObjectSptr Scene::GetGameObject(const std::string& name)
 	{
-		const auto iter = std::find_if(m_GameObjects.begin(), m_GameObjects.end(), [&name](const GameObjectPtr& pObject)
+		const auto iter = std::find_if(m_GameObjects.begin(), m_GameObjects.end(), [&name](const GameObjectSptr& pObject)
 		{
 			return pObject->GetName() == name;
 		});
@@ -130,7 +130,7 @@ namespace SaplingEngine
 	 * \brief 创建GameObject
 	 * \return GameObject
 	 */
-	GameObjectPtr Scene::CreateGameObjectInternal()
+	GameObjectSptr Scene::CreateGameObjectInternal()
 	{
 		auto gameObject = std::make_shared<GameObject>(GameObjectId++);
 		m_GameObjects.push_back(gameObject);

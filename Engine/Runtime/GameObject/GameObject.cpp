@@ -10,7 +10,7 @@ namespace SaplingEngine
 	 * \brief Ïú»ÙGameObject
 	 * \param gameObject go
 	 */
-	void DestroyGameObject(const GameObjectPtr& gameObject)
+	void DestroyGameObject(const GameObjectSptr& gameObject)
 	{
 		gameObject->m_IsDestroyed = true;
 	}
@@ -100,7 +100,7 @@ namespace SaplingEngine
 	{
 		if (m_Parent != nullptr)
 		{
-			m_Parent->m_Children.erase(std::find_if(m_Parent->m_Children.begin(), m_Parent->m_Children.end(), [this](const GameObjectPtr& pChild)
+			m_Parent->m_Children.erase(std::find_if(m_Parent->m_Children.begin(), m_Parent->m_Children.end(), [this](const GameObjectSptr& pChild)
 			{
 				return pChild.get() == this;
 			}));
@@ -148,7 +148,7 @@ namespace SaplingEngine
 	 * \brief ÉèÖÃparent
 	 * \param parent parent
 	 */
-	void GameObject::SetParent(const GameObjectPtr& parent)
+	void GameObject::SetParent(const GameObjectSptr& parent)
 	{
 		if (m_Parent == parent)
 		{
@@ -157,7 +157,7 @@ namespace SaplingEngine
 
 		if (m_Parent != nullptr)
 		{
-			m_Parent->m_Children.erase(std::find_if(m_Parent->m_Children.begin(), m_Parent->m_Children.end(), [this](const GameObjectPtr& pChild)
+			m_Parent->m_Children.erase(std::find_if(m_Parent->m_Children.begin(), m_Parent->m_Children.end(), [this](const GameObjectSptr& pChild)
 			{
 				return pChild.get() == this;
 			}));
@@ -257,14 +257,14 @@ namespace SaplingEngine
 		for (auto iter = m_NewComponents.begin(); iter != m_NewComponents.end(); ++iter)
 		{
 			iter->second->OnDestroy();
-			iter->second->m_pGameObject = nullptr;
+			iter->second->m_GameObjectSptr = nullptr;
 		}
 		m_NewComponents.clear();
 
 		for (auto iter = m_Components.begin(); iter != m_Components.end(); ++iter)
 		{
 			iter->second->OnDestroy();
-			iter->second->m_pGameObject = nullptr;
+			iter->second->m_GameObjectSptr = nullptr;
 		}
 		m_Components.clear();
 

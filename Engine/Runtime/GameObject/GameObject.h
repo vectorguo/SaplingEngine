@@ -9,17 +9,17 @@ namespace SaplingEngine
 	class GameObject;
 	class Scene;
 	
-	using GameObjectPtr = std::shared_ptr<GameObject>;
-	using GameObjectList = std::vector<GameObjectPtr>;
+	using GameObjectSptr = std::shared_ptr<GameObject>;
+	using GameObjectList = std::vector<GameObjectSptr>;
 	
 	/*
 	 * 销毁GameObject
 	 */
-	void DestroyGameObject(const GameObjectPtr& gameObject);
+	void DestroyGameObject(const GameObjectSptr& gameObject);
 	
 	class GameObject : public std::enable_shared_from_this<GameObject>
 	{
-		friend void DestroyGameObject(const GameObjectPtr&);
+		friend void DestroyGameObject(const GameObjectSptr&);
 		
 	public:
 		explicit GameObject(uint32_t id);
@@ -90,7 +90,7 @@ namespace SaplingEngine
 		 * \brief 获取Transform
 		 * \return Transform
 		 */
-		const TransformPtr& GetTransformPtr() const
+		const TransformSptr& GetTransformSptr() const
 		{
 			return m_Transform;
 		}
@@ -99,7 +99,7 @@ namespace SaplingEngine
 		 * \brief 获取Transform
 		 * \return Transform
 		 */
-		TransformPtr& GetTransformPtr()
+		TransformSptr& GetTransformSptr()
 		{
 			return m_Transform;
 		}
@@ -108,18 +108,51 @@ namespace SaplingEngine
 		 * \brief 获取Transform
 		 * \return Transform
 		 */
-		const Transform* GetTransform() const
+		Transform* GetTransform() const
 		{
 			return m_Transform.get();
 		}
 
 		/**
-		 * \brief 获取Transform
-		 * \return Transform
+		 * \brief 获取parent智能指针
+		 * \return parent智能指针
 		 */
-		Transform* GetTransform()
+		const GameObjectSptr& GetParentSptr() const
 		{
-			return m_Transform.get();
+			return m_Parent;
+		}
+
+		/**
+		 * \brief 获取parent指针
+		 * \return parent指针
+		 */
+		GameObject* GetParent() const
+		{
+			return m_Parent.get();
+		}
+
+		/**
+		 * \brief 是否有父节点
+		 * \return 是否有父节点
+		 */
+		bool HasParent() const
+		{
+			return m_Parent != nullptr;
+		}
+
+		/**
+		 * \brief 设置parent
+		 * \param parent parent
+		 */
+		void SetParent(const GameObjectSptr& parent);
+
+		/**
+		 * \brief 获取所在场景指针
+		 * \return 场景指针
+		 */
+		Scene* GetScene() const
+		{
+			return m_pScene;
 		}
 		
 		/**
@@ -139,39 +172,6 @@ namespace SaplingEngine
 		 */
 		template<typename T>
 		void DestroyComponent();
-
-		/**
-		 * \brief 获取parent
-		 * \return parent
-		 */
-		const GameObjectPtr& GetParent() const
-		{
-			return m_Parent;
-		}
-
-		/**
-		 * \brief 是否有父节点
-		 * \return 是否有父节点
-		 */
-		bool HasParent() const
-		{
-			return m_Parent != nullptr;
-		}
-		
-		/**
-		 * \brief 设置parent
-		 * \param parent parent
-		 */
-		void SetParent(const GameObjectPtr& parent);
-
-		/**
-		 * \brief 获取所在场景指针
-		 * \return 场景指针
-		 */
-		Scene* GetScene() const
-		{
-			return m_pScene;
-		}
 		
 		/**
 		 * \brief 序列化
@@ -234,17 +234,17 @@ namespace SaplingEngine
 		/**
 		 * \brief transform组件
 		 */
-		TransformPtr m_Transform;
-
-		/**
-		 * \brief 子节点
-		 */
-		GameObjectList m_Children;
+		TransformSptr m_Transform;
 
 		/**
 		 * \brief 父节点
 		 */
-		GameObjectPtr m_Parent;
+		GameObjectSptr m_Parent;
+		
+		/**
+		 * \brief 子节点
+		 */
+		GameObjectList m_Children;
 
 		/**
 		 * \brief 所在场景的指针

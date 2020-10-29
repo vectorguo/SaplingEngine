@@ -27,9 +27,9 @@ namespace SaplingEngine
 		if (m_IsLocalDataDirty)
 		{
 			m_LocalMatrix = Matrix4x4::Scale(m_LocalScale) * Matrix4x4::Rotate(m_LocalRotation) * Matrix4x4::Translate(m_LocalPosition);
-			if (m_pGameObject->HasParent())
+			if (m_GameObjectSptr->HasParent())
 			{
-				m_LocalToWorldMatrix = m_LocalMatrix * m_pGameObject->GetParent()->GetTransform()->GetLocalToWorldMatrix();
+				m_LocalToWorldMatrix = m_LocalMatrix * m_GameObjectSptr->GetParentSptr()->GetTransform()->GetLocalToWorldMatrix();
 			}
 			else
 			{

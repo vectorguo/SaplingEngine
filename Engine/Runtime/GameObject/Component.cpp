@@ -8,12 +8,12 @@ namespace SaplingEngine
 
 	Transform* Component::GetTransform() const
 	{
-		return m_pGameObject->GetTransform();
+		return m_GameObjectSptr->GetTransform();
 	}
 
-	TransformPtr& Component::GetTransformPtr() const
+	TransformSptr& Component::GetTransformSptr() const
 	{
-		return m_pGameObject->GetTransformPtr();
+		return m_GameObjectSptr->GetTransformSptr();
 	}
 
 	/**

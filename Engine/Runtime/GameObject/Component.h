@@ -12,7 +12,7 @@ namespace SaplingEngine
 
 	class GameObject;
 	class Transform;
-	using TransformPtr = std::shared_ptr<Transform>;
+	using TransformSptr = std::shared_ptr<Transform>;
 	
 	class Component : public std::enable_shared_from_this<Component>
 	{
@@ -40,18 +40,35 @@ namespace SaplingEngine
 			return 0;
 		}
 
+		/**
+		 * \brief 获取GameObject指针
+		 * \return GameObject指针
+		 */
 		GameObject* GetGameObject() const
 		{
-			return m_pGameObject.get();
+			return m_GameObjectSptr.get();
 		}
 
-		const std::shared_ptr<GameObject>& GetGameObjectPtr() const
+		/**
+		 * \brief 获取GameObject智能指针
+		 * \return GameObject智能指针
+		 */
+		const std::shared_ptr<GameObject>& GetGameObjectSptr() const
 		{
-			return m_pGameObject;
+			return m_GameObjectSptr;
 		}
 
+		/**
+		 * \brief 获取Transform指针
+		 * \return Transform指针
+		 */
 		Transform* GetTransform() const;
-		TransformPtr& GetTransformPtr() const;
+
+		/**
+		 * \brief 获取Transform智能指针
+		 * \return Transform智能指针
+		 */
+		TransformSptr& GetTransformSptr() const;
 
 		/**
 		 * \brief 是否是活动状态
@@ -118,11 +135,11 @@ namespace SaplingEngine
 	private:
 		void SetGameObject(std::shared_ptr<GameObject> pOwner)
 		{
-			m_pGameObject.swap(pOwner);
+			m_GameObjectSptr.swap(pOwner);
 		}
 		
 	protected:
-		std::shared_ptr<GameObject> m_pGameObject;
+		std::shared_ptr<GameObject> m_GameObjectSptr;
 
 		/**
 		 * \brief 是否处于活动状态

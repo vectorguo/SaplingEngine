@@ -54,34 +54,34 @@ namespace SaplingEngine
 		 * \brief 创建GameObject
 		 * \return GameObject
 		 */
-		GameObjectPtr CreateGameObject();
+		GameObjectSptr CreateGameObject();
 		
 		/**
 		 * \brief 创建GameObject
 		 * \param name GameObject名称
 		 * \return GameObject
 		 */
-		GameObjectPtr CreateGameObject(const std::string& name);
+		GameObjectSptr CreateGameObject(const std::string& name);
 
 		/**
 		 * \brief 创建GameObject
 		 * \param name GameObject名称
 		 * \return GameObject
 		 */
-		GameObjectPtr CreateGameObject(std::string&& name);
+		GameObjectSptr CreateGameObject(std::string&& name);
 
 		/**
 		 * \brief 获取对象
 		 * \param name 对象名称
 		 * \return 对象只能指针
 		 */
-		GameObjectPtr GetGameObject(const std::string& name);
+		GameObjectSptr GetGameObject(const std::string& name);
 
 		/**
 		 * \brief 获取所有游戏对象
 		 * \return 游戏对象
 		 */
-		const std::vector<GameObjectPtr>& GetGameObjects() const
+		const std::vector<GameObjectSptr>& GetGameObjects() const
 		{
 			return m_GameObjects;
 		}
@@ -90,7 +90,7 @@ namespace SaplingEngine
 		 * \brief 获取所有游戏对象
 		 * \return 游戏对象
 		 */
-		std::vector<GameObjectPtr>& GetGameObjects()
+		std::vector<GameObjectSptr>& GetGameObjects()
 		{
 			return m_GameObjects;
 		}
@@ -127,7 +127,7 @@ namespace SaplingEngine
 		 * \brief 创建GameObject
 		 * \return GameObject
 		 */
-		GameObjectPtr CreateGameObjectInternal();
+		GameObjectSptr CreateGameObjectInternal();
 		
 	private:
 		/**
@@ -143,7 +143,7 @@ namespace SaplingEngine
 		/**
 		 * \brief 此场景中的GameObject
 		 */
-		std::vector<GameObjectPtr> m_GameObjects;
+		std::vector<GameObjectSptr> m_GameObjects;
 
 		/**
 		 * \brief 渲染项列表

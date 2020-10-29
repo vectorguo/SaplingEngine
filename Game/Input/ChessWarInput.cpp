@@ -20,7 +20,7 @@ namespace ChessWar
 	 */
 	void ChessWarInput::Start()
 	{
-		m_MainCamera = m_pGameObject->GetComponent<Camera>();
+		m_MainCamera = m_GameObjectSptr->GetComponent<Camera>();
 	}
 
 	/**

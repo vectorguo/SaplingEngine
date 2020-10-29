@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Camera.h"
-#include "Utility/Singleton.h"
 
 namespace SaplingEngine
 {
@@ -34,8 +33,8 @@ namespace SaplingEngine
 		void OnWindowResize();
 		
 	private:
-		void AddCamera(CameraPtr&& pCamera);
-		void RemoveCamera(const CameraPtr& pCamera);
+		void AddCamera(CameraSptr&& pCamera);
+		void RemoveCamera(const CameraSptr& pCamera);
 		void SortCamera();
 		
 	private:

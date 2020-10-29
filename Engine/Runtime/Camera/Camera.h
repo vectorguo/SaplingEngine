@@ -217,6 +217,6 @@ namespace SaplingEngine
 		int32_t m_CullingMask = 0xffffffff;
 	};
 
-	using CameraPtr = std::shared_ptr<Camera>;
-	using CameraList = std::vector<CameraPtr>;
+	using CameraSptr = std::shared_ptr<Camera>;
+	using CameraList = std::vector<CameraSptr>;
 }

@@ -12,5 +12,7 @@
 #include "Graphics/Mesh.h"
 #include "Graphics/Shader.h"
 
+#include "Resource/ResourceManager.h"
+
 #include "Scene/SceneManager.h"
 #include "Scene/Scene.h"

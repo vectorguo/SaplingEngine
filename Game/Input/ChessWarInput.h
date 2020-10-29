@@ -56,7 +56,7 @@ namespace ChessWar
 		/**
 		 * \brief 相机
 		 */
-		SaplingEngine::CameraPtr m_MainCamera;
+		SaplingEngine::CameraSptr m_MainCamera;
 
 		/**
 		 * \brief 鼠标位置

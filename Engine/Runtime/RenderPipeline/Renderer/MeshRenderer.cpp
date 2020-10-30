@@ -15,17 +15,9 @@ namespace SaplingEngine
 	bool MeshRenderer::Deserialize(const XmlNode* pNode)
 	{
 		//创建Mesh
-		const auto isPrimitive = XmlGetAttributeValue<bool>(pNode, "isPrimitive");
-		if (isPrimitive)
-		{
-			//创建基本类型的Mesh
-			m_pMesh = Mesh::CreatePrimitive(static_cast<EMeshPrimitiveType>(XmlGetAttributeValue<int32_t>(pNode, "primitiveType")));
-		}
-		else
-		{
-			//非基本类型的Mesh
-		}
-
+		m_pMesh = new Mesh();
+		m_pMesh->Load(XmlGetAttributeValue<const char*>(pNode, "meshPath"));
+		
 		//创建材质
 		//TODO
 		

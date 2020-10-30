@@ -107,9 +107,9 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\ConstantData.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Material.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Mesh.h" />
-    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\MeshHelper.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Shader.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\ShaderManager.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\VertexData.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Input\Input.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Math\Color.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Math\Math.h" />
@@ -133,9 +133,8 @@
     <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPass\RenderPass.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPipeline.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Resource\IResource.h" />
-    <ClInclude Include="..\..\..\Engine\Runtime\Resource\IResourceLoader.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Resource\ResourceLoader.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Resource\MeshResource.h" />
-    <ClInclude Include="..\..\..\Engine\Runtime\Resource\MeshResourceLoader.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Resource\ResourceManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\SaplingEngineHeader.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\SaplingEnginePch.h" />
@@ -162,7 +161,6 @@
     <ClCompile Include="..\..\..\Engine\Runtime\GameObject\Transform.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Material.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Mesh.cpp" />
-    <ClCompile Include="..\..\..\Engine\Runtime\Graphics\MeshHelper.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Shader.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\ShaderManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Input\Input.cpp" />
@@ -183,6 +181,7 @@
     <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPass\RenderOpaquePass.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPass\RenderPass.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPipeline.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Resource\ResourceLoader.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Resource\ResourceManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Scene\Scene.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Scene\SceneManager.cpp" />

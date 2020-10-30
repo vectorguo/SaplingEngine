@@ -81,9 +81,6 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\ShaderManager.h">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\MeshHelper.h">
-      <Filter>Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\Utility\Log.h">
       <Filter>Utility</Filter>
     </ClInclude>
@@ -150,14 +147,14 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Resource\IResource.h">
       <Filter>Resource</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\Resource\IResourceLoader.h">
-      <Filter>Resource</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\Resource\MeshResource.h">
       <Filter>Resource</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\Resource\MeshResourceLoader.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\Resource\ResourceLoader.h">
       <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\VertexData.h">
+      <Filter>Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -233,9 +230,6 @@
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\ShaderManager.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Engine\Runtime\Graphics\MeshHelper.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\Application\GameSetting.cpp">
       <Filter>Application</Filter>
     </ClCompile>
@@ -264,6 +258,9 @@
       <Filter>RenderPipeline</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\Resource\ResourceManager.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Resource\ResourceLoader.cpp">
       <Filter>Resource</Filter>
     </ClCompile>
   </ItemGroup>

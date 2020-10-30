@@ -4,10 +4,27 @@
 
 namespace SaplingEngine
 {
+	/**
+	 * \brief 资源类型
+	 */
+	enum class EResourceType
+	{
+		/**
+		 * \brief Mesh
+		 */
+		Mesh,
+	};
+	
 	class IResource
 	{
+	protected:
+		explicit IResource(EResourceType resourceType)
+			:m_ResourceType(resourceType)
+		{
+			
+		}
+		
 	public:
-		IResource() = default;
 		virtual ~IResource() = default;
 		
 		/*
@@ -18,8 +35,20 @@ namespace SaplingEngine
 		IResource& operator= (const IResource&) = delete;
 		IResource& operator= (IResource&&) = delete;
 		
-	private:
+		/**
+		 * \brief 获取资源类型
+		 * \return 资源类型
+		 */
+		EResourceType GetResourceType() const
+		{
+			return m_ResourceType;
+		}
 		
+	private:
+		/**
+		 * \brief 资源类型
+		 */
+		EResourceType m_ResourceType;
 	};
 
 	using IResourceSptr = std::shared_ptr<IResource>;

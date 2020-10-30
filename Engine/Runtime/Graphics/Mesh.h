@@ -1,18 +1,10 @@
 #pragma once
 
-#include "SaplingEnginePch.h"
+#include "Resource/MeshResource.h"
+#include "Resource/ResourceManager.h"
 
 namespace SaplingEngine
 {
-	struct VertexData
-	{
-		XMFLOAT3 PositionOS;		//Vertex Position in Object Space
-		XMFLOAT3 NormalOS;			//Normal in Object Space
-		XMFLOAT4 Color;				//Vertex Color
-		XMFLOAT2 UV0;				//UV0
-		XMFLOAT2 UV1;				//UV1
-	};
-
 	/**
 	 * \brief Mesh基本类型
 	 */
@@ -31,6 +23,15 @@ namespace SaplingEngine
 		Mesh(Mesh&&) = delete;
 		Mesh& operator=(const Mesh&) = delete;
 		Mesh& operator=(Mesh&&) = delete;
+
+		/**
+		 * \brief 加载Mesh资源
+		 * \param path Mesh路径
+		 */
+		void Load(const std::string& path)
+		{
+			m_MeshResourceSptr = ResourceManager::Instance()->LoadResource<MeshResource>(path);
+		}
 
 		/**
 		 * \brief 顶点和索引数据是否已经上传到默认缓冲区
@@ -58,73 +59,25 @@ namespace SaplingEngine
 		{
 			return m_pIndexBufferView;
 		}
+
+		const VertexData* GetVertexDatas() const
+		{
+			return m_MeshResourceSptr->GetVertexDatas().data();
+		}
 		
-		const std::vector<VertexData>& GetVertexDatas() const
-		{
-			return m_VertexDatas;
-		}
-
-		std::vector<VertexData>& GetVertexDatas()
-		{
-			return m_VertexDatas;
-		}
-
 		uint32_t GetVertexCount() const
 		{
-			return static_cast<uint32_t>(m_VertexDatas.size());
+			return m_MeshResourceSptr->GetVertexCount();
 		}
 
-		void SetVertexDatas(const std::vector<VertexData>& vertices)
+		const uint16_t* GetIndices() const
 		{
-			m_VertexDatas = vertices;
-		}
-
-		void SetVertexDatas(std::vector<VertexData>&& vertices)
-		{
-			m_VertexDatas = std::move(vertices);
-		}
-
-		void SetVertexDatas(VertexData* pVertices, const uint32_t size)
-		{
-			m_VertexDatas.reserve(size);
-			for (uint32_t i = 0; i < size; ++i)
-			{
-				m_VertexDatas.emplace_back(*(pVertices + i));
-			}
+			return m_MeshResourceSptr->GetIndices().data();
 		}
 		
-		const std::vector<uint16_t>& GetIndices() const
-		{
-			return m_Indices;
-		}
-
-		std::vector<uint16_t>& GetIndices()
-		{
-			return m_Indices;
-		}
-
 		uint32_t GetIndexCount() const
 		{
-			return static_cast<uint32_t>(m_Indices.size());
-		}
-
-		void SetIndices(const std::vector<uint16_t>& indices)
-		{
-			m_Indices = indices;
-		}
-
-		void SetIndices(std::vector<uint16_t>&& indices)
-		{
-			m_Indices = std::move(indices);
-		}
-
-		void SetIndices(uint16_t* pIndices, const uint32_t size)
-		{
-			m_Indices.reserve(size);
-			for (uint32_t i = 0; i < size; ++i)
-			{
-				m_Indices.emplace_back(*(pIndices + i));
-			}
+			return m_MeshResourceSptr->GetIndexCount();
 		}
 
 	public:
@@ -132,13 +85,6 @@ namespace SaplingEngine
 		 * \brief 上传Mesh数据到GPU
 		 */
 		static void UploadMeshDatas();
-		
-		/**
-		 * \brief 创建基本类型的mesh
-		 * \param type mesh类型
-		 * \return mesh指针
-		 */
-		static Mesh* CreatePrimitive(EMeshPrimitiveType type);
 		
 	private:
 		
@@ -151,17 +97,12 @@ namespace SaplingEngine
 		 * \brief 顶点和索引数据是否已经上传到默认缓冲区
 		 */
 		bool m_IsReady;
-		
-		/**
-		 * \brief 顶点数据
-		 */
-		std::vector<VertexData> m_VertexDatas;
-		
-		/**
-		 * \brief 索引数据
-		 */
-		std::vector<uint16_t> m_Indices;
 
+		/**
+		 * \brief Mesh资源
+		 */
+		std::shared_ptr<MeshResource> m_MeshResourceSptr;
+		
 		ComPtr<ID3D12Resource> m_VertexBufferOnGpu = nullptr;
 		D3D12_VERTEX_BUFFER_VIEW* m_pVertexBufferView = nullptr;
 		

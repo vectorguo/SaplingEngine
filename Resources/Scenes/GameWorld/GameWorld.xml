@@ -3,7 +3,7 @@
     <gameObject name="cube1" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="10" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="3" subType="0" isPrimitive="1" primitiveType="0">
+            <component type="3" subType="0" meshPath="Resources/Scenes/GameWorld/Meshes/Cube.obj">
                 <material name="Color" shader="Color"/>
             </component>
         </components>

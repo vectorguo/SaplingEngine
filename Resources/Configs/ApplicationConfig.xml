@@ -3,7 +3,7 @@
     <applicationName>Sapling</applicationName>
     <windowWidth>1280</windowWidth>
     <windowHeight>720</windowHeight>
-    <startScene sceneName="GameWorld" scenePath="Resources/Configs/Scenes/GameWorld.xml"/>
+    <startScene sceneName="GameWorld" scenePath="Resources/Scenes/GameWorld/GameWorld.xml"/>
     <shaders>
         <shader name="Color" path="Resources/Shaders/color.hlsl" vert="Vert" frag="Frag" inputLayoutCount="5">
             <inputLayout name="0" index="0" format="6" inputSlot="0" offset="0" inputSlotClass="0" stepRate="0"/>

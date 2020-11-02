@@ -58,7 +58,7 @@ namespace SaplingEngine
 
 			Vector3& operator+= (const Vector3& v)
 			{
-				Vector3(XMLoadFloat3(&value) + XMLoadFloat3(&v.value));
+				XMStoreFloat3(&value, XMLoadFloat3(&value) + XMLoadFloat3(&v.value));
 				return *this;
 			}
 

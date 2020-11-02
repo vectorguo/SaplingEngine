@@ -130,8 +130,8 @@ namespace SaplingEngine
 					vertexDatas.push_back(vertexData1);
 					vertexDatas.push_back(vertexData2);
 					indices.push_back(vCount + 0);
-					indices.push_back(vCount + 3);
 					indices.push_back(vCount + 1);
+					indices.push_back(vCount + 2);
 				}
 				else
 				{

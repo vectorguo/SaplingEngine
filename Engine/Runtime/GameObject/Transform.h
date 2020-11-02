@@ -113,6 +113,42 @@ namespace SaplingEngine
 			m_IsLocalDataDirty = true;
 			m_LocalScale = localScale;
 		}
+
+		/**
+		 * \brief 获取forward向量
+		 * \return forward向量
+		 */
+		Vector3 GetForward() const
+		{
+			//TODO m_LocalRotation需要修改成使用m_Location
+			auto forward = m_LocalRotation.operator*(Vector3::Forward);
+			forward.Normalize();
+			return forward;
+		}
+
+		/**
+		 * \brief 获取right向量
+		 * \return right向量
+		 */
+		Vector3 GetRight() const
+		{
+			//TODO m_LocalRotation需要修改成使用m_Location
+			auto right = m_LocalRotation.operator*(Vector3::Right);
+			right.Normalize();
+			return right;
+		}
+
+		/**
+		 * \brief 获取up向量
+		 * \return up向量
+		 */
+		Vector3 GetUp() const
+		{
+			//TODO m_LocalRotation需要修改成使用m_Location
+			auto up = m_LocalRotation.operator*(Vector3::Up);
+			up.Normalize();
+			return up;
+		}
 		
 		/**
 		 * \brief 获取局部坐标到世界坐标的变换矩阵

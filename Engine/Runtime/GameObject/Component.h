@@ -7,7 +7,8 @@ namespace SaplingEngine
 	constexpr uint32_t ComponentType_Transform = 1;
 	
 	constexpr uint32_t ComponentType_Camera = 2;
-	constexpr uint32_t ComponentType_Renderer = 3;
+	constexpr uint32_t ComponentType_Light = 3;
+	constexpr uint32_t ComponentType_Renderer = 4;
 	constexpr uint32_t ComponentType_InternalLimit = ComponentType_Renderer;
 
 	class GameObject;

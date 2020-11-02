@@ -4,6 +4,7 @@
 #include "Application/GameSetting.h"
 #include "Camera/Camera.h"
 #include "GameObject/Transform.h"
+#include "Graphics/Light.h"
 #include "Graphics/Shader.h"
 #include "Graphics/ShaderManager.h"
 #include "RenderPipeline/Renderer/MeshRenderer.h"
@@ -144,11 +145,27 @@ namespace SaplingEngine
 	{
 		const auto& worldToViewMatrix = pCamera->GetWorldToViewMatrix();
 		const auto& worldToProjMatrix = worldToViewMatrix * pCamera->GetViewToProjMatrix();
-		m_PassConstantBuffer->CopyData(0,
-			{
-				worldToViewMatrix.Transpose(),
-				worldToProjMatrix.Transpose(),
-			});
+
+		const auto* light = Light::Instance();
+		if (light)
+		{
+			const auto* pLightTransform = light->GetTransform();
+			m_PassConstantBuffer->CopyData(0,
+				{
+					worldToViewMatrix.Transpose(),
+					worldToProjMatrix.Transpose(),
+					{0, 0, 0},
+					{0.8f, 0.6f, -0.2f}
+				});
+		}
+		else
+		{
+			m_PassConstantBuffer->CopyData(0,
+				{
+					worldToViewMatrix.Transpose(),
+					worldToProjMatrix.Transpose(),
+				});
+		}
 	}
 
 	/**
@@ -435,7 +452,7 @@ namespace SaplingEngine
 	 */
 	void Dx12GraphicsManager::CreatePipelineState()
 	{
-		const auto* pShader = ShaderManager::Instance()->GetShader("Color");
+		const auto* pShader = ShaderManager::Instance()->GetShader("Opaque");
 		const auto* pShaderInputLayout = pShader->GetInputLayout();
 
 		D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc;

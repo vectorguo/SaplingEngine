@@ -224,6 +224,10 @@ namespace SaplingEngine
 			RenderPipeline::Instance()->OnWindowResize();
 			return 0;
 
+		case WM_MOUSEWHEEL:
+			Input::Instance()->SetMouseButton(EMouseButtonState::MouseWheel, static_cast<short>(HIWORD(wParam)), 0);
+			return 0;
+			
 		case WM_LBUTTONDOWN:
 			Input::Instance()->SetMouseButton(EMouseButtonState::LeftMouseButtonDown, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 			return 0;
@@ -243,7 +247,7 @@ namespace SaplingEngine
 		case WM_MOUSEMOVE:
 			Input::Instance()->SetMouseButton(EMouseButtonState::MouseButtonMove, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 			return 0;
-
+			
 		case WM_KEYDOWN:
 			
 			return 0;

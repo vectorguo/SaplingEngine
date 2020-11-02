@@ -105,6 +105,7 @@
     <ClInclude Include="..\..\..\Engine\Runtime\GameObject\GameObject.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\GameObject\Transform.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\ConstantData.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Light.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Material.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Mesh.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Shader.h" />
@@ -159,6 +160,7 @@
     <ClCompile Include="..\..\..\Engine\Runtime\GameObject\ComponentFactory.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\GameObject\GameObject.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\GameObject\Transform.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Light.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Material.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Mesh.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Shader.cpp" />

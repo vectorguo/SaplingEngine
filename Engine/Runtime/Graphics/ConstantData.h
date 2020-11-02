@@ -15,5 +15,8 @@ namespace SaplingEngine
 	{
 		Matrix4x4 SAPLING_MATRIX_V = Matrix4x4::Identity;
 		Matrix4x4 SAPLING_MATRIX_VP = Matrix4x4::Identity;
+
+		XMFLOAT3 MAIN_LIGHT_POSITION = {0, 0, 0};
+		XMFLOAT3 MAIN_LIGHT_DIRECTION = { 0, 0, 0 };
 	};
 }

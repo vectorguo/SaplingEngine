@@ -5,5 +5,5 @@
 namespace ChessWar
 {
 	//组件类型
-	constexpr uint32_t ComponentType_ChessWarInput = 4;
+	constexpr uint32_t ComponentType_ChessWarInput = SaplingEngine::ComponentType_InternalLimit + 1;
 }

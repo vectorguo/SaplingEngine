@@ -73,9 +73,16 @@ namespace SaplingEngine
 		/**
 		 * \brief 获取对象
 		 * \param name 对象名称
-		 * \return 对象只能指针
+		 * \return 对象指针
 		 */
-		GameObjectSptr GetGameObject(const std::string& name);
+		GameObject* GetGameObject(const std::string& name);
+		
+		/**
+		 * \brief 获取对象
+		 * \param name 对象名称
+		 * \return 对象智能指针
+		 */
+		GameObjectSptr GetGameObjectSptr(const std::string& name);
 
 		/**
 		 * \brief 获取所有游戏对象

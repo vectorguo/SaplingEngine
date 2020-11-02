@@ -156,6 +156,9 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\VertexData.h">
       <Filter>Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Light.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Runtime\Utility\Time.cpp">
@@ -262,6 +265,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\Resource\ResourceLoader.cpp">
       <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Light.cpp">
+      <Filter>Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

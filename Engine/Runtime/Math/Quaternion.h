@@ -86,7 +86,7 @@ namespace SaplingEngine
 		public:
 			const static Quaternion Identity;
 			
-		private:
+		public:
 			union
 			{
 				XMFLOAT4 value;

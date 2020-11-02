@@ -115,14 +115,28 @@ namespace SaplingEngine
 	/**
 	 * \brief 获取对象
 	 * \param name 对象名称
-	 * \return 对象只能指针
+	 * \return 对象指针
 	 */
-	GameObjectSptr Scene::GetGameObject(const std::string& name)
+	GameObject* Scene::GetGameObject(const std::string& name)
 	{
 		const auto iter = std::find_if(m_GameObjects.begin(), m_GameObjects.end(), [&name](const GameObjectSptr& pObject)
-		{
-			return pObject->GetName() == name;
-		});
+			{
+				return pObject->GetName() == name;
+			});
+		return iter == m_GameObjects.end() ? nullptr : iter->get();
+	}
+
+	/**
+	 * \brief 获取对象
+	 * \param name 对象名称
+	 * \return 对象只能指针
+	 */
+	GameObjectSptr Scene::GetGameObjectSptr(const std::string& name)
+	{
+		const auto iter = std::find_if(m_GameObjects.begin(), m_GameObjects.end(), [&name](const GameObjectSptr& pObject)
+			{
+				return pObject->GetName() == name;
+			});
 		return iter == m_GameObjects.end() ? nullptr : *iter;
 	}
 

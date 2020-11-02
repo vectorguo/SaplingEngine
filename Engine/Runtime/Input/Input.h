@@ -14,7 +14,8 @@ namespace SaplingEngine
 		RightMouseButtonDown,
 		RightMouseButtonUp,
 
-		MouseButtonMove
+		MouseButtonMove,
+		MouseWheel,
 	};
 
 	enum class EKeyState
@@ -24,6 +25,11 @@ namespace SaplingEngine
 		KeyDown,
 		KeyUp,
 		KeyPress,
+	};
+
+	enum class EKeyCode
+	{
+		
 	};
 	
 	class Input final
@@ -63,6 +69,15 @@ namespace SaplingEngine
 			return m_MousePosition;
 		}
 
+		/**
+		 * \brief 获取鼠标滚轮的滚动值
+		 * \return 滚动值
+		 */
+		float GetMouseWheelValue() const
+		{
+			return m_MouseWheelValue;
+		}
+
 	private:
 		/**
 		 * \brief 重置
@@ -73,6 +88,11 @@ namespace SaplingEngine
 				m_MouseButtonState == EMouseButtonState::RightMouseButtonUp)
 			{
 				m_MouseButtonState = EMouseButtonState::None;
+			}
+			else if (m_MouseButtonState == EMouseButtonState::MouseWheel)
+			{
+				m_MouseButtonState = EMouseButtonState::None;
+				m_MouseWheelValue = 0;
 			}
 		}
 		
@@ -87,5 +107,6 @@ namespace SaplingEngine
 	private:
 		EMouseButtonState m_MouseButtonState = EMouseButtonState::None;
 		Vector2 m_MousePosition;
+		float m_MouseWheelValue = 0;
 	};
 }

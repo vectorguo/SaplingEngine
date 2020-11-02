@@ -62,5 +62,10 @@ namespace ChessWar
 		 * \brief 鼠标位置
 		 */
 		Vector2 m_MousePosition;
+
+		/**
+		 * \brief 相机操作值 0：无操作， 1：移动相机 2：旋转相机 3：拉近拉远
+		 */
+		int32_t m_CameraOperation = 0;
 	};
 }

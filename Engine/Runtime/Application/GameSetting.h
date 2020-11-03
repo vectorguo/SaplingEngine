@@ -8,7 +8,7 @@ namespace SaplingEngine
 	{
 	public:
 		GameSetting() = default;
-		~GameSetting();
+		~GameSetting() = default;
 
 		SINGLETON(GameSetting)
 		
@@ -18,35 +18,6 @@ namespace SaplingEngine
 		 */
 		bool Initialize();
 
-		/**
-		 * \brief 获取XML配置根节点
-		 * \return XML配置的根节点
-		 */
-		const XmlNode* GetRootNode() const
-		{
-			return m_pRootNode;
-		}
-
-		/**
-		 * \brief 获取节点
-		 * \param nodeName 节点名称
-		 * \return 节点指针
-		 */
-		const XmlNode* GetNode(const char* nodeName) const
-		{
-			return m_pRootNode->first_node(nodeName);
-		}
-
-		/**
-		 * \brief 获取节点
-		 * \param nodeName 节点名称
-		 * \return 节点指针
-		 */
-		const XmlNode* GetNode(const std::string& nodeName) const
-		{
-			return m_pRootNode->first_node(nodeName.data());
-		}
-		
 		/**
 		 * \brief 获取屏幕宽度
 		 * \return 屏幕宽度
@@ -95,21 +66,6 @@ namespace SaplingEngine
 		}
 
 	private:
-		/**
-		 * \brief Xml配置文件
-		 */
-		XmlDocumentFile* m_pDocumentFile = nullptr;
-		
-		/**
-		 * \brief Xml配置信息
-		 */
-		XmlDocument* m_pDocument = nullptr;
-
-		/**
-		 * \brief 设置配置的根节点
-		 */
-		XmlNode* m_pRootNode = nullptr;
-		
 		/**
 		 * \brief 屏幕宽度
 		 */

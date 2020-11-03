@@ -41,7 +41,7 @@ namespace SaplingEngine
 		}
 		else
 		{
-			auto* pMeshResource = LoadMeshResource(path);
+			auto* pMeshResource = LoadMeshResource(path, 0, 0);
 			auto meshResourceSptr = std::shared_ptr<MeshResource>(pMeshResource);
 			m_Resources.insert_or_assign(path, meshResourceSptr);
 			return meshResourceSptr;

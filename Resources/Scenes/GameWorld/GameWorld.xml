@@ -18,7 +18,7 @@
     <gameObject name="ground" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="4" subType="0" meshPath="Resources/Scenes/GameWorld/Meshes/ground.obj">
+            <component type="4" subType="0" meshName="ground">
                 <material name="Color" shader="Color"/>
             </component>
         </components>
@@ -29,7 +29,7 @@
     <gameObject name="bridge" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="4" subType="0" meshPath="Resources/Scenes/GameWorld/Meshes/bridge.obj">
+            <component type="4" subType="0" meshName="bridge">
                 <material name="Color" shader="Color"/>
             </component>
         </components>
@@ -40,7 +40,7 @@
     <gameObject name="rock" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="4" subType="0" meshPath="Resources/Scenes/GameWorld/Meshes/rock.obj">
+            <component type="4" subType="0" meshName="rock">
                 <material name="Color" shader="Color"/>
             </component>
         </components>
@@ -51,7 +51,7 @@
     <gameObject name="stone" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="4" subType="0" meshPath="Resources/Scenes/GameWorld/Meshes/stone.obj">
+            <component type="4" subType="0" meshName="stone">
                 <material name="Color" shader="Color"/>
             </component>
         </components>
@@ -62,7 +62,7 @@
     <gameObject name="grass" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="4" subType="0" meshPath="Resources/Scenes/GameWorld/Meshes/grass.obj">
+            <component type="4" subType="0" meshName="grass">
                 <material name="Color" shader="Color"/>
             </component>
         </components>

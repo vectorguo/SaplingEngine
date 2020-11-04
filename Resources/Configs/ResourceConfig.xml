@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
     <meshes>
-        <mesh name="bridge" path="Resources/Scenes/GameWorld/Meshes/bridge.obj" vertexCount="0" indexCount="0"/>
-        <mesh name="grass" path="Resources/Scenes/GameWorld/Meshes/grass.obj" vertexCount="0" indexCount="0"/>
-        <mesh name="ground" path="Resources/Scenes/GameWorld/Meshes/ground.obj" vertexCount="0" indexCount="0"/>
-        <mesh name="rock" path="Resources/Scenes/GameWorld/Meshes/rock.obj" vertexCount="0" indexCount="0"/>
-        <mesh name="stone" path="Resources/Scenes/GameWorld/Meshes/stone.obj" vertexCount="0" indexCount="0"/>
+        <mesh name="bridge" path="Resources/Scenes/GameWorld/Meshes/bridge.obj" vertexCount="2249" indexCount="4692"/>
+        <mesh name="grass" path="Resources/Scenes/GameWorld/Meshes/grass.obj" vertexCount="15759" indexCount="38604"/>
+        <mesh name="ground" path="Resources/Scenes/GameWorld/Meshes/ground.obj" vertexCount="1071" indexCount="1926"/>
+        <mesh name="rock" path="Resources/Scenes/GameWorld/Meshes/rock.obj" vertexCount="48791" indexCount="121062"/>
+        <mesh name="stone" path="Resources/Scenes/GameWorld/Meshes/stone.obj" vertexCount="2598" indexCount="9222"/>
     </meshes>
 </root>

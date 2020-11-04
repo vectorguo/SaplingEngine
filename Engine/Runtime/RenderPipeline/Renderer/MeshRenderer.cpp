@@ -16,7 +16,7 @@ namespace SaplingEngine
 	{
 		//创建Mesh
 		m_pMesh = new Mesh();
-		m_pMesh->Load(XmlGetAttributeValue<const char*>(pNode, "meshPath"));
+		m_pMesh->Load(XmlGetAttributeValue<const char*>(pNode, "meshName"));
 		
 		//创建材质
 		//TODO

@@ -1,193 +1,156 @@
 #include "ResourceLoader.h"
 
+#include <chrono>
+
+
+#include "ResourceManager.h"
+
 namespace SaplingEngine
 {
 	/**
 	 * \brief 加载Mesh资源
-	 * \param path Mesh资源路径
+	 * \param meshName Mesh名称
 	 * \return Resource指针
 	 */
-	IResource* LoadMeshResource(const std::string& path)
+	IResource* LoadMeshResource(const std::string& meshName)
 	{
+		//获取Mesh数据
+		const auto* pMeshConfig = ResourceManager::Instance()->GetMeshConfig(meshName);
+		
 		//打开文件
 		std::fstream fs;
-		fs.open(path, std::ios::in);
+		fs.open(std::get<0>(*pMeshConfig), std::ios::in);
 
 		//检查文件打开是否成功
 		if (!fs.is_open())
 		{
 			fs.close();
-			std::cout << path << " open failed!" << std::endl;
+			std::cout << meshName << " open failed!" << std::endl;
 			return nullptr;
 		}
 
-		//数据容器
-		std::vector<Vector3> positions;
-		std::vector<Vector3> normals;
-		std::vector<Vector2> uvs;
-
-		std::vector<VertexData> vertexDatas;
-		std::vector<uint16_t> indices;
+		//顶点数据和索引数据
+		std::vector<VertexData> vertexDatas(std::get<1>(*pMeshConfig));
+		std::vector<uint16_t> indices(std::get<2>(*pMeshConfig));
 
 		//解析
 		std::string line;
 		float fValue[3];
-		while (!fs.eof())
+		uint32_t uValue[9];
+		std::vector<VertexData>::size_type vIndex = 0, vnIndex = 0, vtIndex = 0, iIndex = 0;
+		if (vertexDatas.empty())
 		{
-			//读取一行
-			std::getline(fs, line);
+			while (!fs.eof())
+			{
+				//读取一行
+				std::getline(fs, line);
 
-			//解析参数
-			if (line[0] == 'v' && line[1] == ' ')
-			{
-				if (sscanf_s(line.c_str(), "v %f %f %f", fValue, fValue + 1, fValue + 2) == 3)
+				//解析参数
+				if (line[0] == 'v' && line[1] == ' ')
 				{
-					positions.emplace_back(fValue[0], fValue[1], fValue[2]);
-				}
-			}
-			else if (line[0] == 'v' && line[1] == 'n')
-			{
-				if (sscanf_s(line.c_str(), "vn %f %f %f", fValue, fValue + 1, fValue + 2) == 3)
-				{
-					normals.emplace_back(fValue[0], fValue[1], fValue[2]);
-				}
-			}
-			else if (line[0] == 'v' && line[1] == 't')
-			{
-				if (sscanf_s(line.c_str(), "vt %f %f %f", fValue, fValue + 1, fValue + 2) == 3)
-				{
-					uvs.emplace_back(fValue[0], fValue[1]);
-				}
-			}
-			else if (line[0] == 'f' && line[1] == ' ')
-			{
-				std::vector<int> pIndexes, nIndexes, uIndexes;
-
-				auto lineSize = static_cast<int32_t>(line.size());
-				if (line[lineSize - 1] != ' ')
-				{
-					line.append(" ");
-					++lineSize;
-				}
-
-				std::string substr;
-				for (auto i = 2; i < lineSize;)
-				{
-					auto pos = static_cast<int32_t>(line.find('/', i));
-					if (pos == -1)
+					if (sscanf_s(line.c_str(), "v %f %f %f", fValue, fValue + 1, fValue + 2) == 3)
 					{
-						break;
+						if (vertexDatas.size() <= vIndex)
+						{
+							vertexDatas.emplace_back();
+						}
+						auto& position = vertexDatas[vIndex++].PositionOS;
+						position.x = fValue[0];
+						position.y = fValue[1];
+						position.z = fValue[2];
 					}
-					substr = line.substr(i, pos - i);
-					pIndexes.emplace_back(std::atoi(substr.c_str()) - 1);
-					i = pos + 1;
-
-					pos = static_cast<int32_t>(line.find('/', i));
-					if (i != pos)
+				}
+				else if (line[0] == 'v' && line[1] == 'n')
+				{
+					if (sscanf_s(line.c_str(), "vn %f %f %f", fValue, fValue + 1, fValue + 2) == 3)
 					{
-						substr = line.substr(i, pos - i);
-						uIndexes.emplace_back(std::atoi(substr.c_str()) - 1);
+						if (vertexDatas.size() <= vnIndex)
+						{
+							vertexDatas.emplace_back();
+						}
+						auto& normal = vertexDatas[vnIndex++].NormalOS;
+						normal.x = fValue[0];
+						normal.y = fValue[1];
+						normal.z = fValue[2];
 					}
-					i = pos + 1;
-
-					pos = static_cast<int32_t>(line.find(' ', i));
-					substr = line.substr(i, pos - i);
-					nIndexes.emplace_back(std::atoi(substr.c_str()) - 1);
-					i = pos + 1;
 				}
-
-				const auto vCount = static_cast<int32_t>(vertexDatas.size());
-				if (pIndexes.size() == 3)
+				else if (line[0] == 'v' && line[1] == 't')
 				{
-					VertexData vertexData0
+					if (sscanf_s(line.c_str(), "vt %f %f %f", fValue, fValue + 1, fValue + 2) == 3)
 					{
-						positions[pIndexes[0]].value,
-						normals[nIndexes[0]].value,
-						XMFLOAT4(Colors::Green),
-						XMFLOAT2(0, 0),
-						XMFLOAT2(0, 0),
-					};
-
-					VertexData vertexData1
-					{
-						positions[pIndexes[1]].value,
-						normals[nIndexes[1]].value,
-						XMFLOAT4(Colors::Green),
-						XMFLOAT2(0, 0),
-						XMFLOAT2(0, 0),
-					};
-
-					VertexData vertexData2
-					{
-						positions[pIndexes[2]].value,
-						normals[nIndexes[2]].value,
-						XMFLOAT4(Colors::Green),
-						XMFLOAT2(0, 0),
-						XMFLOAT2(0, 0),
-					};
-
-					vertexDatas.push_back(vertexData0);
-					vertexDatas.push_back(vertexData1);
-					vertexDatas.push_back(vertexData2);
-					indices.push_back(vCount + 0);
-					indices.push_back(vCount + 1);
-					indices.push_back(vCount + 2);
+						if (vertexDatas.size() <= vtIndex)
+						{
+							vertexDatas.emplace_back();
+						}
+						auto& uv0 = vertexDatas[vtIndex++].UV0;
+						uv0.x = fValue[0];
+						uv0.y = fValue[1];
+					}
 				}
-				else
+				else if (line[0] == 'f' && line[1] == ' ')
 				{
-					VertexData vertexData0
+					if (sscanf_s(line.c_str(), "f %u/%u/%u %u/%u/%u %u/%u/%u", uValue, uValue + 1, uValue + 2, uValue + 3, uValue + 4, uValue + 5, uValue + 6, uValue + 7, uValue + 8) == 9)
 					{
-						positions[pIndexes[0]].value,
-						normals[nIndexes[0]].value,
-						XMFLOAT4(Colors::Green),
-						XMFLOAT2(0, 0),
-						XMFLOAT2(0, 0),
-					};
+						indices.push_back(static_cast<uint16_t>(uValue[0] - 1));
+						indices.push_back(static_cast<uint16_t>(uValue[3] - 1));
+						indices.push_back(static_cast<uint16_t>(uValue[6] - 1));
+					}
+				}
+			}
+		}
+		else
+		{
+			while (!fs.eof())
+			{
+				//读取一行
+				std::getline(fs, line);
 
-					VertexData vertexData1
+				//解析参数
+				if (line[0] == 'v' && line[1] == ' ')
+				{
+					if (sscanf_s(line.c_str(), "v %f %f %f", fValue, fValue + 1, fValue + 2) == 3)
 					{
-						positions[pIndexes[1]].value,
-						normals[nIndexes[1]].value,
-						XMFLOAT4(Colors::Green),
-						XMFLOAT2(0, 0),
-						XMFLOAT2(0, 0),
-					};
-
-					VertexData vertexData2
+						auto& position = vertexDatas[vIndex++].PositionOS;
+						position.x = fValue[0];
+						position.y = fValue[1];
+						position.z = fValue[2];
+					}
+				}
+				else if (line[0] == 'v' && line[1] == 'n')
+				{
+					if (sscanf_s(line.c_str(), "vn %f %f %f", fValue, fValue + 1, fValue + 2) == 3)
 					{
-						positions[pIndexes[2]].value,
-						normals[nIndexes[2]].value,
-						XMFLOAT4(Colors::Green),
-						XMFLOAT2(0, 0),
-						XMFLOAT2(0, 0),
-					};
-
-					VertexData vertexData3
+						auto& normal = vertexDatas[vnIndex++].NormalOS;
+						normal.x = fValue[0];
+						normal.y = fValue[1];
+						normal.z = fValue[2];
+					}
+				}
+				else if (line[0] == 'v' && line[1] == 't')
+				{
+					if (sscanf_s(line.c_str(), "vt %f %f %f", fValue, fValue + 1, fValue + 2) == 3)
 					{
-						positions[pIndexes[3]].value,
-						normals[nIndexes[3]].value,
-						XMFLOAT4(Colors::Green),
-						XMFLOAT2(0, 0),
-						XMFLOAT2(0, 0),
-					};
-
-					vertexDatas.push_back(vertexData0);
-					vertexDatas.push_back(vertexData1);
-					vertexDatas.push_back(vertexData2);
-					vertexDatas.push_back(vertexData3);
-					indices.push_back(vCount + 0);
-					indices.push_back(vCount + 3);
-					indices.push_back(vCount + 1);
-					indices.push_back(vCount + 3);
-					indices.push_back(vCount + 2);
-					indices.push_back(vCount + 1);
+						auto& uv0 = vertexDatas[vtIndex++].UV0;
+						uv0.x = fValue[0];
+						uv0.y = fValue[1];
+					}
+				}
+				else if (line[0] == 'f' && line[1] == ' ')
+				{
+					if (sscanf_s(line.c_str(), "f %u/%u/%u %u/%u/%u %u/%u/%u", uValue, uValue + 1, uValue + 2, uValue + 3, uValue + 4, uValue + 5, uValue + 6, uValue + 7, uValue + 8) == 9)
+					{
+						indices[iIndex] = static_cast<uint16_t>(uValue[0] - 1);
+						indices[iIndex + 1] = static_cast<uint16_t>(uValue[3] - 1);
+						indices[iIndex + 2] = static_cast<uint16_t>(uValue[6] - 1);
+						iIndex += 3;
+					}
 				}
 			}
 		}
 
 		//关闭文件
 		fs.close();
-
+		
 		auto* pMeshResource = new MeshResource();
 		pMeshResource->SetVertexDatas(std::move(vertexDatas));
 		pMeshResource->SetIndices(std::move(indices));

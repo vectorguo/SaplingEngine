@@ -5,6 +5,7 @@
 #include "Graphics/ShaderManager.h"
 #include "Input/Input.h"
 #include "RenderPipeline/RenderPipeline.h"
+#include "Resource/ResourceManager.h"
 #include "Scene/SceneManager.h"
 
 namespace SaplingEngine
@@ -25,6 +26,9 @@ namespace SaplingEngine
 	{
 		m_AppInstance = hInstance;
 
+		//初始化资源管理器
+		ResourceManager::Instance()->Initialize();
+		
 		//初始化窗口
 		if (InitializeWindow())
 		{

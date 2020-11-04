@@ -18,11 +18,7 @@ namespace SaplingEngine
 	class IResource
 	{
 	protected:
-		explicit IResource(EResourceType resourceType)
-			:m_ResourceType(resourceType)
-		{
-			
-		}
+		IResource() = default;
 		
 	public:
 		virtual ~IResource() = default;
@@ -34,21 +30,6 @@ namespace SaplingEngine
 		IResource(IResource&&) = delete;
 		IResource& operator= (const IResource&) = delete;
 		IResource& operator= (IResource&&) = delete;
-		
-		/**
-		 * \brief 获取资源类型
-		 * \return 资源类型
-		 */
-		EResourceType GetResourceType() const
-		{
-			return m_ResourceType;
-		}
-		
-	private:
-		/**
-		 * \brief 资源类型
-		 */
-		EResourceType m_ResourceType;
 	};
 
 	using IResourceSptr = std::shared_ptr<IResource>;

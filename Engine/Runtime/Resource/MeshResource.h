@@ -9,7 +9,7 @@ namespace SaplingEngine
 	{
 	public:
 		explicit MeshResource()
-			: IResource(EResourceType::Mesh)
+			: IResource()
 		{
 		}
 
@@ -23,6 +23,15 @@ namespace SaplingEngine
 		MeshResource& operator= (const MeshResource&) = delete;
 		MeshResource& operator= (MeshResource&&) = delete;
 
+		/**
+		 * \brief 获取资源类型
+		 * \return 资源类型
+		 */
+		static EResourceType GetResourceType() 
+		{
+			return EResourceType::Mesh;
+		}
+		
 		/**
 		 * \brief 获取顶点数据
 		 * \return 顶点数据

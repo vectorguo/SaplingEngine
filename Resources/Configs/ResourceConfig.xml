@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <meshes>
+        <mesh name="bridge" path="Resources/Scenes/GameWorld/Meshes/bridge.obj" vertexCount="0" indexCount="0"/>
+        <mesh name="grass" path="Resources/Scenes/GameWorld/Meshes/grass.obj" vertexCount="0" indexCount="0"/>
+        <mesh name="ground" path="Resources/Scenes/GameWorld/Meshes/ground.obj" vertexCount="0" indexCount="0"/>
+        <mesh name="rock" path="Resources/Scenes/GameWorld/Meshes/rock.obj" vertexCount="0" indexCount="0"/>
+        <mesh name="stone" path="Resources/Scenes/GameWorld/Meshes/stone.obj" vertexCount="0" indexCount="0"/>
+    </meshes>
+</root>

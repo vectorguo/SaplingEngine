@@ -8,6 +8,8 @@ namespace SaplingEngine
 	
 	class ShaderManager final
 	{
+		using ShaderMap = std::map<std::string, Shader*>;
+		
 	public:
 		ShaderManager() = default;
 		~ShaderManager() = default;
@@ -31,7 +33,16 @@ namespace SaplingEngine
 		 */
 		const Shader* GetShader(const std::string& shaderName) const;
 
+		/**
+		 * \brief 获取所有shader
+		 * \return 所有shader
+		 */
+		const ShaderMap& GetAllShaders() const
+		{
+			return m_Shaders;
+		}
+
 	private:
-		std::unordered_map<std::string, Shader*> m_Shaders;
+		ShaderMap m_Shaders;
 	};
 }

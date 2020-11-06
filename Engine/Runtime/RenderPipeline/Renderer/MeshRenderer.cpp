@@ -19,7 +19,8 @@ namespace SaplingEngine
 		m_pMesh->Load(XmlGetAttributeValue<const char*>(pNode, "meshName"));
 		
 		//´´½¨²ÄÖÊ
-		//TODO
+		m_pMaterial = new Material();
+		m_pMaterial->Deserialize(pNode->first_node("material"));
 		
 		return true;
 	}

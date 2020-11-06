@@ -1,5 +1,6 @@
 #include "Dx12CommandManager.h"
 #include "Dx12GraphicsManager.h"
+#include "Graphics/Material.h"
 #include "Graphics/Mesh.h"
 #include "RenderPipeline/Renderer/Renderer.h"
 
@@ -48,7 +49,7 @@ namespace SaplingEngine
 	{
 		//重置命令
 		ThrowIfFailed(m_CommandAllocator->Reset());
-		ThrowIfFailed(m_CommandList->Reset(m_CommandAllocator.Get(), m_pGraphicsManager->GetPipelineState()));
+		ThrowIfFailed(m_CommandList->Reset(m_CommandAllocator.Get(), nullptr));
 
 		//设置ViewPort和ScissorRect
 		m_CommandList->RSSetViewports(1, &m_pGraphicsManager->m_Viewport);
@@ -77,24 +78,16 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief 销毁
-	 */
-	void Dx12CommandManager::Destroy()
-	{
-		CompleteCommand();
-	}
-
-	/**
-	 * \brief 清理缓冲
+	 * \brief 执行绘制前的准备工作
 	 * \param clearColor 是否清理颜色缓冲
 	 * \param clearDepth 是否清理深度缓冲
 	 * \param color 默认颜色
 	 */
-	void Dx12CommandManager::ClearRenderTargets(bool clearColor, bool clearDepth, const Color& color)
+	void Dx12CommandManager::PreDraw(bool clearColor, bool clearDepth, const Color& color)
 	{
 		const auto rtv = m_pGraphicsManager->CurrentBackBufferView();
 		const auto dsv = m_pGraphicsManager->DepthStencilBufferView();
-		
+
 		if (clearColor)
 		{
 			m_CommandList->ClearRenderTargetView(rtv, Color::LightBlue, 0, nullptr);
@@ -106,18 +99,31 @@ namespace SaplingEngine
 		}
 
 		m_CommandList->OMSetRenderTargets(1, &rtv, true, &dsv);
-	}
 
-	/**
-	 * \brief 设置根描述符表
-	 */
-	void Dx12CommandManager::SetRootSignature()
-	{
 		//设置跟描述符表和常量缓冲区，将常量缓冲区绑定到渲染流水线上
 		ID3D12DescriptorHeap* descriptorHeaps[] = { m_pGraphicsManager->m_CbvDescriptorHeap.Get() };
 		m_CommandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
 		m_CommandList->SetGraphicsRootSignature(m_pGraphicsManager->m_RootSignature.Get());
-		m_CommandList->SetGraphicsRootDescriptorTable(1, GetGPUHandleFromDescriptorHeap(m_pGraphicsManager->m_CbvDescriptorHeap.Get(), m_pGraphicsManager->m_PassCbvOffset, m_pGraphicsManager->m_CbvDescriptorSize));
+		m_CommandList->SetGraphicsRootDescriptorTable(1, GetGPUHandleFromDescriptorHeap(
+			                                              m_pGraphicsManager->m_CbvDescriptorHeap.Get(),
+			                                              m_pGraphicsManager->m_PassCbvOffset,
+			                                              m_pGraphicsManager->m_CbvDescriptorSize));
+	}
+
+	/**
+	 * \brief 执行绘制后的清理工作
+	 */
+	void Dx12CommandManager::PostDraw()
+	{
+		
+	}
+
+	/**
+	 * \brief 销毁
+	 */
+	void Dx12CommandManager::Destroy()
+	{
+		CompleteCommand();
 	}
 
 	/**
@@ -126,6 +132,15 @@ namespace SaplingEngine
 	 */
 	void Dx12CommandManager::DrawIndexedInstanced(const Renderer* pRenderer)
 	{
+		const auto* pMaterial = pRenderer->GetMaterial();
+		const auto& pipelineStateName = pMaterial->GetShaderName();
+		if (m_CurrentPipelineStateName != pMaterial->GetShaderName())
+		{
+			//需要切换渲染管线状态
+			m_CommandList->SetPipelineState(m_pGraphicsManager->GetPipelineState(pipelineStateName));
+			m_CurrentPipelineStateName = pipelineStateName;
+		}
+		
 		const auto* pMesh = pRenderer->GetMesh();
 		m_CommandList->IASetVertexBuffers(0, 1, pMesh->GetVertexBufferView());
 		m_CommandList->IASetIndexBuffer(pMesh->GetIndexBufferView());

@@ -25,7 +25,7 @@ static D3D12_CPU_DESCRIPTOR_HANDLE GetCPUHandleFromDescriptorHeap(ID3D12Descript
 	return pHeap->GetCPUDescriptorHandleForHeapStart();
 }
 
-static D3D12_CPU_DESCRIPTOR_HANDLE GetCPUHandleFromDescriptorHeap(ID3D12DescriptorHeap* pHeap, int32_t offset, int32_t descriptorSize)
+static D3D12_CPU_DESCRIPTOR_HANDLE GetCPUHandleFromDescriptorHeap(ID3D12DescriptorHeap* pHeap, uint32_t offset, uint32_t descriptorSize)
 {
 	auto cbvHeapHandle = pHeap->GetCPUDescriptorHandleForHeapStart();
 	const auto cbvHeapHandleOffset = offset * descriptorSize;
@@ -38,7 +38,7 @@ static D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandleFromDescriptorHeap(ID3D12Descript
 	return pHeap->GetGPUDescriptorHandleForHeapStart();
 }
 
-static D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandleFromDescriptorHeap(ID3D12DescriptorHeap* pHeap, int32_t offset, int32_t descriptorSize)
+static D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandleFromDescriptorHeap(ID3D12DescriptorHeap* pHeap, uint32_t offset, uint32_t descriptorSize)
 {
 	auto cbvHeapHandle = pHeap->GetGPUDescriptorHandleForHeapStart();
 	const auto cbvHeapHandleOffset = offset * descriptorSize;

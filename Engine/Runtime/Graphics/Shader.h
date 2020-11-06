@@ -24,22 +24,24 @@ namespace SaplingEngine
 			return m_Name;
 		}
 
-		/**
-		 * \brief 获取顶点着色器指针
-		 * \return 顶点着色器指针
-		 */
-		ID3DBlob* GetVsShader() const
+		uint8_t* GetVsBufferPoint() const
 		{
-			return m_VsShader.Get();
+			return static_cast<BYTE*>(m_VsShader->GetBufferPointer());
 		}
 
-		/**
-		 * \brief 获取片段着色器指针
-		 * \return 片段着色器指针
-		 */
-		ID3DBlob* GetPsShader() const
+		uint64_t GetVsBufferSize() const
 		{
-			return m_PsShader.Get();
+			return m_VsShader->GetBufferSize();
+		}
+
+		uint8_t* GetPsBufferPoint() const
+		{
+			return static_cast<BYTE*>(m_PsShader->GetBufferPointer());
+		}
+
+		uint64_t GetPsBufferSize() const
+		{
+			return m_PsShader->GetBufferSize();
 		}
 
 		/**

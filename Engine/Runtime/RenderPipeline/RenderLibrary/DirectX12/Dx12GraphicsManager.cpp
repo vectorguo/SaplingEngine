@@ -452,23 +452,10 @@ namespace SaplingEngine
 	 */
 	void Dx12GraphicsManager::CreatePipelineState()
 	{
-		const auto* pShader = ShaderManager::Instance()->GetShader("Opaque");
-		const auto* pShaderInputLayout = pShader->GetInputLayout();
-
+		//创建基础的PipelineState描述符
 		D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc;
 		ZeroMemory(&psoDesc, sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC));
-		psoDesc.InputLayout = { pShaderInputLayout->data(), static_cast<uint32_t>(pShaderInputLayout->size()) };
 		psoDesc.pRootSignature = m_RootSignature.Get();
-		psoDesc.VS =
-		{
-			static_cast<BYTE*>(pShader->GetVsShader()->GetBufferPointer()),
-			pShader->GetVsShader()->GetBufferSize()
-		};
-		psoDesc.PS =
-		{
-			static_cast<BYTE*>(pShader->GetPsShader()->GetBufferPointer()),
-			pShader->GetPsShader()->GetBufferSize()
-		};
 		psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
 		psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
 		psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
@@ -479,7 +466,22 @@ namespace SaplingEngine
 		psoDesc.SampleDesc.Count = 1;
 		psoDesc.SampleDesc.Quality = 0;
 		psoDesc.DSVFormat = m_DepthStencilViewFormat;
-		ThrowIfFailed(m_D3D12Device->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&m_PipelineState)));
+		
+		
+		//为每一个shader都创建一个pso
+		const auto& shaders = ShaderManager::Instance()->GetAllShaders();
+		for (auto iter = shaders.begin(); iter != shaders.end(); ++iter)
+		{
+			const auto* pShader = iter->second;
+			const auto* pShaderInputLayout = pShader->GetInputLayout();
+			psoDesc.InputLayout = { pShaderInputLayout->data(), static_cast<uint32_t>(pShaderInputLayout->size()) };
+			psoDesc.VS = { pShader->GetVsBufferPoint(), pShader->GetVsBufferSize() };
+			psoDesc.PS = { pShader->GetPsBufferPoint(), pShader->GetPsBufferSize() };
+
+			ComPtr<ID3D12PipelineState> pipelineState;
+			ThrowIfFailed(m_D3D12Device->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&pipelineState)));
+			m_PipelineStates.insert_or_assign(iter->first, pipelineState);
+		}
 	}
 
 	/**

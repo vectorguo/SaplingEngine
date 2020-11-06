@@ -13,10 +13,12 @@ namespace SaplingEngine
 	class Dx12GraphicsManager final : public GraphicsManager
 	{
 		friend class Dx12CommandManager;
+
+		using PipelineStateMap = std::map<std::string, ComPtr<ID3D12PipelineState>>;
 		
 	public:
 		Dx12GraphicsManager();
-		~Dx12GraphicsManager();
+		~Dx12GraphicsManager() override;
 
 		Dx12GraphicsManager(const Dx12GraphicsManager&) = delete;
 		Dx12GraphicsManager(Dx12GraphicsManager&&) = delete;
@@ -83,12 +85,14 @@ namespace SaplingEngine
 		}
 
 		/**
-		 * \brief 获取渲染管线状态
-		 * \return 渲染管线状态
+		 * \brief 获取PipelineState
+		 * \param name PipelineState名称
+		 * \return PipelineState指针
 		 */
-		ID3D12PipelineState* GetPipelineState() const
+		ID3D12PipelineState* GetPipelineState(const std::string& name) const
 		{
-			return m_PipelineState.Get();
+			const auto iter = m_PipelineStates.find(name);
+			return iter == m_PipelineStates.end() ? nullptr : iter->second.Get();
 		}
 		
 		/**
@@ -227,7 +231,7 @@ namespace SaplingEngine
 		uint32_t									m_PassCbvOffset = 0;
 
 		ComPtr<ID3D12RootSignature>					m_RootSignature = nullptr;				//跟签名和描述符
-		ComPtr<ID3D12PipelineState>					m_PipelineState = nullptr;				//流水线状态
+		PipelineStateMap							m_PipelineStates;						//流水线状态
 
 		D3D12_VIEWPORT								m_Viewport;								//视图窗口
 		D3D12_RECT									m_ScissorRect;							//裁剪矩形

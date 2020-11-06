@@ -113,9 +113,18 @@ namespace SaplingEngine
 
 		/**
 		 * \brief 获取所有渲染项
-		 * \return 所有渲染项
+		 * \return 所有渲染项(const)
 		 */
 		const std::vector<Renderer*>& GetRenderItems() const
+		{
+			return m_RenderItems;
+		}
+
+		/**
+		 * \brief 获取所有渲染项
+		 * \return 所有渲染项(非const)
+		 */
+		std::vector<Renderer*>& GetRenderItems()
 		{
 			return m_RenderItems;
 		}

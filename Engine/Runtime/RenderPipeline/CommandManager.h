@@ -45,24 +45,21 @@ namespace SaplingEngine
 		 * \brief 执行渲染后的清理工作
 		 */
 		virtual void PostRender() {}
+
+		/**
+		 * \brief 执行绘制前的准备工作
+		 */
+		virtual void PreDraw(bool clearColor, bool clearDepth, const Color& color) {}
+
+		/**
+		 * \brief 执行绘制后的清理工作
+		 */
+		virtual void PostDraw() {}
 		
 		/**
 		 * \brief 销毁
 		 */
 		virtual void Destroy() {}
-
-		/**
-		 * \brief 清理缓冲
-		 * \param clearColor 是否清理颜色缓冲
-		 * \param clearDepth 是否清理深度缓冲
-		 * \param color 默认颜色
-		 */
-		virtual void ClearRenderTargets(bool clearColor, bool clearDepth, const Color& color) = 0;
-
-		/**
-		 * \brief 设置根描述符表
-		 */
-		virtual void SetRootSignature() = 0;
 
 		/**
 		 * \brief 绘制物体

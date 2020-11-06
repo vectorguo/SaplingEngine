@@ -43,6 +43,19 @@ namespace SaplingEngine
 		void PostRender() override;
 
 		/**
+		 * \brief 执行绘制前的准备工作
+		 * \param clearColor 是否清理颜色缓冲
+		 * \param clearDepth 是否清理深度缓冲
+		 * \param color 默认颜色
+		 */
+		void PreDraw(bool clearColor, bool clearDepth, const Color& color) override;
+
+		/**
+		 * \brief 执行绘制后的清理工作
+		 */
+		void PostDraw() override;
+
+		/**
 		 * \brief 销毁
 		 */
 		void Destroy() override;
@@ -64,19 +77,6 @@ namespace SaplingEngine
 		{
 			return m_CommandQueue.Get();
 		}
-
-		/**
-		 * \brief 清理缓冲
-		 * \param clearColor 是否清理颜色缓冲
-		 * \param clearDepth 是否清理深度缓冲
-		 * \param color 默认颜色
-		 */
-		void ClearRenderTargets(bool clearColor, bool clearDepth, const Color& color) override;		
-
-		/**
-		 * \brief 设置根描述符表
-		 */
-		void SetRootSignature() override;
 
 		/**
 		 * \brief 绘制物体
@@ -116,5 +116,10 @@ namespace SaplingEngine
 
 		ComPtr<ID3D12Fence> m_Fence;
 		uint64_t m_CurrentFence = 0;
+
+		/**
+		 * \brief 当前渲染管线状态名称
+		 */
+		std::string m_CurrentPipelineStateName;
 	};
 }

@@ -159,6 +159,12 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Light.h">
       <Filter>Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\ConstantBufferData.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\RenderLibrary\DirectX12\Dx12ConstantBufferManager.h">
+      <Filter>RenderPipeline\RenderLibrary\DirectX12</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Runtime\Utility\Time.cpp">
@@ -267,6 +273,12 @@
       <Filter>Resource</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Light.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\RenderLibrary\DirectX12\Dx12ConstantBufferManager.cpp">
+      <Filter>RenderPipeline\RenderLibrary\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Graphics\ConstantBufferData.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
   </ItemGroup>

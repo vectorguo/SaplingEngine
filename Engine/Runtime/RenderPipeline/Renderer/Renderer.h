@@ -4,6 +4,7 @@
 
 namespace SaplingEngine
 {
+	class IConstantBufferData;
 	class Material;
 	class Mesh;
 	
@@ -30,15 +31,6 @@ namespace SaplingEngine
 		{
 			return ComponentType_Renderer;
 		}
-		
-		/**
-		 * \brief 获取常量缓冲区的索引
-		 * \return 常量缓冲区的索引
-		 */
-		int32_t GetConstantBufferIndex() const
-		{
-			return m_ConstantBufferIndex;
-		}
 
 		/**
 		 * \brief 获取Material
@@ -58,6 +50,25 @@ namespace SaplingEngine
 			return m_pMesh;
 		}
 
+		uint32_t GetCommonOcbIndex() const
+		{
+			return m_OcbIndex;
+		}
+
+		uint32_t GetSpecialOcbIndex() const
+		{
+			return m_OcbIndex + CbElementCount;
+		}
+		
+		/**
+		 * \brief 获取Object的特殊常量缓冲区数据指针
+		 * \return Object的特殊常量缓冲区数据指针
+		 */
+		IConstantBufferData* GetSpecialOcbData() const
+		{
+			return m_pSpecialOcbData;
+		}
+
 	protected:
 		void Start() override;
 		void OnDestroy() override;
@@ -72,11 +83,16 @@ namespace SaplingEngine
 		 * \brief Mesh
 		 */
 		Mesh* m_pMesh = nullptr;
+
+		/**
+		 * \brief Object的特殊常量缓冲区数据
+		 */
+		IConstantBufferData* m_pSpecialOcbData = nullptr;
 		
 	private:
 		/**
 		 * \brief 常量缓冲区的索引
 		 */
-		int32_t m_ConstantBufferIndex = -1;
+		uint32_t m_OcbIndex = 0;
 	};
 }

@@ -1,9 +1,11 @@
 #include "Dx12CommandManager.h"
 #include "Dx12GraphicsManager.h"
 
+
+#include "Dx12ConstantBufferManager.h"
 #include "Application/GameSetting.h"
 #include "Camera/Camera.h"
-#include "GameObject/Transform.h"
+#include "Graphics/ConstantBufferData.h"
 #include "Graphics/Light.h"
 #include "Graphics/Shader.h"
 #include "Graphics/ShaderManager.h"
@@ -13,15 +15,20 @@
 namespace SaplingEngine
 {
 	constexpr int32_t CbvBufferIndexCount = 500;
+
+	/**
+	 * \brief Object的通用常量缓冲区数据
+	 */
+	CommonOcbData GCommonOcbData;
+	
+	/**
+	 * \brief Pass的通用常量缓冲区数据
+	 */
+	CommonPcbData GCommonPcbData;
 	
 	Dx12GraphicsManager::Dx12GraphicsManager()
 		: GraphicsManager(), m_Viewport(), m_ScissorRect()
 	{
-		m_CbvBufferIndices.reserve(CbvBufferIndexCount);
-		for (auto i = CbvBufferIndexCount - 1; i >= 0; --i)
-		{
-			m_CbvBufferIndices.emplace_back(i);
-		}
 	}
 
 	Dx12GraphicsManager::~Dx12GraphicsManager() = default;
@@ -36,6 +43,9 @@ namespace SaplingEngine
 	{
 		CreateDevice();
 		CreateDescriptorHeaps();
+
+		//创建常量缓冲区管理器
+		m_pConstantBufferManager = new Dx12ConstantBufferManager(m_D3D12Device.Get(), m_CbvDescriptorHeap.Get(), m_CbvDescriptorSize);
 	}
 
 	/**
@@ -51,7 +61,6 @@ namespace SaplingEngine
 		CreatePipelineState();
 		CreateRtv();
 		CreateDsv(width, height);
-		CreateCbv();
 	}
 	
 	/**
@@ -96,27 +105,18 @@ namespace SaplingEngine
 	 * \brief 获取Object常量缓冲区索引
 	 * \return 常量缓冲区索引
 	 */
-	int32_t Dx12GraphicsManager::GetObjectConstantBufferIndex()
+	uint32_t Dx12GraphicsManager::PopObjectCbIndex()
 	{
-		if (m_CbvBufferIndices.empty())
-		{
-			return -1;
-		}
-		else
-		{
-			const auto index = *m_CbvBufferIndices.rbegin();
-			m_CbvBufferIndices.pop_back();
-			return index;
-		}
+		return m_pConstantBufferManager->PopObjectCbIndex();
 	}
 
 	/**
 	 * \brief 归还常量缓冲区索引
 	 * \param index 常量缓冲区索引
 	 */
-	void Dx12GraphicsManager::ReturnObjectConstantBufferIndex(int32_t index)
+	void Dx12GraphicsManager::PushObjectCbIndex(uint32_t index)
 	{
-		m_CbvBufferIndices.push_back(index);
+		m_pConstantBufferManager->PushObjectCbIndex(index);
 	}
 
 	/**
@@ -125,15 +125,16 @@ namespace SaplingEngine
 	 */
 	void Dx12GraphicsManager::UpdateObjectConstantBuffer(Scene* pActiveScene)
 	{
+		size_t dataSize;
 		const auto& renderItems = pActiveScene->GetRenderItems();
 		for (auto iter = renderItems.begin(); iter != renderItems.end(); ++iter)
 		{
 			auto* pRenderer = *iter;
-			auto* pTransform = pRenderer->GetTransform();
-			m_ObjConstantBuffer->CopyData(pRenderer->GetConstantBufferIndex(),
-				{
-					pTransform->GetLocalToWorldMatrix().Transpose()
-				});
+			const auto* pCommonData = GCommonOcbData.FillOcbData(dataSize, pRenderer->GetTransform());
+			m_pConstantBufferManager->CopyObjectCbData(pRenderer->GetCommonOcbIndex(), pCommonData, dataSize, false);
+
+			const auto* pSpecialData = pRenderer->GetSpecialOcbData()->FillOcbData(dataSize, pRenderer->GetTransform());
+			m_pConstantBufferManager->CopyObjectCbData(pRenderer->GetSpecialOcbIndex(), pSpecialData, dataSize, true);
 		}
 	}
 
@@ -143,29 +144,9 @@ namespace SaplingEngine
 	 */
 	void Dx12GraphicsManager::UpdatePassConstantBuffer(Camera* pCamera)
 	{
-		const auto& worldToViewMatrix = pCamera->GetWorldToViewMatrix();
-		const auto& worldToProjMatrix = worldToViewMatrix * pCamera->GetViewToProjMatrix();
-
-		const auto* light = Light::Instance();
-		if (light)
-		{
-			const auto* pLightTransform = light->GetTransform();
-			m_PassConstantBuffer->CopyData(0,
-				{
-					worldToViewMatrix.Transpose(),
-					worldToProjMatrix.Transpose(),
-					{0, 0, 0},
-					{0.8f, 0.6f, -0.2f}
-				});
-		}
-		else
-		{
-			m_PassConstantBuffer->CopyData(0,
-				{
-					worldToViewMatrix.Transpose(),
-					worldToProjMatrix.Transpose(),
-				});
-		}
+		size_t dataSize;
+		const auto* pData = GCommonPcbData.FillPcbData(dataSize, pCamera);
+		m_pConstantBufferManager->CopyPassCbData(pData, dataSize);
 	}
 
 	/**
@@ -173,7 +154,8 @@ namespace SaplingEngine
 	 */
 	void Dx12GraphicsManager::Destroy()
 	{
-
+		delete m_pConstantBufferManager;
+		m_pConstantBufferManager = nullptr;
 	}
 	
 	/**
@@ -560,30 +542,5 @@ namespace SaplingEngine
 
 		//资源转换
 		m_pCommandManager->ResourceBarrierTransition(m_DepthStencilBuffer.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_DEPTH_WRITE);
-	}
-
-	/**
-	 * \brief 创建Cbv
-	 */
-	void Dx12GraphicsManager::CreateCbv()
-	{
-		//创建CBV
-		m_ObjConstantBuffer = std::make_unique<Dx12UploadBuffer<ObjectConstantData>>(m_D3D12Device.Get(), CbvBufferIndexCount, true);
-		m_PassConstantBuffer = std::make_unique<Dx12UploadBuffer<PassConstantData>>(m_D3D12Device.Get(), 1, true);
-		m_PassCbvOffset = CbvBufferIndexCount;
-
-		D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc;
-
-		const auto elementSize = m_ObjConstantBuffer->GetElementSize();
-		for (uint32_t i = 0; i < CbvBufferIndexCount; ++i)
-		{
-			cbvDesc.BufferLocation = m_ObjConstantBuffer->GetGpuVirtualAddress(i);
-			cbvDesc.SizeInBytes = elementSize;
-			m_D3D12Device->CreateConstantBufferView(&cbvDesc, GetCPUHandleFromDescriptorHeap(m_CbvDescriptorHeap.Get(), i, m_CbvDescriptorSize));
-		}
-
-		cbvDesc.BufferLocation = m_PassConstantBuffer->GetGpuVirtualAddress();
-		cbvDesc.SizeInBytes = m_PassConstantBuffer->GetElementSize();
-		m_D3D12Device->CreateConstantBufferView(&cbvDesc, GetCPUHandleFromDescriptorHeap(m_CbvDescriptorHeap.Get(), m_PassCbvOffset, m_CbvDescriptorSize));
 	}
 }

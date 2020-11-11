@@ -1,4 +1,6 @@
 #include "MeshRenderer.h"
+
+#include "Graphics/ConstantBufferData.h"
 #include "Graphics/Material.h"
 #include "Graphics/Mesh.h"
 
@@ -21,6 +23,9 @@ namespace SaplingEngine
 		//创建材质
 		m_pMaterial = new Material();
 		m_pMaterial->Deserialize(pNode->first_node("material"));
+
+		//TODO 根据材质创建不同的Special Ocb Data
+		m_pSpecialOcbData = new SpecialOcbData();
 		
 		return true;
 	}

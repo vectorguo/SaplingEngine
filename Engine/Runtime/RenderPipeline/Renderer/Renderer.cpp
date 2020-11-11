@@ -1,6 +1,7 @@
 #include "Renderer.h"
 
 #include "GameObject/GameObject.h"
+#include "Graphics/ConstantBufferData.h"
 #include "Graphics/Material.h"
 #include "Graphics/Mesh.h"
 #include "RenderPipeline/GraphicsManager.h"
@@ -10,23 +11,24 @@ namespace SaplingEngine
 {
 	Renderer::Renderer()
 	{
-		m_ConstantBufferIndex = GraphicsManager::Instance()->GetObjectConstantBufferIndex();
+		m_OcbIndex = GraphicsManager::Instance()->PopObjectCbIndex();
 	}
 
 	Renderer::~Renderer()
 	{
 		delete m_pMaterial;
 		delete m_pMesh;
+		delete m_pSpecialOcbData;
 
-		if (m_ConstantBufferIndex >= 0)
+		if (m_OcbIndex >= 0)
 		{
-			GraphicsManager::Instance()->ReturnObjectConstantBufferIndex(m_ConstantBufferIndex);
+			GraphicsManager::Instance()->PushObjectCbIndex(m_OcbIndex);
 		}
-	}
+	}	
 
 	void Renderer::Start()
 	{
-		if (m_ConstantBufferIndex >= 0)
+		if (m_OcbIndex >= 0)
 		{
 			auto* pActiveScene = m_GameObjectSptr->GetScene();
 			pActiveScene->AddRenderItem(this);
@@ -35,7 +37,7 @@ namespace SaplingEngine
 
 	void Renderer::OnDestroy()
 	{
-		if (m_ConstantBufferIndex >= 0)
+		if (m_OcbIndex >= 0)
 		{
 			auto* pActiveScene = m_GameObjectSptr->GetScene();
 			pActiveScene->RemoveRenderItem(this);

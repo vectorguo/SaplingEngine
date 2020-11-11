@@ -54,19 +54,13 @@ namespace SaplingEngine
 		 * \brief 获取Object常量缓冲区索引
 		 * \return 常量缓冲区索引
 		 */
-		virtual int32_t GetObjectConstantBufferIndex()
-		{
-			return -1;
-		}
+		virtual uint32_t PopObjectCbIndex() = 0;
 
 		/**
 		 * \brief 归还常量缓冲区索引
 		 * \param index 常量缓冲区索引
 		 */
-		virtual void ReturnObjectConstantBufferIndex(int32_t index)
-		{
-			
-		}
+		virtual void PushObjectCbIndex(uint32_t index) = 0;
 		
 		/**
 		 * \brief 更新物体常量缓冲区数据

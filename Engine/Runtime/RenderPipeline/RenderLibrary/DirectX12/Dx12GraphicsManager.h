@@ -1,18 +1,15 @@
 #pragma once
 
 #include "Dx12UploadBuffer.h"
-#include "Graphics/ConstantData.h"
 #include "RenderPipeline/GraphicsManager.h"
 #include "SaplingEnginePch.h"
 
 namespace SaplingEngine
 {
-	using ObjectConstantBufferPtr = std::unique_ptr<Dx12UploadBuffer<ObjectConstantData>>;
-	using PassConstantBufferPtr = std::unique_ptr<Dx12UploadBuffer<PassConstantData>>;
-	
 	class Dx12GraphicsManager final : public GraphicsManager
 	{
 		friend class Dx12CommandManager;
+		friend class Dx12ConstantBufferManager;
 
 		using PipelineStateMap = std::map<std::string, ComPtr<ID3D12PipelineState>>;
 		
@@ -47,16 +44,16 @@ namespace SaplingEngine
 		void OnWindowResize(uint32_t width, uint32_t height) override;
 
 		/**
-		 * \brief 获取Object常量缓冲区索引
-		 * \return 常量缓冲区索引
-		 */
-		int32_t GetObjectConstantBufferIndex() override;
-
-		/**
 		 * \brief 归还常量缓冲区索引
 		 * \param index 常量缓冲区索引
 		 */
-		void ReturnObjectConstantBufferIndex(int32_t index) override;
+		void PushObjectCbIndex(uint32_t index) override;
+		
+		/**
+		 * \brief 获取Object常量缓冲区索引
+		 * \return 常量缓冲区索引
+		 */
+		uint32_t PopObjectCbIndex() override;
 		
 		/**
 		 * \brief 更新物体常量缓冲区数据
@@ -204,7 +201,7 @@ namespace SaplingEngine
 		}
 
 	private:
-		static constexpr  int						SwapChainBufferCount = 2;
+		static constexpr int						SwapChainBufferCount = 2;
 
 		ComPtr<IDXGIFactory4>						m_DXGIFactory;
 		ComPtr<ID3D12Device>						m_D3D12Device;
@@ -216,7 +213,6 @@ namespace SaplingEngine
 		ComPtr<ID3D12DescriptorHeap>				m_RtvDescriptorHeap;					//渲染对象描述符堆
 		ComPtr<ID3D12DescriptorHeap>				m_DsvDescriptorHeap;					//深度/模板描述符堆
 		ComPtr<ID3D12DescriptorHeap>				m_CbvDescriptorHeap;					//常量缓冲区描述符堆
-		std::vector<uint32_t>						m_CbvBufferIndices;						//常量缓冲区描述符数量
 
 		ComPtr<IDXGISwapChain>						m_SwapChain;							//交换链
 		ComPtr<ID3D12Resource>						m_SwapChainBuffer[SwapChainBufferCount];//交换链缓冲区
@@ -225,10 +221,6 @@ namespace SaplingEngine
 
 		DXGI_FORMAT									m_SwapChainBufferFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
 		DXGI_FORMAT									m_DepthStencilViewFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
-
-		ObjectConstantBufferPtr						m_ObjConstantBuffer = nullptr;
-		PassConstantBufferPtr						m_PassConstantBuffer = nullptr;
-		uint32_t									m_PassCbvOffset = 0;
 
 		ComPtr<ID3D12RootSignature>					m_RootSignature = nullptr;				//跟签名和描述符
 		PipelineStateMap							m_PipelineStates;						//流水线状态
@@ -239,6 +231,7 @@ namespace SaplingEngine
 		std::map<ComPtr<ID3D12Resource>, uint64_t>	m_UnusedUploadBuffers;					//未使用的上传缓存堆
 		std::map<ComPtr<ID3D12Resource>, uint64_t>	m_UsedUploadBuffers;					//已经使用的上传缓存堆
 
-		Dx12CommandManager*							m_pCommandManager = nullptr;			//DX12命令管理
+		Dx12CommandManager*							m_pCommandManager = nullptr;			//DX12命令管理器
+		Dx12ConstantBufferManager*					m_pConstantBufferManager = nullptr;		//DX12常量缓冲区管理器
 	};
 }

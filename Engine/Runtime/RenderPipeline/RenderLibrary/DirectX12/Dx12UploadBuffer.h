@@ -9,7 +9,7 @@ namespace SaplingEngine
 	class Dx12UploadBuffer
 	{
 	public:
-		Dx12UploadBuffer(ID3D12Device* device, uint32_t elementCount, bool isConstant) : m_ElementSize(isConstant ? (sizeof(T) + 255 & ~255) : sizeof(T))
+		Dx12UploadBuffer(ID3D12Device* device, uint32_t elementCount, bool isConstant) : m_ElementSize(isConstant ? (sizeof(T) + 255) & ~255 : sizeof(T))
 		{
 			D3D12_HEAP_PROPERTIES headProperties
 			{

@@ -104,10 +104,7 @@ namespace SaplingEngine
 		ID3D12DescriptorHeap* descriptorHeaps[] = { m_pGraphicsManager->m_CbvDescriptorHeap.Get() };
 		m_CommandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
 		m_CommandList->SetGraphicsRootSignature(m_pGraphicsManager->m_RootSignature.Get());
-		m_CommandList->SetGraphicsRootDescriptorTable(1, GetGPUHandleFromDescriptorHeap(
-			                                              m_pGraphicsManager->m_CbvDescriptorHeap.Get(),
-			                                              m_pGraphicsManager->m_PassCbvOffset,
-			                                              m_pGraphicsManager->m_CbvDescriptorSize));
+		m_CommandList->SetGraphicsRootDescriptorTable(1, GetGPUHandleFromDescriptorHeap(m_pGraphicsManager->m_CbvDescriptorHeap.Get(), 0, m_pGraphicsManager->m_CbvDescriptorSize));
 	}
 
 	/**
@@ -147,7 +144,7 @@ namespace SaplingEngine
 		m_CommandList->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 		//获取该Renderer所对应的常量缓冲区描述符
-		m_CommandList->SetGraphicsRootDescriptorTable(0, GetGPUHandleFromDescriptorHeap(m_pGraphicsManager->m_CbvDescriptorHeap.Get(), pRenderer->GetConstantBufferIndex(), m_pGraphicsManager->m_CbvDescriptorSize));
+		m_CommandList->SetGraphicsRootDescriptorTable(0, GetGPUHandleFromDescriptorHeap(m_pGraphicsManager->m_CbvDescriptorHeap.Get(), pRenderer->GetCommonOcbIndex(), m_pGraphicsManager->m_CbvDescriptorSize));
 		m_CommandList->DrawIndexedInstanced(pMesh->GetIndexCount(), 1, 0, 0, 0);
 	}
 

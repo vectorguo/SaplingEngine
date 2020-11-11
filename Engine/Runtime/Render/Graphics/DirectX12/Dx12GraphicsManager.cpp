@@ -1,34 +1,17 @@
 #include "Dx12CommandManager.h"
 #include "Dx12GraphicsManager.h"
-
-
-#include "Dx12ConstantBufferManager.h"
 #include "Application/GameSetting.h"
-#include "Camera/Camera.h"
-#include "Graphics/ConstantBufferData.h"
-#include "Graphics/Light.h"
-#include "Graphics/Shader.h"
-#include "Graphics/ShaderManager.h"
-#include "RenderPipeline/Renderer/MeshRenderer.h"
-#include "Scene/Scene.h"
+#include "Render/Graphics/Shader.h"
+#include "Render/Graphics/ShaderManager.h"
 
 namespace SaplingEngine
 {
-	constexpr int32_t CbvBufferIndexCount = 500;
-
-	/**
-	 * \brief Object的通用常量缓冲区数据
-	 */
-	CommonOcbData GCommonOcbData;
-	
-	/**
-	 * \brief Pass的通用常量缓冲区数据
-	 */
-	CommonPcbData GCommonPcbData;
+	Dx12GraphicsManager* Dx12GraphicsManager::m_Instance = nullptr;
 	
 	Dx12GraphicsManager::Dx12GraphicsManager()
-		: GraphicsManager(), m_Viewport(), m_ScissorRect()
+		: m_Viewport(), m_ScissorRect()
 	{
+		m_Instance = this;
 	}
 
 	Dx12GraphicsManager::~Dx12GraphicsManager() = default;
@@ -43,9 +26,6 @@ namespace SaplingEngine
 	{
 		CreateDevice();
 		CreateDescriptorHeaps();
-
-		//创建常量缓冲区管理器
-		m_pConstantBufferManager = new Dx12ConstantBufferManager(m_D3D12Device.Get(), m_CbvDescriptorHeap.Get(), m_CbvDescriptorSize);
 	}
 
 	/**
@@ -100,62 +80,12 @@ namespace SaplingEngine
 		m_pCommandManager->ExecuteCommandList();
 		m_pCommandManager->CompleteCommand();
 	}
-
-	/**
-	 * \brief 获取Object常量缓冲区索引
-	 * \return 常量缓冲区索引
-	 */
-	uint32_t Dx12GraphicsManager::PopObjectCbIndex()
-	{
-		return m_pConstantBufferManager->PopObjectCbIndex();
-	}
-
-	/**
-	 * \brief 归还常量缓冲区索引
-	 * \param index 常量缓冲区索引
-	 */
-	void Dx12GraphicsManager::PushObjectCbIndex(uint32_t index)
-	{
-		m_pConstantBufferManager->PushObjectCbIndex(index);
-	}
-
-	/**
-	 * \brief 更新物体常量缓冲区数据
-	 * \param pActiveScene 当前活动场景
-	 */
-	void Dx12GraphicsManager::UpdateObjectConstantBuffer(Scene* pActiveScene)
-	{
-		size_t dataSize;
-		const auto& renderItems = pActiveScene->GetRenderItems();
-		for (auto iter = renderItems.begin(); iter != renderItems.end(); ++iter)
-		{
-			auto* pRenderer = *iter;
-			const auto* pCommonData = GCommonOcbData.FillOcbData(dataSize, pRenderer->GetTransform());
-			m_pConstantBufferManager->CopyObjectCbData(pRenderer->GetCommonOcbIndex(), pCommonData, dataSize, false);
-
-			const auto* pSpecialData = pRenderer->GetSpecialOcbData()->FillOcbData(dataSize, pRenderer->GetTransform());
-			m_pConstantBufferManager->CopyObjectCbData(pRenderer->GetSpecialOcbIndex(), pSpecialData, dataSize, true);
-		}
-	}
-
-	/**
-	 * \brief 更新Pass常量缓冲区数据
-	 * \param pCamera 当前相机
-	 */
-	void Dx12GraphicsManager::UpdatePassConstantBuffer(Camera* pCamera)
-	{
-		size_t dataSize;
-		const auto* pData = GCommonPcbData.FillPcbData(dataSize, pCamera);
-		m_pConstantBufferManager->CopyPassCbData(pData, dataSize);
-	}
-
+	
 	/**
 	 * \brief 销毁
 	 */
 	void Dx12GraphicsManager::Destroy()
 	{
-		delete m_pConstantBufferManager;
-		m_pConstantBufferManager = nullptr;
 	}
 	
 	/**
@@ -376,17 +306,9 @@ namespace SaplingEngine
 		heapDesc.NodeMask = 0;
 		ThrowIfFailed(m_D3D12Device->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(m_DsvDescriptorHeap.GetAddressOf())));
 
-		//常量缓冲区描述符/着色器资源描述符/无需访问描述符堆
-		heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-		heapDesc.NumDescriptors = CbvBufferIndexCount + 1;		//Object常量缓冲区和Pass常量缓冲区
-		heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-		heapDesc.NodeMask = 0;
-		ThrowIfFailed(m_D3D12Device->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(m_CbvDescriptorHeap.GetAddressOf())));
-
 		//查询描述符大小
 		m_RtvDescriptorSize = m_D3D12Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 		m_DsvDescriptorSize = m_D3D12Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
-		m_CbvDescriptorSize = m_D3D12Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	}
 
 	/**
@@ -412,10 +334,20 @@ namespace SaplingEngine
 			D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND
 		};
 
-		CD3DX12_ROOT_PARAMETER slotRootParameter[2];
+		D3D12_DESCRIPTOR_RANGE cbvTable2
+		{
+			D3D12_DESCRIPTOR_RANGE_TYPE_CBV,
+			1,
+			2,
+			0,
+			D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND
+		};
+
+		CD3DX12_ROOT_PARAMETER slotRootParameter[3];
 		slotRootParameter[0].InitAsDescriptorTable(1, &cbvTable0);
 		slotRootParameter[1].InitAsDescriptorTable(1, &cbvTable1);
-		CD3DX12_ROOT_SIGNATURE_DESC rootSigDesc(2, slotRootParameter, 0, nullptr,
+		slotRootParameter[2].InitAsDescriptorTable(1, &cbvTable2);
+		CD3DX12_ROOT_SIGNATURE_DESC rootSigDesc(3, slotRootParameter, 0, nullptr,
 			D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
 		ComPtr<ID3DBlob> serializedRootSig = nullptr;

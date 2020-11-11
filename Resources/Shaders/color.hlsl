@@ -4,12 +4,17 @@
 // Transforms and colors geometry.
 //***************************************************************************************
 
-cbuffer CBufferPerObject : register(b0)
+cbuffer CBufferObjectCommon : register(b0)
 {
 	float4x4 SAPLING_MATRIX_M;			//局部坐标到世界坐标的变换矩阵
 };
 
-cbuffer CBufferPerPass : register(b1)
+cbuffer CBufferObjectSpecial : register(b1)
+{
+	float4 _BaseColor;
+};
+
+cbuffer CBufferPassCommon : register(b2)
 {
 	float4x4 SAPLING_MATRIX_V;			//局部坐标到世界坐标的变换矩阵
 	float4x4 SAPLING_MATRIX_VP;			//世界坐标到投影坐标的变换矩阵
@@ -45,7 +50,7 @@ VertexOut Vert(VertexIn input)
 
 float4 Frag(VertexOut input) : SV_Target
 {
-    return input.Color;
+    return input.Color * _BaseColor;
 }
 
 

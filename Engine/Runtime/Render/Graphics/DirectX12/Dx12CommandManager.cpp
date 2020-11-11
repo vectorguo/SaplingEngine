@@ -1,17 +1,19 @@
 #include "Dx12CommandManager.h"
 #include "Dx12GraphicsManager.h"
-#include "Graphics/Material.h"
-#include "Graphics/Mesh.h"
-#include "RenderPipeline/Renderer/Renderer.h"
+#include "Render/Graphics/Material.h"
+#include "Render/Graphics/Mesh.h"
+#include "Render/Renderer/Renderer.h"
 
 namespace SaplingEngine
 {
+	Dx12CommandManager* Dx12CommandManager::m_Instance = nullptr;
+	
 	/**
 	 * \brief 开始初始化
 	 */
 	void Dx12CommandManager::BeginInitialize()
 	{
-		m_pGraphicsManager = dynamic_cast<Dx12GraphicsManager*>(GraphicsManager::Instance());
+		m_pGraphicsManager = GraphicsManager::Instance();
 		m_pGraphicsManager->m_pCommandManager = this;
 
 		//获取Dx12 Device指针
@@ -56,7 +58,7 @@ namespace SaplingEngine
 		m_CommandList->RSSetScissorRects(1, &m_pGraphicsManager->m_ScissorRect);
 
 		//渲染缓存从呈现状态切换到RT状态
-		auto resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(m_pGraphicsManager->CurrentBackBuffer(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
+		auto resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(m_pGraphicsManager->GetCurrentRt(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
 		m_CommandList->ResourceBarrier(1, &resourceBarrier);
 	}
 
@@ -66,7 +68,7 @@ namespace SaplingEngine
 	void Dx12CommandManager::PostRender()
 	{
 		//渲染缓存从RT状态切换到呈现状态
-		auto resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(m_pGraphicsManager->CurrentBackBuffer(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
+		auto resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(m_pGraphicsManager->GetCurrentRt(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
 		m_CommandList->ResourceBarrier(1, &resourceBarrier);
 		ExecuteCommandList();
 
@@ -75,44 +77,9 @@ namespace SaplingEngine
 
 		//等待命令结束
 		CompleteCommand();
-	}
 
-	/**
-	 * \brief 执行绘制前的准备工作
-	 * \param clearColor 是否清理颜色缓冲
-	 * \param clearDepth 是否清理深度缓冲
-	 * \param color 默认颜色
-	 */
-	void Dx12CommandManager::PreDraw(bool clearColor, bool clearDepth, const Color& color)
-	{
-		const auto rtv = m_pGraphicsManager->CurrentBackBufferView();
-		const auto dsv = m_pGraphicsManager->DepthStencilBufferView();
-
-		if (clearColor)
-		{
-			m_CommandList->ClearRenderTargetView(rtv, Color::LightBlue, 0, nullptr);
-		}
-
-		if (clearDepth)
-		{
-			m_CommandList->ClearDepthStencilView(dsv, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
-		}
-
-		m_CommandList->OMSetRenderTargets(1, &rtv, true, &dsv);
-
-		//设置跟描述符表和常量缓冲区，将常量缓冲区绑定到渲染流水线上
-		ID3D12DescriptorHeap* descriptorHeaps[] = { m_pGraphicsManager->m_CbvDescriptorHeap.Get() };
-		m_CommandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
-		m_CommandList->SetGraphicsRootSignature(m_pGraphicsManager->m_RootSignature.Get());
-		m_CommandList->SetGraphicsRootDescriptorTable(1, GetGPUHandleFromDescriptorHeap(m_pGraphicsManager->m_CbvDescriptorHeap.Get(), 0, m_pGraphicsManager->m_CbvDescriptorSize));
-	}
-
-	/**
-	 * \brief 执行绘制后的清理工作
-	 */
-	void Dx12CommandManager::PostDraw()
-	{
-		
+		//重置Pipeline状态名称
+		m_CurrentPipelineStateName.clear();
 	}
 
 	/**
@@ -131,7 +98,7 @@ namespace SaplingEngine
 	{
 		const auto* pMaterial = pRenderer->GetMaterial();
 		const auto& pipelineStateName = pMaterial->GetShaderName();
-		if (m_CurrentPipelineStateName != pMaterial->GetShaderName())
+		if (m_CurrentPipelineStateName != pipelineStateName)
 		{
 			//需要切换渲染管线状态
 			m_CommandList->SetPipelineState(m_pGraphicsManager->GetPipelineState(pipelineStateName));
@@ -144,7 +111,8 @@ namespace SaplingEngine
 		m_CommandList->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 		//获取该Renderer所对应的常量缓冲区描述符
-		m_CommandList->SetGraphicsRootDescriptorTable(0, GetGPUHandleFromDescriptorHeap(m_pGraphicsManager->m_CbvDescriptorHeap.Get(), pRenderer->GetCommonOcbIndex(), m_pGraphicsManager->m_CbvDescriptorSize));
+		m_CommandList->SetGraphicsRootDescriptorTable(0, CBufferManager::Instance()->GetObjectCbvDescriptor(pRenderer->GetCommonOcbIndex()));
+		m_CommandList->SetGraphicsRootDescriptorTable(1, CBufferManager::Instance()->GetObjectCbvDescriptor(pRenderer->GetSpecialOcbIndex()));
 		m_CommandList->DrawIndexedInstanced(pMesh->GetIndexCount(), 1, 0, 0, 0);
 	}
 

@@ -1,26 +1,37 @@
 #pragma once
 
 #include "Dx12UploadBuffer.h"
-#include "RenderPipeline/GraphicsManager.h"
 #include "SaplingEnginePch.h"
 
 namespace SaplingEngine
 {
-	class Dx12GraphicsManager final : public GraphicsManager
+	class Camera;
+	class Scene;
+
+	class Dx12GraphicsManager final
 	{
 		friend class Dx12CommandManager;
-		friend class Dx12ConstantBufferManager;
+		friend class Dx12CBufferManager;
 
 		using PipelineStateMap = std::map<std::string, ComPtr<ID3D12PipelineState>>;
 		
 	public:
 		Dx12GraphicsManager();
-		~Dx12GraphicsManager() override;
+		~Dx12GraphicsManager();
 
 		Dx12GraphicsManager(const Dx12GraphicsManager&) = delete;
 		Dx12GraphicsManager(Dx12GraphicsManager&&) = delete;
 		Dx12GraphicsManager& operator=(const Dx12GraphicsManager&) = delete;
 		Dx12GraphicsManager& operator=(Dx12GraphicsManager&&) = delete;
+		
+		/**
+		 * \brief 获取单例
+		 * \return 单例
+		 */
+		static Dx12GraphicsManager* Instance()
+		{
+			return m_Instance;
+		}
 
 		/**
 		 * \brief 开始初始化
@@ -28,7 +39,7 @@ namespace SaplingEngine
 		 * \param width 窗口宽度
 		 * \param height 窗口高度
 		 */
-		void BeginInitialize(HWND hWnd, uint32_t width, uint32_t height) override;
+		void BeginInitialize(HWND hWnd, uint32_t width, uint32_t height);
 
 		/**
 		 * \brief 结束初始化
@@ -36,41 +47,17 @@ namespace SaplingEngine
 		 * \param width 窗口宽度
 		 * \param height 窗口高度
 		 */
-		void EndInitialize(HWND hWnd, uint32_t width, uint32_t height) override;
+		void EndInitialize(HWND hWnd, uint32_t width, uint32_t height);
 		
 		/**
 		 * \brief 重置大小
 		 */
-		void OnWindowResize(uint32_t width, uint32_t height) override;
-
-		/**
-		 * \brief 归还常量缓冲区索引
-		 * \param index 常量缓冲区索引
-		 */
-		void PushObjectCbIndex(uint32_t index) override;
-		
-		/**
-		 * \brief 获取Object常量缓冲区索引
-		 * \return 常量缓冲区索引
-		 */
-		uint32_t PopObjectCbIndex() override;
-		
-		/**
-		 * \brief 更新物体常量缓冲区数据
-		 * \param pActiveScene 当前活动场景
-		 */
-		void UpdateObjectConstantBuffer(Scene* pActiveScene) override;
-
-		/**
-		 * \brief 更新Pass常量缓冲区数据
-		 * \param pCamera 当前相机
-		 */
-		void UpdatePassConstantBuffer(Camera* pCamera) override;
+		void OnWindowResize(uint32_t width, uint32_t height);
 		
 		/**
 		 * \brief 销毁
 		 */
-		void Destroy() override;
+		void Destroy();
 
 		/**
 		 * \brief 获取Dx12设备
@@ -82,6 +69,15 @@ namespace SaplingEngine
 		}
 
 		/**
+		 * \brief 获取RootSignature
+		 * \return RootSignature指针
+		 */
+		ID3D12RootSignature* GetRootSignature() const
+		{
+			return m_RootSignature.Get();
+		}
+
+		/**
 		 * \brief 获取PipelineState
 		 * \param name PipelineState名称
 		 * \return PipelineState指针
@@ -90,6 +86,35 @@ namespace SaplingEngine
 		{
 			const auto iter = m_PipelineStates.find(name);
 			return iter == m_PipelineStates.end() ? nullptr : iter->second.Get();
+		}
+
+		/**
+		 * \brief 获取后台缓存
+		 * \return 后台缓存
+		 */
+		ID3D12Resource* GetCurrentRt() const
+		{
+			return m_SwapChainBuffer[m_BackBufferIndex].Get();
+		}
+
+		/**
+		 * \brief 获取当前后台缓冲区视图
+		 * \return 后台缓冲区视图
+		 */
+		D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentRtv() const
+		{
+			auto rtvHeapHandle = m_RtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
+			rtvHeapHandle.ptr += static_cast<int64_t>(m_BackBufferIndex) * static_cast<int64_t>(m_RtvDescriptorSize);
+			return rtvHeapHandle;
+		}
+
+		/**
+		 * \brief 获取深度模板缓冲区试图
+		 * \return 深度模板缓冲区试图
+		 */
+		D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentDsv() const
+		{
+			return m_DsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
 		}
 		
 		/**
@@ -158,40 +183,6 @@ namespace SaplingEngine
 		void CreateDsv(uint32_t width, uint32_t height);
 
 		/**
-		 * \brief 创建Cbv
-		 */
-		void CreateCbv();
-
-		/**
-		 * \brief 获取后台缓存
-		 * \return 后台缓存
-		 */
-		ID3D12Resource* CurrentBackBuffer() const
-		{
-			return m_SwapChainBuffer[m_BackBufferIndex].Get();
-		}
-		
-		/**
-		 * \brief 获取当前后台缓冲区视图
-		 * \return 后台缓冲区视图
-		 */
-		D3D12_CPU_DESCRIPTOR_HANDLE CurrentBackBufferView() const
-		{
-			auto rtvHeapHandle = m_RtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
-			rtvHeapHandle.ptr += static_cast<int64_t>(m_BackBufferIndex) * static_cast<int64_t>(m_RtvDescriptorSize);
-			return rtvHeapHandle;
-		}
-		
-		/**
-		 * \brief 获取深度模板缓冲区试图
-		 * \return 深度模板缓冲区试图
-		 */
-		D3D12_CPU_DESCRIPTOR_HANDLE DepthStencilBufferView() const
-		{
-			return m_DsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
-		}
-
-		/**
 		 * \brief 呈现当前这一帧的绘制内容
 		 */
 		void Present()
@@ -201,6 +192,11 @@ namespace SaplingEngine
 		}
 
 	private:
+		/**
+		 * \brief 单例
+		 */
+		static Dx12GraphicsManager* m_Instance;
+		
 		static constexpr int						SwapChainBufferCount = 2;
 
 		ComPtr<IDXGIFactory4>						m_DXGIFactory;
@@ -208,11 +204,9 @@ namespace SaplingEngine
 
 		uint32_t									m_RtvDescriptorSize = 0;				//渲染目标视图大小
 		uint32_t									m_DsvDescriptorSize = 0;				//深度/模板视图大小
-		uint32_t									m_CbvDescriptorSize = 0;				//常量缓冲区视图大小
 
 		ComPtr<ID3D12DescriptorHeap>				m_RtvDescriptorHeap;					//渲染对象描述符堆
 		ComPtr<ID3D12DescriptorHeap>				m_DsvDescriptorHeap;					//深度/模板描述符堆
-		ComPtr<ID3D12DescriptorHeap>				m_CbvDescriptorHeap;					//常量缓冲区描述符堆
 
 		ComPtr<IDXGISwapChain>						m_SwapChain;							//交换链
 		ComPtr<ID3D12Resource>						m_SwapChainBuffer[SwapChainBufferCount];//交换链缓冲区
@@ -232,6 +226,7 @@ namespace SaplingEngine
 		std::map<ComPtr<ID3D12Resource>, uint64_t>	m_UsedUploadBuffers;					//已经使用的上传缓存堆
 
 		Dx12CommandManager*							m_pCommandManager = nullptr;			//DX12命令管理器
-		Dx12ConstantBufferManager*					m_pConstantBufferManager = nullptr;		//DX12常量缓冲区管理器
 	};
+
+	using GraphicsManager = Dx12GraphicsManager;
 }

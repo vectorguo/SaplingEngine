@@ -1,13 +1,12 @@
 #pragma once
 
-#include "RenderPipeline/CommandManager.h"
-#include "RenderPipeline/GraphicsManager.h"
-#include "RenderPipeline/RenderPass/RenderPass.h"
 #include "SaplingEnginePch.h"
+#include "Render/Graphics/DirectX12/Dx12CommandManager.h"
+#include "Render/Graphics/DirectX12/Dx12CBufferManager.h"
+#include "Render/Graphics/DirectX12/Dx12GraphicsManager.h"
 
 namespace SaplingEngine
 {
-	class Dx12GraphicsManager;
 	class RenderPass;
 	
 	class RenderPipeline final
@@ -76,6 +75,11 @@ namespace SaplingEngine
 		 * \brief DX12命令管理器
 		 */
 		CommandManager* m_pCommandManager = nullptr;
+
+		/**
+		 * \brief 常量缓冲区管理器
+		 */
+		CBufferManager* m_pConstantBufferManager = nullptr;
 		
 		/**
 		 * \brief DX12图形管理器

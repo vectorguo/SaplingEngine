@@ -2,22 +2,16 @@
 
 #include "Application/GameSetting.h"
 #include "Camera/CameraManager.h"
-#include "Graphics/Mesh.h"
-#include "RenderLibrary/DirectX12/Dx12CommandManager.h"
-#include "RenderLibrary/DirectX12/Dx12GraphicsManager.h"
+#include "Render/Graphics/Mesh.h"
+#include "Render/Graphics/DirectX12/Dx12CommandManager.h"
+#include "Render/Graphics/DirectX12/Dx12GraphicsManager.h"
 #include "RenderPass/RenderOpaquePass.h"
-#include "Scene/Scene.h"
 #include "Scene/SceneManager.h"
 
 namespace SaplingEngine
 {
 	RenderPipeline::RenderPipeline() = default;
-	
-	RenderPipeline::~RenderPipeline()
-	{
-		delete m_pCommandManager;
-		delete m_pGraphicsManager;
-	}
+	RenderPipeline::~RenderPipeline() = default;
 
 	/**
 	 * \brief 开始初始化
@@ -30,6 +24,10 @@ namespace SaplingEngine
 		//创建并初始化Graphics Manager
 		m_pGraphicsManager = new Dx12GraphicsManager();
 		m_pGraphicsManager->BeginInitialize(hWnd, m_ScreenWidth, m_ScreenHeight);
+
+		//创建并初始化常量缓冲区管理器
+		m_pConstantBufferManager = new Dx12CBufferManager();
+		m_pConstantBufferManager->Initialize();
 
 		//创建并初始化Command Manager
 		m_pCommandManager = new Dx12CommandManager();
@@ -60,14 +58,14 @@ namespace SaplingEngine
 		auto* pActiveScene = SceneManager::Instance()->GetActiveScene();
 
 		//更新Object数据常量缓冲区
-		m_pGraphicsManager->UpdateObjectConstantBuffer(pActiveScene);
+		m_pConstantBufferManager->UpdateOcbData(pActiveScene);
 		
 		//执行Render Pass
 		const auto& cameras = CameraManager::Instance()->GetCameras();
 		for (const auto& pCamera : cameras)
 		{
 			//更新Pass数据常量缓冲区
-			m_pGraphicsManager->UpdatePassConstantBuffer(pCamera.get());
+			m_pConstantBufferManager->UpdatePcbData(pCamera.get());
 			for (auto iter = m_RenderPasses.begin(); iter != m_RenderPasses.end(); ++iter)
 			{
 				(*iter)->Render(pCamera.get(), pActiveScene);
@@ -91,6 +89,10 @@ namespace SaplingEngine
 		m_pCommandManager->Destroy();
 		delete m_pCommandManager;
 		m_pCommandManager = nullptr;
+
+		m_pConstantBufferManager->Destroy();
+		delete m_pConstantBufferManager;
+		m_pConstantBufferManager = nullptr;
 		
 		m_pGraphicsManager->Destroy();
 		delete m_pGraphicsManager;

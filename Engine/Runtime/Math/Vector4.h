@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RenderPipeline/GraphicsPch.h"
+#include "Render/Graphics/GraphicsPch.h"
 
 namespace SaplingEngine
 {
@@ -96,6 +96,14 @@ namespace SaplingEngine
 			operator XMVECTOR() const
 			{
 				return XMLoadFloat4(&value);
+			}
+
+			void Set(const float x, const float y, const float z, const float w)
+			{
+				this->x = x;
+				this->y = y;
+				this->z = z;
+				this->w = w;
 			}
 
 			float Length() const

@@ -53,9 +53,3 @@ using SaplingEngine::Math::Quaternion;
 using SaplingEngine::Math::Vector2;
 using SaplingEngine::Math::Vector3;
 using SaplingEngine::Math::Vector4;
-
-/**
- * \brief 常量缓冲区的元素数量
- */
-static constexpr uint32_t CbElementCount = 200;
-static constexpr uint32_t DoubleCbElementCount = CbElementCount * 2;

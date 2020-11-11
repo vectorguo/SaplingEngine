@@ -1,8 +1,8 @@
 #include "MeshRenderer.h"
 
-#include "Graphics/ConstantBufferData.h"
-#include "Graphics/Material.h"
-#include "Graphics/Mesh.h"
+#include "Render/Graphics/ConstantBufferData.h"
+#include "Render/Graphics/Material.h"
+#include "Render/Graphics/Mesh.h"
 
 namespace SaplingEngine
 {

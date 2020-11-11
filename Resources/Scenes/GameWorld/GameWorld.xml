@@ -18,8 +18,8 @@
     <gameObject name="ground" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="4" subType="0" meshName="ground" baseColor="">
-                <material shader="Opaque"/>
+            <component type="4" subType="0" meshName="ground">
+                <material shader="Opaque" baseColor="0.1,0.1,0.2,1"/>
             </component>
         </components>
         <children>

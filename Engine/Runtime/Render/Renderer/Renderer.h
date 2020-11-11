@@ -1,13 +1,13 @@
 #pragma once
 
 #include "GameObject/Component.h"
+#include "Render/Graphics/ConstantBufferData.h"
+#include "Render/Graphics/Material.h"
+#include "Render/Graphics/Mesh.h"
+#include "Render/Graphics/DirectX12/Dx12CBufferManager.h"
 
 namespace SaplingEngine
 {
-	class IConstantBufferData;
-	class Material;
-	class Mesh;
-	
 	class Renderer : public Component
 	{
 	public:
@@ -57,14 +57,14 @@ namespace SaplingEngine
 
 		uint32_t GetSpecialOcbIndex() const
 		{
-			return m_OcbIndex + CbElementCount;
+			return m_OcbIndex + CBufferManager::ConstantBufferElementCount;
 		}
 		
 		/**
 		 * \brief 获取Object的特殊常量缓冲区数据指针
 		 * \return Object的特殊常量缓冲区数据指针
 		 */
-		IConstantBufferData* GetSpecialOcbData() const
+		ISpecialOcbData* GetSpecialOcbData() const
 		{
 			return m_pSpecialOcbData;
 		}
@@ -87,7 +87,7 @@ namespace SaplingEngine
 		/**
 		 * \brief Object的特殊常量缓冲区数据
 		 */
-		IConstantBufferData* m_pSpecialOcbData = nullptr;
+		ISpecialOcbData* m_pSpecialOcbData = nullptr;
 		
 	private:
 		/**

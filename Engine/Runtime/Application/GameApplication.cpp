@@ -2,9 +2,9 @@
 #include "GameSetting.h"
 
 #include "Camera/CameraManager.h"
-#include "Graphics/ShaderManager.h"
 #include "Input/Input.h"
-#include "RenderPipeline/RenderPipeline.h"
+#include "Render/Graphics/ShaderManager.h"
+#include "Render/RenderPipeline/RenderPipeline.h"
 #include "Resource/ResourceManager.h"
 #include "Scene/SceneManager.h"
 

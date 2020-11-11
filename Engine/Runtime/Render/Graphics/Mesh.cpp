@@ -1,6 +1,6 @@
 #include "Mesh.h"
 
-#include "RenderPipeline/RenderLibrary/DirectX12/Dx12GraphicsManager.h"
+#include "DirectX12/Dx12GraphicsManager.h"
 
 namespace SaplingEngine
 {
@@ -27,7 +27,7 @@ namespace SaplingEngine
 	 */
 	void Mesh::UploadMeshDatas()
 	{
-		auto* pGraphicsManager = dynamic_cast<Dx12GraphicsManager*>(GraphicsManager::Instance());
+		auto* pGraphicsManager = GraphicsManager::Instance();
 		for (auto iter = m_NotUploadedMeshes.begin(); iter != m_NotUploadedMeshes.end(); ++iter)
 		{
 			auto* pMesh = *iter;

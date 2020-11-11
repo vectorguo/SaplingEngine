@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RenderPipeline/GraphicsPch.h"
+#include "Render/Graphics/GraphicsPch.h"
 
 namespace SaplingEngine
 {
@@ -76,6 +76,14 @@ namespace SaplingEngine
 			operator const float* () const
 			{
 				return f;
+			}
+
+			void Set(const float r, const float g, const float b, const float a)
+			{
+				this->r = r;
+				this->g = g;
+				this->b = b;
+				this->a = a;
 			}
 
 			const static Color Black;

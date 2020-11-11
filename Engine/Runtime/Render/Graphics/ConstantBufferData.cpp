@@ -29,12 +29,16 @@ namespace SaplingEngine
 	/**
 	 * \brief 填充数据
 	 * \param size 返回数据大小
-	 * \param pTransform 物体的Transform组件的指针
+	 * \param pMaterial 物体的材质指针
 	 * \return 填充好的数据指针
 	 */
-	void* SpecialOcbData::FillOcbData(size_t& size, Transform* pTransform)
+	void* SpecialOcbData::FillOcbData(size_t& size, Material* pMaterial)
 	{
-		size = 0;
+		//填充数据
+		m_Data.BaseColor.Set(0.788f, 0.65f, 0.5f, 1);
+		
+		//设置数据大小
+		size = DataSize;
 		return static_cast<void*>(&m_Data);
 	}
 

@@ -1,21 +1,23 @@
 // ReSharper disable CppMemberFunctionMayBeConst
 #pragma once
 
-#include "RenderPipeline/GraphicsPch.h"
-#include "RenderPipeline/CommandManager.h"
 #include "SaplingEnginePch.h"
 
 namespace SaplingEngine
 {
+	class Renderer;
 	class Dx12GraphicsManager;
 	
-	class Dx12CommandManager final : public CommandManager
+	class Dx12CommandManager final
 	{
 		friend class Dx12GraphicsManager;
 		
 	public:
-		Dx12CommandManager() = default;
-		~Dx12CommandManager() override = default;
+		Dx12CommandManager()
+		{
+			m_Instance = this;
+		}
+		~Dx12CommandManager() = default;
 
 		Dx12CommandManager(const Dx12CommandManager&) = delete;
 		Dx12CommandManager(Dx12CommandManager&&) = delete;
@@ -23,42 +25,38 @@ namespace SaplingEngine
 		Dx12CommandManager& operator=(Dx12CommandManager&&) = delete;
 
 		/**
+		 * \brief 获取单例
+		 * \return 单例
+		 */
+		static Dx12CommandManager* Instance()
+		{
+			return m_Instance;
+		}
+		
+		/**
 		 * \brief 开始初始化
 		 */
-		void BeginInitialize() override;
+		void BeginInitialize();
 
 		/**
 		 * \brief 结束初始化
 		 */
-		void EndInitialize() override;
+		void EndInitialize();
 
 		/**
 		 * \brief 执行渲染前的准备工作
 		 */
-		void PreRender() override;
+		void PreRender();
 
 		/**
 		 * \brief 执行渲染后的清理工作
 		 */
-		void PostRender() override;
-
-		/**
-		 * \brief 执行绘制前的准备工作
-		 * \param clearColor 是否清理颜色缓冲
-		 * \param clearDepth 是否清理深度缓冲
-		 * \param color 默认颜色
-		 */
-		void PreDraw(bool clearColor, bool clearDepth, const Color& color) override;
-
-		/**
-		 * \brief 执行绘制后的清理工作
-		 */
-		void PostDraw() override;
+		void PostRender();
 
 		/**
 		 * \brief 销毁
 		 */
-		void Destroy() override;
+		void Destroy();
 		
 		/**
 		 * \brief 获取命令列表
@@ -82,7 +80,7 @@ namespace SaplingEngine
 		 * \brief 绘制物体
 		 * \param pRenderer renderer
 		 */
-		void DrawIndexedInstanced(const Renderer* pRenderer) override;
+		void DrawIndexedInstanced(const Renderer* pRenderer);
 		
 		/**
 		 * \brief 缓存资源转换
@@ -108,6 +106,11 @@ namespace SaplingEngine
 		void CompleteCommand();
 		
 	private:
+		/**
+		 * \brief 单例
+		 */
+		static Dx12CommandManager* m_Instance;
+		
 		Dx12GraphicsManager* m_pGraphicsManager = nullptr;
 		
 		ComPtr<ID3D12CommandQueue> m_CommandQueue;
@@ -122,4 +125,6 @@ namespace SaplingEngine
 		 */
 		std::string m_CurrentPipelineStateName;
 	};
+
+	using CommandManager = Dx12CommandManager;
 }

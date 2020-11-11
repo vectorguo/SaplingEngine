@@ -1,6 +1,5 @@
 #include "ResourceManager.h"
 #include "ResourceLoader.h"
-#include "Graphics/Shader.h"
 
 namespace SaplingEngine
 {

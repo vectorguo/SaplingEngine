@@ -3,8 +3,8 @@
 
 #include "Camera/Camera.h"
 #include "GameObject/Transform.h"
-#include "Graphics/Light.h"
-#include "RenderPipeline/Renderer/MeshRenderer.h"
+#include "Render/Graphics/Light.h"
+#include "Render/Renderer/MeshRenderer.h"
 
 namespace SaplingEngine
 {

@@ -36,15 +36,6 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Scene\Scene.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Mesh.h">
-      <Filter>Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Material.h">
-      <Filter>Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Shader.h">
-      <Filter>Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\Scene\SceneManager.h">
       <Filter>Scene</Filter>
     </ClInclude>
@@ -57,12 +48,6 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Camera\Camera.h">
       <Filter>Camera</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\Renderer\Renderer.h">
-      <Filter>RenderPipeline\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\Renderer\MeshRenderer.h">
-      <Filter>RenderPipeline\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\Camera\CameraManager.h">
       <Filter>Camera</Filter>
     </ClInclude>
@@ -74,12 +59,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\Input\Input.h">
       <Filter>Input</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\ConstantData.h">
-      <Filter>Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\ShaderManager.h">
-      <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\Utility\Log.h">
       <Filter>Utility</Filter>
@@ -108,36 +87,6 @@
     <ClInclude Include="..\..\..\Engine\Runtime\GameObject\ComponentFactory.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPass\RenderPass.h">
-      <Filter>RenderPipeline\RenderPass</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPipeline.h">
-      <Filter>RenderPipeline</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPass\RenderOpaquePass.h">
-      <Filter>RenderPipeline\RenderPass</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\RenderLibrary\DirectX12\d3dx12.h">
-      <Filter>RenderPipeline\RenderLibrary\DirectX12</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\RenderLibrary\DirectX12\Dx12CommandManager.h">
-      <Filter>RenderPipeline\RenderLibrary\DirectX12</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\RenderLibrary\DirectX12\Dx12GraphicsManager.h">
-      <Filter>RenderPipeline\RenderLibrary\DirectX12</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\RenderLibrary\DirectX12\Dx12UploadBuffer.h">
-      <Filter>RenderPipeline\RenderLibrary\DirectX12</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\CommandManager.h">
-      <Filter>RenderPipeline</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\GraphicsManager.h">
-      <Filter>RenderPipeline</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\GraphicsPch.h">
-      <Filter>RenderPipeline</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\Math\Math.h">
       <Filter>Math</Filter>
     </ClInclude>
@@ -153,17 +102,59 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Resource\ResourceLoader.h">
       <Filter>Resource</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\VertexData.h">
-      <Filter>Graphics</Filter>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\d3dx12.h">
+      <Filter>Render\Graphics\DirectX12</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\Light.h">
-      <Filter>Graphics</Filter>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CommandManager.h">
+      <Filter>Render\Graphics\DirectX12</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\Graphics\ConstantBufferData.h">
-      <Filter>Graphics</Filter>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12GraphicsManager.h">
+      <Filter>Render\Graphics\DirectX12</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\RenderPipeline\RenderLibrary\DirectX12\Dx12ConstantBufferManager.h">
-      <Filter>RenderPipeline\RenderLibrary\DirectX12</Filter>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12UploadBuffer.h">
+      <Filter>Render\Graphics\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\ConstantBufferData.h">
+      <Filter>Render\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\GraphicsPch.h">
+      <Filter>Render\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\Light.h">
+      <Filter>Render\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\Material.h">
+      <Filter>Render\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\Mesh.h">
+      <Filter>Render\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\Shader.h">
+      <Filter>Render\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\ShaderManager.h">
+      <Filter>Render\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\VertexData.h">
+      <Filter>Render\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Renderer\MeshRenderer.h">
+      <Filter>Render\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Renderer\Renderer.h">
+      <Filter>Render\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\RenderPipeline\RenderPipeline.h">
+      <Filter>Render\RenderPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\RenderOpaquePass.h">
+      <Filter>Render\RenderPipeline\RenderPass</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\RenderPass.h">
+      <Filter>Render\RenderPipeline\RenderPass</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CBufferManager.h">
+      <Filter>Render\Graphics\DirectX12</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -197,15 +188,6 @@
     <ClCompile Include="..\..\..\Engine\Runtime\Scene\Scene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Mesh.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Material.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Shader.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\Scene\SceneManager.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
@@ -217,12 +199,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\Camera\Camera.cpp">
       <Filter>Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\Renderer\Renderer.cpp">
-      <Filter>RenderPipeline\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\Renderer\MeshRenderer.cpp">
-      <Filter>RenderPipeline\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\Camera\CameraManager.cpp">
       <Filter>Camera</Filter>
@@ -236,35 +212,11 @@
     <ClCompile Include="..\..\..\Engine\Runtime\Input\Input.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Engine\Runtime\Graphics\ShaderManager.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\Application\GameSetting.cpp">
       <Filter>Application</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\GameObject\ComponentFactory.cpp">
       <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPass\RenderPass.cpp">
-      <Filter>RenderPipeline\RenderPass</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPipeline.cpp">
-      <Filter>RenderPipeline</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\RenderPass\RenderOpaquePass.cpp">
-      <Filter>RenderPipeline\RenderPass</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\RenderLibrary\DirectX12\Dx12CommandManager.cpp">
-      <Filter>RenderPipeline\RenderLibrary\DirectX12</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\RenderLibrary\DirectX12\Dx12GraphicsManager.cpp">
-      <Filter>RenderPipeline\RenderLibrary\DirectX12</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\CommandManager.cpp">
-      <Filter>RenderPipeline</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\GraphicsManager.cpp">
-      <Filter>RenderPipeline</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\Resource\ResourceManager.cpp">
       <Filter>Resource</Filter>
@@ -272,14 +224,47 @@
     <ClCompile Include="..\..\..\Engine\Runtime\Resource\ResourceLoader.cpp">
       <Filter>Resource</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Engine\Runtime\Graphics\Light.cpp">
-      <Filter>Graphics</Filter>
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CommandManager.cpp">
+      <Filter>Render\Graphics\DirectX12</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Engine\Runtime\RenderPipeline\RenderLibrary\DirectX12\Dx12ConstantBufferManager.cpp">
-      <Filter>RenderPipeline\RenderLibrary\DirectX12</Filter>
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12GraphicsManager.cpp">
+      <Filter>Render\Graphics\DirectX12</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Engine\Runtime\Graphics\ConstantBufferData.cpp">
-      <Filter>Graphics</Filter>
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\ConstantBufferData.cpp">
+      <Filter>Render\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\Light.cpp">
+      <Filter>Render\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\Material.cpp">
+      <Filter>Render\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\Mesh.cpp">
+      <Filter>Render\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\Shader.cpp">
+      <Filter>Render\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\ShaderManager.cpp">
+      <Filter>Render\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Renderer\MeshRenderer.cpp">
+      <Filter>Render\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Renderer\Renderer.cpp">
+      <Filter>Render\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\RenderPipeline\RenderPipeline.cpp">
+      <Filter>Render\RenderPipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\RenderOpaquePass.cpp">
+      <Filter>Render\RenderPipeline\RenderPass</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\RenderPass.cpp">
+      <Filter>Render\RenderPipeline\RenderPass</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CBufferManager.cpp">
+      <Filter>Render\Graphics\DirectX12</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -304,32 +289,32 @@
     <Filter Include="Camera">
       <UniqueIdentifier>{52b125df-c2a0-47a3-8fe7-e09ecd29b5ce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="RenderPipeline">
-      <UniqueIdentifier>{5bf7095a-9a10-4692-9653-401bbffe8047}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="RenderPipeline\RenderPass">
-      <UniqueIdentifier>{d945d85b-8505-46c8-bd88-2f7a4667bb01}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Graphics">
-      <UniqueIdentifier>{11eab309-addf-41f8-865f-eb73f65cbec9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="RenderPipeline\Renderer">
-      <UniqueIdentifier>{58594f87-2058-4297-8961-034e3ec01d4e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Input">
       <UniqueIdentifier>{5f52dfc7-76b4-4f64-b261-b0163c38a301}</UniqueIdentifier>
     </Filter>
     <Filter Include="Utility\RapidXml">
       <UniqueIdentifier>{344a87b3-5cbf-4119-aaf4-b34778f416bb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="RenderPipeline\RenderLibrary">
-      <UniqueIdentifier>{564bde73-d060-4452-968c-4d11904704ce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="RenderPipeline\RenderLibrary\DirectX12">
-      <UniqueIdentifier>{e6993383-421a-4603-8f0f-f8ea9a2e2dd8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource">
       <UniqueIdentifier>{56493e31-f04e-4a1a-8b74-8c1123dc62b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render">
+      <UniqueIdentifier>{0ec8d6bc-2f5c-4006-9678-1f1b808a89c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\Graphics">
+      <UniqueIdentifier>{17f80390-365a-4bae-a400-2974582a26df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\Graphics\DirectX12">
+      <UniqueIdentifier>{49832748-13c8-45f5-9053-205ad57797f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\Renderer">
+      <UniqueIdentifier>{993d390f-4909-4b67-9f16-4771c0f6cd86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\RenderPipeline">
+      <UniqueIdentifier>{0458ce1d-278e-4487-9fa0-34c0969cbe86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\RenderPipeline\RenderPass">
+      <UniqueIdentifier>{03d80ac5-b351-4d8e-b4f8-ea0181683d1a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -1,22 +1,22 @@
 #include "GameApplication.h"
 #include "GameSetting.h"
 
-#include "Camera/CameraManager.h"
 #include "Input/Input.h"
 #include "Render/Graphics/ShaderManager.h"
-#include "Render/RenderPipeline/RenderPipeline.h"
 #include "Resource/ResourceManager.h"
 #include "Scene/SceneManager.h"
 
 namespace SaplingEngine
 {
-	GameApplication* GameApplication::s_Instance = nullptr;
-
-	GameApplication::GameApplication()
-	{
-		s_Instance = this;
-	}
-
+	//静态成员初始化
+	HINSTANCE	GameApplication::m_AppInstance = nullptr;
+	HWND		GameApplication::m_WindowHwnd = nullptr;
+	bool		GameApplication::m_IsActive = true;
+	bool		GameApplication::m_IsMinimized = false;
+	bool		GameApplication::m_IsMaximized = false;
+	bool		GameApplication::m_IsResizing = false;
+	bool		GameApplication::m_IsFullscreen = false;
+	
 	/**
 	 * \brief 初始化App
 	 * \param hInstance app句柄
@@ -33,7 +33,7 @@ namespace SaplingEngine
 		if (InitializeWindow())
 		{
 			//渲染管线开始初始化
-			RenderPipeline::Instance()->BeginInitialize(m_MainWindow);
+			RenderPipeline::Instance()->BeginInitialize(m_WindowHwnd);
 			
 			//初始化Shader
 			ShaderManager::Instance()->Initialize();
@@ -42,11 +42,11 @@ namespace SaplingEngine
 			SceneManager::Instance()->Initialize();
 
 			//渲染管线结束初始化
-			RenderPipeline::Instance()->EndInitialize(m_MainWindow);
+			RenderPipeline::Instance()->EndInitialize(m_WindowHwnd);
 			
 			//显示并更新窗口
-			ShowWindow(m_MainWindow, SW_SHOW);
-			UpdateWindow(m_MainWindow);
+			ShowWindow(m_WindowHwnd, SW_SHOW);
+			UpdateWindow(m_WindowHwnd);
 			
 			return true;
 		}
@@ -87,8 +87,8 @@ namespace SaplingEngine
 	 */
 	void GameApplication::Destroy()
 	{
-		CameraManager::Instance()->Destroy();
-		Input::Instance()->Destroy();
+		CameraManager::Destroy();
+		Input::Destroy();
 		SceneManager::Instance()->Destroy();
 		ShaderManager::Instance()->Destroy();
 		RenderPipeline::Instance()->Destroy();
@@ -118,13 +118,13 @@ namespace SaplingEngine
 			return false;
 		}
 
-		RECT rect = { 0, 0, static_cast<long>(GameSetting::Instance()->ScreenWidth()), static_cast<long>(GameSetting::Instance()->ScreenHeight()) };
+		RECT rect = { 0, 0, static_cast<long>(GameSetting::ScreenWidth()), static_cast<long>(GameSetting::ScreenHeight()) };
 		AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, false);
 		const int width = rect.right - rect.left;
 		const int height = rect.bottom - rect.top;
 
-		m_MainWindow = CreateWindow(L"MainWnd", L"Sapling", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, width, height, nullptr, nullptr, m_AppInstance, nullptr);
-		if (!m_MainWindow)
+		m_WindowHwnd = CreateWindow(L"MainWnd", L"Sapling", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, width, height, nullptr, nullptr, m_AppInstance, nullptr);
+		if (!m_WindowHwnd)
 		{
 			MessageBox(nullptr, L"CreateWindow Failed.", nullptr, 0);
 			return false;
@@ -146,7 +146,7 @@ namespace SaplingEngine
 	 */
 	LRESULT GameApplication::MainWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
-		return Instance()->MessageProcess(hWnd, msg, wParam, lParam);
+		return MessageProcess(hWnd, msg, wParam, lParam);
 	}
 
 	/**
@@ -154,7 +154,7 @@ namespace SaplingEngine
 	 */
 	LRESULT GameApplication::MessageProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
-		Input::Instance()->Reset();
+		Input::Reset();
 		
 		switch (msg)
 		{
@@ -172,20 +172,19 @@ namespace SaplingEngine
 			return 0;
 			
 		case WM_SIZE:
-			GameSetting::Instance()->SetScreenSize(LOWORD(lParam), HIWORD(lParam));
 			if (wParam == SIZE_MINIMIZED)
 			{
 				m_IsActive = false;
 				m_IsMinimized = true;
 				m_IsMaximized = false;
+				return 0;
 			}
 			else if (wParam == SIZE_MAXIMIZED)
 			{
 				m_IsActive = true;
 				m_IsMinimized = false;
 				m_IsMaximized = true;
-				CameraManager::Instance()->OnWindowResize();
-				RenderPipeline::Instance()->OnWindowResize();
+				
 			}
 			else if (wParam == SIZE_RESTORED)
 			{
@@ -193,25 +192,21 @@ namespace SaplingEngine
 				{
 					m_IsActive = true;
 					m_IsMinimized = false;
-					CameraManager::Instance()->OnWindowResize();
-					RenderPipeline::Instance()->OnWindowResize();
 				}
 				else if (m_IsMaximized)
 				{
 					m_IsActive = true;
 					m_IsMaximized = false;
-					CameraManager::Instance()->OnWindowResize();
-					RenderPipeline::Instance()->OnWindowResize();
 				}
 				else if (m_IsResizing)
 				{
+					return 0;
 				}
 				else
 				{
-					CameraManager::Instance()->OnWindowResize();
-					RenderPipeline::Instance()->OnWindowResize();
 				}
 			}
+			GameSetting::SetScreenSize(LOWORD(lParam), HIWORD(lParam));
 			return 0;
 		
 		case WM_ENTERSIZEMOVE:
@@ -224,32 +219,30 @@ namespace SaplingEngine
 			m_IsActive = true;
 			m_IsResizing = false;
 			Time::Start();
-			CameraManager::Instance()->OnWindowResize();
-			RenderPipeline::Instance()->OnWindowResize();
 			return 0;
 
 		case WM_MOUSEWHEEL:
-			Input::Instance()->SetMouseButton(EMouseButtonState::MouseWheel, static_cast<short>(HIWORD(wParam)), 0);
+			Input::SetMouseButton(EMouseButtonState::MouseWheel, static_cast<short>(HIWORD(wParam)), 0);
 			return 0;
 			
 		case WM_LBUTTONDOWN:
-			Input::Instance()->SetMouseButton(EMouseButtonState::LeftMouseButtonDown, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+			Input::SetMouseButton(EMouseButtonState::LeftMouseButtonDown, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 			return 0;
 			
 		case WM_RBUTTONDOWN:
-			Input::Instance()->SetMouseButton(EMouseButtonState::RightMouseButtonDown, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+			Input::SetMouseButton(EMouseButtonState::RightMouseButtonDown, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 			return 0;
 
 		case WM_LBUTTONUP:
-			Input::Instance()->SetMouseButton(EMouseButtonState::LeftMouseButtonUp, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+			Input::SetMouseButton(EMouseButtonState::LeftMouseButtonUp, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 			return 0;
 			
 		case WM_RBUTTONUP:
-			Input::Instance()->SetMouseButton(EMouseButtonState::RightMouseButtonUp, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+			Input::SetMouseButton(EMouseButtonState::RightMouseButtonUp, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 			return 0;
 
 		case WM_MOUSEMOVE:
-			Input::Instance()->SetMouseButton(EMouseButtonState::MouseButtonMove, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+			Input::SetMouseButton(EMouseButtonState::MouseButtonMove, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 			return 0;
 			
 		case WM_KEYDOWN:

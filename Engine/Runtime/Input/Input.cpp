@@ -2,6 +2,11 @@
 
 namespace SaplingEngine
 {
+	//静态成员初始化
+	EMouseButtonState	Input::m_MouseButtonState = EMouseButtonState::None;
+	Vector2				Input::m_MousePosition(0, 0);
+	float				Input::m_MouseWheelValue = 0;
+	
 	/**
 	 * \brief 销毁
 	 */

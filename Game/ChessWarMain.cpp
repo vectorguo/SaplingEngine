@@ -12,16 +12,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 #endif
 
 	//设置ComponentCreator
-	ComponentFactory::Instance()->SetComponentCreator(ChessWar::CreateComponent);
+	ComponentFactory::SetComponentCreator(ChessWar::CreateComponent);
 	
 	//初始化游戏设置
-	if (GameSetting::Instance()->Initialize())
+	if (GameSetting::Initialize())
 	{
 		//初始化程序
-		if (GameApplication::Instance()->Initialize(hInstance))
+		if (GameApplication::Initialize(hInstance))
 		{
-			GameApplication::Instance()->Run();
-			GameApplication::Instance()->Destroy();
+			GameApplication::Run();
+			GameApplication::Destroy();
 		}
 	}
 

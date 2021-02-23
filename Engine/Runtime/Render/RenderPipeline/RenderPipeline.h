@@ -39,8 +39,10 @@ namespace SaplingEngine
 
 		/**
 		 * \brief 设置宽度和高度
+		 * \param width 屏幕宽度
+		 * \param height 屏幕高度
 		 */
-		void OnWindowResize();
+		void OnSceneResize(uint32_t width, uint32_t height);
 		
 		/**
 		 * \brief 添加RenderPass

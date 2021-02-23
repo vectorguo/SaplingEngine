@@ -9,17 +9,13 @@ namespace SaplingEngine
 	class ComponentFactory final
 	{
 		friend class GameObject;
+	
 	public:
-		ComponentFactory() = default;
-		~ComponentFactory() = default;
-
-		SINGLETON(ComponentFactory)
-
 		/**
 		 * \brief 设置组件构建器
 		 * \param creator 组件构建器
 		 */
-		void SetComponentCreator(const std::function<Component* (uint32_t, int32_t)>& creator)
+		static void SetComponentCreator(const std::function<Component* (uint32_t, int32_t)>& creator)
 		{
 			m_CustomCreator = creator;
 		}
@@ -31,12 +27,12 @@ namespace SaplingEngine
 		 * \param componentSubType 组件子类型
 		 * \return 组件指针
 		 */
-		Component* CreateComponent(uint32_t componentType, int32_t componentSubType = 0) const;
+		static Component* CreateComponent(uint32_t componentType, int32_t componentSubType = 0);
 		
 	private:
 		/**
 		 * \brief 自定义的组件构建器
 		 */
-		std::function<Component* (uint32_t, int32_t)> m_CustomCreator;
+		static std::function<Component* (uint32_t, int32_t)> m_CustomCreator;
 	};
 }

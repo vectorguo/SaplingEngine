@@ -2,6 +2,12 @@
 
 namespace SaplingEngine
 {
+	//静态成员初始化
+	uint32_t	GameSetting::m_ScreenWidth = 0;
+	uint32_t	GameSetting::m_ScreenHeight = 0;
+	std::string GameSetting::m_StartSceneName;
+	std::string GameSetting::m_StartScenePath;
+	
 	/**
 	 * \brief 初始化
 	 * \return 是否初始化成功

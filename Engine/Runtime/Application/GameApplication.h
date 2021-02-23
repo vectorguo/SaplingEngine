@@ -4,42 +4,37 @@
 
 namespace SaplingEngine
 {
-	class GameApplication
+	class GameApplication final
 	{
 	public:
-		GameApplication();
-		~GameApplication() = default;
-
-		SINGLETON(GameApplication)
-
 		/**
 		 * \brief 初始化App
 		 * \param hInstance app句柄
 		 * \return 是否初始化成功
 		 */
-		bool Initialize(HINSTANCE hInstance);
+		static bool Initialize(HINSTANCE hInstance);
 
 		/*
 		 * 运行
 		 */
-		void Run();
+		static void Run();
 
 		/**
 		 * \brief 销毁
 		 */
-		void Destroy();
+		static void Destroy();
 
 	private:
 		/**
 		 * \brief 初始化窗口
 		 * \return 是否初始化成功
 		 */
-		bool InitializeWindow();
+		static bool InitializeWindow();
 
 		/**
 		 * \brief 更新
 		 */
-		void Update();
+		static void Update();
 
 		/*
 		 * 消息处理回调
@@ -49,49 +44,42 @@ namespace SaplingEngine
 		/*
 		 * 消息处理
 		 */
-		LRESULT MessageProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+		static LRESULT MessageProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 	private:
-		static GameApplication* s_Instance;
-
 		/**
 		 * \brief Application 句柄
 		 */
-		HINSTANCE m_AppInstance = nullptr;
+		static HINSTANCE m_AppInstance;
 
 		/**
 		 * \brief 窗口句柄
 		 */
-		HWND m_MainWindow = nullptr;
+		static HWND m_WindowHwnd;
 
 		/**
 		 * \brief 是否处于激活状态
 		 */
-		bool m_IsActive = false;
+		static bool m_IsActive;
 		
 		/**
 		 * \brief 窗口是否最小化
 		 */
-		bool m_IsMinimized = false;
+		static bool m_IsMinimized;
 		
 		/**
 		 * \brief 窗口是否最大化
 		 */
-		bool m_IsMaximized = false;
+		static bool m_IsMaximized;
 		
 		/**
 		 * \brief 窗口是否正在改变大小
 		 */
-		bool m_IsResizing = false;
+		static bool m_IsResizing;
 		
 		/**
 		 * \brief 是否全屏状态
 		 */
-		bool m_IsFullscreen = false;
-
-		/**
-		 * \brief 程序配置
-		 */
-		XmlDocument m_ConfigXmlDocument;
+		static bool m_IsFullscreen;
 	};
 }

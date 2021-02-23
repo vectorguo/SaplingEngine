@@ -7,17 +7,13 @@ namespace SaplingEngine
 	class CameraManager final
 	{
 		friend class Camera;
+	
 	public:
-		CameraManager() = default;
-		~CameraManager() = default;
-		
-		SINGLETON(CameraManager)
-
 		/**
 		 * \brief 获取所有相机
 		 * \return 相机列表
 		 */
-		const CameraList& GetCameras() const
+		static const CameraList& GetCameras()
 		{
 			return m_Cameras;
 		}
@@ -25,19 +21,21 @@ namespace SaplingEngine
 		/**
 		 * \brief 销毁
 		 */
-		void Destroy();
+		static void Destroy();
 
 		/**
 		 * \brief 屏幕尺寸修改
+		 * \param width 变化后的窗口宽度
+		 * \param height 变化后的窗口高度
 		 */
-		void OnWindowResize();
+		static void OnSceneResize(uint32_t width, uint32_t height);
 		
 	private:
-		void AddCamera(CameraSptr&& pCamera);
-		void RemoveCamera(const CameraSptr& pCamera);
-		void SortCamera();
+		static void AddCamera(CameraSptr&& pCamera);
+		static void RemoveCamera(const CameraSptr& pCamera);
+		static void SortCamera();
 		
 	private:
-		CameraList m_Cameras;
+		static CameraList m_Cameras;
 	};
 }

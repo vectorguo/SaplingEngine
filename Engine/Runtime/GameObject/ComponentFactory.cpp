@@ -8,13 +8,16 @@
 
 namespace SaplingEngine
 {
+	//静态成员初始化
+	std::function<Component* (uint32_t, int32_t)> ComponentFactory::m_CustomCreator;
+	
 	/**
 	 * \brief 根据组件类型创建组件
 	 * \param componentType 组件类型
 	 * \param componentSubType 组件子类型
 	 * \return 组件指针
 	 */
-	Component* ComponentFactory::CreateComponent(uint32_t componentType, int32_t componentSubType) const
+	Component* ComponentFactory::CreateComponent(uint32_t componentType, int32_t componentSubType)
 	{
 		switch (componentType)
 		{

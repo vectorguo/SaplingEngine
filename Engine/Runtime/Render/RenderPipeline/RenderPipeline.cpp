@@ -18,8 +18,8 @@ namespace SaplingEngine
 	 */
 	void RenderPipeline::BeginInitialize(HWND hWnd)
 	{
-		m_ScreenWidth = GameSetting::Instance()->ScreenWidth();
-		m_ScreenHeight = GameSetting::Instance()->ScreenHeight();
+		m_ScreenWidth = GameSetting::ScreenWidth();
+		m_ScreenHeight = GameSetting::ScreenHeight();
 
 		//创建并初始化Graphics Manager
 		m_pGraphicsManager = new Dx12GraphicsManager();
@@ -61,7 +61,7 @@ namespace SaplingEngine
 		m_pConstantBufferManager->UpdateOcbData(pActiveScene);
 		
 		//执行Render Pass
-		const auto& cameras = CameraManager::Instance()->GetCameras();
+		const auto& cameras = CameraManager::GetCameras();
 		for (const auto& pCamera : cameras)
 		{
 			//更新Pass数据常量缓冲区
@@ -101,11 +101,11 @@ namespace SaplingEngine
 
 	/**
 	 * \brief 设置宽度和高度
+	 * \param width 屏幕宽度
+	 * \param height 屏幕高度
 	 */
-	void RenderPipeline::OnWindowResize()
+	void RenderPipeline::OnSceneResize(uint32_t width, uint32_t height)
 	{
-		const auto width = GameSetting::Instance()->ScreenWidth();
-		const auto height = GameSetting::Instance()->ScreenHeight();
 		if (width != m_ScreenWidth || height != m_ScreenHeight)
 		{
 			m_ScreenWidth = width;

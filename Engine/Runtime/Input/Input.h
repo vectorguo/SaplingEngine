@@ -37,25 +37,16 @@ namespace SaplingEngine
 		friend class GameApplication;
 		
 	public:
-		Input(): m_MousePosition(0, 0)
-		{
-			
-		}
-
-		~Input() = default;
-
-		SINGLETON(Input)
-
 		/**
 		 * \brief 销毁
 		 */
-		void Destroy();
+		static void Destroy();
 		
 		/**
 		 * \brief 获取鼠标按钮状态
 		 * \return 鼠标按钮状态
 		 */
-		EMouseButtonState GetMouseButtonState() const
+		static EMouseButtonState GetMouseButtonState()
 		{
 			return m_MouseButtonState;
 		}
@@ -64,7 +55,7 @@ namespace SaplingEngine
 		 * \brief 获取鼠标位置
 		 * \return 鼠标位置
 		 */
-		const Vector2& GetMousePosition() const
+		static const Vector2& GetMousePosition()
 		{
 			return m_MousePosition;
 		}
@@ -73,7 +64,7 @@ namespace SaplingEngine
 		 * \brief 获取鼠标滚轮的滚动值
 		 * \return 滚动值
 		 */
-		float GetMouseWheelValue() const
+		static float GetMouseWheelValue()
 		{
 			return m_MouseWheelValue;
 		}
@@ -82,7 +73,7 @@ namespace SaplingEngine
 		/**
 		 * \brief 重置
 		 */
-		void Reset()
+		static void Reset()
 		{
 			if (m_MouseButtonState == EMouseButtonState::LeftMouseButtonUp ||
 				m_MouseButtonState == EMouseButtonState::RightMouseButtonUp)
@@ -102,11 +93,11 @@ namespace SaplingEngine
 		 * \param x 鼠标X轴位置
 		 * \param y 鼠标Y轴位置
 		 */
-		void SetMouseButton(EMouseButtonState buttonState, int32_t x, int32_t y);
+		static void SetMouseButton(EMouseButtonState buttonState, int32_t x, int32_t y);
 		
 	private:
-		EMouseButtonState m_MouseButtonState = EMouseButtonState::None;
-		Vector2 m_MousePosition;
-		float m_MouseWheelValue = 0;
+		static EMouseButtonState m_MouseButtonState;
+		static Vector2 m_MousePosition;
+		static float m_MouseWheelValue;
 	};
 }

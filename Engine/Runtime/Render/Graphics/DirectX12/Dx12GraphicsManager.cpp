@@ -248,8 +248,8 @@ namespace SaplingEngine
 		}
 
 		//Set ViewPort And ScissorRect
-		const auto width = GameSetting::Instance()->ScreenWidth();
-		const auto height = GameSetting::Instance()->ScreenHeight();
+		const auto width = GameSetting::ScreenWidth();
+		const auto height = GameSetting::ScreenHeight();
 		m_Viewport.TopLeftX = 0;
 		m_Viewport.TopLeftY = 0;
 		m_Viewport.Width = static_cast<float>(width);

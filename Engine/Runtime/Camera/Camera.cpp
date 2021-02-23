@@ -31,12 +31,12 @@ namespace SaplingEngine
 
 	void Camera::Awake()
 	{
-		CameraManager::Instance()->AddCamera(std::static_pointer_cast<Camera>(shared_from_this()));
+		CameraManager::AddCamera(std::static_pointer_cast<Camera>(shared_from_this()));
 	}
 
 	void Camera::OnDestroy()
 	{
-		CameraManager::Instance()->RemoveCamera(std::static_pointer_cast<Camera>(shared_from_this()));
+		CameraManager::RemoveCamera(std::static_pointer_cast<Camera>(shared_from_this()));
 	}
 
 	/**
@@ -67,6 +67,6 @@ namespace SaplingEngine
 		m_Priority = priority;
 
 		//对相机进行排序
-		CameraManager::Instance()->SortCamera();
+		CameraManager::SortCamera();
 	}
 }

@@ -4,21 +4,24 @@
 
 namespace SaplingEngine
 {
+	//静态成员初始化
+	CameraList CameraManager::m_Cameras;
+	
 	/**
 	 * \brief 销毁
 	 */
 	void CameraManager::Destroy()
 	{
-		
+		m_Cameras.clear();
 	}
 
 	/**
 	 * \brief 屏幕尺寸修改
+	 * \param width 变化后的窗口宽度
+	 * \param height 变化后的窗口高度
 	 */
-	void CameraManager::OnWindowResize()
+	void CameraManager::OnSceneResize(uint32_t width, uint32_t height)
 	{
-		const auto width = GameSetting::Instance()->ScreenWidth();
-		const auto height = GameSetting::Instance()->ScreenHeight();
 		for (auto iter = m_Cameras.begin(); iter != m_Cameras.end(); ++iter)
 		{
 			(*iter)->SetWindowSize(width, height);

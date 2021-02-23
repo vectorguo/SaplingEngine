@@ -20,8 +20,8 @@ namespace SaplingEngine
 	void SceneManager::Initialize()
 	{
 		//¼ÓÔØÆô¶¯³¡¾°
-		const auto& startSceneName = GameSetting::Instance()->StartSceneName();
-		const auto& startScenePath = GameSetting::Instance()->StartScenePath();
+		const auto& startSceneName = GameSetting::StartSceneName();
+		const auto& startScenePath = GameSetting::StartScenePath();
 		LoadScene(startSceneName, startScenePath);
 		SetActiveScene(startSceneName);
 	}

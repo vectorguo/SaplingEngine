@@ -37,13 +37,12 @@ namespace ChessWar
 	 */
 	void ChessWarInput::UpdateCamera()
 	{
-		const auto* pInput = Input::Instance();
-		const auto mouseState = pInput->GetMouseButtonState();
+		const auto mouseState = Input::GetMouseButtonState();
 		if (mouseState == EMouseButtonState::MouseWheel)
 		{
 			auto* pCameraTransform = m_MainCamera->GetTransform();
 			auto cameraPosition = pCameraTransform->GetLocalPosition();
-			cameraPosition += pCameraTransform->GetForward() * pInput->GetMouseWheelValue() * -0.005f;
+			cameraPosition += pCameraTransform->GetForward() * Input::GetMouseWheelValue() * -0.5f;
 			pCameraTransform->SetLocalPosition(cameraPosition);
 		}
 		else
@@ -51,12 +50,12 @@ namespace ChessWar
 			if (mouseState == EMouseButtonState::LeftMouseButtonDown)
 			{
 				m_CameraOperation = 1;
-				m_MousePosition = pInput->GetMousePosition();
+				m_MousePosition = Input::GetMousePosition();
 			}
 			else if (mouseState == EMouseButtonState::RightMouseButtonDown)
 			{
 				m_CameraOperation = 2;
-				m_MousePosition = pInput->GetMousePosition();
+				m_MousePosition = Input::GetMousePosition();
 			}
 			else if (mouseState == EMouseButtonState::LeftMouseButtonUp || mouseState == EMouseButtonState::RightMouseButtonUp)
 			{
@@ -65,7 +64,7 @@ namespace ChessWar
 
 			if ((m_CameraOperation == 1 || m_CameraOperation == 2) && mouseState == EMouseButtonState::MouseButtonMove)
 			{
-				const auto& mousePosition = pInput->GetMousePosition();
+				const auto& mousePosition = Input::GetMousePosition();
 				const auto delta = m_MousePosition - mousePosition;
 				auto* pCameraTransform = m_MainCamera->GetTransform();
 
@@ -86,7 +85,7 @@ namespace ChessWar
 					pCameraTransform->SetLocalRotation(cameraRotation);
 				}
 
-				m_MousePosition = pInput->GetMousePosition();
+				m_MousePosition = Input::GetMousePosition();
 			}
 		}
 	}

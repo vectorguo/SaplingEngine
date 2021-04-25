@@ -7,7 +7,7 @@ namespace SaplingEngine
 {
 	Renderer::Renderer()
 	{
-		m_OcbIndex = CBufferManager::Instance()->PopObjectCbIndex();
+		m_OcbIndex = CBufferManager::PopObjectCbIndex();
 	}
 
 	Renderer::~Renderer()
@@ -17,7 +17,7 @@ namespace SaplingEngine
 		delete m_pSpecialOcbData;
 
 		//归还常量缓冲区索引
-		CBufferManager::Instance()->PushObjectCbIndex(m_OcbIndex);
+		CBufferManager::PushObjectCbIndex(m_OcbIndex);
 	}	
 
 	void Renderer::Start()

@@ -6,18 +6,20 @@
 
 namespace SaplingEngine
 {
-	Dx12CommandManager* Dx12CommandManager::m_Instance = nullptr;
-	
+	ComPtr<ID3D12CommandQueue>			Dx12CommandManager::m_CommandQueue;
+	ComPtr<ID3D12CommandAllocator>		Dx12CommandManager::m_CommandAllocator;
+	ComPtr<ID3D12GraphicsCommandList>	Dx12CommandManager::m_CommandList;
+	ComPtr<ID3D12Fence>					Dx12CommandManager::m_Fence;
+	uint64_t							Dx12CommandManager::m_CurrentFence = 0;
+	std::string							Dx12CommandManager::m_CurrentPipelineStateName;
+
 	/**
 	 * \brief 开始初始化
 	 */
 	void Dx12CommandManager::BeginInitialize()
 	{
-		m_pGraphicsManager = GraphicsManager::Instance();
-		m_pGraphicsManager->m_pCommandManager = this;
-
 		//获取Dx12 Device指针
-		auto* pDx12Device = m_pGraphicsManager->GetDx12Device();
+		auto* pDx12Device = GraphicsManager::GetDx12Device();
 		
 		//创建围栏
 		ThrowIfFailed(pDx12Device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_Fence)));
@@ -54,11 +56,11 @@ namespace SaplingEngine
 		ThrowIfFailed(m_CommandList->Reset(m_CommandAllocator.Get(), nullptr));
 
 		//设置ViewPort和ScissorRect
-		m_CommandList->RSSetViewports(1, &m_pGraphicsManager->m_Viewport);
-		m_CommandList->RSSetScissorRects(1, &m_pGraphicsManager->m_ScissorRect);
+		m_CommandList->RSSetViewports(1, &GraphicsManager::m_Viewport);
+		m_CommandList->RSSetScissorRects(1, &GraphicsManager::m_ScissorRect);
 
 		//渲染缓存从呈现状态切换到RT状态
-		auto resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(m_pGraphicsManager->GetCurrentRt(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
+		auto resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(GraphicsManager::GetCurrentRt(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
 		m_CommandList->ResourceBarrier(1, &resourceBarrier);
 	}
 
@@ -68,12 +70,12 @@ namespace SaplingEngine
 	void Dx12CommandManager::PostRender()
 	{
 		//渲染缓存从RT状态切换到呈现状态
-		auto resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(m_pGraphicsManager->GetCurrentRt(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
+		auto resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(GraphicsManager::GetCurrentRt(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
 		m_CommandList->ResourceBarrier(1, &resourceBarrier);
 		ExecuteCommandList();
 
 		//交换后台缓冲和前台缓冲
-		m_pGraphicsManager->Present();
+		GraphicsManager::Present();
 
 		//等待命令结束
 		CompleteCommand();
@@ -101,7 +103,7 @@ namespace SaplingEngine
 		if (m_CurrentPipelineStateName != pipelineStateName)
 		{
 			//需要切换渲染管线状态
-			m_CommandList->SetPipelineState(m_pGraphicsManager->GetPipelineState(pipelineStateName));
+			m_CommandList->SetPipelineState(GraphicsManager::GetPipelineState(pipelineStateName));
 			m_CurrentPipelineStateName = pipelineStateName;
 		}
 		
@@ -111,8 +113,8 @@ namespace SaplingEngine
 		m_CommandList->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 		//获取该Renderer所对应的常量缓冲区描述符
-		m_CommandList->SetGraphicsRootDescriptorTable(0, CBufferManager::Instance()->GetObjectCbvDescriptor(pRenderer->GetCommonOcbIndex()));
-		m_CommandList->SetGraphicsRootDescriptorTable(1, CBufferManager::Instance()->GetObjectCbvDescriptor(pRenderer->GetSpecialOcbIndex()));
+		m_CommandList->SetGraphicsRootDescriptorTable(0, CBufferManager::GetObjectCbvDescriptor(pRenderer->GetCommonOcbIndex()));
+		m_CommandList->SetGraphicsRootDescriptorTable(1, CBufferManager::GetObjectCbvDescriptor(pRenderer->GetSpecialOcbIndex()));
 		m_CommandList->DrawIndexedInstanced(pMesh->GetIndexCount(), 1, 0, 0, 0);
 	}
 

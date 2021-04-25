@@ -21,7 +21,7 @@ namespace SaplingEngine
 		 */
 		static uint32_t ScreenWidth()
 		{
-			return m_ScreenWidth;
+			return screenWidth;
 		}
 
 		/**
@@ -30,7 +30,7 @@ namespace SaplingEngine
 		 */
 		static uint32_t ScreenHeight()
 		{
-			return m_ScreenHeight;
+			return screenHeight;
 		}
 
 		/**
@@ -40,12 +40,12 @@ namespace SaplingEngine
 		 */
 		static void SetScreenSize(uint32_t width, uint32_t height)
 		{
-			m_ScreenWidth = width;
-			m_ScreenHeight = height;
+			screenWidth = width;
+			screenHeight = height;
 
 			//通知相机和渲染管线屏幕大小变化
 			CameraManager::OnSceneResize(width, height);
-			RenderPipeline::Instance()->OnSceneResize(width, height);
+			RenderPipeline::OnSceneResize(width, height);
 		}
 
 		/**
@@ -54,7 +54,7 @@ namespace SaplingEngine
 		 */
 		static const std::string& StartSceneName()
 		{
-			return m_StartSceneName;
+			return startSceneName;
 		}
 		
 		/**
@@ -63,28 +63,28 @@ namespace SaplingEngine
 		 */
 		static const std::string& StartScenePath()
 		{
-			return m_StartScenePath;
+			return startScenePath;
 		}
 
 	private:
 		/**
 		 * \brief 屏幕宽度
 		 */
-		static uint32_t m_ScreenWidth;
+		static uint32_t screenWidth;
 		
 		/**
 		 * \brief 屏幕高度
 		 */
-		static uint32_t m_ScreenHeight;
+		static uint32_t screenHeight;
 
 		/**
 		 * \brief 起始场景名称
 		 */
-		static std::string m_StartSceneName;
+		static std::string startSceneName;
 		
 		/**
 		 * \brief 起始场景路径
 		 */
-		static std::string m_StartScenePath;
+		static std::string startScenePath;
 	};
 }

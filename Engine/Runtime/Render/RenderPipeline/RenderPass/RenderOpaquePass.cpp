@@ -24,27 +24,24 @@ namespace SaplingEngine
 			});
 
 		//添加渲染命令
-		auto* pCommandManager = CommandManager::Instance();
-		auto* pCommandList = pCommandManager->GetCommandList();
-		auto* pCBufferManager = CBufferManager::Instance();
-		auto* pGraphicsManager = GraphicsManager::Instance();
+		auto* pCommandList = CommandManager::GetCommandList();
 
 		//清理颜色缓冲和深度缓冲
-		const auto rtv = pGraphicsManager->GetCurrentRtv();
-		const auto dsv = pGraphicsManager->GetCurrentDsv();
+		const auto rtv = GraphicsManager::GetCurrentRtv();
+		const auto dsv = GraphicsManager::GetCurrentDsv();
 		pCommandList->ClearRenderTargetView(rtv, Color::LightBlue, 0, nullptr);
 		pCommandList->ClearDepthStencilView(dsv, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
 		pCommandList->OMSetRenderTargets(1, &rtv, true, &dsv);
 
 		//设置跟描述符表和常量缓冲区，将常量缓冲区绑定到渲染流水线上
-		pCommandList->SetDescriptorHeaps(pCBufferManager->GetCbvDescriptorHeapCount(), pCBufferManager->GetCbvDescriptorHeaps());
-		pCommandList->SetGraphicsRootSignature(pGraphicsManager->GetRootSignature());
-		pCommandList->SetGraphicsRootDescriptorTable(2, pCBufferManager->GetPassCbvDescriptor());
+		pCommandList->SetDescriptorHeaps(CBufferManager::GetCbvDescriptorHeapCount(), CBufferManager::GetCbvDescriptorHeaps());
+		pCommandList->SetGraphicsRootSignature(GraphicsManager::GetRootSignature());
+		pCommandList->SetGraphicsRootDescriptorTable(2, CBufferManager::GetPassCbvDescriptor());
 
 		//绘制物体
 		for (auto iter = renderItems.begin(); iter != renderItems.end(); ++iter)
 		{
-			pCommandManager->DrawIndexedInstanced(*iter);
+			CommandManager::DrawIndexedInstanced(*iter);
 		}
 	}
 }

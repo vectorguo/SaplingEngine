@@ -27,7 +27,6 @@ namespace SaplingEngine
 	 */
 	void Mesh::UploadMeshDatas()
 	{
-		auto* pGraphicsManager = GraphicsManager::Instance();
 		for (auto iter = m_NotUploadedMeshes.begin(); iter != m_NotUploadedMeshes.end(); ++iter)
 		{
 			auto* pMesh = *iter;
@@ -35,12 +34,12 @@ namespace SaplingEngine
 			
 			//创建顶点缓冲区描述符
 			const auto vertexSize = static_cast<uint32_t>(pMesh->GetVertexCount() * sizeof(VertexData));
-			pMesh->m_VertexBufferOnGpu = pGraphicsManager->CreateDefaultBufferAndUploadData(pMesh->GetVertexDatas(), vertexSize);
+			pMesh->m_VertexBufferOnGpu = GraphicsManager::CreateDefaultBufferAndUploadData(pMesh->GetVertexDatas(), vertexSize);
 			pMesh->m_pVertexBufferView = new D3D12_VERTEX_BUFFER_VIEW{ pMesh->m_VertexBufferOnGpu->GetGPUVirtualAddress(), vertexSize, sizeof(VertexData) };
 			
 			//创建索引缓冲区描述符
 			const auto indexSize = static_cast<uint32_t>(pMesh->GetIndexCount() * sizeof(uint16_t));
-			pMesh->m_IndexBufferOnGpu = pGraphicsManager->CreateDefaultBufferAndUploadData(pMesh->GetIndices(), indexSize);
+			pMesh->m_IndexBufferOnGpu = GraphicsManager::CreateDefaultBufferAndUploadData(pMesh->GetIndices(), indexSize);
 			pMesh->m_pIndexBufferView = new D3D12_INDEX_BUFFER_VIEW{ pMesh->m_IndexBufferOnGpu->GetGPUVirtualAddress(), indexSize, DXGI_FORMAT_R16_UINT };
 		}
 		m_NotUploadedMeshes.clear();

@@ -6,15 +6,22 @@
 
 namespace SaplingEngine
 {
-	Dx12CBufferManager* Dx12CBufferManager::m_Instance = nullptr;
-	uint32_t Dx12CBufferManager::CbvDescriptorSize = 0;
+	uint32_t						Dx12CBufferManager::CbvDescriptorSize = 0;
+
+	ComPtr<ID3D12DescriptorHeap>	Dx12CBufferManager::m_CbvDescriptorHeap;
+	ID3D12DescriptorHeap**			Dx12CBufferManager::m_CbvDescriptorHeapPointers = nullptr;
+	std::vector<Dx12CBufferManager::ObjectUploadBufferData> Dx12CBufferManager::m_ObjectUploadBuffers;
+	std::vector<uint32_t>			Dx12CBufferManager::m_AvailableOubIndices;
+	ComPtr<ID3D12Resource>			Dx12CBufferManager::m_PassCommonUploadBuffer;
+	uint8_t*						Dx12CBufferManager::m_PassCommonMappedData = nullptr;
+	uint32_t						Dx12CBufferManager::m_PassCbvDescriptorOffset = 0;
 	
 	/**
 	 * \brief 初始化
 	 */
 	void Dx12CBufferManager::Initialize()
 	{
-		auto* pDevice = GraphicsManager::Instance()->GetDx12Device();
+		auto* pDevice = GraphicsManager::GetDx12Device();
 		
 		//查询描述符大小
 		CbvDescriptorSize = pDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
@@ -75,7 +82,7 @@ namespace SaplingEngine
 	 * \param ocbIndex Object的常量缓冲区描述符索引
 	 * \return Object常量缓冲区描述
 	 */
-	D3D12_GPU_DESCRIPTOR_HANDLE Dx12CBufferManager::GetObjectCbvDescriptor(uint32_t ocbIndex) const
+	D3D12_GPU_DESCRIPTOR_HANDLE Dx12CBufferManager::GetObjectCbvDescriptor(uint32_t ocbIndex)
 	{
 		return GetGPUHandleFromDescriptorHeap(m_CbvDescriptorHeap.Get(), ocbIndex, CbvDescriptorSize);
 	}
@@ -84,7 +91,7 @@ namespace SaplingEngine
 	 * \brief 获取Pass常量缓冲区描述
 	 * \return 常量Pass缓冲区描述
 	 */
-	D3D12_GPU_DESCRIPTOR_HANDLE Dx12CBufferManager::GetPassCbvDescriptor() const
+	D3D12_GPU_DESCRIPTOR_HANDLE Dx12CBufferManager::GetPassCbvDescriptor()
 	{
 		return GetGPUHandleFromDescriptorHeap(m_CbvDescriptorHeap.Get(), m_PassCbvDescriptorOffset, CbvDescriptorSize);
 	}
@@ -170,7 +177,7 @@ namespace SaplingEngine
 	 * \param elementSize 元素大小
 	 * \param descriptorHeapOffset 在常量缓冲区描述符堆中的偏移位置
 	 */
-	void Dx12CBufferManager::CreateUploadBuffer(ID3D12DescriptorHeap* descriptorHeap, ComPtr<ID3D12Resource>& uploadBuffer, uint8_t*& mappedData, uint32_t elementCount, uint32_t elementSize, uint32_t descriptorHeapOffset) const
+	void Dx12CBufferManager::CreateUploadBuffer(ID3D12DescriptorHeap* descriptorHeap, ComPtr<ID3D12Resource>& uploadBuffer, uint8_t*& mappedData, uint32_t elementCount, uint32_t elementSize, uint32_t descriptorHeapOffset)
 	{
 		//创建上传缓冲区
 		D3D12_HEAP_PROPERTIES headProperties
@@ -195,7 +202,7 @@ namespace SaplingEngine
 			D3D12_RESOURCE_FLAG_NONE
 		};
 
-		auto* pDevice = GraphicsManager::Instance()->GetDx12Device();
+		auto* pDevice = GraphicsManager::GetDx12Device();
 		ThrowIfFailed(pDevice->CreateCommittedResource(&headProperties, D3D12_HEAP_FLAG_NONE, &bufferDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&uploadBuffer)));
 		ThrowIfFailed(uploadBuffer->Map(0, nullptr, reinterpret_cast<void**>(&mappedData)));
 

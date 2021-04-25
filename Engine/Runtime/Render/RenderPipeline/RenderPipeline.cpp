@@ -10,33 +10,31 @@
 
 namespace SaplingEngine
 {
-	RenderPipeline::RenderPipeline() = default;
-	RenderPipeline::~RenderPipeline() = default;
+	uint32_t					RenderPipeline::screenWidth = 0;
+	uint32_t					RenderPipeline::screenHeight = 0;
+	std::vector<RenderPass*>	RenderPipeline::renderPasses;
 
 	/**
 	 * \brief 开始初始化
 	 */
 	void RenderPipeline::BeginInitialize(HWND hWnd)
 	{
-		m_ScreenWidth = GameSetting::ScreenWidth();
-		m_ScreenHeight = GameSetting::ScreenHeight();
+		screenWidth = GameSetting::ScreenWidth();
+		screenHeight = GameSetting::ScreenHeight();
 
 		//创建并初始化Graphics Manager
-		m_pGraphicsManager = new Dx12GraphicsManager();
-		m_pGraphicsManager->BeginInitialize(hWnd, m_ScreenWidth, m_ScreenHeight);
+		GraphicsManager::BeginInitialize(hWnd, screenWidth, screenHeight);
 
 		//创建并初始化常量缓冲区管理器
-		m_pConstantBufferManager = new Dx12CBufferManager();
-		m_pConstantBufferManager->Initialize();
+		CBufferManager::Initialize();
 
 		//创建并初始化Command Manager
-		m_pCommandManager = new Dx12CommandManager();
-		m_pCommandManager->BeginInitialize();
+		CommandManager::BeginInitialize();
 
 		//初始化渲染管线
 		auto* pOpaquePass = new RenderOpaquePass("Render Opaque");
 		pOpaquePass->SetBackgroundColor(Color::LightBlue);
-		m_RenderPasses.push_back(pOpaquePass);
+		renderPasses.push_back(pOpaquePass);
 	}
 
 	/**
@@ -44,8 +42,8 @@ namespace SaplingEngine
 	 */
 	void RenderPipeline::EndInitialize(HWND hWnd)
 	{
-		m_pGraphicsManager->EndInitialize(hWnd, m_ScreenWidth, m_ScreenHeight);
-		m_pCommandManager->EndInitialize();  
+		GraphicsManager::EndInitialize(hWnd, screenWidth, screenHeight);
+		CommandManager::EndInitialize();
 	}
 
 	/**
@@ -58,15 +56,15 @@ namespace SaplingEngine
 		auto* pActiveScene = SceneManager::Instance()->GetActiveScene();
 
 		//更新Object数据常量缓冲区
-		m_pConstantBufferManager->UpdateOcbData(pActiveScene);
+		CBufferManager::UpdateOcbData(pActiveScene);
 		
 		//执行Render Pass
 		const auto& cameras = CameraManager::GetCameras();
 		for (const auto& pCamera : cameras)
 		{
 			//更新Pass数据常量缓冲区
-			m_pConstantBufferManager->UpdatePcbData(pCamera.get());
-			for (auto iter = m_RenderPasses.begin(); iter != m_RenderPasses.end(); ++iter)
+			CBufferManager::UpdatePcbData(pCamera.get());
+			for (auto iter = renderPasses.begin(); iter != renderPasses.end(); ++iter)
 			{
 				(*iter)->Render(pCamera.get(), pActiveScene);
 			}
@@ -80,23 +78,15 @@ namespace SaplingEngine
 	 */
 	void RenderPipeline::Destroy()
 	{
-		for (auto iter = m_RenderPasses.begin(); iter != m_RenderPasses.end(); ++iter)
+		for (auto iter = renderPasses.begin(); iter != renderPasses.end(); ++iter)
 		{
 			delete* iter;
 		}
-		m_RenderPasses.clear();
+		renderPasses.clear();
 		
-		m_pCommandManager->Destroy();
-		delete m_pCommandManager;
-		m_pCommandManager = nullptr;
-
-		m_pConstantBufferManager->Destroy();
-		delete m_pConstantBufferManager;
-		m_pConstantBufferManager = nullptr;
-		
-		m_pGraphicsManager->Destroy();
-		delete m_pGraphicsManager;
-		m_pGraphicsManager = nullptr;
+		CommandManager::Destroy();
+		CBufferManager::Destroy();
+		GraphicsManager::Destroy();
 	}
 
 	/**
@@ -106,11 +96,11 @@ namespace SaplingEngine
 	 */
 	void RenderPipeline::OnSceneResize(uint32_t width, uint32_t height)
 	{
-		if (width != m_ScreenWidth || height != m_ScreenHeight)
+		if (width != screenWidth || height != screenHeight)
 		{
-			m_ScreenWidth = width;
-			m_ScreenHeight = height;
-			m_pGraphicsManager->OnWindowResize(m_ScreenWidth, m_ScreenHeight);
+			screenWidth = width;
+			screenHeight = height;
+			GraphicsManager::OnWindowResize(screenWidth, screenHeight);
 		}
 	}
 
@@ -120,13 +110,13 @@ namespace SaplingEngine
 	 */
 	void RenderPipeline::AddRenderPass(RenderPass* pRenderPass)
 	{
-		const auto iter = std::find_if(m_RenderPasses.begin(), m_RenderPasses.end(), [pRenderPass](const RenderPass* rp)
+		const auto iter = std::find_if(renderPasses.begin(), renderPasses.end(), [pRenderPass](const RenderPass* rp)
 			{
 				return rp->GetName() == pRenderPass->GetName();
 			});
-		if (iter == m_RenderPasses.end())
+		if (iter == renderPasses.end())
 		{
-			m_RenderPasses.push_back(pRenderPass);
+			renderPasses.push_back(pRenderPass);
 		}
 	}
 	
@@ -136,13 +126,13 @@ namespace SaplingEngine
 	 */
 	void RenderPipeline::RemoveRenderPass(const std::string& renderPassName)
 	{
-		const auto iter = std::find_if(m_RenderPasses.begin(), m_RenderPasses.end(), [&renderPassName](const RenderPass* rp)
+		const auto iter = std::find_if(renderPasses.begin(), renderPasses.end(), [&renderPassName](const RenderPass* rp)
 			{
 				return rp->GetName() == renderPassName;
 			});
-		if (iter != m_RenderPasses.end())
+		if (iter != renderPasses.end())
 		{
-			m_RenderPasses.erase(iter);
+			renderPasses.erase(iter);
 		}
 	}
 
@@ -151,7 +141,7 @@ namespace SaplingEngine
 	 */
 	void RenderPipeline::PreRender()
 	{
-		m_pCommandManager->PreRender();
+		CommandManager::PreRender();
 		
 		//上传Mesh数据
 		Mesh::UploadMeshDatas();
@@ -162,7 +152,7 @@ namespace SaplingEngine
 	 */
 	void RenderPipeline::PostRender()
 	{
-		m_pCommandManager->PostRender();
+		CommandManager::PostRender();
 	}
 
 	/**
@@ -170,7 +160,7 @@ namespace SaplingEngine
 	 */
 	void RenderPipeline::SortRenderPass()
 	{
-		std::sort(m_RenderPasses.begin(), m_RenderPasses.end(), [](const RenderPass* rp1, const RenderPass* rp2)
+		std::sort(renderPasses.begin(), renderPasses.end(), [](const RenderPass* rp1, const RenderPass* rp2)
 			{
 				return rp1->GetPriority() < rp2->GetPriority();
 			});

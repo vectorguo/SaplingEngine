@@ -9,13 +9,13 @@
 namespace SaplingEngine
 {
 	//静态成员初始化
-	HINSTANCE	GameApplication::m_AppInstance = nullptr;
-	HWND		GameApplication::m_WindowHwnd = nullptr;
-	bool		GameApplication::m_IsActive = true;
-	bool		GameApplication::m_IsMinimized = false;
-	bool		GameApplication::m_IsMaximized = false;
-	bool		GameApplication::m_IsResizing = false;
-	bool		GameApplication::m_IsFullscreen = false;
+	HINSTANCE	GameApplication::appInstance = nullptr;
+	HWND		GameApplication::windowHwnd = nullptr;
+	bool		GameApplication::isActive = true;
+	bool		GameApplication::isMinimized = false;
+	bool		GameApplication::isMaximized = false;
+	bool		GameApplication::isResizing = false;
+	bool		GameApplication::isFullscreen = false;
 	
 	/**
 	 * \brief 初始化App
@@ -24,34 +24,34 @@ namespace SaplingEngine
 	 */
 	bool GameApplication::Initialize(HINSTANCE hInstance)
 	{
-		m_AppInstance = hInstance;
+		appInstance = hInstance;
 
 		//初始化资源管理器
 		ResourceManager::Instance()->Initialize();
 		
 		//初始化窗口
-		if (InitializeWindow())
+		if (!InitializeWindow())
 		{
-			//渲染管线开始初始化
-			RenderPipeline::Instance()->BeginInitialize(m_WindowHwnd);
-			
-			//初始化Shader
-			ShaderManager::Instance()->Initialize();
-			
-			//初始化场景
-			SceneManager::Instance()->Initialize();
-
-			//渲染管线结束初始化
-			RenderPipeline::Instance()->EndInitialize(m_WindowHwnd);
-			
-			//显示并更新窗口
-			ShowWindow(m_WindowHwnd, SW_SHOW);
-			UpdateWindow(m_WindowHwnd);
-			
-			return true;
+			return false;
 		}
+		
+		//渲染管线开始初始化
+		RenderPipeline::BeginInitialize(windowHwnd);
 
-		return false;
+		//初始化Shader
+		ShaderManager::Instance()->Initialize();
+
+		//初始化场景
+		SceneManager::Instance()->Initialize();
+
+		//渲染管线结束初始化
+		RenderPipeline::EndInitialize(windowHwnd);
+
+		//显示并更新窗口
+		ShowWindow(windowHwnd, SW_SHOW);
+		UpdateWindow(windowHwnd);
+
+		return true;
 	}
 
 	/**
@@ -77,7 +77,7 @@ namespace SaplingEngine
 				Update();
 
 				//渲染
-				RenderPipeline::Instance()->Render();
+				RenderPipeline::Render();
 			}
 		}
 	}
@@ -91,7 +91,7 @@ namespace SaplingEngine
 		Input::Destroy();
 		SceneManager::Instance()->Destroy();
 		ShaderManager::Instance()->Destroy();
-		RenderPipeline::Instance()->Destroy();
+		RenderPipeline::Destroy();
 	}
 
 	/**
@@ -102,10 +102,10 @@ namespace SaplingEngine
 	{
 		WNDCLASS wc;
 		wc.style = CS_HREDRAW | CS_VREDRAW;
-		wc.lpfnWndProc = MainWndProc;
+		wc.lpfnWndProc = MessageProcess;
 		wc.cbClsExtra = 0;
 		wc.cbWndExtra = 0;
-		wc.hInstance = m_AppInstance;
+		wc.hInstance = appInstance;
 		wc.hIcon = LoadIcon(nullptr, IDI_APPLICATION);
 		wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
 		wc.hbrBackground = static_cast<HBRUSH>(GetStockObject(NULL_BRUSH));
@@ -123,8 +123,8 @@ namespace SaplingEngine
 		const int width = rect.right - rect.left;
 		const int height = rect.bottom - rect.top;
 
-		m_WindowHwnd = CreateWindow(L"MainWnd", L"Sapling", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, width, height, nullptr, nullptr, m_AppInstance, nullptr);
-		if (!m_WindowHwnd)
+		windowHwnd = CreateWindow(L"MainWnd", L"Sapling", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, width, height, nullptr, nullptr, appInstance, nullptr);
+		if (!windowHwnd)
 		{
 			MessageBox(nullptr, L"CreateWindow Failed.", nullptr, 0);
 			return false;
@@ -142,14 +142,6 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief 消息处理回调函数
-	 */
-	LRESULT GameApplication::MainWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
-	{
-		return MessageProcess(hWnd, msg, wParam, lParam);
-	}
-
-	/**
 	 * \brief 消息处理
 	 */
 	LRESULT GameApplication::MessageProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -161,12 +153,12 @@ namespace SaplingEngine
 		case WM_ACTIVATE:
 			if (LOWORD(wParam) == WA_INACTIVE)
 			{
-				m_IsActive = false;
+				isActive = false;
 				Time::Stop();
 			}
 			else
 			{
-				m_IsActive = true;
+				isActive = true;
 				Time::Start();
 			}
 			return 0;
@@ -174,31 +166,31 @@ namespace SaplingEngine
 		case WM_SIZE:
 			if (wParam == SIZE_MINIMIZED)
 			{
-				m_IsActive = false;
-				m_IsMinimized = true;
-				m_IsMaximized = false;
+				isActive = false;
+				isMinimized = true;
+				isMaximized = false;
 				return 0;
 			}
 			else if (wParam == SIZE_MAXIMIZED)
 			{
-				m_IsActive = true;
-				m_IsMinimized = false;
-				m_IsMaximized = true;
+				isActive = true;
+				isMinimized = false;
+				isMaximized = true;
 				
 			}
 			else if (wParam == SIZE_RESTORED)
 			{
-				if (m_IsMinimized)
+				if (isMinimized)
 				{
-					m_IsActive = true;
-					m_IsMinimized = false;
+					isActive = true;
+					isMinimized = false;
 				}
-				else if (m_IsMaximized)
+				else if (isMaximized)
 				{
-					m_IsActive = true;
-					m_IsMaximized = false;
+					isActive = true;
+					isMaximized = false;
 				}
-				else if (m_IsResizing)
+				else if (isResizing)
 				{
 					return 0;
 				}
@@ -210,14 +202,14 @@ namespace SaplingEngine
 			return 0;
 		
 		case WM_ENTERSIZEMOVE:
-			m_IsActive = false;
-			m_IsResizing = true;
+			isActive = false;
+			isResizing = true;
 			Time::Stop();
 			return 0;
 		
 		case WM_EXITSIZEMOVE:
-			m_IsActive = true;
-			m_IsResizing = false;
+			isActive = true;
+			isResizing = false;
 			Time::Start();
 			return 0;
 

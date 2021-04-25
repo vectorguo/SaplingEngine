@@ -6,15 +6,24 @@
 
 namespace SaplingEngine
 {
-	Dx12GraphicsManager* Dx12GraphicsManager::m_Instance = nullptr;
-	
-	Dx12GraphicsManager::Dx12GraphicsManager()
-		: m_Viewport(), m_ScissorRect()
-	{
-		m_Instance = this;
-	}
-
-	Dx12GraphicsManager::~Dx12GraphicsManager() = default;
+	ComPtr<IDXGIFactory4>					Dx12GraphicsManager::m_DXGIFactory;
+	ComPtr<ID3D12Device>					Dx12GraphicsManager::m_D3D12Device;
+	uint32_t								Dx12GraphicsManager::m_RtvDescriptorSize = 0;
+	uint32_t								Dx12GraphicsManager::m_DsvDescriptorSize = 0;
+	ComPtr<ID3D12DescriptorHeap>			Dx12GraphicsManager::m_RtvDescriptorHeap;
+	ComPtr<ID3D12DescriptorHeap>			Dx12GraphicsManager::m_DsvDescriptorHeap;
+	ComPtr<IDXGISwapChain>					Dx12GraphicsManager::m_SwapChain;
+	ComPtr<ID3D12Resource>					Dx12GraphicsManager::m_SwapChainBuffer[SwapChainBufferCount];
+	int32_t									Dx12GraphicsManager::m_BackBufferIndex = 0;
+	ComPtr<ID3D12Resource>					Dx12GraphicsManager::m_DepthStencilBuffer;
+	DXGI_FORMAT								Dx12GraphicsManager::m_SwapChainBufferFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
+	DXGI_FORMAT								Dx12GraphicsManager::m_DepthStencilViewFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	ComPtr<ID3D12RootSignature>				Dx12GraphicsManager::m_RootSignature = nullptr;
+	Dx12GraphicsManager::PipelineStateMap	Dx12GraphicsManager::m_PipelineStates;
+	D3D12_VIEWPORT							Dx12GraphicsManager::m_Viewport;
+	D3D12_RECT								Dx12GraphicsManager::m_ScissorRect;
+	std::map<ComPtr<ID3D12Resource>, uint64_t> Dx12GraphicsManager::m_UnusedUploadBuffers;
+	std::map<ComPtr<ID3D12Resource>, uint64_t> Dx12GraphicsManager::m_UsedUploadBuffers;
 
 	/**
 	 * \brief 开始初始化
@@ -69,16 +78,16 @@ namespace SaplingEngine
 		ThrowIfFailed(m_SwapChain->ResizeBuffers(SwapChainBufferCount, width, height, m_SwapChainBufferFormat, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH));
 
 		//重置命令
-		ThrowIfFailed(m_pCommandManager->m_CommandAllocator->Reset());
-		ThrowIfFailed(m_pCommandManager->m_CommandList->Reset(m_pCommandManager->m_CommandAllocator.Get(), nullptr));
+		ThrowIfFailed(CommandManager::m_CommandAllocator->Reset());
+		ThrowIfFailed(CommandManager::m_CommandList->Reset(CommandManager::m_CommandAllocator.Get(), nullptr));
 		
 		//重新创建Rtv和Dsv
 		CreateRtv();
 		CreateDsv(width, height);
 
 		//执行并等待命令结束
-		m_pCommandManager->ExecuteCommandList();
-		m_pCommandManager->CompleteCommand();
+		CommandManager::ExecuteCommandList();
+		CommandManager::CompleteCommand();
 	}
 	
 	/**
@@ -136,9 +145,9 @@ namespace SaplingEngine
 		};
 
 		//将数据复制到默认缓冲区
-		m_pCommandManager->ResourceBarrierTransition(defaultBuffer.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_COPY_DEST);
-		UpdateSubresources<1>(m_pCommandManager->GetCommandList(), defaultBuffer.Get(), uploadBuffer, 0, 0, 1, &subResourceData);
-		m_pCommandManager->ResourceBarrierTransition(defaultBuffer.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_GENERIC_READ);
+		CommandManager::ResourceBarrierTransition(defaultBuffer.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_COPY_DEST);
+		UpdateSubresources<1>(CommandManager::GetCommandList(), defaultBuffer.Get(), uploadBuffer, 0, 0, 1, &subResourceData);
+		CommandManager::ResourceBarrierTransition(defaultBuffer.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_GENERIC_READ);
 
 		return defaultBuffer;
 	}
@@ -283,7 +292,7 @@ namespace SaplingEngine
 		sd.Windowed = true;
 		sd.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 		sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
-		m_DXGIFactory->CreateSwapChain(m_pCommandManager->GetCommandQueue(), &sd, m_SwapChain.GetAddressOf());
+		m_DXGIFactory->CreateSwapChain(CommandManager::GetCommandQueue(), &sd, m_SwapChain.GetAddressOf());
 	}
 
 	/**
@@ -473,6 +482,6 @@ namespace SaplingEngine
 		m_D3D12Device->CreateDepthStencilView(m_DepthStencilBuffer.Get(), &dsvDesc, m_DsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
 
 		//资源转换
-		m_pCommandManager->ResourceBarrierTransition(m_DepthStencilBuffer.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_DEPTH_WRITE);
+		CommandManager::ResourceBarrierTransition(m_DepthStencilBuffer.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_DEPTH_WRITE);
 	}
 }

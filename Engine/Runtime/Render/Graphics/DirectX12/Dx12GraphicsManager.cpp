@@ -26,10 +26,10 @@ namespace SaplingEngine
 	std::map<ComPtr<ID3D12Resource>, uint64_t> Dx12GraphicsManager::m_UsedUploadBuffers;
 
 	/**
-	 * \brief 开始初始化
-	 * \param hWnd 窗口句柄
-	 * \param width 窗口宽度
-	 * \param height 窗口高度
+	 * \brief	开始初始化
+	 * \param	hWnd		窗口句柄
+	 * \param	width		窗口宽度
+	 * \param	height		窗口高度
 	 */
 	void Dx12GraphicsManager::BeginInitialize(HWND hWnd, uint32_t width, uint32_t height)
 	{
@@ -38,10 +38,10 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief 结束初始化
-	 * \param hWnd 窗口句柄
-	 * \param width 窗口宽度
-	 * \param height 窗口高度
+	 * \brief	结束初始化
+	 * \param	hWnd		窗口句柄
+	 * \param	width		窗口宽度
+	 * \param	height		窗口高度
 	 */
 	void Dx12GraphicsManager::EndInitialize(HWND hWnd, uint32_t width, uint32_t height)
 	{
@@ -53,7 +53,7 @@ namespace SaplingEngine
 	}
 	
 	/**
-	 * \brief 重置大小
+	 * \brief	重置大小
 	 */
 	void Dx12GraphicsManager::OnWindowResize(uint32_t width, uint32_t height)
 	{
@@ -98,10 +98,10 @@ namespace SaplingEngine
 	}
 	
 	/**
-	 * \brief 创建默认缓冲区
-	 * \param initData 初始化数据
-	 * \param byteSize 数据大小
-	 * \return 默认缓冲区
+	 * \brief	创建默认缓冲区并上传数据
+	 * \param	initData		初始化数据
+	 * \param	byteSize		数据大小
+	 * \return	默认缓冲区
 	 */
 	ComPtr<ID3D12Resource> Dx12GraphicsManager::CreateDefaultBufferAndUploadData(const void* initData, uint64_t byteSize)
 	{
@@ -153,9 +153,9 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief 获取上传缓存
-	 * \param bufferSize 缓冲区大小
-	 * \return 上传缓存
+	 * \brief	获取上传缓存
+	 * \param	bufferSize		缓冲区大小
+	 * \return	上传缓存
 	 */
 	ID3D12Resource* Dx12GraphicsManager::GetUploadBuffer(uint64_t bufferSize)
 	{
@@ -196,13 +196,13 @@ namespace SaplingEngine
 
 		ComPtr<ID3D12Resource> uploadBuffer;
 		ThrowIfFailed(m_D3D12Device->CreateCommittedResource(&heapProperties, D3D12_HEAP_FLAG_NONE, &bufferDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(uploadBuffer.GetAddressOf())));
-		m_UsedUploadBuffers.insert_or_assign(uploadBuffer, bufferSize);
+		m_UsedUploadBuffers.emplace(uploadBuffer, bufferSize);
 		return uploadBuffer.Get();
 	}
 
 	/**
-	 * \brief 释放上传缓存
-	 * \param uploadBuffer 上传缓存
+	 * \brief	释放上传缓存
+	 * \param	uploadBuffer	上传缓存
 	 */
 	void Dx12GraphicsManager::ReleaseUploadBuffer(const ID3D12Resource* uploadBuffer)
 	{
@@ -218,7 +218,7 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief 释放所有上传缓存
+	 * \brief	释放所有上传缓存
 	 */
 	void Dx12GraphicsManager::ReleaseAllUploadBuffers()
 	{
@@ -230,7 +230,7 @@ namespace SaplingEngine
 	}
 	
 	/**
-	 * \brief 创建DX12 Device
+	 * \brief	创建DX12 Device
 	 */
 	void Dx12GraphicsManager::CreateDevice()
 	{
@@ -403,7 +403,7 @@ namespace SaplingEngine
 
 			ComPtr<ID3D12PipelineState> pipelineState;
 			ThrowIfFailed(m_D3D12Device->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&pipelineState)));
-			m_PipelineStates.insert_or_assign(iter->first, pipelineState);
+			m_PipelineStates.emplace(iter->first, pipelineState);
 		}
 	}
 

@@ -19,7 +19,7 @@ namespace SaplingEngine
 		 * \brief 获取屏幕宽度
 		 * \return 屏幕宽度
 		 */
-		static uint32_t ScreenWidth()
+		inline static uint32_t ScreenWidth()
 		{
 			return screenWidth;
 		}
@@ -28,7 +28,7 @@ namespace SaplingEngine
 		 * \brief 获取屏幕高度
 		 * \return 屏幕高度
 		 */
-		static uint32_t ScreenHeight()
+		inline static uint32_t ScreenHeight()
 		{
 			return screenHeight;
 		}
@@ -52,7 +52,7 @@ namespace SaplingEngine
 		 * \brief 获取启动场景名称
 		 * \return 启动场景名称
 		 */
-		static const std::string& StartSceneName()
+		inline static const std::string& StartSceneName()
 		{
 			return startSceneName;
 		}
@@ -61,7 +61,7 @@ namespace SaplingEngine
 		 * \brief 获取启动场景路径
 		 * \return 启动场景路径
 		 */
-		static const std::string& StartScenePath()
+		inline static const std::string& StartScenePath()
 		{
 			return startScenePath;
 		}

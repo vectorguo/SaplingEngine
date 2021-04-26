@@ -15,6 +15,8 @@ namespace SaplingEngine
 	
 	class Mesh
 	{
+		friend class MeshFactory;
+
 	public:
 		Mesh();
 		~Mesh();
@@ -25,26 +27,26 @@ namespace SaplingEngine
 		Mesh& operator=(Mesh&&) = delete;
 
 		/**
-		 * \brief 加载Mesh资源
-		 * \param path Mesh路径
+		 * \brief	加载Mesh资源
+		 * \param	path	Mesh路径
 		 */
 		void Load(const std::string& path)
 		{
-			m_MeshResourceSptr = ResourceManager::Instance()->LoadResource<MeshResource>(path);
+			m_MeshResourceSptr = ResourceManager::LoadResource<MeshResource>(path);
 		}
 
 		/**
-		 * \brief 顶点和索引数据是否已经上传到默认缓冲区
-		 * \return 顶点和索引数据是否已经上传到默认缓冲区
+		 * \brief	顶点和索引数据是否已经上传到默认缓冲区
+		 * \return	顶点和索引数据是否已经上传到默认缓冲区
 		 */
-		bool IsReady() const
+		inline bool IsReady() const
 		{
 			return m_IsReady;
 		}
 		
 		/**
-		 * \brief 获取顶点缓冲区描述符
-		 * \return 顶点缓冲区描述符
+		 * \brief	获取顶点缓冲区描述符
+		 * \return	顶点缓冲区描述符
 		 */
 		const D3D12_VERTEX_BUFFER_VIEW* GetVertexBufferView() const
 		{
@@ -52,8 +54,8 @@ namespace SaplingEngine
 		}
 
 		/**
-		 * \brief 获取索引缓冲区描述符
-		 * \return 索引缓冲区描述符
+		 * \brief	获取索引缓冲区描述符
+		 * \return	索引缓冲区描述符
 		 */
 		const D3D12_INDEX_BUFFER_VIEW* GetIndexBufferView() const
 		{
@@ -80,23 +82,12 @@ namespace SaplingEngine
 			return m_MeshResourceSptr->GetIndexCount();
 		}
 
-	public:
-		/**
-		 * \brief 上传Mesh数据到GPU
-		 */
-		static void UploadMeshDatas();
-		
 	private:
 		
 		/**
-		 * \brief 数据没有上传到GPU的Mesh
+		 * \brief	顶点和索引数据是否已经上传到默认缓冲区
 		 */
-		static std::vector<Mesh*> m_NotUploadedMeshes;
-		
-		/**
-		 * \brief 顶点和索引数据是否已经上传到默认缓冲区
-		 */
-		bool m_IsReady;
+		bool m_IsReady = false;
 
 		/**
 		 * \brief Mesh资源
@@ -109,6 +100,8 @@ namespace SaplingEngine
 		ComPtr<ID3D12Resource> m_IndexBufferOnGpu = nullptr;
 		D3D12_INDEX_BUFFER_VIEW* m_pIndexBufferView = nullptr;
 	};
+
+	using MeshSptr = std::shared_ptr<Mesh>;
 	
 	// class Mesh
 	// {

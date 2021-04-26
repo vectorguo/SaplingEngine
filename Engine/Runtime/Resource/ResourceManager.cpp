@@ -3,6 +3,10 @@
 
 namespace SaplingEngine
 {
+	ResourceManager::ResourceMap							ResourceManager::m_Resources;
+	std::map<EResourceType, ResourceManager::LoadDelegate>	ResourceManager::m_ResourceLoaders;
+	std::map<std::string, ResourceManager::MeshConfig>		ResourceManager::m_MeshConfigs;
+
 	/**
 	 * \brief 初始化
 	 * \return 初始化是否成功
@@ -10,7 +14,7 @@ namespace SaplingEngine
 	bool ResourceManager::Initialize()
 	{
 		//设置资源加载器
-		m_ResourceLoaders.insert_or_assign(EResourceType::Mesh, LoadMeshResource);
+		m_ResourceLoaders.emplace(EResourceType::Mesh, LoadMeshResource);
 
 		//加载资源配置
 		LoadResourceConfigs();
@@ -36,7 +40,7 @@ namespace SaplingEngine
 			const auto* meshPath = XmlGetAttributeValue<const char*>(pChild, "path");
 			const auto vertexCount = XmlGetAttributeValue<uint32_t>(pChild, "vertexCount");
 			const auto indexCount = XmlGetAttributeValue<uint32_t>(pChild, "indexCount");
-			m_MeshConfigs.insert_or_assign(meshName, std::make_tuple(meshPath, vertexCount, indexCount));
+			m_MeshConfigs.emplace(meshName, std::make_tuple(meshPath, vertexCount, indexCount));
 		}
 
 		//卸载XML

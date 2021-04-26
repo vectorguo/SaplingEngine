@@ -18,23 +18,23 @@ namespace SaplingEngine
 	bool		GameApplication::isFullscreen = false;
 	
 	/**
-	 * \brief 初始化App
-	 * \param hInstance app句柄
-	 * \return 是否初始化成功
+	 * \brief	初始化App
+	 * \param	hInstance		app句柄
+	 * \return	是否初始化成功
 	 */
 	bool GameApplication::Initialize(HINSTANCE hInstance)
 	{
 		appInstance = hInstance;
 
-		//初始化资源管理器
-		ResourceManager::Instance()->Initialize();
-		
 		//初始化窗口
 		if (!InitializeWindow())
 		{
 			return false;
 		}
 		
+		//初始化资源管理器
+		ResourceManager::Initialize();
+
 		//渲染管线开始初始化
 		RenderPipeline::BeginInitialize(windowHwnd);
 
@@ -42,7 +42,7 @@ namespace SaplingEngine
 		ShaderManager::Instance()->Initialize();
 
 		//初始化场景
-		SceneManager::Instance()->Initialize();
+		SceneManager::Initialize();
 
 		//渲染管线结束初始化
 		RenderPipeline::EndInitialize(windowHwnd);
@@ -89,7 +89,7 @@ namespace SaplingEngine
 	{
 		CameraManager::Destroy();
 		Input::Destroy();
-		SceneManager::Instance()->Destroy();
+		SceneManager::Destroy();
 		ShaderManager::Instance()->Destroy();
 		RenderPipeline::Destroy();
 	}
@@ -138,7 +138,7 @@ namespace SaplingEngine
 	 */
 	void GameApplication::Update()
 	{
-		SceneManager::Instance()->Update();
+		SceneManager::Update();
 	}
 
 	/**

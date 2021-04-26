@@ -156,6 +156,9 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CBufferManager.h">
       <Filter>Render\Graphics\DirectX12</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\MeshFactory.h">
+      <Filter>Render\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Runtime\Utility\Time.cpp">
@@ -265,6 +268,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CBufferManager.cpp">
       <Filter>Render\Graphics\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\MeshFactory.cpp">
+      <Filter>Render\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

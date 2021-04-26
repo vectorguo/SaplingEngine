@@ -3,6 +3,7 @@
 #include "Render/Graphics/ConstantBufferData.h"
 #include "Render/Graphics/Material.h"
 #include "Render/Graphics/Mesh.h"
+#include "Render/Graphics/MeshFactory.h"
 
 namespace SaplingEngine
 {
@@ -17,8 +18,7 @@ namespace SaplingEngine
 	bool MeshRenderer::Deserialize(const XmlNode* pNode)
 	{
 		//创建Mesh
-		m_pMesh = new Mesh();
-		m_pMesh->Load(XmlGetAttributeValue<const char*>(pNode, "meshName"));
+		m_pMesh = MeshFactory::CreateMesh(XmlGetAttributeValue<const char*>(pNode, "meshName"));
 		
 		//创建材质
 		m_pMaterial = new Material();

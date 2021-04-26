@@ -2,7 +2,7 @@
 
 #include "Application/GameSetting.h"
 #include "Camera/CameraManager.h"
-#include "Render/Graphics/Mesh.h"
+#include "Render/Graphics/MeshFactory.h"
 #include "Render/Graphics/DirectX12/Dx12CommandManager.h"
 #include "Render/Graphics/DirectX12/Dx12GraphicsManager.h"
 #include "RenderPass/RenderOpaquePass.h"
@@ -15,7 +15,7 @@ namespace SaplingEngine
 	std::vector<RenderPass*>	RenderPipeline::renderPasses;
 
 	/**
-	 * \brief 开始初始化
+	 * \brief	开始初始化
 	 */
 	void RenderPipeline::BeginInitialize(HWND hWnd)
 	{
@@ -38,7 +38,7 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief 结束初始化
+	 * \brief	结束初始化
 	 */
 	void RenderPipeline::EndInitialize(HWND hWnd)
 	{
@@ -47,16 +47,16 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief 渲染
+	 * \brief	渲染
 	 */
 	void RenderPipeline::Render()
 	{
 		PreRender();
 
-		auto* pActiveScene = SceneManager::Instance()->GetActiveScene();
+		auto* pActiveScene = SceneManager::GetActiveScene();
 
 		//更新Object数据常量缓冲区
-		CBufferManager::UpdateOcbData(pActiveScene);
+		CBufferManager::UpdateOcbData();
 		
 		//执行Render Pass
 		const auto& cameras = CameraManager::GetCameras();
@@ -74,7 +74,7 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief 销毁
+	 * \brief	销毁
 	 */
 	void RenderPipeline::Destroy()
 	{
@@ -90,9 +90,9 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief 设置宽度和高度
-	 * \param width 屏幕宽度
-	 * \param height 屏幕高度
+	 * \brief	设置宽度和高度
+	 * \param	width			屏幕宽度
+	 * \param	height			屏幕高度
 	 */
 	void RenderPipeline::OnSceneResize(uint32_t width, uint32_t height)
 	{
@@ -105,8 +105,8 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief 添加RenderPass
-	 * \param pRenderPass 渲染管线指针,Add之后由RenderPipeline管理每个Pass的生命周期
+	 * \brief	添加RenderPass
+	 * \param	pRenderPass		渲染管线指针,Add之后由RenderPipeline管理每个Pass的生命周期
 	 */
 	void RenderPipeline::AddRenderPass(RenderPass* pRenderPass)
 	{
@@ -121,8 +121,8 @@ namespace SaplingEngine
 	}
 	
 	/**
-	 * \brief 删除RenderPass
-	 * \param renderPassName RenderPass名称
+	 * \brief	删除RenderPass
+	 * \param	renderPassName	RenderPass名称
 	 */
 	void RenderPipeline::RemoveRenderPass(const std::string& renderPassName)
 	{
@@ -137,18 +137,18 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief 执行渲染前的准备工作
+	 * \brief	执行渲染前的准备工作
 	 */
 	void RenderPipeline::PreRender()
 	{
 		CommandManager::PreRender();
 		
-		//上传Mesh数据
-		Mesh::UploadMeshDatas();
+		//上传新创建的Mesh数据
+		MeshFactory::UploadMeshDatas();
 	}
 
 	/**
-	 * \brief 执行渲染后的清理工作
+	 * \brief	执行渲染后的清理工作
 	 */
 	void RenderPipeline::PostRender()
 	{
@@ -156,7 +156,7 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief 根据优先级对RenderPass进行排序
+	 * \brief	根据优先级对RenderPass进行排序
 	 */
 	void RenderPipeline::SortRenderPass()
 	{

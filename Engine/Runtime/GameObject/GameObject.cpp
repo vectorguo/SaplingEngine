@@ -59,7 +59,7 @@ namespace SaplingEngine
 		{
 			for (auto iter = m_NewComponents.begin(); iter != m_NewComponents.end(); ++iter)
 			{
-				m_Components.insert_or_assign(iter->first, iter->second);
+				m_Components.emplace(iter->first, iter->second);
 			}
 			
 			for (auto iter = m_NewComponents.begin(); iter != m_NewComponents.end(); ++iter)
@@ -201,7 +201,7 @@ namespace SaplingEngine
 				const auto componentSubType = XmlGetAttributeValue<uint32_t>(pCmpNode, "subType");
 				auto* pComponent = ComponentFactory::CreateComponent(componentType, componentSubType);
 				AddComponent(componentType, pComponent);
-				pComponent->Deserialize(pCmpNode);				
+				pComponent->Deserialize(pCmpNode);
 			}
 		}
 		else
@@ -214,7 +214,7 @@ namespace SaplingEngine
 		auto* pChildNodes = pNode->first_node("children");
 		if (pChildNodes)
 		{
-			auto* pActiveScene = SceneManager::Instance()->GetActiveScene();
+			auto* pActiveScene = SceneManager::GetActiveScene();
 			for (const auto* pChildNode = pChildNodes->first_node(); pChildNode; pChildNode = pChildNode->next_sibling())
 			{
 				auto pChild = pActiveScene->CreateGameObjectInternal();
@@ -238,7 +238,7 @@ namespace SaplingEngine
 			//没有添加相同类型的组件
 			std::shared_ptr<Component> componentPtr(pComponent);
 			componentPtr->SetGameObject(shared_from_this());
-			m_NewComponents.insert_or_assign(componentType, componentPtr);
+			m_NewComponents.emplace(componentType, componentPtr);
 			m_NewComponents[componentType]->Awake();
 
 			if (componentType == ComponentType_Transform)

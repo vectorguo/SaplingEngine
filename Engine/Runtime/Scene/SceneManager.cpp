@@ -5,17 +5,11 @@
 
 namespace SaplingEngine
 {
-	SceneManager::~SceneManager()
-	{
-		//销毁场景
-		for (auto iter = m_Scenes.begin(); iter != m_Scenes.end(); ++iter)
-		{
-			delete iter->second;
-		}
-	}
+	std::map<std::string, Scene*>	SceneManager::m_Scenes;
+	Scene*							SceneManager::m_pActiveScene = nullptr;
 
 	/**
-	 * \brief 初始化
+	 * \brief	初始化
 	 */
 	void SceneManager::Initialize()
 	{
@@ -27,7 +21,7 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief 更新
+	 * \brief	更新
 	 */
 	void SceneManager::Update()
 	{
@@ -38,7 +32,7 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief 销毁
+	 * \brief	销毁
 	 */
 	void SceneManager::Destroy()
 	{
@@ -51,9 +45,9 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief 加载场景
-	 * \param sceneName 场景名称
-	 * \param scenePath 场景路径
+	 * \brief	加载场景
+	 * \param	sceneName	场景名称
+	 * \param	scenePath	场景路径
 	 */
 	void SceneManager::LoadScene(const std::string& sceneName, const std::string& scenePath)
 	{
@@ -65,12 +59,12 @@ namespace SaplingEngine
 		//创建并初始化场景
 		auto* pScene = new Scene(sceneName);
 		pScene->Initialize(document.first_node());
-		m_Scenes.insert_or_assign(sceneName, pScene);
+		m_Scenes.emplace(sceneName, pScene);
 	}
 
 	/**
-	 * \brief 卸载场景
-	 * \param sceneName 场景名称
+	 * \brief	卸载场景
+	 * \param	sceneName	场景名称
 	 */
 	void SceneManager::UnloadScene(const std::string& sceneName)
 	{
@@ -78,8 +72,8 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief 设置活动场景
-	 * \param sceneName 场景名称
+	 * \brief	设置活动场景
+	 * \param	sceneName	场景名称
 	 */
 	void SceneManager::SetActiveScene(const std::string& sceneName)
 	{

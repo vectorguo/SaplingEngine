@@ -1,6 +1,7 @@
 #include "Renderer.h"
 
 #include "GameObject/GameObject.h"
+#include "Render/Graphics/MeshFactory.h"
 #include "Scene/Scene.h"
 
 namespace SaplingEngine
@@ -13,8 +14,10 @@ namespace SaplingEngine
 	Renderer::~Renderer()
 	{
 		delete m_pMaterial;
-		delete m_pMesh;
 		delete m_pSpecialOcbData;
+
+		//删除Mesh
+		MeshFactory::DestroyMesh(m_pMesh);
 
 		//归还常量缓冲区索引
 		CBufferManager::PushObjectCbIndex(m_OcbIndex);

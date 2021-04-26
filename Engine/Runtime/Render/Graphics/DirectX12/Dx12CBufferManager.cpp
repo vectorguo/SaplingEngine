@@ -3,6 +3,7 @@
 #include "Render/Graphics/ConstantBufferData.h"
 #include "Render/Renderer/Renderer.h"
 #include "Scene/Scene.h"
+#include "Scene/SceneManager.h"
 
 namespace SaplingEngine
 {
@@ -17,7 +18,7 @@ namespace SaplingEngine
 	uint32_t						Dx12CBufferManager::m_PassCbvDescriptorOffset = 0;
 	
 	/**
-	 * \brief 初始化
+	 * \brief	初始化
 	 */
 	void Dx12CBufferManager::Initialize()
 	{
@@ -38,7 +39,7 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief 销毁
+	 * \brief	销毁
 	 */
 	void Dx12CBufferManager::Destroy()
 	{
@@ -47,10 +48,12 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief 更新Object常量缓冲区数据
+	 * \brief	更新Object常量缓冲区数据
 	 */
-	void Dx12CBufferManager::UpdateOcbData(Scene* pActiveScene)
+	void Dx12CBufferManager::UpdateOcbData()
 	{
+		auto* pActiveScene = SceneManager::GetActiveScene();
+
 		size_t dataSize;
 		const auto& renderItems = pActiveScene->GetRenderItems();
 		for (auto iter = renderItems.begin(); iter != renderItems.end(); ++iter)
@@ -68,7 +71,7 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief 更新Pass常量缓冲区数据
+	 * \brief	更新Pass常量缓冲区数据
 	 */
 	void Dx12CBufferManager::UpdatePcbData(Camera* pCamera)
 	{
@@ -78,9 +81,9 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief 获取Object常量缓冲区描述
-	 * \param ocbIndex Object的常量缓冲区描述符索引
-	 * \return Object常量缓冲区描述
+	 * \brief	 获取Object常量缓冲区描述
+	 * \param	ocbIndex		Object的常量缓冲区描述符索引
+	 * \return	Object常量缓冲区描述
 	 */
 	D3D12_GPU_DESCRIPTOR_HANDLE Dx12CBufferManager::GetObjectCbvDescriptor(uint32_t ocbIndex)
 	{
@@ -88,8 +91,8 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief 获取Pass常量缓冲区描述
-	 * \return 常量Pass缓冲区描述
+	 * \brief	获取Pass常量缓冲区描述
+	 * \return	常量Pass缓冲区描述
 	 */
 	D3D12_GPU_DESCRIPTOR_HANDLE Dx12CBufferManager::GetPassCbvDescriptor()
 	{
@@ -97,8 +100,8 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief 压入可用的物体常量缓冲区索引
-	 * \param index 可用的物体常量缓冲区索引
+	 * \brief	压入可用的物体常量缓冲区索引
+	 * \param	index			可用的物体常量缓冲区索引
 	 */
 	void Dx12CBufferManager::PushObjectCbIndex(uint32_t index)
 	{
@@ -109,8 +112,8 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief 弹出可用的物体常量缓冲区索引
-	 * \return 可用的物体常量缓冲区索引
+	 * \brief	弹出可用的物体常量缓冲区索引
+	 * \return	可用的物体常量缓冲区索引
 	 */
 	uint32_t Dx12CBufferManager::PopObjectCbIndex()
 	{
@@ -138,8 +141,8 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief 创建常量缓冲区描述符
-	 * \param pDevice Dx12设备指针
+	 * \brief	创建常量缓冲区描述符
+	 * \param	pDevice			Dx12设备指针
 	 */
 	void Dx12CBufferManager::CreateCbvDescriptorHeap(ID3D12Device* pDevice)
 	{
@@ -169,13 +172,13 @@ namespace SaplingEngine
 	}
 	
 	/**
-	 * \brief 创建上传缓冲区
-	 * \param descriptorHeap 描述符堆
-	 * \param uploadBuffer 上传缓冲区指针
-	 * \param mappedData 数据指针
-	 * \param elementCount 元素数量
-	 * \param elementSize 元素大小
-	 * \param descriptorHeapOffset 在常量缓冲区描述符堆中的偏移位置
+	 * \brief	创建上传缓冲区
+	 * \param	descriptorHeap	描述符堆
+	 * \param	uploadBuffer	上传缓冲区指针
+	 * \param	mappedData		数据指针
+	 * \param	elementCount	元素数量
+	 * \param	elementSize		元素大小
+	 * \param	descriptorHeapOffset 在常量缓冲区描述符堆中的偏移位置
 	 */
 	void Dx12CBufferManager::CreateUploadBuffer(ID3D12DescriptorHeap* descriptorHeap, ComPtr<ID3D12Resource>& uploadBuffer, uint8_t*& mappedData, uint32_t elementCount, uint32_t elementSize, uint32_t descriptorHeapOffset)
 	{

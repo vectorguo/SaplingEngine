@@ -15,7 +15,7 @@ namespace SaplingEngine
 	IResource* LoadMeshResource(const std::string& meshName)
 	{
 		//获取Mesh数据
-		const auto* pMeshConfig = ResourceManager::Instance()->GetMeshConfig(meshName);
+		const auto* pMeshConfig = ResourceManager::GetMeshConfig(meshName);
 		
 		//打开文件
 		std::fstream fs;

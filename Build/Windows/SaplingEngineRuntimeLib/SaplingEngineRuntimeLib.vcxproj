@@ -124,6 +124,7 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\Light.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\Material.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\Mesh.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\MeshFactory.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\Shader.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\ShaderManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\VertexData.h" />
@@ -175,6 +176,7 @@
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\Light.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\Material.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\Mesh.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\MeshFactory.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\Shader.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\ShaderManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Renderer\MeshRenderer.cpp" />

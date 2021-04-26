@@ -9,44 +9,39 @@ namespace SaplingEngine
 	class SceneManager
 	{
 	public:
-		SceneManager() = default;
-		~SceneManager();
-
-		SINGLETON(SceneManager)
-
 		/**
 		 * \brief 初始化
 		 */
-		void Initialize();
+		static void Initialize();
 
 		/**
 		 * \brief 更新
 		 */
-		void Update();
+		static void Update();
 
 		/**
 		 * \brief 销毁
 		 */
-		void Destroy();
+		static void Destroy();
 
 		/**
 		 * \brief 加载场景
 		 * \param sceneName 场景名称
 		 * \param scenePath 场景路径
 		 */
-		void LoadScene(const std::string& sceneName, const std::string& scenePath);
+		static void LoadScene(const std::string& sceneName, const std::string& scenePath);
 
 		/**
 		 * \brief 卸载场景
 		 * \param sceneName 场景名称
 		 */
-		void UnloadScene(const std::string& sceneName);
+		static void UnloadScene(const std::string& sceneName);
 
 		/**
 		 * \brief 获取活动场景
 		 * \return 活动场景指针
 		 */
-		Scene* GetActiveScene() const
+		static Scene* GetActiveScene()
 		{
 			return m_pActiveScene;
 		}
@@ -55,17 +50,17 @@ namespace SaplingEngine
 		 * \brief 设置活动场景
 		 * \param sceneName 场景名称
 		 */
-		void SetActiveScene(const std::string& sceneName);
+		static void SetActiveScene(const std::string& sceneName);
 
 	private:
 		/**
 		 * \brief 所有加载完成的场景
 		 */
-		std::map<std::string, Scene*> m_Scenes;
+		static std::map<std::string, Scene*> m_Scenes;
 
 		/**
 		 * \brief 当前的活动场景
 		 */
-		Scene* m_pActiveScene = nullptr;
+		static Scene* m_pActiveScene;
 	};
 }

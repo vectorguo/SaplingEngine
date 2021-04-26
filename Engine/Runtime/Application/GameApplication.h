@@ -9,7 +9,7 @@ namespace SaplingEngine
 	public:
 		/**
 		 * \brief	初始化App
-		 * \param	hInstance	app句柄
+		 * \param	hInstance		app句柄
 		 * \return	是否初始化成功
 		 */
 		static bool Initialize(HINSTANCE hInstance);
@@ -43,7 +43,7 @@ namespace SaplingEngine
 
 	private:
 		/**
-		 * \brief	Application 句柄
+		 * \brief	Application句柄
 		 */
 		static HINSTANCE appInstance;
 

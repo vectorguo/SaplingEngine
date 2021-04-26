@@ -14,7 +14,7 @@ namespace SaplingEngine
 		Renderer();
 		~Renderer() override;
 
-		/*
+		/**
 		 * 禁止拷贝和移动
 		 */
 		Renderer(const Renderer&) = delete;
@@ -22,10 +22,10 @@ namespace SaplingEngine
 		Renderer& operator= (const Renderer&) = delete;
 		Renderer& operator= (Renderer&&) = delete;
 		
-		/*
-		 * 获取组件类型
-		 * 每个组件都必须定义此函数
-		 * GameObject对于每个ComponentType只能拥有一个Component
+		/**
+		 * \brief	获取组件类型。
+		 *			每个组件都必须定义此函数。
+		 *			GameObject对于每个ComponentType只能拥有一个Component。
 		 */
 		static constexpr uint32_t GetComponentType()
 		{
@@ -61,8 +61,8 @@ namespace SaplingEngine
 		}
 		
 		/**
-		 * \brief 获取Object的特殊常量缓冲区数据指针
-		 * \return Object的特殊常量缓冲区数据指针
+		 * \brief	获取Object的特殊常量缓冲区数据指针
+		 * \return	Object的特殊常量缓冲区数据指针
 		 */
 		ISpecialOcbData* GetSpecialOcbData() const
 		{
@@ -75,23 +75,23 @@ namespace SaplingEngine
 
 	protected:
 		/**
-		 * \brief 材质
+		 * \brief	材质
 		 */
 		Material* m_pMaterial = nullptr;
 
 		/**
-		 * \brief Mesh
+		 * \brief	Mesh
 		 */
 		Mesh* m_pMesh = nullptr;
 
 		/**
-		 * \brief Object的特殊常量缓冲区数据
+		 * \brief	Object的特殊常量缓冲区数据
 		 */
 		ISpecialOcbData* m_pSpecialOcbData = nullptr;
 		
 	private:
 		/**
-		 * \brief 常量缓冲区的索引
+		 * \brief	常量缓冲区的索引
 		 */
 		uint32_t m_OcbIndex = 0;
 	};

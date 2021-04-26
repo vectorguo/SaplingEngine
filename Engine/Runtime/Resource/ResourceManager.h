@@ -12,52 +12,47 @@ namespace SaplingEngine
 		using MeshConfig = std::tuple<std::string, uint32_t, uint32_t>;
 		
 	public:
-		ResourceManager() = default;
-		~ResourceManager() = default;
-
-		SINGLETON(ResourceManager)
+		/**
+		 * \brief	初始化
+		 * \return	初始化是否成功
+		 */
+		static bool Initialize();
 
 		/**
-		 * \brief 初始化
-		 * \return 初始化是否成功
+		 * \brief	获取mesh配置信息
+		 * \param	meshName		mesh名称
+		 * \return	mesh配置指针
 		 */
-		bool Initialize();
-
-		/**
-		 * \brief 获取mesh配置信息
-		 * \param meshName mesh名称
-		 * \return mesh配置指针
-		 */
-		const MeshConfig* GetMeshConfig(const std::string& meshName) const
+		static const MeshConfig* GetMeshConfig(const std::string& meshName)
 		{
 			const auto iter = m_MeshConfigs.find(meshName);
 			return iter == m_MeshConfigs.end() ? nullptr : &iter->second;
 		}
 		
 		template <typename T>
-		std::shared_ptr<T> LoadResource(const std::string& path);
+		static std::shared_ptr<T> LoadResource(const std::string& path);
 
 	private:
 		/**
 		 * \brief 加载资源配置
 		 */
-		void LoadResourceConfigs();
+		static void LoadResourceConfigs();
 		
 	private:
 		/**
 		 * \brief 加载完的资源列表
 		 */
-		ResourceMap m_Resources;
+		static ResourceMap m_Resources;
 
 		/**
 		 * \brief 资源加载器
 		 */
-		std::map<EResourceType, LoadDelegate> m_ResourceLoaders;
+		static std::map<EResourceType, LoadDelegate> m_ResourceLoaders;
 
 		/**
 		 * \brief Mesh资源配置
 		 */
-		std::map<std::string, MeshConfig> m_MeshConfigs;
+		static std::map<std::string, MeshConfig> m_MeshConfigs;
 	};
 
 	template <typename T>
@@ -78,7 +73,7 @@ namespace SaplingEngine
 			{
 				auto* pResource = loaderIter->second(path);
 				auto resourceSptr = std::shared_ptr<T>(dynamic_cast<T*>(pResource));
-				resources.insert_or_assign(path, resourceSptr);
+				resources.emplace(path, resourceSptr);
 				return resourceSptr;
 			}
 			else

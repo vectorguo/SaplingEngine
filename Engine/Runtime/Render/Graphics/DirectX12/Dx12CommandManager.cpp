@@ -11,7 +11,6 @@ namespace SaplingEngine
 	ComPtr<ID3D12GraphicsCommandList>	Dx12CommandManager::m_CommandList;
 	ComPtr<ID3D12Fence>					Dx12CommandManager::m_Fence;
 	uint64_t							Dx12CommandManager::m_CurrentFence = 0;
-	std::string							Dx12CommandManager::m_CurrentPipelineStateName;
 
 	/**
 	 * \brief 开始初始化
@@ -79,9 +78,6 @@ namespace SaplingEngine
 
 		//等待命令结束
 		CompleteCommand();
-
-		//重置Pipeline状态名称
-		m_CurrentPipelineStateName.clear();
 	}
 
 	/**
@@ -98,23 +94,14 @@ namespace SaplingEngine
 	 */
 	void Dx12CommandManager::DrawIndexedInstanced(const Renderer* pRenderer)
 	{
-		const auto* pMaterial = pRenderer->GetMaterial();
-		const auto& pipelineStateName = pMaterial->GetShaderName();
-		if (m_CurrentPipelineStateName != pipelineStateName)
-		{
-			//需要切换渲染管线状态
-			m_CommandList->SetPipelineState(GraphicsManager::GetPipelineState(pipelineStateName));
-			m_CurrentPipelineStateName = pipelineStateName;
-		}
-		
 		const auto* pMesh = pRenderer->GetMesh();
 		m_CommandList->IASetVertexBuffers(0, 1, pMesh->GetVertexBufferView());
 		m_CommandList->IASetIndexBuffer(pMesh->GetIndexBufferView());
 		m_CommandList->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 		//获取该Renderer所对应的常量缓冲区描述符
-		m_CommandList->SetGraphicsRootDescriptorTable(0, CBufferManager::GetObjectCbvDescriptor(pRenderer->GetCommonOcbIndex()));
-		m_CommandList->SetGraphicsRootDescriptorTable(1, CBufferManager::GetObjectCbvDescriptor(pRenderer->GetSpecialOcbIndex()));
+		m_CommandList->SetGraphicsRootDescriptorTable(0, pRenderer->GetCommonCbvDescriptor());
+		m_CommandList->SetGraphicsRootDescriptorTable(1, pRenderer->GetSpecialCbvDescriptor());
 		m_CommandList->DrawIndexedInstanced(pMesh->GetIndexCount(), 1, 0, 0, 0);
 	}
 

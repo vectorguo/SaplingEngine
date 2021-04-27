@@ -24,9 +24,8 @@ namespace SaplingEngine
 		/**
 		 * \brief 渲染
 		 * \param pCamera 渲染使用的相机
-		 * \param pScene 被渲染场景
 		 */
-		virtual void Render(const Camera* pCamera, Scene* pScene) = 0;
+		virtual void Render(const Camera* pCamera) = 0;
 		
 		/**
 		 * \brief 获取RenderPass名称

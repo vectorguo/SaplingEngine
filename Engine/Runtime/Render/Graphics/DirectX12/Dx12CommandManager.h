@@ -92,11 +92,6 @@ namespace SaplingEngine
 
 		static ComPtr<ID3D12Fence> m_Fence;
 		static uint64_t m_CurrentFence;
-
-		/**
-		 * \brief 当前渲染管线状态名称
-		 */
-		static std::string m_CurrentPipelineStateName;
 	};
 
 	using CommandManager = Dx12CommandManager;

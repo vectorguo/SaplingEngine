@@ -102,42 +102,6 @@ namespace SaplingEngine
 			return m_GameObjects;
 		}
 
-		/**
-		 * \brief 添加渲染项
-		 * \param renderItem renderer指针
-		 */
-		void AddRenderItem(Renderer* renderItem)
-		{
-			m_RenderItems.push_back(renderItem);
-		}
-
-		/**
-		 * \brief 获取所有渲染项
-		 * \return 所有渲染项(const)
-		 */
-		const std::vector<Renderer*>& GetRenderItems() const
-		{
-			return m_RenderItems;
-		}
-
-		/**
-		 * \brief 获取所有渲染项
-		 * \return 所有渲染项(非const)
-		 */
-		std::vector<Renderer*>& GetRenderItems()
-		{
-			return m_RenderItems;
-		}
-		
-		/**
-		 * \brief 删除渲染项
-		 * \param renderItem renderer指针
-		 */
-		void RemoveRenderItem(Renderer* renderItem)
-		{
-			m_RenderItems.erase(std::find(m_RenderItems.begin(), m_RenderItems.end(), renderItem));
-		}
-
 	private:
 		/**
 		 * \brief 创建GameObject
@@ -160,10 +124,5 @@ namespace SaplingEngine
 		 * \brief 此场景中的GameObject
 		 */
 		std::vector<GameObjectSptr> m_GameObjects;
-
-		/**
-		 * \brief 渲染项列表
-		 */
-		std::vector<Renderer*> m_RenderItems;
 	};
 }

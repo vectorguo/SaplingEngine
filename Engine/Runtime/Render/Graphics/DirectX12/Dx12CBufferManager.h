@@ -9,12 +9,16 @@ namespace SaplingEngine
 	
 	class Dx12CBufferManager final
 	{
+		friend class RenderPipeline;
+
 		struct ObjectUploadBufferData
 		{
 			ComPtr<ID3D12Resource> CommonUploadBuffer;
 			uint8_t* CommonMappedData = nullptr;
 			ComPtr<ID3D12Resource> SpecialUploadBuffer;
 			uint8_t* SpecialMappedData = nullptr;
+			ComPtr<ID3D12Resource> PassUploadBuffer;
+			uint8_t* PassMappedData = nullptr;
 		};
 		
 	public:
@@ -29,35 +33,21 @@ namespace SaplingEngine
 		static void Destroy();
 
 		/**
-		 * \brief	更新Object常量缓冲区数据
-		 */
-		static void UpdateOcbData();
-
-		/**
-		 * \brief	更新Pass常量缓冲区数据
-		 */
-		static void UpdatePcbData(Camera* pCamera);
-
-		/**
-		 * \brief	获取Object常量缓冲区描述
-		 * \param	ocbIndex	Object的常量缓冲区描述符索引
-		 * \return	Object常量缓冲区描述
-		 */
-		static D3D12_GPU_DESCRIPTOR_HANDLE GetObjectCbvDescriptor(uint32_t ocbIndex);
-
-		/**
 		 * \brief	获取Pass常量缓冲区描述
 		 * \return	常量Pass缓冲区描述
 		 */
-		static D3D12_GPU_DESCRIPTOR_HANDLE GetPassCbvDescriptor();
+		static D3D12_GPU_DESCRIPTOR_HANDLE GetPassCbvDescriptor(const std::string& shaderName)
+		{
+			return GetGPUHandleFromDescriptorHeap(m_CbvDescriptorHeapPointers[shaderName], DoubleConstantBufferElementCount, CbvDescriptorSize);
+		}
 		
 		/**
 		 * \brief	获取常量缓冲区描述符堆的指针数组
 		 * \return	常量缓冲区描述符堆的指针数组
 		 */
-		static ID3D12DescriptorHeap** GetCbvDescriptorHeaps()
+		static ID3D12DescriptorHeap** GetCbvDescriptorHeaps(const std::string& shaderName)
 		{
-			return &m_CbvDescriptorHeapPointers[0];
+			return &m_CbvDescriptorHeapPointers[shaderName];
 		}
 
 		/**
@@ -66,27 +56,41 @@ namespace SaplingEngine
 		 */
 		static uint32_t GetCbvDescriptorHeapCount()
 		{
-			return 1;
+			return static_cast<uint32_t>(m_CbvDescriptorHeapPointers.size());
 		}
-		
+
 		/**
 		 * \brief	压入可用的物体常量缓冲区索引
-		 * \param	index		可用的物体常量缓冲区索引
 		 */
-		static void PushObjectCbIndex(uint32_t index);
+		static void PushCbvIndex(const std::string& shaderName, uint32_t index);
 		
 		/**
 		 * \brief	弹出可用的物体常量缓冲区索引
-		 * \return	可用的物体常量缓冲区索引
 		 */
-		static uint32_t PopObjectCbIndex();
+		static uint32_t PopCbvIndex(const std::string& shaderName, D3D12_GPU_DESCRIPTOR_HANDLE& commonCbvDescriptor, D3D12_GPU_DESCRIPTOR_HANDLE& specialCbvDescriptor);
+
+		/**
+		 * \brief	填充物体常量缓冲区数据
+		 * \param	index			可用的物体常量缓冲区索引
+		 * \param	pCommonData		通用数据
+		 * \param	commonDataSize	通用数据大小
+		 * \param	pSpecialData	特殊数据
+		 * \param	specialDataSize	特殊数据大小
+		 */
+		static void FillOcbData(const std::string& shaderName, uint32_t index, const void* pCommonData, size_t commonDataSize, const void* pSpecialData, size_t specialDataSize);
+
+		/**
+		 * \brief	填充Pass常量缓冲区数据
+		 * \param	pData			通用数据
+		 * \param	dataSize		通用数据大小
+		 */
+		static void FillPcbData(const std::string& shaderName, const void* pData, size_t dataSize);
 		
 	private:
 		/**
 		 * \brief	创建常量缓冲区描述符堆
-		 * \param	pDevice		Dx12设备指针
 		 */
-		static void CreateCbvDescriptorHeap(ID3D12Device* pDevice);
+		static void CreateCbvDescriptorHeap(const std::string& shaderName);
 		
 		/**
 		 * \brief	创建上传缓冲区
@@ -105,7 +109,6 @@ namespace SaplingEngine
 		 */
 		static constexpr uint32_t ConstantBufferElementCount = 100;
 		static constexpr uint32_t DoubleConstantBufferElementCount = ConstantBufferElementCount * 2;
-		static constexpr uint32_t ConstantBufferDescriptorHeapSize = DoubleConstantBufferElementCount + 1;
 		
 		static constexpr uint32_t ObjectCommonCbSize = 256;
 		static constexpr uint32_t ObjectSpecialCbSize = 512;
@@ -120,33 +123,18 @@ namespace SaplingEngine
 		/**
 		 * \brief	常量缓冲区描述符堆指针
 		 */
-		static ComPtr<ID3D12DescriptorHeap> m_CbvDescriptorHeap;
-		static ID3D12DescriptorHeap** m_CbvDescriptorHeapPointers;
+		static std::map<std::string, ComPtr<ID3D12DescriptorHeap>> m_CbvDescriptorHeaps;
+		static std::map<std::string, ID3D12DescriptorHeap*> m_CbvDescriptorHeapPointers;
 		
 		/**
 		 * \brief	Object的数据的上传缓冲区列表
 		 */
-		static std::vector<ObjectUploadBufferData> m_ObjectUploadBuffers;
+		static std::map<std::string, ObjectUploadBufferData> m_ObjectUploadBuffers;
 
 		/**
 		 * \brief	可用的物体上传缓冲区索引列表
 		 */
-		static std::vector<uint32_t> m_AvailableOubIndices;
-		
-		/**
-		 * \brief	Pass通用数据上传缓冲区
-		 */
-		static ComPtr<ID3D12Resource> m_PassCommonUploadBuffer;
-
-		/**
-		 * \brief	Pass通用上传缓冲区指针
-		 */
-		static uint8_t* m_PassCommonMappedData;
-
-		/**
-		 * \brief	Pass常量缓冲区描述符偏移
-		 */
-		static uint32_t m_PassCbvDescriptorOffset;
+		static std::map<std::string, std::vector<uint32_t>> availableCbvIndices;
 	};
 
 	using CBufferManager = Dx12CBufferManager;

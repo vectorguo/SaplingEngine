@@ -33,8 +33,8 @@ namespace SaplingEngine
 		}
 
 		/**
-		 * \brief 获取Material
-		 * \return Material
+		 * \brief	获取Material
+		 * \return	Material
 		 */
 		Material* GetMaterial() const
 		{
@@ -42,22 +42,39 @@ namespace SaplingEngine
 		}
 
 		/**
-		 * \brief 获取Mesh
-		 * \return Mesh
+		 * \brief	获取Mesh
+		 * \return	Mesh
 		 */
 		Mesh* GetMesh() const
 		{
 			return m_pMesh;
 		}
 
-		uint32_t GetCommonOcbIndex() const
+		/**
+		 * \brief	获取物体常量缓冲区索引
+		 * \return	物体常量缓冲区索引
+		 */
+		uint32_t GetCbvIndex() const
 		{
-			return m_OcbIndex;
+			return m_CbvIndex;
 		}
 
-		uint32_t GetSpecialOcbIndex() const
+		/**
+		 * \brief	获取通用数据对应的常量缓冲区描述符
+		 * \return	通用数据对应的常量缓冲区描述符
+		 */
+		D3D12_GPU_DESCRIPTOR_HANDLE GetCommonCbvDescriptor() const
 		{
-			return m_OcbIndex + CBufferManager::ConstantBufferElementCount;
+			return m_CommonCbvDescriptor;
+		}
+
+		/**
+		 * \brief	获取特殊数据对应的常量缓冲区描述符
+		 * \return	特殊数据对应的常量缓冲区描述符
+		 */
+		D3D12_GPU_DESCRIPTOR_HANDLE GetSpecialCbvDescriptor() const
+		{
+			return m_SpecialCbvDescriptor;
 		}
 		
 		/**
@@ -93,6 +110,16 @@ namespace SaplingEngine
 		/**
 		 * \brief	常量缓冲区的索引
 		 */
-		uint32_t m_OcbIndex = 0;
+		uint32_t m_CbvIndex = 0;
+
+		/**
+		 * \brief	通用数据常量缓冲区的描述符
+		 */
+		D3D12_GPU_DESCRIPTOR_HANDLE m_CommonCbvDescriptor;
+
+		/**
+		 * \brief	特殊数据常量缓冲区的描述符
+		 */
+		D3D12_GPU_DESCRIPTOR_HANDLE m_SpecialCbvDescriptor;
 	};
 }

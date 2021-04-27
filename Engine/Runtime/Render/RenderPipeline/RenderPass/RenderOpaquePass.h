@@ -22,9 +22,8 @@ namespace SaplingEngine
 		/**
 		 * \brief 渲染
 		 * \param pCamera 渲染使用的相机
-		 * \param pActiveScene 被渲染场景
 		 */
-		void Render(const Camera* pCamera, Scene* pActiveScene) override;
+		void Render(const Camera* pCamera) override;
 
 		/**
 		 * \brief 设置背景色

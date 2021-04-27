@@ -83,14 +83,17 @@ namespace SaplingEngine
 	public:
 		/**
 		 * \brief 填充数据
-		 * \param size 返回数据大小
 		 * \param pTransform 物体的Transform组件的指针
 		 * \return 填充好的数据指针
 		 */
-		static void* FillOcbData(size_t& size, Transform* pTransform);
+		static void* FillOcbData(Transform* pTransform);
+
+		/**
+		 * \brief 通用常量缓冲区数据大小
+		 */
+		static constexpr size_t DataSize = sizeof(OcbData);
 
 	private:
-		static const size_t DataSize = sizeof(OcbData);
 		static OcbData m_Data;
 	};
 
@@ -113,14 +116,17 @@ namespace SaplingEngine
 	public:
 		/**
 		 * \brief 填充数据
-		 * \param size 返回数据大小
 		 * \param pCamera 相机指针
 		 * \return 填充好的数据指针
 		 */
-		static void* FillPcbData(size_t& size, Camera* pCamera);
+		static void* FillPcbData(Camera* pCamera);
+
+		/**
+		 * \brief Pass的通用的常量缓冲区数据大小
+		 */
+		static const size_t DataSize = sizeof(PcbData);
 
 	private:
-		static const size_t DataSize = sizeof(PcbData);
 		static PcbData m_Data;
 	};
 }

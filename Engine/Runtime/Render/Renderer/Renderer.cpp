@@ -2,13 +2,13 @@
 
 #include "GameObject/GameObject.h"
 #include "Render/Graphics/MeshFactory.h"
+#include "Render/RenderPipeline/RenderPipeline.h"
 #include "Scene/Scene.h"
 
 namespace SaplingEngine
 {
 	Renderer::Renderer()
 	{
-		m_OcbIndex = CBufferManager::PopObjectCbIndex();
 	}
 
 	Renderer::~Renderer()
@@ -18,20 +18,17 @@ namespace SaplingEngine
 
 		//删除Mesh
 		MeshFactory::DestroyMesh(m_pMesh);
-
-		//归还常量缓冲区索引
-		CBufferManager::PushObjectCbIndex(m_OcbIndex);
 	}	
 
 	void Renderer::Start()
 	{
-		auto* pActiveScene = m_GameObjectSptr->GetScene();
-		pActiveScene->AddRenderItem(this);
+		const auto& shaderName = m_pMaterial->GetShaderName();
+		m_CbvIndex = CBufferManager::PopCbvIndex(shaderName, m_CommonCbvDescriptor, m_SpecialCbvDescriptor);
+		RenderPipeline::AddRenderItem(this, shaderName);
 	}
 
 	void Renderer::OnDestroy()
 	{
-		auto* pActiveScene = m_GameObjectSptr->GetScene();
-		pActiveScene->RemoveRenderItem(this);
+		RenderPipeline::RemoveRenderItem(this, m_pMaterial->GetShaderName());
 	}
 }

@@ -2,16 +2,19 @@
 
 #include "Application/GameSetting.h"
 #include "Camera/CameraManager.h"
+#include "Render/Graphics/ConstantBufferData.h"
 #include "Render/Graphics/MeshFactory.h"
 #include "Render/Graphics/DirectX12/Dx12CommandManager.h"
 #include "Render/Graphics/DirectX12/Dx12GraphicsManager.h"
-#include "RenderPass/RenderOpaquePass.h"
+#include "Render/Renderer/Renderer.h"
+#include "Render/RenderPipeline/RenderPass/RenderOpaquePass.h"
 #include "Scene/SceneManager.h"
 
 namespace SaplingEngine
 {
 	uint32_t					RenderPipeline::screenWidth = 0;
 	uint32_t					RenderPipeline::screenHeight = 0;
+	std::map<std::string, std::vector<Renderer*>> RenderPipeline::renderItems;
 	std::vector<RenderPass*>	RenderPipeline::renderPasses;
 
 	/**
@@ -53,20 +56,17 @@ namespace SaplingEngine
 	{
 		PreRender();
 
-		auto* pActiveScene = SceneManager::GetActiveScene();
-
-		//更新Object数据常量缓冲区
-		CBufferManager::UpdateOcbData();
-		
 		//执行Render Pass
 		const auto& cameras = CameraManager::GetCameras();
 		for (const auto& pCamera : cameras)
 		{
-			//更新Pass数据常量缓冲区
-			CBufferManager::UpdatePcbData(pCamera.get());
+			//更新常量缓冲区数据
+			UpdateCbvData(pCamera.get());
+
+			//渲染Pass
 			for (auto iter = renderPasses.begin(); iter != renderPasses.end(); ++iter)
 			{
-				(*iter)->Render(pCamera.get(), pActiveScene);
+				(*iter)->Render(pCamera.get());
 			}
 		}
 		
@@ -164,5 +164,27 @@ namespace SaplingEngine
 			{
 				return rp1->GetPriority() < rp2->GetPriority();
 			});
+	}
+
+	/**
+	 * \brief	更新常量缓冲区数据
+	 */
+	void RenderPipeline::UpdateCbvData(Camera* pCamera)
+	{
+		size_t specialDataSize;
+		for (auto iter1 = renderItems.begin(); iter1 != renderItems.end(); ++iter1)
+		{
+			const auto& shaderName = iter1->first;
+			const auto& items = iter1->second;
+			for (auto iter2 = items.begin(); iter2 != items.end(); ++iter2)
+			{
+				auto* pRenderer = *iter2;
+				const auto* pCommonData = CommonOcbData::FillOcbData(pRenderer->GetTransform());
+				const auto* pSpecialData = pRenderer->GetSpecialOcbData()->FillOcbData(specialDataSize, pRenderer->GetMaterial());
+				Dx12CBufferManager::FillOcbData(shaderName, pRenderer->GetCbvIndex(), pCommonData, CommonOcbData::DataSize, pSpecialData, specialDataSize);
+			}
+
+			Dx12CBufferManager::FillPcbData(shaderName, CommonPcbData::FillPcbData(pCamera), CommonPcbData::DataSize);
+		}
 	}
 }

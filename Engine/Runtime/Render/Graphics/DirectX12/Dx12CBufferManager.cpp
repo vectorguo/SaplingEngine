@@ -1,41 +1,21 @@
 #include "Dx12CBufferManager.h"
 #include "Dx12GraphicsManager.h"
-#include "Render/Graphics/ConstantBufferData.h"
-#include "Render/Renderer/Renderer.h"
-#include "Scene/Scene.h"
-#include "Scene/SceneManager.h"
 
 namespace SaplingEngine
 {
-	uint32_t						Dx12CBufferManager::CbvDescriptorSize = 0;
-
-	ComPtr<ID3D12DescriptorHeap>	Dx12CBufferManager::m_CbvDescriptorHeap;
-	ID3D12DescriptorHeap**			Dx12CBufferManager::m_CbvDescriptorHeapPointers = nullptr;
-	std::vector<Dx12CBufferManager::ObjectUploadBufferData> Dx12CBufferManager::m_ObjectUploadBuffers;
-	std::vector<uint32_t>			Dx12CBufferManager::m_AvailableOubIndices;
-	ComPtr<ID3D12Resource>			Dx12CBufferManager::m_PassCommonUploadBuffer;
-	uint8_t*						Dx12CBufferManager::m_PassCommonMappedData = nullptr;
-	uint32_t						Dx12CBufferManager::m_PassCbvDescriptorOffset = 0;
+	uint32_t											Dx12CBufferManager::CbvDescriptorSize = 0;
+	std::map<std::string, ComPtr<ID3D12DescriptorHeap>>	Dx12CBufferManager::m_CbvDescriptorHeaps;
+	std::map<std::string, ID3D12DescriptorHeap*>		Dx12CBufferManager::m_CbvDescriptorHeapPointers;
+	std::map<std::string, Dx12CBufferManager::ObjectUploadBufferData> Dx12CBufferManager::m_ObjectUploadBuffers;
+	std::map<std::string, std::vector<uint32_t>>		Dx12CBufferManager::availableCbvIndices;
 	
 	/**
 	 * \brief	初始化
 	 */
 	void Dx12CBufferManager::Initialize()
-	{
-		auto* pDevice = GraphicsManager::GetDx12Device();
-		
+	{		
 		//查询描述符大小
-		CbvDescriptorSize = pDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-
-		//创建常量缓冲区描述符堆
-		CreateCbvDescriptorHeap(pDevice);
-
-		//记录可用Object上传缓冲区索引
-		m_AvailableOubIndices.reserve(ConstantBufferElementCount);
-		for (uint32_t index = 0; index < ConstantBufferElementCount; ++index)
-		{
-			m_AvailableOubIndices.emplace_back(index);
-		}
+		CbvDescriptorSize = GraphicsManager::GetDx12Device()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	}
 
 	/**
@@ -43,134 +23,103 @@ namespace SaplingEngine
 	 */
 	void Dx12CBufferManager::Destroy()
 	{
-		delete[] m_CbvDescriptorHeapPointers;
-		m_CbvDescriptorHeapPointers = nullptr;
-	}
-
-	/**
-	 * \brief	更新Object常量缓冲区数据
-	 */
-	void Dx12CBufferManager::UpdateOcbData()
-	{
-		auto* pActiveScene = SceneManager::GetActiveScene();
-
-		size_t dataSize;
-		const auto& renderItems = pActiveScene->GetRenderItems();
-		for (auto iter = renderItems.begin(); iter != renderItems.end(); ++iter)
-		{
-			auto* pRenderer = *iter;
-			const auto* pCommonData = CommonOcbData::FillOcbData(dataSize, pRenderer->GetTransform());
-			const auto index = pRenderer->GetCommonOcbIndex();
-			const auto offset = static_cast<uint64_t>(index % DoubleConstantBufferElementCount);
-			const auto& uploadBuffer = m_ObjectUploadBuffers[index / DoubleConstantBufferElementCount];
-			memcpy(uploadBuffer.CommonMappedData + offset * static_cast<uint64_t>(ObjectCommonCbSize), pCommonData, dataSize);
-
-			const auto* pSpecialData = pRenderer->GetSpecialOcbData()->FillOcbData(dataSize, pRenderer->GetMaterial());
-			memcpy(uploadBuffer.SpecialMappedData + offset * static_cast<uint64_t>(ObjectSpecialCbSize), pSpecialData, dataSize);
-		}
-	}
-
-	/**
-	 * \brief	更新Pass常量缓冲区数据
-	 */
-	void Dx12CBufferManager::UpdatePcbData(Camera* pCamera)
-	{
-		size_t dataSize;
-		const auto* pPassData = CommonPcbData::FillPcbData(dataSize, pCamera);
-		memcpy(m_PassCommonMappedData, pPassData, dataSize);
-	}
-
-	/**
-	 * \brief	 获取Object常量缓冲区描述
-	 * \param	ocbIndex		Object的常量缓冲区描述符索引
-	 * \return	Object常量缓冲区描述
-	 */
-	D3D12_GPU_DESCRIPTOR_HANDLE Dx12CBufferManager::GetObjectCbvDescriptor(uint32_t ocbIndex)
-	{
-		return GetGPUHandleFromDescriptorHeap(m_CbvDescriptorHeap.Get(), ocbIndex, CbvDescriptorSize);
-	}
-
-	/**
-	 * \brief	获取Pass常量缓冲区描述
-	 * \return	常量Pass缓冲区描述
-	 */
-	D3D12_GPU_DESCRIPTOR_HANDLE Dx12CBufferManager::GetPassCbvDescriptor()
-	{
-		return GetGPUHandleFromDescriptorHeap(m_CbvDescriptorHeap.Get(), m_PassCbvDescriptorOffset, CbvDescriptorSize);
 	}
 
 	/**
 	 * \brief	压入可用的物体常量缓冲区索引
-	 * \param	index			可用的物体常量缓冲区索引
 	 */
-	void Dx12CBufferManager::PushObjectCbIndex(uint32_t index)
+	void Dx12CBufferManager::PushCbvIndex(const std::string& shaderName, uint32_t index)
 	{
-		if (index < m_ObjectUploadBuffers.size() * ConstantBufferElementCount)
-		{
-			m_AvailableOubIndices.emplace_back(index);
-		}
+		availableCbvIndices[shaderName].push_back(index);
 	}
 
 	/**
 	 * \brief	弹出可用的物体常量缓冲区索引
-	 * \return	可用的物体常量缓冲区索引
 	 */
-	uint32_t Dx12CBufferManager::PopObjectCbIndex()
+	uint32_t Dx12CBufferManager::PopCbvIndex(const std::string& shaderName, D3D12_GPU_DESCRIPTOR_HANDLE& commonCbvDescriptor, D3D12_GPU_DESCRIPTOR_HANDLE& specialCbvDescriptor)
 	{
-		if (m_AvailableOubIndices.empty())
+		uint32_t index;
+		auto iter = availableCbvIndices.find(shaderName);
+		if (iter == availableCbvIndices.end())
 		{
-			const auto startIndex = static_cast<uint32_t>(m_ObjectUploadBuffers.size()) * DoubleConstantBufferElementCount;
+			CreateCbvDescriptorHeap(shaderName);
 			
-			//创建新的Object上传缓冲区
-			m_ObjectUploadBuffers.emplace_back();
-			auto iter = m_ObjectUploadBuffers.rbegin();
-			CreateUploadBuffer(m_CbvDescriptorHeap.Get(), iter->CommonUploadBuffer, iter->CommonMappedData, ConstantBufferElementCount, ObjectCommonCbSize, startIndex);
-			CreateUploadBuffer(m_CbvDescriptorHeap.Get(), iter->SpecialUploadBuffer, iter->SpecialMappedData, ConstantBufferElementCount, ObjectSpecialCbSize, startIndex + ConstantBufferElementCount);
-
-			//记录可用Object上传缓冲区索引
-			m_AvailableOubIndices.reserve(ConstantBufferElementCount);
-			for (uint32_t index = 0; index < ConstantBufferElementCount; ++index)
-			{
-				m_AvailableOubIndices.emplace_back(startIndex + index);
-			}
+			auto& indices = availableCbvIndices[shaderName];
+			index = *indices.rbegin();
+			indices.pop_back();
+		}
+		else
+		{
+			index = *iter->second.rbegin();
+			iter->second.pop_back();
 		}
 
-		const auto index = *m_AvailableOubIndices.rbegin();
-		m_AvailableOubIndices.pop_back();
+		commonCbvDescriptor = GetGPUHandleFromDescriptorHeap(m_CbvDescriptorHeapPointers[shaderName], index, CbvDescriptorSize);
+		specialCbvDescriptor = GetGPUHandleFromDescriptorHeap(m_CbvDescriptorHeapPointers[shaderName], index + ConstantBufferElementCount, CbvDescriptorSize);
 		return index;
 	}
 
 	/**
 	 * \brief	创建常量缓冲区描述符
-	 * \param	pDevice			Dx12设备指针
 	 */
-	void Dx12CBufferManager::CreateCbvDescriptorHeap(ID3D12Device* pDevice)
+	void Dx12CBufferManager::CreateCbvDescriptorHeap(const std::string& shaderName)
 	{
+		//声明常量缓冲区描述符堆
+		ComPtr<ID3D12DescriptorHeap> cbvDescriptorHeap;
+
 		//常量缓冲区描述符/着色器资源描述符/无需访问描述符堆
 		D3D12_DESCRIPTOR_HEAP_DESC heapDesc;
 		heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-		heapDesc.NumDescriptors = ConstantBufferDescriptorHeapSize;
+		heapDesc.NumDescriptors = DoubleConstantBufferElementCount + 1;
 		heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 		heapDesc.NodeMask = 0;
 
 		//创建常量缓冲区描述符堆
-		ThrowIfFailed(pDevice->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(m_CbvDescriptorHeap.GetAddressOf())));
-
-		//创建常量缓冲区描述符堆数组
-		m_CbvDescriptorHeapPointers = new ID3D12DescriptorHeap*[1];
-		m_CbvDescriptorHeapPointers[0] = m_CbvDescriptorHeap.Get();
+		ThrowIfFailed(GraphicsManager::GetDx12Device()->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(cbvDescriptorHeap.GetAddressOf())));
+		m_CbvDescriptorHeaps.insert_or_assign(shaderName, cbvDescriptorHeap);
+		m_CbvDescriptorHeapPointers.insert_or_assign(shaderName, cbvDescriptorHeap.Get());
 
 		//创建Object上传缓冲区
-		m_ObjectUploadBuffers.resize(1);
-		auto& objectUploadBuffer = m_ObjectUploadBuffers[0];
-		CreateUploadBuffer(m_CbvDescriptorHeap.Get(), objectUploadBuffer.CommonUploadBuffer, objectUploadBuffer.CommonMappedData, ConstantBufferElementCount, ObjectCommonCbSize, 0);
-		CreateUploadBuffer(m_CbvDescriptorHeap.Get(), objectUploadBuffer.SpecialUploadBuffer, objectUploadBuffer.SpecialMappedData, ConstantBufferElementCount, ObjectSpecialCbSize, ConstantBufferElementCount);
+		auto& objectUploadBuffer = m_ObjectUploadBuffers[shaderName];
+		CreateUploadBuffer(cbvDescriptorHeap.Get(), objectUploadBuffer.CommonUploadBuffer, objectUploadBuffer.CommonMappedData, ConstantBufferElementCount, ObjectCommonCbSize, 0);
+		CreateUploadBuffer(cbvDescriptorHeap.Get(), objectUploadBuffer.SpecialUploadBuffer, objectUploadBuffer.SpecialMappedData, ConstantBufferElementCount, ObjectSpecialCbSize, ConstantBufferElementCount);
+		CreateUploadBuffer(cbvDescriptorHeap.Get(), objectUploadBuffer.PassUploadBuffer, objectUploadBuffer.PassMappedData, 1, PassCommonCbSize, DoubleConstantBufferElementCount);
 
-		//创建Pass上传缓冲区
-		m_PassCbvDescriptorOffset = ConstantBufferDescriptorHeapSize - 1;
-		CreateUploadBuffer(m_CbvDescriptorHeap.Get(), m_PassCommonUploadBuffer, m_PassCommonMappedData, 1, PassCommonCbSize, m_PassCbvDescriptorOffset);
+		//记录可用Object上传缓冲区索引
+		auto& objectCbIndices = availableCbvIndices[shaderName];
+		objectCbIndices.reserve(ConstantBufferElementCount);
+		for (uint32_t index = 0; index < ConstantBufferElementCount; ++index)
+		{
+			objectCbIndices.emplace_back(index);
+		}
 	}
 	
+	/**
+	 * \brief	填充物体常量缓冲区数据
+	 * \param	index			可用的物体常量缓冲区索引
+	 * \param	pCommonData		通用数据
+	 * \param	commonDataSize	通用数据大小
+	 * \param	pSpecialData	特殊数据
+	 * \param	specialDataSize	特殊数据大小
+	 */
+	void Dx12CBufferManager::FillOcbData(const std::string& shaderName, uint32_t index, const void* pCommonData, size_t commonDataSize, const void* pSpecialData, size_t specialDataSize)
+	{
+		const auto& uploadBuffer = Dx12CBufferManager::m_ObjectUploadBuffers[shaderName];
+		memcpy(uploadBuffer.CommonMappedData + index * static_cast<uint64_t>(Dx12CBufferManager::ObjectCommonCbSize), pCommonData, commonDataSize);
+		memcpy(uploadBuffer.SpecialMappedData + index * static_cast<uint64_t>(Dx12CBufferManager::ObjectSpecialCbSize), pSpecialData, specialDataSize);
+	}
+
+	/**
+	 * \brief	填充Pass常量缓冲区数据
+	 * \param	pData			通用数据
+	 * \param	dataSize		通用数据大小
+	 */
+	void Dx12CBufferManager::FillPcbData(const std::string& shaderName, const void* pData, size_t dataSize)
+	{
+		const auto& uploadBuffer = Dx12CBufferManager::m_ObjectUploadBuffers[shaderName];
+		memcpy(uploadBuffer.PassMappedData, pData, dataSize);
+	}
+
 	/**
 	 * \brief	创建上传缓冲区
 	 * \param	descriptorHeap	描述符堆

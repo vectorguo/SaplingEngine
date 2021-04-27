@@ -12,17 +12,13 @@ namespace SaplingEngine
 	
 	/**
 	 * \brief 填充数据
-	 * \param size 返回数据大小
 	 * \param pTransform 物体的Transform组件的指针
 	 * \return 填充好的数据指针
 	 */
-	void* CommonOcbData::FillOcbData(size_t& size, Transform* pTransform)
+	void* CommonOcbData::FillOcbData(Transform* pTransform)
 	{
 		//填充数据
 		m_Data.SAPLING_MATRIX_M = pTransform->GetLocalToWorldMatrix().Transpose();
-
-		//设置数据大小
-		size = DataSize;
 		return static_cast<void*>(&m_Data);
 	}
 
@@ -44,11 +40,10 @@ namespace SaplingEngine
 
 	/**
 	 * \brief 填充数据
-	 * \param size 返回数据大小
 	 * \param pCamera 相机指针
 	 * \return 填充好的数据指针
 	 */
-	void* CommonPcbData::FillPcbData(size_t& size, Camera* pCamera)
+	void* CommonPcbData::FillPcbData(Camera* pCamera)
 	{
 		//填充数据
 		const auto& worldToViewMatrix = pCamera->GetWorldToViewMatrix();
@@ -68,9 +63,6 @@ namespace SaplingEngine
 			m_Data.MAIN_LIGHT_POSITION.Set(0, 0, 0);
 			m_Data.MAIN_LIGHT_DIRECTION.Set(0.8f, 0.6f, -0.2f);
 		}
-
-		//设置数据大小
-		size = DataSize;
 		
 		return static_cast<void*>(&m_Data);
 	}

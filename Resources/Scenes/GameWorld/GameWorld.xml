@@ -26,6 +26,28 @@
         </children>
     </gameObject>  
     
+    <gameObject name="ground_under" layerMask="1" isActive="1">
+        <components>
+            <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
+            <component type="4" subType="0" meshName="ground_under">
+                <material shader="Color"/>
+            </component>
+        </components>
+        <children>
+        </children>
+    </gameObject>  
+
+    <gameObject name="ground_grass" layerMask="1" isActive="1">
+        <components>
+            <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
+            <component type="4" subType="0" meshName="ground_grass">
+                <material shader="Color"/>
+            </component>
+        </components>
+        <children>
+        </children>
+    </gameObject>  
+
     <gameObject name="bridge" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
@@ -37,36 +59,15 @@
         </children>
     </gameObject>
 
-    <gameObject name="rock" layerMask="1" isActive="1">
+    <gameObject name="center_rock" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="4" subType="0" meshName="rock">
+            <component type="4" subType="0" meshName="center_rock">
                 <material shader="Color"/>
             </component>
         </components>
         <children>
         </children>
-    </gameObject>  
-
-    <gameObject name="stone" layerMask="1" isActive="1">
-        <components>
-            <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="4" subType="0" meshName="stone">
-                <material shader="Color"/>
-            </component>
-        </components>
-        <children>
-        </children>
-    </gameObject>  
-
-    <gameObject name="grass" layerMask="1" isActive="1">
-        <components>
-            <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="4" subType="0" meshName="grass">
-                <material shader="Color"/>
-            </component>
-        </components>
-        <children>
-        </children>
-    </gameObject>  
+    </gameObject>
+    
 </root>

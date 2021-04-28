@@ -14,7 +14,7 @@ namespace SaplingEngine
 {
 	uint32_t					RenderPipeline::screenWidth = 0;
 	uint32_t					RenderPipeline::screenHeight = 0;
-	std::map<std::string, std::vector<Renderer*>> RenderPipeline::renderItems;
+	std::map<size_t, std::vector<Renderer*>> RenderPipeline::renderItems;
 	std::vector<RenderPass*>	RenderPipeline::renderPasses;
 
 	/**

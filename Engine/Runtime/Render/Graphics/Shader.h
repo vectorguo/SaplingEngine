@@ -24,6 +24,15 @@ namespace SaplingEngine
 			return m_Name;
 		}
 
+		/**
+		 * \brief 获取Shader名称对应的Hash值
+		 * \return Shader名称对应的Hash值
+		 */
+		size_t GetHashValue() const
+		{
+			return m_HashValue;
+		}
+
 		uint8_t* GetVsBufferPoint() const
 		{
 			return static_cast<BYTE*>(m_VsShader->GetBufferPointer());
@@ -55,6 +64,7 @@ namespace SaplingEngine
 		
 	private:
 		std::string m_Name;
+		size_t m_HashValue;
 		ComPtr<ID3DBlob> m_VsShader;
 		ComPtr<ID3DBlob> m_PsShader;
 

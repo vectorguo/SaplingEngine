@@ -392,7 +392,7 @@ namespace SaplingEngine
 		
 		
 		//为每一个shader都创建一个pso
-		const auto& shaders = ShaderManager::Instance()->GetAllShaders();
+		const auto& shaders = ShaderManager::GetAllShaders();
 		for (auto iter = shaders.begin(); iter != shaders.end(); ++iter)
 		{
 			const auto* pShader = iter->second;
@@ -403,7 +403,7 @@ namespace SaplingEngine
 
 			ComPtr<ID3D12PipelineState> pipelineState;
 			ThrowIfFailed(m_D3D12Device->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&pipelineState)));
-			m_PipelineStates.emplace(iter->first, pipelineState);
+			m_PipelineStates.emplace(pShader->GetHashValue(), pipelineState);
 		}
 	}
 

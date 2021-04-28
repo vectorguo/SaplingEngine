@@ -43,16 +43,17 @@ namespace SaplingEngine
 		/**
 		 * \brief	添加渲染项
 		 * \param	pRenderer	renderer指针
+		 * \param	shaderHashValue	Shader对应的HashValue
 		 */
-		static void AddRenderItem(Renderer* pRenderer, const std::string& shaderName)
+		static void AddRenderItem(Renderer* pRenderer, size_t shaderHashValue)
 		{
-			auto iter = renderItems.find(shaderName);
+			auto iter = renderItems.find(shaderHashValue);
 			if (iter == renderItems.end())
 			{
 				std::vector<Renderer*> items;
 				items.reserve(CBufferManager::ConstantBufferElementCount);
 				items.emplace_back(pRenderer);
-				renderItems.emplace(shaderName, std::move(items));
+				renderItems.emplace(shaderHashValue, std::move(items));
 			}
 			else
 			{
@@ -64,7 +65,7 @@ namespace SaplingEngine
 		 * \brief	获取所有渲染项
 		 * \return	所有渲染项(非const)
 		 */
-		static std::map<std::string, std::vector<Renderer*>>& GetRenderItems()
+		static std::map<size_t, std::vector<Renderer*>>& GetRenderItems()
 		{
 			return renderItems;
 		}
@@ -72,16 +73,17 @@ namespace SaplingEngine
 		/**
 		 * \brief	删除渲染项
 		 * \param	pRenderer	renderer指针
+		 * \param	shaderHashValue	Shader对应的HashValue
 		 */
-		static void RemoveRenderItem(Renderer* pRenderer, const std::string& shaderName)
+		static void RemoveRenderItem(Renderer* pRenderer, size_t shaderHashValue)
 		{
-			auto iter1 = renderItems.find(shaderName);
+			auto iter1 = renderItems.find(shaderHashValue);
 			if (iter1 != renderItems.end())
 			{
 				iter1->second.erase(std::find(iter1->second.begin(), iter1->second.end(), pRenderer));
 
 				//归还常量缓冲区索引
-				CBufferManager::PushCbvIndex(shaderName, pRenderer->GetCbvIndex());
+				CBufferManager::PushCbvIndex(shaderHashValue, pRenderer->GetCbvIndex());
 			}
 		}
 
@@ -132,7 +134,7 @@ namespace SaplingEngine
 		/**
 		 * \brief	渲染项列表
 		 */
-		static std::map<std::string, std::vector<Renderer*>> renderItems;
+		static std::map<size_t, std::vector<Renderer*>> renderItems;
 		
 		/**
 		 * \brief	所有RenderPass

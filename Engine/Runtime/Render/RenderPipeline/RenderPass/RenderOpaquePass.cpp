@@ -27,15 +27,15 @@ namespace SaplingEngine
 		auto& renderItems = RenderPipeline::GetRenderItems();
 		for (auto iter = renderItems.begin(); iter != renderItems.end(); ++iter)
 		{
-			const auto shaderName = iter->first;
+			const auto shaderHashValue = iter->first;
 
 			//需要切换渲染管线状态
-			pCommandList->SetPipelineState(GraphicsManager::GetPipelineState(shaderName));
+			pCommandList->SetPipelineState(GraphicsManager::GetPipelineState(shaderHashValue));
 
 			//设置跟描述符表和常量缓冲区，将常量缓冲区绑定到渲染流水线上
-			pCommandList->SetDescriptorHeaps(1, CBufferManager::GetCbvDescriptorHeaps(shaderName));
+			pCommandList->SetDescriptorHeaps(1, CBufferManager::GetCbvDescriptorHeaps(shaderHashValue));
 			pCommandList->SetGraphicsRootSignature(GraphicsManager::GetRootSignature());
-			pCommandList->SetGraphicsRootDescriptorTable(2, CBufferManager::GetPassCbvDescriptor(shaderName));
+			pCommandList->SetGraphicsRootDescriptorTable(2, CBufferManager::GetPassCbvDescriptor(shaderHashValue));
 
 			//绘制物体
 			auto items = iter->second;

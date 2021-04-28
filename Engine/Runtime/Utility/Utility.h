@@ -340,4 +340,13 @@ namespace SaplingEngine
 		delete[] bytes;
 		return str;
 	}
+
+	/**
+	 * \brief ×Ö·û´®×ª»»³ÉHashValue
+	 */
+	inline size_t StringToHash(const std::string& s)
+	{
+		static std::hash<std::string> hash;
+		return hash(s);
+	}
 }

@@ -3,6 +3,8 @@
 
 namespace SaplingEngine
 {
+	ShaderManager::ShaderMap ShaderManager::shaders;
+
 	/**
 	 * \brief ³õÊ¼»¯
 	 */
@@ -18,7 +20,7 @@ namespace SaplingEngine
 		for (auto* pChild = pShadersNode->first_node(); pChild; pChild = pChild->next_sibling())
 		{
 			auto* pShader = new Shader(pChild);
-			m_Shaders.insert({ pShader->GetName(), pShader });
+			shaders.insert({ pShader->GetName(), pShader });
 		}
 
 		//Ð¶ÔØXML
@@ -31,7 +33,7 @@ namespace SaplingEngine
 	 */
 	void ShaderManager::Destroy()
 	{
-		for (auto iter = m_Shaders.begin(); iter != m_Shaders.end(); ++iter)
+		for (auto iter = shaders.begin(); iter != shaders.end(); ++iter)
 		{
 			delete iter->second;
 		}
@@ -42,9 +44,9 @@ namespace SaplingEngine
 	 * \param shaderName ShaderÃû³Æ
 	 * \return Shader
 	 */
-	const Shader* ShaderManager::GetShader(const std::string& shaderName) const
+	const Shader* ShaderManager::GetShader(const std::string& shaderName)
 	{
-		const auto iter = m_Shaders.find(shaderName);
-		return iter == m_Shaders.end() ? nullptr : iter->second;
+		const auto iter = shaders.find(shaderName);
+		return iter == shaders.end() ? nullptr : iter->second;
 	}
 }

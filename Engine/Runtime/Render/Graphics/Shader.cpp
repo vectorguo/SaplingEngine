@@ -33,7 +33,9 @@ namespace SaplingEngine
 		return byteCode;
 	}
 
-	Shader::Shader(const XmlNode* pShaderNode) : m_Name(XmlGetAttributeValue<const char*>(pShaderNode, "name"))
+	Shader::Shader(const XmlNode* pShaderNode) :
+		m_Name(XmlGetAttributeValue<const char*>(pShaderNode, "name")),
+ 		m_HashValue(StringToHash(m_Name))
 	{
 		const auto path = CharToWChar(pShaderNode->first_attribute("path")->value());
 		m_VsShader = CompileShader(path, nullptr, XmlGetAttributeValue<const char*>(pShaderNode, "vert"), "vs_5_1");

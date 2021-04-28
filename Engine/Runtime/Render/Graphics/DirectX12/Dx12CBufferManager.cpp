@@ -4,10 +4,10 @@
 namespace SaplingEngine
 {
 	uint32_t											Dx12CBufferManager::CbvDescriptorSize = 0;
-	std::map<std::string, ComPtr<ID3D12DescriptorHeap>>	Dx12CBufferManager::m_CbvDescriptorHeaps;
-	std::map<std::string, ID3D12DescriptorHeap*>		Dx12CBufferManager::m_CbvDescriptorHeapPointers;
-	std::map<std::string, Dx12CBufferManager::ObjectUploadBufferData> Dx12CBufferManager::m_ObjectUploadBuffers;
-	std::map<std::string, std::vector<uint32_t>>		Dx12CBufferManager::availableCbvIndices;
+	std::map<size_t, ComPtr<ID3D12DescriptorHeap>>		Dx12CBufferManager::m_CbvDescriptorHeaps;
+	std::map<size_t, ID3D12DescriptorHeap*>				Dx12CBufferManager::m_CbvDescriptorHeapPointers;
+	std::map<size_t, Dx12CBufferManager::ObjectUploadBufferData> Dx12CBufferManager::m_ObjectUploadBuffers;
+	std::map<size_t, std::vector<uint32_t>>				Dx12CBufferManager::availableCbvIndices;
 	
 	/**
 	 * \brief	初始化
@@ -28,23 +28,23 @@ namespace SaplingEngine
 	/**
 	 * \brief	压入可用的物体常量缓冲区索引
 	 */
-	void Dx12CBufferManager::PushCbvIndex(const std::string& shaderName, uint32_t index)
+	void Dx12CBufferManager::PushCbvIndex(size_t shaderHashValue, uint32_t index)
 	{
-		availableCbvIndices[shaderName].push_back(index);
+		availableCbvIndices[shaderHashValue].push_back(index);
 	}
 
 	/**
 	 * \brief	弹出可用的物体常量缓冲区索引
 	 */
-	uint32_t Dx12CBufferManager::PopCbvIndex(const std::string& shaderName, D3D12_GPU_DESCRIPTOR_HANDLE& commonCbvDescriptor, D3D12_GPU_DESCRIPTOR_HANDLE& specialCbvDescriptor)
+	uint32_t Dx12CBufferManager::PopCbvIndex(size_t shaderHashValue, D3D12_GPU_DESCRIPTOR_HANDLE& commonCbvDescriptor, D3D12_GPU_DESCRIPTOR_HANDLE& specialCbvDescriptor)
 	{
 		uint32_t index;
-		auto iter = availableCbvIndices.find(shaderName);
+		auto iter = availableCbvIndices.find(shaderHashValue);
 		if (iter == availableCbvIndices.end())
 		{
-			CreateCbvDescriptorHeap(shaderName);
+			CreateCbvDescriptorHeap(shaderHashValue);
 			
-			auto& indices = availableCbvIndices[shaderName];
+			auto& indices = availableCbvIndices[shaderHashValue];
 			index = *indices.rbegin();
 			indices.pop_back();
 		}
@@ -54,15 +54,15 @@ namespace SaplingEngine
 			iter->second.pop_back();
 		}
 
-		commonCbvDescriptor = GetGPUHandleFromDescriptorHeap(m_CbvDescriptorHeapPointers[shaderName], index, CbvDescriptorSize);
-		specialCbvDescriptor = GetGPUHandleFromDescriptorHeap(m_CbvDescriptorHeapPointers[shaderName], index + ConstantBufferElementCount, CbvDescriptorSize);
+		commonCbvDescriptor = GetGPUHandleFromDescriptorHeap(m_CbvDescriptorHeapPointers[shaderHashValue], index, CbvDescriptorSize);
+		specialCbvDescriptor = GetGPUHandleFromDescriptorHeap(m_CbvDescriptorHeapPointers[shaderHashValue], index + ConstantBufferElementCount, CbvDescriptorSize);
 		return index;
 	}
 
 	/**
 	 * \brief	创建常量缓冲区描述符
 	 */
-	void Dx12CBufferManager::CreateCbvDescriptorHeap(const std::string& shaderName)
+	void Dx12CBufferManager::CreateCbvDescriptorHeap(size_t shaderHashValue)
 	{
 		//声明常量缓冲区描述符堆
 		ComPtr<ID3D12DescriptorHeap> cbvDescriptorHeap;
@@ -76,17 +76,17 @@ namespace SaplingEngine
 
 		//创建常量缓冲区描述符堆
 		ThrowIfFailed(GraphicsManager::GetDx12Device()->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(cbvDescriptorHeap.GetAddressOf())));
-		m_CbvDescriptorHeaps.insert_or_assign(shaderName, cbvDescriptorHeap);
-		m_CbvDescriptorHeapPointers.insert_or_assign(shaderName, cbvDescriptorHeap.Get());
+		m_CbvDescriptorHeaps.insert_or_assign(shaderHashValue, cbvDescriptorHeap);
+		m_CbvDescriptorHeapPointers.insert_or_assign(shaderHashValue, cbvDescriptorHeap.Get());
 
 		//创建Object上传缓冲区
-		auto& objectUploadBuffer = m_ObjectUploadBuffers[shaderName];
+		auto& objectUploadBuffer = m_ObjectUploadBuffers[shaderHashValue];
 		CreateUploadBuffer(cbvDescriptorHeap.Get(), objectUploadBuffer.CommonUploadBuffer, objectUploadBuffer.CommonMappedData, ConstantBufferElementCount, ObjectCommonCbSize, 0);
 		CreateUploadBuffer(cbvDescriptorHeap.Get(), objectUploadBuffer.SpecialUploadBuffer, objectUploadBuffer.SpecialMappedData, ConstantBufferElementCount, ObjectSpecialCbSize, ConstantBufferElementCount);
 		CreateUploadBuffer(cbvDescriptorHeap.Get(), objectUploadBuffer.PassUploadBuffer, objectUploadBuffer.PassMappedData, 1, PassCommonCbSize, DoubleConstantBufferElementCount);
 
 		//记录可用Object上传缓冲区索引
-		auto& objectCbIndices = availableCbvIndices[shaderName];
+		auto& objectCbIndices = availableCbvIndices[shaderHashValue];
 		objectCbIndices.reserve(ConstantBufferElementCount);
 		for (uint32_t index = 0; index < ConstantBufferElementCount; ++index)
 		{
@@ -96,27 +96,29 @@ namespace SaplingEngine
 	
 	/**
 	 * \brief	填充物体常量缓冲区数据
+	 * \param	shaderHashValue	Shader对应的HashValue
 	 * \param	index			可用的物体常量缓冲区索引
 	 * \param	pCommonData		通用数据
 	 * \param	commonDataSize	通用数据大小
 	 * \param	pSpecialData	特殊数据
 	 * \param	specialDataSize	特殊数据大小
 	 */
-	void Dx12CBufferManager::FillOcbData(const std::string& shaderName, uint32_t index, const void* pCommonData, size_t commonDataSize, const void* pSpecialData, size_t specialDataSize)
+	void Dx12CBufferManager::FillOcbData(size_t shaderHashValue, uint32_t index, const void* pCommonData, size_t commonDataSize, const void* pSpecialData, size_t specialDataSize)
 	{
-		const auto& uploadBuffer = Dx12CBufferManager::m_ObjectUploadBuffers[shaderName];
+		const auto& uploadBuffer = Dx12CBufferManager::m_ObjectUploadBuffers[shaderHashValue];
 		memcpy(uploadBuffer.CommonMappedData + index * static_cast<uint64_t>(Dx12CBufferManager::ObjectCommonCbSize), pCommonData, commonDataSize);
 		memcpy(uploadBuffer.SpecialMappedData + index * static_cast<uint64_t>(Dx12CBufferManager::ObjectSpecialCbSize), pSpecialData, specialDataSize);
 	}
 
 	/**
 	 * \brief	填充Pass常量缓冲区数据
+	 * \param	shaderHashValue	Shader对应的HashValue
 	 * \param	pData			通用数据
 	 * \param	dataSize		通用数据大小
 	 */
-	void Dx12CBufferManager::FillPcbData(const std::string& shaderName, const void* pData, size_t dataSize)
+	void Dx12CBufferManager::FillPcbData(size_t shaderHashValue, const void* pData, size_t dataSize)
 	{
-		const auto& uploadBuffer = Dx12CBufferManager::m_ObjectUploadBuffers[shaderName];
+		const auto& uploadBuffer = Dx12CBufferManager::m_ObjectUploadBuffers[shaderHashValue];
 		memcpy(uploadBuffer.PassMappedData, pData, dataSize);
 	}
 

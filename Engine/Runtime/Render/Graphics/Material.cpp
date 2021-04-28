@@ -1,4 +1,5 @@
 #include "Material.h"
+#include "ShaderManager.h"
 
 namespace SaplingEngine
 {
@@ -19,7 +20,8 @@ namespace SaplingEngine
 	 */
 	bool Material::Deserialize(const XmlNode* pNode)
 	{
-		m_ShaderName = XmlGetAttributeValue<const char*>(pNode, "shader");
+		auto shaderName = XmlGetAttributeValue<const char*>(pNode, "shader");
+		m_pShader = ShaderManager::GetShader(shaderName);
 		
 		return true;
 	}

@@ -13,7 +13,7 @@ namespace SaplingEngine
 		friend class Dx12CommandManager;
 		friend class Dx12CBufferManager;
 
-		using PipelineStateMap = std::map<std::string, ComPtr<ID3D12PipelineState>>;
+		using PipelineStateMap = std::map<size_t, ComPtr<ID3D12PipelineState>>;
 		
 	public:
 		/**
@@ -62,12 +62,12 @@ namespace SaplingEngine
 
 		/**
 		 * \brief	获取PipelineState
-		 * \param	name		PipelineState名称
+		 * \param	shaderHashValue		Shader对应的HashValue
 		 * \return	PipelineState指针
 		 */
-		static ID3D12PipelineState* GetPipelineState(const std::string& name)
+		static ID3D12PipelineState* GetPipelineState(size_t shaderHashValue)
 		{
-			const auto iter = m_PipelineStates.find(name);
+			const auto iter = m_PipelineStates.find(shaderHashValue);
 			return iter == m_PipelineStates.end() ? nullptr : iter->second.Get();
 		}
 

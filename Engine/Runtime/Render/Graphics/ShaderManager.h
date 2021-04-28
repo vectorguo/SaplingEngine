@@ -11,38 +11,33 @@ namespace SaplingEngine
 		using ShaderMap = std::map<std::string, Shader*>;
 		
 	public:
-		ShaderManager() = default;
-		~ShaderManager() = default;
-		
-		SINGLETON(ShaderManager)
-		
 		/**
 		 * \brief 初始化
 		 */
-		void Initialize();
+		static void Initialize();
 
 		/**
 		 * \brief 销毁
 		 */
-		void Destroy();
+		static void Destroy();
 
 		/**
 		 * \brief 获取Shader
 		 * \param shaderName Shader名称
 		 * \return Shader
 		 */
-		const Shader* GetShader(const std::string& shaderName) const;
+		static const Shader* GetShader(const std::string& shaderName);
 
 		/**
 		 * \brief 获取所有shader
 		 * \return 所有shader
 		 */
-		const ShaderMap& GetAllShaders() const
+		static const ShaderMap& GetAllShaders()
 		{
-			return m_Shaders;
+			return shaders;
 		}
 
 	private:
-		ShaderMap m_Shaders;
+		static ShaderMap shaders;
 	};
 }

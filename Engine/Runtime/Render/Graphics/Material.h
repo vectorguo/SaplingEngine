@@ -1,12 +1,10 @@
 #pragma once
 
 #include "SaplingEnginePch.h"
+#include "Shader.h"
 
 namespace SaplingEngine
 {
-	//前置声明
-	class Shader;
-	
 	class Material final
 	{
 	public:
@@ -24,7 +22,16 @@ namespace SaplingEngine
 		 */
 		const std::string& GetShaderName() const
 		{
-			return m_ShaderName;
+			return m_pShader->GetName();
+		}
+
+		/**
+		 * \brief 获取材质使用的Shader的HashValue
+		 * \return Shader的HashValue
+		 */
+		const size_t GetShaderHashValue() const
+		{
+			return m_pShader->GetHashValue();
 		}
 		
 		/**
@@ -35,9 +42,6 @@ namespace SaplingEngine
 		bool Deserialize(const XmlNode* pNode);
 		
 	private:
-		/**
-		 * \brief 该材质使用的Shader名称
-		 */
-		std::string m_ShaderName;
+		const Shader* m_pShader = nullptr;
 	};
 }

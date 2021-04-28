@@ -39,7 +39,7 @@ namespace SaplingEngine
 		RenderPipeline::BeginInitialize(windowHwnd);
 
 		//初始化Shader
-		ShaderManager::Instance()->Initialize();
+		ShaderManager::Initialize();
 
 		//初始化场景
 		SceneManager::Initialize();
@@ -90,7 +90,7 @@ namespace SaplingEngine
 		CameraManager::Destroy();
 		Input::Destroy();
 		SceneManager::Destroy();
-		ShaderManager::Instance()->Destroy();
+		ShaderManager::Destroy();
 		RenderPipeline::Destroy();
 	}
 

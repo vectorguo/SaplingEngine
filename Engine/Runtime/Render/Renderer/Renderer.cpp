@@ -22,13 +22,13 @@ namespace SaplingEngine
 
 	void Renderer::Start()
 	{
-		const auto& shaderName = m_pMaterial->GetShaderName();
-		m_CbvIndex = CBufferManager::PopCbvIndex(shaderName, m_CommonCbvDescriptor, m_SpecialCbvDescriptor);
-		RenderPipeline::AddRenderItem(this, shaderName);
+		const auto& shaderHashValue = m_pMaterial->GetShaderHashValue();
+		m_CbvIndex = CBufferManager::PopCbvIndex(shaderHashValue, m_CommonCbvDescriptor, m_SpecialCbvDescriptor);
+		RenderPipeline::AddRenderItem(this, shaderHashValue);
 	}
 
 	void Renderer::OnDestroy()
 	{
-		RenderPipeline::RemoveRenderItem(this, m_pMaterial->GetShaderName());
+		RenderPipeline::RemoveRenderItem(this, m_pMaterial->GetShaderHashValue());
 	}
 }

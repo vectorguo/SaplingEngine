@@ -36,18 +36,18 @@ namespace SaplingEngine
 		 * \brief	获取Pass常量缓冲区描述
 		 * \return	常量Pass缓冲区描述
 		 */
-		static D3D12_GPU_DESCRIPTOR_HANDLE GetPassCbvDescriptor(const std::string& shaderName)
+		static D3D12_GPU_DESCRIPTOR_HANDLE GetPassCbvDescriptor(size_t shaderHashValue)
 		{
-			return GetGPUHandleFromDescriptorHeap(m_CbvDescriptorHeapPointers[shaderName], DoubleConstantBufferElementCount, CbvDescriptorSize);
+			return GetGPUHandleFromDescriptorHeap(m_CbvDescriptorHeapPointers[shaderHashValue], DoubleConstantBufferElementCount, CbvDescriptorSize);
 		}
 		
 		/**
 		 * \brief	获取常量缓冲区描述符堆的指针数组
 		 * \return	常量缓冲区描述符堆的指针数组
 		 */
-		static ID3D12DescriptorHeap** GetCbvDescriptorHeaps(const std::string& shaderName)
+		static ID3D12DescriptorHeap** GetCbvDescriptorHeaps(size_t shaderHashValue)
 		{
-			return &m_CbvDescriptorHeapPointers[shaderName];
+			return &m_CbvDescriptorHeapPointers[shaderHashValue];
 		}
 
 		/**
@@ -62,35 +62,37 @@ namespace SaplingEngine
 		/**
 		 * \brief	压入可用的物体常量缓冲区索引
 		 */
-		static void PushCbvIndex(const std::string& shaderName, uint32_t index);
+		static void PushCbvIndex(size_t shaderHashValue, uint32_t index);
 		
 		/**
 		 * \brief	弹出可用的物体常量缓冲区索引
 		 */
-		static uint32_t PopCbvIndex(const std::string& shaderName, D3D12_GPU_DESCRIPTOR_HANDLE& commonCbvDescriptor, D3D12_GPU_DESCRIPTOR_HANDLE& specialCbvDescriptor);
+		static uint32_t PopCbvIndex(size_t shaderHashValue, D3D12_GPU_DESCRIPTOR_HANDLE& commonCbvDescriptor, D3D12_GPU_DESCRIPTOR_HANDLE& specialCbvDescriptor);
 
 		/**
 		 * \brief	填充物体常量缓冲区数据
+		 * \param	shaderHashValue	Shader对应的HashValue
 		 * \param	index			可用的物体常量缓冲区索引
 		 * \param	pCommonData		通用数据
 		 * \param	commonDataSize	通用数据大小
 		 * \param	pSpecialData	特殊数据
 		 * \param	specialDataSize	特殊数据大小
 		 */
-		static void FillOcbData(const std::string& shaderName, uint32_t index, const void* pCommonData, size_t commonDataSize, const void* pSpecialData, size_t specialDataSize);
+		static void FillOcbData(size_t shaderHashValue, uint32_t index, const void* pCommonData, size_t commonDataSize, const void* pSpecialData, size_t specialDataSize);
 
 		/**
 		 * \brief	填充Pass常量缓冲区数据
+		 * \param	shaderHashValue	Shader对应的HashValue
 		 * \param	pData			通用数据
 		 * \param	dataSize		通用数据大小
 		 */
-		static void FillPcbData(const std::string& shaderName, const void* pData, size_t dataSize);
+		static void FillPcbData(size_t shaderHashValue, const void* pData, size_t dataSize);
 		
 	private:
 		/**
 		 * \brief	创建常量缓冲区描述符堆
 		 */
-		static void CreateCbvDescriptorHeap(const std::string& shaderName);
+		static void CreateCbvDescriptorHeap(size_t shaderHashValue);
 		
 		/**
 		 * \brief	创建上传缓冲区
@@ -123,18 +125,18 @@ namespace SaplingEngine
 		/**
 		 * \brief	常量缓冲区描述符堆指针
 		 */
-		static std::map<std::string, ComPtr<ID3D12DescriptorHeap>> m_CbvDescriptorHeaps;
-		static std::map<std::string, ID3D12DescriptorHeap*> m_CbvDescriptorHeapPointers;
+		static std::map<size_t, ComPtr<ID3D12DescriptorHeap>> m_CbvDescriptorHeaps;
+		static std::map<size_t, ID3D12DescriptorHeap*> m_CbvDescriptorHeapPointers;
 		
 		/**
 		 * \brief	Object的数据的上传缓冲区列表
 		 */
-		static std::map<std::string, ObjectUploadBufferData> m_ObjectUploadBuffers;
+		static std::map<size_t, ObjectUploadBufferData> m_ObjectUploadBuffers;
 
 		/**
 		 * \brief	可用的物体上传缓冲区索引列表
 		 */
-		static std::map<std::string, std::vector<uint32_t>> availableCbvIndices;
+		static std::map<size_t, std::vector<uint32_t>> availableCbvIndices;
 	};
 
 	using CBufferManager = Dx12CBufferManager;

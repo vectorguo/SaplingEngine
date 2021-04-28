@@ -159,6 +159,9 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\MeshFactory.h">
       <Filter>Render\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\MaterialProperty.h">
+      <Filter>Render\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Runtime\Utility\Time.cpp">

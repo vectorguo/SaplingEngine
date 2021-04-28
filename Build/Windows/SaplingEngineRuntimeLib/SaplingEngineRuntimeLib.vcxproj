@@ -123,6 +123,7 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\GraphicsPch.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\Light.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\Material.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\MaterialProperty.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\Mesh.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\MeshFactory.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\Shader.h" />

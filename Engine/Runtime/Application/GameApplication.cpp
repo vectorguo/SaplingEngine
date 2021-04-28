@@ -71,10 +71,14 @@ namespace SaplingEngine
 			}
 			else
 			{
+				//时间更新
 				Time::Tick();
 
 				//逻辑更新
 				Update();
+
+				//Input重置
+				Input::Reset();
 
 				//渲染
 				RenderPipeline::Render();
@@ -147,7 +151,7 @@ namespace SaplingEngine
 	LRESULT GameApplication::MessageProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		Input::Reset();
-		
+
 		switch (msg)
 		{
 		case WM_ACTIVATE:

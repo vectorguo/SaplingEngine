@@ -42,7 +42,7 @@ namespace ChessWar
 		{
 			auto* pCameraTransform = m_MainCamera->GetTransform();
 			auto cameraPosition = pCameraTransform->GetLocalPosition();
-			cameraPosition += pCameraTransform->GetForward() * Input::GetMouseWheelValue() * -0.03f;
+			cameraPosition += pCameraTransform->GetForward() * Input::GetMouseWheelValue() * 1.0f;
 			pCameraTransform->SetLocalPosition(cameraPosition);
 		}
 		else

@@ -7,7 +7,11 @@ namespace SaplingEngine
 	class MaterialProperty
 	{
 	public:
-		MaterialProperty() = default;
+		MaterialProperty()
+		{
+			i = 0;
+		}
+
 		~MaterialProperty() = default;
 
 		inline int32_t GetInt() const
@@ -23,16 +27,6 @@ namespace SaplingEngine
 		inline const Color& GetColor() const
 		{
 			return c;
-		}
-
-		inline const Vector2& GetVector2() const
-		{
-			return v2;
-		}
-
-		inline const Vector3& GetVector3() const
-		{
-			return v3;
 		}
 
 		inline const Vector4& GetVector4() const
@@ -55,19 +49,25 @@ namespace SaplingEngine
 			c = v;
 		}
 
-		inline void SetVector2(const Vector2& v)
+		inline void SetColor(float r, float g, float b, float a)
 		{
-			v2 = v;
-		}
-
-		inline void SetVector3(const Vector3& v)
-		{
-			v3 = v;
+			c.r = r;
+			c.g = g;
+			c.b = b;
+			c.a = a;
 		}
 
 		inline void SetVector4(const Vector4& v)
 		{
 			v4 = v;
+		}
+
+		inline void SetVector4(float x, float y, float z, float w)
+		{
+			v4.x = x;
+			v4.y = y;
+			v4.z = z;
+			v4.w = w;
 		}
 
 	private:
@@ -76,8 +76,6 @@ namespace SaplingEngine
 			int32_t i;
 			float	f;
 			Color	c;
-			Vector2 v2;
-			Vector3 v3;
 			Vector4 v4;
 		};
 	};

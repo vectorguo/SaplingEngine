@@ -20,7 +20,7 @@ namespace SaplingEngine
 		for (auto* pChild = pShadersNode->first_node(); pChild; pChild = pChild->next_sibling())
 		{
 			auto* pShader = new Shader(pChild);
-			shaders.insert({ pShader->GetName(), pShader });
+			shaders.insert({ pShader->GetHashValue(), pShader });
 		}
 
 		//卸载XML
@@ -40,13 +40,23 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief 获取Shader
-	 * \param shaderName Shader名称
-	 * \return Shader
+	 * \brief	获取Shader
+	 * \param	shaderName	Shader名称
+	 * \return	Shader
 	 */
 	const Shader* ShaderManager::GetShader(const std::string& shaderName)
 	{
-		const auto iter = shaders.find(shaderName);
+		return GetShader(StringToHash(shaderName));
+	}
+
+	/**
+	 * \brief	获取Shader
+	 * \param	shaderID	ShaderID
+	 * \return	Shader
+	 */
+	const Shader* ShaderManager::GetShader(size_t shaderID)
+	{
+		const auto iter = shaders.find(shaderID);
 		return iter == shaders.end() ? nullptr : iter->second;
 	}
 }

@@ -55,7 +55,7 @@ float4 Frag(VertexOut input) : SV_Target
 	float3 normal = normalize(input.NormalWS);
 	float nDotL = dot(MAIN_LIGHT_DIRECTION, normal);
 	nDotL = nDotL * 0.5 + 0.5;
-    return input.Color * _BaseColor * nDotL;
+    return _BaseColor * nDotL;
 }
 
 

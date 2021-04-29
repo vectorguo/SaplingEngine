@@ -78,12 +78,11 @@ namespace SaplingEngine
 		}
 		
 		/**
-		 * \brief	获取Object的特殊常量缓冲区数据指针
-		 * \return	Object的特殊常量缓冲区数据指针
+		 * \brief	填充SpecialOcbData
 		 */
-		ISpecialOcbData* GetSpecialOcbData() const
+		void* FillSpecialOcbData(size_t& size, Material* pMaterial) const
 		{
-			return m_pSpecialOcbData;
+			return m_FillSpecialOcbDataHandler(size, pMaterial);
 		}
 
 	protected:
@@ -102,9 +101,9 @@ namespace SaplingEngine
 		Mesh* m_pMesh = nullptr;
 
 		/**
-		 * \brief	Object的特殊常量缓冲区数据
+		 * \brief	Object的特殊常量缓冲区数据Fill回调
 		 */
-		ISpecialOcbData* m_pSpecialOcbData = nullptr;
+		std::function<void*(size_t&, Material*)> m_FillSpecialOcbDataHandler;
 		
 	private:
 		/**
@@ -115,11 +114,11 @@ namespace SaplingEngine
 		/**
 		 * \brief	通用数据常量缓冲区的描述符
 		 */
-		D3D12_GPU_DESCRIPTOR_HANDLE m_CommonCbvDescriptor;
+		D3D12_GPU_DESCRIPTOR_HANDLE m_CommonCbvDescriptor{};
 
 		/**
 		 * \brief	特殊数据常量缓冲区的描述符
 		 */
-		D3D12_GPU_DESCRIPTOR_HANDLE m_SpecialCbvDescriptor;
+		D3D12_GPU_DESCRIPTOR_HANDLE m_SpecialCbvDescriptor{};
 	};
 }

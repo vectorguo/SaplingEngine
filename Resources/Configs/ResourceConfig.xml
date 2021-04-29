@@ -2,9 +2,11 @@
 <root>
     <meshes>
         <mesh name="bridge" path="Resources/Scenes/GameWorld/Meshes/bridge.obj" vertexCount="1522" indexCount="3528"/>
-        <mesh name="center_rock" path="Resources/Scenes/GameWorld/Meshes/center_rock.obj" vertexCount="3190" indexCount="6114"/>
+        <mesh name="camp" path="Resources/Scenes/GameWorld/Meshes/camp.obj" vertexCount="639" indexCount="1467"/>
         <mesh name="ground" path="Resources/Scenes/GameWorld/Meshes/ground.obj" vertexCount="424" indexCount="1056"/>
         <mesh name="ground_grass" path="Resources/Scenes/GameWorld/Meshes/ground_grass.obj" vertexCount="1326" indexCount="1413"/>
         <mesh name="ground_under" path="Resources/Scenes/GameWorld/Meshes/ground_under.obj" vertexCount="744" indexCount="2160"/>
+        <mesh name="road" path="Resources/Scenes/GameWorld/Meshes/road.obj" vertexCount="10270" indexCount="20976"/>
+        <mesh name="rock" path="Resources/Scenes/GameWorld/Meshes/rock.obj" vertexCount="2329" indexCount="9093"/>
     </meshes>
 </root>

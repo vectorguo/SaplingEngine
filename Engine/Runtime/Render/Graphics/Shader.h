@@ -33,6 +33,15 @@ namespace SaplingEngine
 			return m_HashValue;
 		}
 
+		/**
+		 * \brief 获取Shader类型
+		 * \return Shader类型
+		 */
+		uint8_t GetType() const
+		{
+			return m_Type;
+		}
+
 		uint8_t* GetVsBufferPoint() const
 		{
 			return static_cast<BYTE*>(m_VsShader->GetBufferPointer());
@@ -63,8 +72,21 @@ namespace SaplingEngine
 		}
 		
 	private:
+		/**
+		 * \brief Shader名称
+		 */
 		std::string m_Name;
+
+		/**
+		 * \brief Shader名称对应的HashValue
+		 */
 		size_t m_HashValue;
+
+		/**
+		 * \brief Shader类型，用于区分不同shader对应的SpecialCBuffer
+		 */
+		uint8_t m_Type;
+
 		ComPtr<ID3DBlob> m_VsShader;
 		ComPtr<ID3DBlob> m_PsShader;
 

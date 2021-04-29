@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 #include "Math/Color.h"
 #include "Math/Matrix4x4.h"
 
@@ -17,61 +19,8 @@ namespace SaplingEngine
 	class Material;
 	class Transform;
 	
-	class ISpecialOcbData
-	{
-	public:
-		ISpecialOcbData() = default;
-		virtual ~ISpecialOcbData() = default;
-		ISpecialOcbData(const ISpecialOcbData&) = delete;
-		ISpecialOcbData(ISpecialOcbData&&) = delete;
-		ISpecialOcbData& operator=(const ISpecialOcbData&) = delete;
-		ISpecialOcbData& operator=(ISpecialOcbData&&) = delete;
-		
-		/**
-		 * \brief 填充数据
-		 * \param size 返回数据大小
-		 * \param pMaterial 物体的材质指针
-		 * \return 填充好的数据指针
-		 */
-		virtual void* FillOcbData(size_t& size, Material* pMaterial)
-		{
-			return nullptr;
-		}
-	};
-
 	/**
-	 * \brief 物体的特殊的常量缓冲区数据，不能超过512个字节
-	 */
-	class SpecialOcbData final : public ISpecialOcbData
-	{
-		struct OcbData
-		{
-			Color BaseColor;
-		};
-
-	public:
-		SpecialOcbData() = default;
-		~SpecialOcbData() override = default;
-		SpecialOcbData(const SpecialOcbData&) = delete;
-		SpecialOcbData(SpecialOcbData&&) = delete;
-		SpecialOcbData& operator=(const SpecialOcbData&) = delete;
-		SpecialOcbData& operator=(SpecialOcbData&&) = delete;
-
-		/**
-		 * \brief 填充数据
-		 * \param size 返回数据大小
-		 * \param pMaterial 物体的材质指针
-		 * \return 填充好的数据指针
-		 */
-		void* FillOcbData(size_t& size, Material* pMaterial) override;
-
-	private:
-		static const size_t DataSize = sizeof(OcbData);
-		static OcbData m_Data;
-	};
-	
-	/**
-	 * \brief 物体的通用常量缓冲区数据，不能超过256个字节
+	 * \brief	物体的通用常量缓冲区数据，不能超过256个字节
 	 */
 	class CommonOcbData final
 	{
@@ -79,17 +28,17 @@ namespace SaplingEngine
 		{
 			Matrix4x4 SAPLING_MATRIX_M = Matrix4x4::Identity;
 		};
-		
+
 	public:
 		/**
-		 * \brief 填充数据
-		 * \param pTransform 物体的Transform组件的指针
-		 * \return 填充好的数据指针
+		 * \brief	填充数据
+		 * \param	pTransform 物体的Transform组件的指针
+		 * \return	填充好的数据指针
 		 */
 		static void* FillOcbData(Transform* pTransform);
 
 		/**
-		 * \brief 通用常量缓冲区数据大小
+		 * \brief	通用常量缓冲区数据大小
 		 */
 		static constexpr size_t DataSize = sizeof(OcbData);
 
@@ -97,10 +46,8 @@ namespace SaplingEngine
 		static OcbData m_Data;
 	};
 
-	
-
 	/**
-	 * \brief 每个Pass的通用的常量缓冲区数据，不能超过512个字节
+	 * \brief	每个Pass的通用的常量缓冲区数据，不能超过512个字节
 	 */
 	class CommonPcbData final
 	{
@@ -109,24 +56,99 @@ namespace SaplingEngine
 			Matrix4x4 SAPLING_MATRIX_V = Matrix4x4::Identity;
 			Matrix4x4 SAPLING_MATRIX_VP = Matrix4x4::Identity;
 
-			Vector3 MAIN_LIGHT_POSITION { 0, 0, 0 };
-			Vector3 MAIN_LIGHT_DIRECTION { 0, 0, 0 };
+			Vector3 MAIN_LIGHT_POSITION{ 0, 0, 0 };
+			Vector3 MAIN_LIGHT_DIRECTION{ 0, 0, 0 };
 		};
 
 	public:
 		/**
-		 * \brief 填充数据
-		 * \param pCamera 相机指针
-		 * \return 填充好的数据指针
+		 * \brief	填充数据
+		 * \param	pCamera		相机指针
+		 * \return	填充好的数据指针
 		 */
 		static void* FillPcbData(Camera* pCamera);
 
 		/**
-		 * \brief Pass的通用的常量缓冲区数据大小
+		 * \brief	Pass的通用的常量缓冲区数据大小
 		 */
 		static const size_t DataSize = sizeof(PcbData);
 
 	private:
 		static PcbData m_Data;
 	};
+
+	/**
+	 * \brief 物体的特殊的常量缓冲区数据，不能超过512个字节
+	 */
+	class SpecialOcbData_Default final
+	{
+		struct OcbData
+		{
+			Color BaseColor;
+		};
+
+	public:
+
+		/**
+		 * \brief	填充数据
+		 * \param	size		返回数据大小
+		 * \param	pMaterial	物体的材质指针
+		 * \return	填充好的数据指针
+		 */
+		static void* FillOcbData(size_t& size, Material* pMaterial);
+
+	private:
+		static const size_t DataSize = sizeof(OcbData);
+		static OcbData m_Data;
+	};
+
+	/**
+	 * \brief 物体的特殊的常量缓冲区数据，不能超过512个字节
+	 */
+	class SpecialOcbData0 final
+	{
+		struct OcbData
+		{
+			Color BaseColor;
+		};
+
+	public:
+		/**
+		 * \brief	填充数据
+		 * \param	size		返回数据大小
+		 * \param	pMaterial	物体的材质指针
+		 * \return	填充好的数据指针
+		 */
+		static void* FillOcbData(size_t& size, Material* pMaterial);
+
+	private:
+		static const size_t DataSize = sizeof(OcbData);
+		static OcbData m_Data;
+	};
+
+	/**
+	 * \brief 物体的特殊的常量缓冲区数据，不能超过512个字节
+	 */
+	class SpecialOcbData1 final
+	{
+		struct OcbData
+		{
+			Color BaseColor;
+		};
+
+	public:
+		/**
+		 * \brief	填充数据
+		 * \param	size		返回数据大小
+		 * \param	pMaterial	物体的材质指针
+		 * \return	填充好的数据指针
+		 */
+		static void* FillOcbData(size_t& size, Material* pMaterial);
+
+	private:
+		static const size_t DataSize = sizeof(OcbData);
+		static OcbData m_Data;
+	};
+
+	std::function<void* (size_t&, Material*)> GetFillSpecialOcbDataHandler(uint8_t shaderType);
 }

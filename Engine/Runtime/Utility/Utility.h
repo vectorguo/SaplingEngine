@@ -50,6 +50,19 @@ namespace SaplingEngine
 	}
 
 	/**
+	 * \brief 获取XML节点属性的uint8_t值的模板函数声明
+	 * \param pNode XML节点
+	 * \param attributeName 属性名称
+	 * \return 属性值
+	 */
+	template<>
+	inline uint8_t XmlGetAttributeValue<uint8_t>(const XmlNode* pNode, const char* attributeName)
+	{
+		const auto* pAttribute = pNode->first_attribute(attributeName);
+		return pAttribute ? static_cast<uint8_t>(std::stoi(pAttribute->value())) : 0;
+	}
+
+	/**
 	 * \brief 获取XML节点属性的uint32_t值的模板函数声明
 	 * \param pNode XML节点
 	 * \param attributeName 属性名称
@@ -112,6 +125,19 @@ namespace SaplingEngine
 	{
 		const auto* pAttribute = pNode->first_attribute(attributeName.data());
 		return pAttribute ? std::stoi(pAttribute->value()) : 0;
+	}
+
+	/**
+	 * \brief 获取XML节点属性的uint8_t值的模板函数声明
+	 * \param pNode XML节点
+	 * \param attributeName 属性名称
+	 * \return 属性值
+	 */
+	template<>
+	inline uint8_t XmlGetAttributeValue<uint8_t>(const XmlNode* pNode, const std::string& attributeName)
+	{
+		const auto* pAttribute = pNode->first_attribute(attributeName.data());
+		return pAttribute ? static_cast<uint8_t>(std::stoi(pAttribute->value())) : 0;
 	}
 
 	/**
@@ -200,6 +226,19 @@ namespace SaplingEngine
 	}
 
 	/**
+	 * \brief 获取XML子节点的uint8_t值的模板函数声明
+	 * \param pParentNode XML父节点
+	 * \param childNodeName 子节点名称
+	 * \return 节点值
+	 */
+	template<>
+	inline uint8_t XmlGetNodeValue<uint8_t>(const XmlNode* pParentNode, const char* childNodeName)
+	{
+		const auto* pChildNode = pParentNode->first_node(childNodeName);
+		return pChildNode ? static_cast<uint8_t>(std::stoi(pChildNode->value())) : 0;
+	}
+
+	/**
 	 * \brief 获取XML子节点的uint32_t值的模板函数声明
 	 * \param pParentNode XML父节点
 	 * \param childNodeName 子节点名称
@@ -262,6 +301,19 @@ namespace SaplingEngine
 	{
 		const auto* pChildNode = pParentNode->first_node(childNodeName.data());
 		return pChildNode ? std::stoi(pChildNode->value()) : 0;
+	}
+
+	/**
+	 * \brief 获取XML子节点的uint8_t值的模板函数声明
+	 * \param pParentNode XML父节点
+	 * \param childNodeName 子节点名称
+	 * \return 节点值
+	 */
+	template<>
+	inline uint8_t XmlGetNodeValue<uint8_t>(const XmlNode* pParentNode, const std::string& childNodeName)
+	{
+		const auto* pChildNode = pParentNode->first_node(childNodeName.data());
+		return pChildNode ? static_cast<uint8_t>(std::stoi(pChildNode->value())) : 0;
 	}
 
 	/**

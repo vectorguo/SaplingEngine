@@ -14,7 +14,6 @@ namespace SaplingEngine
 	Renderer::~Renderer()
 	{
 		delete m_pMaterial;
-		delete m_pSpecialOcbData;
 
 		//É¾³ýMesh
 		MeshFactory::DestroyMesh(m_pMesh);

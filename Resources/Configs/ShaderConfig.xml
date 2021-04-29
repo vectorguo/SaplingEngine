@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
     <shaders>
-        <shader name="Color" path="Resources/Shaders/color.hlsl" vert="Vert" frag="Frag" inputLayoutCount="5">
+        <shader name="Color" type="0" path="Resources/Shaders/color.hlsl" vert="Vert" frag="Frag" inputLayoutCount="5">
             <inputLayout name="0" index="0" format="6" inputSlot="0" offset="0" inputSlotClass="0" stepRate="0"/>
             <inputLayout name="1" index="0" format="6" inputSlot="0" offset="12" inputSlotClass="0" stepRate="0"/>
             <inputLayout name="2" index="0" format="2" inputSlot="0" offset="24" inputSlotClass="0" stepRate="0"/>
@@ -9,7 +9,7 @@
             <inputLayout name="3" index="1" format="16" inputSlot="0" offset="48" inputSlotClass="0" stepRate="0"/>
         </shader>
 
-        <shader name="Opaque" path="Resources/Shaders/opaque.hlsl" vert="Vert" frag="Frag" inputLayoutCount="5">
+        <shader name="Opaque" type="1" path="Resources/Shaders/opaque.hlsl" vert="Vert" frag="Frag" inputLayoutCount="5">
             <inputLayout name="0" index="0" format="6" inputSlot="0" offset="0" inputSlotClass="0" stepRate="0"/>
             <inputLayout name="1" index="0" format="6" inputSlot="0" offset="12" inputSlotClass="0" stepRate="0"/>
             <inputLayout name="2" index="0" format="2" inputSlot="0" offset="24" inputSlotClass="0" stepRate="0"/>

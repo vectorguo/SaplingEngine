@@ -180,7 +180,7 @@ namespace SaplingEngine
 			{
 				auto* pRenderer = *iter2;
 				const auto* pCommonData = CommonOcbData::FillOcbData(pRenderer->GetTransform());
-				const auto* pSpecialData = pRenderer->GetSpecialOcbData()->FillOcbData(specialDataSize, pRenderer->GetMaterial());
+				const auto* pSpecialData = pRenderer->FillSpecialOcbData(specialDataSize, pRenderer->GetMaterial());
 				Dx12CBufferManager::FillOcbData(shaderName, pRenderer->GetCbvIndex(), pCommonData, CommonOcbData::DataSize, pSpecialData, specialDataSize);
 			}
 

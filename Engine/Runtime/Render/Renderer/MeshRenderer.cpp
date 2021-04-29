@@ -25,7 +25,7 @@ namespace SaplingEngine
 		m_pMaterial->Deserialize(pNode->first_node("material"));
 
 		//TODO 根据材质创建不同的Special Ocb Data
-		m_pSpecialOcbData = new SpecialOcbData();
+		m_FillSpecialOcbDataHandler = GetFillSpecialOcbDataHandler(m_pMaterial->GetShaderType());
 		
 		return true;
 	}

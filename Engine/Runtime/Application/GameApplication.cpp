@@ -150,8 +150,6 @@ namespace SaplingEngine
 	 */
 	LRESULT GameApplication::MessageProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
-		Input::Reset();
-
 		switch (msg)
 		{
 		case WM_ACTIVATE:
@@ -196,13 +194,13 @@ namespace SaplingEngine
 				}
 				else if (isResizing)
 				{
+					GameSetting::SetScreenSize(LOWORD(lParam), HIWORD(lParam));
 					return 0;
 				}
 				else
 				{
 				}
 			}
-			GameSetting::SetScreenSize(LOWORD(lParam), HIWORD(lParam));
 			return 0;
 		
 		case WM_ENTERSIZEMOVE:

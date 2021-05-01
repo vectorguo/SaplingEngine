@@ -11,13 +11,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Game\Input\ChessWarInput.cpp" />
-    <ClCompile Include="..\..\..\Game\ChessWarMain.cpp" />
+    <ClCompile Include="..\..\..\Game\Character\Character.cpp" />
+    <ClCompile Include="..\..\..\Game\Input\WarcraftInput.cpp" />
+    <ClCompile Include="..\..\..\Game\WarcraftApplication.cpp" />
+    <ClCompile Include="..\..\..\Game\WarcraftGameMain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Game\ChessWarEnum.h" />
-    <ClInclude Include="..\..\..\Game\Input\ChessWarInput.h" />
-    <ClInclude Include="..\..\..\Game\Utility\ChessWarComponentFactory.h" />
+    <ClInclude Include="..\..\..\Game\Character\Character.h" />
+    <ClInclude Include="..\..\..\Game\WarcraftEnum.h" />
+    <ClInclude Include="..\..\..\Game\Input\WarcraftInput.h" />
+    <ClInclude Include="..\..\..\Game\Utility\WarcraftComponentFactory.h" />
+    <ClInclude Include="..\..\..\Game\WarcraftGameMain.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -1,24 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
+    <gameObject name="gameMain" layerMask="1" isActive="1">
+        <components>
+            <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
+            <component type="10001" />
+        </components>
+    </gameObject>
+
     <gameObject name="camera" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="20" lpz="0" lrx="0.382684" lry="0" lrz="0" lrw="0.923879" lsx="1" lsy="1" lsz="1"/>
-            <component type="2" projection="1" fov="60.0" near="5" far="1000.0" priority="0" cullingMask="1"/>
-            <component type="5" />
+            <component type="10" projection="1" fov="60.0" near="5" far="1000.0" priority="0" cullingMask="1"/>
+            <component type="10002" />
         </components>
     </gameObject>
 
     <gameObject name="light" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="10" lpz="0" lrx="0.382684" lry="0" lrz="0" lrw="0.923879" lsx="1" lsy="1" lsz="1"/>
-            <component type="3" />
+            <component type="20" />
         </components>
     </gameObject>
 
     <gameObject name="ground" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="4" subType="0" meshName="ground">
+            <component type="30" subType="0" meshName="ground">
                 <material shader="Opaque">
                     <property name="baseColor" type="2" r="1" g="0.945" b="0.627" a="1"/>
                 </material>
@@ -31,7 +38,7 @@
     <gameObject name="ground_under" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="4" subType="0" meshName="ground_under">
+            <component type="30" subType="0" meshName="ground_under">
                 <material shader="Opaque">
                     <property name="baseColor" type="2" r="0.647" g="0.396" b="0.259" a="1"/>
                 </material>
@@ -44,7 +51,7 @@
     <gameObject name="ground_grass" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="4" subType="0" meshName="ground_grass">
+            <component type="30" subType="0" meshName="ground_grass">
                 <material shader="Opaque">
                     <property name="baseColor" type="2" r="0.372" g="0.521" b="0.243" a="1"/>
                 </material>
@@ -57,7 +64,7 @@
     <gameObject name="bridge" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="4" subType="0" meshName="bridge">
+            <component type="30" subType="0" meshName="bridge">
                 <material shader="Color"/>
             </component>
         </components>
@@ -68,7 +75,7 @@
     <gameObject name="camp" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="4" subType="0" meshName="camp">
+            <component type="30" subType="0" meshName="camp">
                 <material shader="Color"/>
             </component>
         </components>
@@ -79,7 +86,7 @@
     <gameObject name="road" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="4" subType="0" meshName="road">
+            <component type="30" subType="0" meshName="road">
                 <material shader="Color"/>
             </component>
         </components>
@@ -90,7 +97,7 @@
     <gameObject name="rock" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="4" subType="0" meshName="rock">
+            <component type="30" subType="0" meshName="rock">
                 <material shader="Color"/>
             </component>
         </components>

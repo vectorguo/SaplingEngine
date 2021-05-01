@@ -162,6 +162,12 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\MaterialProperty.h">
       <Filter>Render\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Camera\Cinemachine\CinemachineBrain.h">
+      <Filter>Camera\Cinemachine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Camera\Cinemachine\CinemachineVirtualCamera.h">
+      <Filter>Camera\Cinemachine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Runtime\Utility\Time.cpp">
@@ -275,6 +281,12 @@
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\MeshFactory.cpp">
       <Filter>Render\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Camera\Cinemachine\CinemachineBrain.cpp">
+      <Filter>Camera\Cinemachine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Camera\Cinemachine\CinemachineVirtualCamera.cpp">
+      <Filter>Camera\Cinemachine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utility">
@@ -324,6 +336,9 @@
     </Filter>
     <Filter Include="Render\RenderPipeline\RenderPass">
       <UniqueIdentifier>{03d80ac5-b351-4d8e-b4f8-ea0181683d1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camera\Cinemachine">
+      <UniqueIdentifier>{4e6896b6-6aa0-4d4d-82e8-5e7e9c2e2c95}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

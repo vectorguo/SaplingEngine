@@ -1,16 +1,17 @@
-#include "ChessWarInput.h"
+#include "WarcraftInput.h"
 #include "Camera/Camera.h"
 #include "Input/Input.h"
 
 using namespace SaplingEngine;
-namespace ChessWar
+
+namespace Warcraft
 {
 	/**
 	 * \brief 反序列化
 	 * \param pNode 配置节点指针
 	 * \return 反序列化是否成功
 	 */
-	bool ChessWarInput::Deserialize(const XmlNode* pNode)
+	bool WarcraftInput::Deserialize(const XmlNode* pNode)
 	{
 		return true;
 	}
@@ -18,7 +19,7 @@ namespace ChessWar
 	/**
 	 * \brief Start
 	 */
-	void ChessWarInput::Start()
+	void WarcraftInput::Start()
 	{
 		m_MainCamera = m_GameObjectSptr->GetComponent<Camera>();
 	}
@@ -26,7 +27,7 @@ namespace ChessWar
 	/**
 	 * \brief 更新
 	 */
-	void ChessWarInput::Update()
+	void WarcraftInput::Update()
 	{
 		//更新相机
 		UpdateCamera();
@@ -35,7 +36,7 @@ namespace ChessWar
 	/**
 	 * \brief 更新相机
 	 */
-	void ChessWarInput::UpdateCamera()
+	void WarcraftInput::UpdateCamera()
 	{
 		const auto mouseState = Input::GetMouseButtonState();
 		if (mouseState == EMouseButtonState::MouseWheel)

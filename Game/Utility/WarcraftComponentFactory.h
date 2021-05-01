@@ -1,10 +1,11 @@
 #pragma once
 
-#include "ChessWarEnum.h"
+#include "Input/WarcraftInput.h"
 #include "SaplingEngineHeader.h"
-#include "Input/ChessWarInput.h"
+#include "WarcraftEnum.h"
+#include "WarcraftGameMain.h"
 
-namespace ChessWar
+namespace Warcraft
 {
 	/**
 	 * \brief 根据组件类型创建组件
@@ -16,10 +17,12 @@ namespace ChessWar
 	{
 		switch (componentType)
 		{
-		case ComponentType_ChessWarInput:
-			return new ChessWarInput();
-		default:
-			return nullptr;
+			case ComponentType_WarcraftGameMain:
+				return new WarcraftGameMain();
+			case ComponentType_WarcraftInput:
+				return new WarcraftInput();
+			default:
+				return nullptr;
 		}
 	}
 }

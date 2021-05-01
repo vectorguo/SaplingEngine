@@ -1,6 +1,6 @@
 #include "SaplingEngineHeader.h"
 #include "GameObject/ComponentFactory.h"
-#include "Utility/ChessWarComponentFactory.h"
+#include "Utility/WarcraftComponentFactory.h"
 
 using namespace SaplingEngine;
 
@@ -12,7 +12,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 #endif
 
 	//设置ComponentCreator
-	ComponentFactory::SetComponentCreator(ChessWar::CreateComponent);
+	ComponentFactory::SetComponentCreator(Warcraft::CreateComponent);
 	
 	//初始化游戏设置
 	if (GameSetting::Initialize())

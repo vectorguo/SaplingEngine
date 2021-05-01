@@ -1,23 +1,23 @@
 #pragma once
 
-#include "ChessWarEnum.h"
-#include "GameObject/Component.h"
+#include "SaplingEngineHeader.h"
+#include "WarcraftEnum.h"
 
-namespace ChessWar
+namespace Warcraft
 {
-	class ChessWarInput final : public SaplingEngine::Component
+	class WarcraftInput final : public SaplingEngine::Component
 	{
 	public:
-		ChessWarInput() = default;
-		~ChessWarInput() override = default;
+		WarcraftInput() = default;
+		~WarcraftInput() override = default;
 
 		/*
 		 * 禁止拷贝和移动
 		 */
-		ChessWarInput(const ChessWarInput&) = delete;
-		ChessWarInput(ChessWarInput&&) = delete;
-		ChessWarInput& operator= (const ChessWarInput&) = delete;
-		ChessWarInput& operator= (ChessWarInput&&) = delete;
+		WarcraftInput(const WarcraftInput&) = delete;
+		WarcraftInput(WarcraftInput&&) = delete;
+		WarcraftInput& operator= (const WarcraftInput&) = delete;
+		WarcraftInput& operator= (WarcraftInput&&) = delete;
 		
 		/*
 		 * 获取组件类型
@@ -26,7 +26,7 @@ namespace ChessWar
 		 */
 		static constexpr uint32_t GetComponentType()
 		{
-			return ComponentType_ChessWarInput;
+			return ComponentType_WarcraftInput;
 		}
 		
 		/**

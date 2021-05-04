@@ -34,6 +34,16 @@ namespace SaplingEngine
 		GameObject(GameObject&&) = delete;
 		GameObject& operator= (const GameObject&) = delete;
 		GameObject& operator= (GameObject&&) = delete;
+
+		/**
+		 * \brief	处理新创建的组件
+		 */
+		static void HandleNewComponents();
+
+		/**
+		 * \brief	处理要销毁的组件
+		 */
+		static void HandleDestroyedComponents();
 		
 		/**
 		 * \brief 初始化
@@ -156,19 +166,25 @@ namespace SaplingEngine
 		}
 		
 		/**
-		 * \brief 添加组件
+		 * \brief	添加组件
 		 */
 		template<typename T>
 		std::shared_ptr<T> AddComponent();
 
 		/**
-		 * \brief 获取组件
+		 * \brief	获取组件
 		 */
 		template<typename T>
 		std::shared_ptr<T> GetComponent();
 
 		/**
-		 * \brief 销毁组件
+		 * \brief	是否已经添加某组类型的组件
+		 */
+		template<typename T>
+		bool HasComponent();
+
+		/**
+		 * \brief	销毁组件
 		 */
 		template<typename T>
 		void DestroyComponent();
@@ -227,9 +243,7 @@ namespace SaplingEngine
 		/*
 		 * 所有组件
 		 */	
-		ComponentMap m_Components;
-		ComponentMap m_NewComponents;
-		std::vector<uint32_t> m_DestroyedComponents;
+		ComponentList m_Components;
 		
 		/**
 		 * \brief transform组件
@@ -250,6 +264,17 @@ namespace SaplingEngine
 		 * \brief 所在场景的指针
 		 */
 		Scene* m_pScene = nullptr;
+
+	private:
+		/**
+		 * \brief	新创建的组件列表
+		 */
+		static ComponentList newComponents;
+
+		/**
+		 * \brief	要删除的组件列表
+		 */
+		static ComponentList destroyedComponents;
 	};
 
 	/*
@@ -258,36 +283,65 @@ namespace SaplingEngine
 	template <typename T>
 	std::shared_ptr<T> GameObject::AddComponent()
 	{
-		constexpr auto componentType = T::GetComponentType();
-		if (m_NewComponents.find(componentType) == m_NewComponents.end() && m_Components.find(componentType) == m_Components.end())
+		if (!HasComponent<T>())
 		{
-			//没有添加相同类型的组件
 			auto componentPtr = std::make_shared<T>();
+			newComponents.emplace_back(componentPtr);
 			componentPtr->SetGameObject(shared_from_this());
-			m_NewComponents.insert_or_assign(componentType, componentPtr);
-			m_NewComponents[componentType]->Awake();
+			componentPtr->Awake();
 			return componentPtr;
 		}
-
-		//已经添加相同类型的组件
-		return nullptr;
+		else
+		{
+			return nullptr;
+		}
 	}
 
 	template <typename T>
 	std::shared_ptr<T> GameObject::GetComponent()
 	{
-		auto iter = m_Components.find(T::GetComponentType());
-		if (iter == m_Components.end())
+		for (auto iter = newComponents.begin(); iter != newComponents.end(); ++iter)
 		{
-			return nullptr;
+			auto& componentSptr = *iter;
+			if (componentSptr->GetGameObject() == this && componentSptr->GetComponentType() == T::GetStaticComponentType())
+			{
+				return std::static_pointer_cast<T>(componentSptr);
+			}
 		}
 
-		return std::static_pointer_cast<T>(iter->second);
+		auto iter = std::find_if(m_Components.begin(), m_Components.end(), [](const ComponentSptr& componentSptr)
+			{
+				return componentSptr->GetComponentType() == T::GetStaticComponentType();
+			});
+		return iter == m_Components.end() ? nullptr : std::static_pointer_cast<T>(*iter);
+	}
+
+	template <typename T>
+	bool GameObject::HasComponent()
+	{
+		for (auto iter = newComponents.begin(); iter != newComponents.end(); ++iter)
+		{
+			auto pComponent = iter->get();
+			if (pComponent->GetGameObject() == this && pComponent->GetComponentType() == T::GetStaticComponentType())
+			{
+				return true;
+			}
+		}
+
+		auto iter = std::find_if(m_Components.begin(), m_Components.end(), [](const ComponentSptr& componentSptr)
+			{
+				return componentSptr->GetComponentType() == T::GetStaticComponentType();
+			});
+		return iter != m_Components.end();
 	}
 
 	template <typename T>
 	void GameObject::DestroyComponent()
 	{
-		m_DestroyedComponents.push_back(T::GetComponentType());
+		auto componentSptr = GetComponent<T>();
+		if (componentSptr != nullptr)
+		{
+			destroyedComponents.emplace_back(std::move(componentSptr));
+		}
 	}
 }

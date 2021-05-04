@@ -3,7 +3,14 @@
 
 namespace SaplingEngine
 {
-	Component::Component() = default;
+	/**
+	 * \brief	¹¹Ôìº¯Êý
+	 */
+	Component::Component(uint32_t componentType) : m_ComponentType(componentType)
+	{
+
+	}
+
 	Component::~Component() = default;
 
 	Transform* Component::GetTransform() const

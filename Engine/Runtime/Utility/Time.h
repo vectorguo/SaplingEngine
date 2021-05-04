@@ -5,7 +5,11 @@
 class Time
 {
 public:
-	static float DeltaTime();
+	inline static float DeltaTime()
+	{
+		return static_cast<float>(s_DeltaTime);
+	}
+
 	static float TotalTime();
 
 	static void Initialize();

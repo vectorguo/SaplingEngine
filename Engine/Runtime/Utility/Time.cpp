@@ -10,11 +10,6 @@ double Time::s_SecondPreCount = 0;
 double Time::s_DeltaTime = 0;
 bool Time::s_Stopped = false;
 
-float Time::DeltaTime()
-{
-	return static_cast<float>(s_DeltaTime);
-}
-
 float Time::TotalTime()
 {
 	if (s_Stopped)

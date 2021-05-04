@@ -4,7 +4,7 @@ namespace SaplingEngine
 {
 	Light* Light::m_pInstance = nullptr;
 	
-	Light::Light()
+	Light::Light() : Component(ComponentType_Light)
 	{
 		m_pInstance = this;
 	}

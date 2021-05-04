@@ -8,7 +8,10 @@ namespace Warcraft
 	class Character final : public SaplingEngine::Component
 	{
 	public:
-		Character() = default;
+		Character() : Component(ComponentType_Character)
+		{
+
+		}
 		~Character() override = default;
 
 		/**
@@ -24,7 +27,7 @@ namespace Warcraft
 		 *			每个组件都必须定义此函数。
 		 *			GameObject对于每个ComponentType只能拥有一个Component。
 		 */
-		static constexpr uint32_t GetComponentType()
+		static constexpr uint32_t GetStaticComponentType()
 		{
 			return ComponentType_Character;
 		}
@@ -47,4 +50,6 @@ namespace Warcraft
 		 */
 		void Update() override;
 	};
+
+	using CharacterSptr = std::shared_ptr<Character>;
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Character/Character.h"
 #include "SaplingEngineHeader.h"
 #include "WarcraftEnum.h"
 
@@ -8,7 +9,10 @@ namespace Warcraft
 	class WarcraftGameMain final : public SaplingEngine::Component
 	{
 	public:
-		WarcraftGameMain() = default;
+		WarcraftGameMain() : Component(ComponentType_WarcraftGameMain)
+		{
+
+		}
 		~WarcraftGameMain() override = default;
 
 		/**
@@ -24,7 +28,7 @@ namespace Warcraft
 		 *			每个组件都必须定义此函数。
 		 *			GameObject对于每个ComponentType只能拥有一个Component。
 		 */
-		static constexpr uint32_t GetComponentType()
+		static constexpr uint32_t GetStaticComponentType()
 		{
 			return ComponentType_WarcraftGameMain;
 		}
@@ -36,7 +40,31 @@ namespace Warcraft
 		 */
 		bool Deserialize(const XmlNode * pNode) override;
 
+		/**
+		 * \brief	单例
+		 */
+		static WarcraftGameMain* Instance()
+		{
+			return pInstance;
+		}
+
+		/**
+		 * \brief	获取玩家角色指针
+		 */
+		Character* GetPlayer() const
+		{
+			return m_PlayerSptr.get();
+		}
+
 	protected:
+		/**
+		 * \brief	Awake
+		 */
+		void Awake() override
+		{
+			pInstance = this;
+		}
+
 		/**
 		 * \brief	Start
 		 */
@@ -47,5 +75,15 @@ namespace Warcraft
 		 */
 		void Update() override;
 
+	private:
+		/**
+		 * \brief	单例
+		 */
+		static WarcraftGameMain* pInstance;
+
+		/**
+		 * \brief	玩家角色的智能指针
+		 */
+		CharacterSptr m_PlayerSptr;
 	};
 }

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Input/WarcraftInput.h"
+#include "Character/Character.h"
+#include "Input/InputSystem.h"
 #include "SaplingEngineHeader.h"
 #include "WarcraftEnum.h"
 #include "WarcraftGameMain.h"
@@ -19,8 +20,8 @@ namespace Warcraft
 		{
 			case ComponentType_WarcraftGameMain:
 				return new WarcraftGameMain();
-			case ComponentType_WarcraftInput:
-				return new WarcraftInput();
+			case ComponentType_Character:
+				return new Character();
 			default:
 				return nullptr;
 		}

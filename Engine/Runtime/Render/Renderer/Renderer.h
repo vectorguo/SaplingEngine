@@ -27,7 +27,7 @@ namespace SaplingEngine
 		 *			每个组件都必须定义此函数。
 		 *			GameObject对于每个ComponentType只能拥有一个Component。
 		 */
-		static constexpr uint32_t GetComponentType()
+		static constexpr uint32_t GetStaticComponentType()
 		{
 			return ComponentType_Renderer;
 		}
@@ -42,6 +42,13 @@ namespace SaplingEngine
 		}
 
 		/**
+		 * \brief	设置Mesh
+		 * \param	shaderName	Shader名称
+		 * \return	材质
+		 */
+		virtual Material* SetMaterial(const std::string& shaderName) = 0;
+
+		/**
 		 * \brief	获取Mesh
 		 * \return	Mesh
 		 */
@@ -49,6 +56,12 @@ namespace SaplingEngine
 		{
 			return m_pMesh;
 		}
+
+		/**
+		 * \brief	设置Mesh
+		 * \param	path		Mesh资源路径
+		 */
+		virtual void SetMesh(const std::string& path) = 0;
 
 		/**
 		 * \brief	获取物体常量缓冲区索引

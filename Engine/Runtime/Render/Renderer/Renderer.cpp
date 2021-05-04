@@ -7,7 +7,7 @@
 
 namespace SaplingEngine
 {
-	Renderer::Renderer()
+	Renderer::Renderer() : Component(ComponentType_Renderer)
 	{
 	}
 

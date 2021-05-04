@@ -124,5 +124,10 @@ namespace SaplingEngine
 		 * \brief 此场景中的GameObject
 		 */
 		std::vector<GameObjectSptr> m_GameObjects;
+
+		/**
+		 * \brief 新创建的GameObject
+		 */
+		std::vector<GameObjectSptr> m_NewGameObjects;
 	};
 }

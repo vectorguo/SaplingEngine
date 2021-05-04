@@ -39,9 +39,24 @@ namespace SaplingEngine
 	 */
 	void Scene::Update()
 	{
-		for (auto iter = m_GameObjects.begin(); iter != m_GameObjects.end(); ++iter)
+		if (!m_NewGameObjects.empty())
 		{
-			(*iter)->Update();
+			m_GameObjects.insert(m_GameObjects.cend(), m_NewGameObjects.cbegin(), m_NewGameObjects.cend());
+			m_NewGameObjects.clear();
+		}
+
+		for (auto iter = m_GameObjects.begin(); iter != m_GameObjects.end();)
+		{
+			auto& pObject = *iter;
+			if (pObject->IsDestroyed())
+			{
+				iter = m_GameObjects.erase(iter);
+			}
+			else
+			{
+				pObject->Update();
+				++iter;
+			}
 		}
 	}
 
@@ -82,7 +97,7 @@ namespace SaplingEngine
 	{
 		auto gameObject = std::make_shared<GameObject>(GameObjectId++);
 		gameObject->Initialize(this);
-		m_GameObjects.push_back(gameObject);
+		m_NewGameObjects.push_back(gameObject);
 		return gameObject;
 	}
 
@@ -95,7 +110,7 @@ namespace SaplingEngine
 	{
 		auto gameObject = std::make_shared<GameObject>(GameObjectId++, name);
 		gameObject->Initialize(this);
-		m_GameObjects.push_back(gameObject);
+		m_NewGameObjects.push_back(gameObject);
 		return gameObject;
 	}
 
@@ -108,7 +123,7 @@ namespace SaplingEngine
 	{
 		auto gameObject = std::make_shared<GameObject>(GameObjectId++, std::move(name));
 		gameObject->Initialize(this);
-		m_GameObjects.push_back(gameObject);
+		m_NewGameObjects.push_back(gameObject);
 		return gameObject;
 	}
 

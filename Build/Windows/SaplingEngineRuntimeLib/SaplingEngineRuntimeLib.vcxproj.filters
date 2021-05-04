@@ -168,6 +168,9 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Camera\Cinemachine\CinemachineVirtualCamera.h">
       <Filter>Camera\Cinemachine</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\GameObject\ComponentType.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Runtime\Utility\Time.cpp">

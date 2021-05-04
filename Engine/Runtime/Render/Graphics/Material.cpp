@@ -1,5 +1,4 @@
 #include "Material.h"
-#include "ShaderManager.h"
 
 namespace SaplingEngine
 {

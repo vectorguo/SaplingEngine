@@ -142,7 +142,13 @@ namespace SaplingEngine
 	 */
 	void GameApplication::Update()
 	{
+		//处理新创建的组件
+		GameObject::HandleNewComponents();
+		
 		SceneManager::Update();
+
+		//处理要删除的组件
+		GameObject::HandleDestroyedComponents();
 	}
 
 	/**
@@ -240,13 +246,17 @@ namespace SaplingEngine
 			return 0;
 			
 		case WM_KEYDOWN:
-			
+			Input::SetKeyState(EKeyState::KeyDown, static_cast<EKeyCode>(wParam));
 			return 0;
 			
 		case WM_KEYUP:
 			if (wParam == VK_ESCAPE)
 			{
 				PostQuitMessage(0);
+			}
+			else
+			{
+				Input::SetKeyState(EKeyState::KeyUp, static_cast<EKeyCode>(wParam));
 			}
 			return 0;
 			

@@ -2,6 +2,7 @@
 
 #include "MaterialProperty.h"
 #include "Shader.h"
+#include "ShaderManager.h"
 
 namespace SaplingEngine
 {
@@ -15,6 +16,13 @@ namespace SaplingEngine
 		Material(Material&&) = delete;
 		Material& operator=(const Material&) = delete;
 		Material& operator=(Material&&) = delete;
+		
+		/**
+		 * \brief	反序列化
+		 * \param	pNode		配置节点指针
+		 * \return	反序列化是否成功
+		 */
+		bool Deserialize(const XmlNode* pNode);
 
 		/**
 		 * \brief	获取材质使用的Shader的名称
@@ -42,13 +50,15 @@ namespace SaplingEngine
 		{
 			return m_pShader->GetType();
 		}
-		
+
 		/**
-		 * \brief	反序列化
-		 * \param	pNode		配置节点指针
-		 * \return	反序列化是否成功
+		 * \brief	设置Shader
+		 * \param	shaderName		Shader名称
 		 */
-		bool Deserialize(const XmlNode* pNode);
+		inline void SetShader(const std::string& shaderName)
+		{
+			m_pShader = ShaderManager::GetShader(shaderName);
+		}
 
 		/**
 		 * \brief	获取int类型的属性值

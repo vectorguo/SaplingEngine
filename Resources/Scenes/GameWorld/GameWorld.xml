@@ -11,7 +11,7 @@
         <components>
             <component type="1" lpx="0" lpy="20" lpz="0" lrx="0.382684" lry="0" lrz="0" lrw="0.923879" lsx="1" lsy="1" lsz="1"/>
             <component type="10" projection="1" fov="60.0" near="5" far="1000.0" priority="0" cullingMask="1"/>
-            <component type="10002" />
+            <component type="11" />
         </components>
     </gameObject>
 

@@ -8,5 +8,7 @@
         <mesh name="ground_under" path="Resources/Scenes/GameWorld/Meshes/ground_under.obj" vertexCount="744" indexCount="2160"/>
         <mesh name="road" path="Resources/Scenes/GameWorld/Meshes/road.obj" vertexCount="10270" indexCount="20976"/>
         <mesh name="rock" path="Resources/Scenes/GameWorld/Meshes/rock.obj" vertexCount="2329" indexCount="9093"/>
+
+        <mesh name="player" path="Resources/Characters/player.obj" vertexCount="0" indexCount="0"/>
     </meshes>
 </root>

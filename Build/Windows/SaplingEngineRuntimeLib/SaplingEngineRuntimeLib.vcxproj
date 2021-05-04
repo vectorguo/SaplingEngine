@@ -104,6 +104,7 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Camera\Cinemachine\CinemachineVirtualCamera.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\GameObject\Component.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\GameObject\ComponentFactory.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\GameObject\ComponentType.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\GameObject\GameObject.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\GameObject\Transform.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Input\Input.h" />

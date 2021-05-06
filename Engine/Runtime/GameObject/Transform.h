@@ -90,9 +90,9 @@ namespace SaplingEngine
 		 * \brief	获取forward向量
 		 * \return	forward向量
 		 */
-		Vector3 GetForward() const
+		Vector3 GetForward()
 		{
-			auto forward = m_Rotation * Vector3::Forward;
+			auto forward = GetRotation() * Vector3::Forward;
 			forward.Normalize();
 			return forward;
 		}
@@ -101,9 +101,9 @@ namespace SaplingEngine
 		 * \brief	获取right向量
 		 * \return	right向量
 		 */
-		Vector3 GetRight() const
+		Vector3 GetRight()
 		{
-			auto right = m_Rotation * Vector3::Right;
+			auto right = GetRotation() * Vector3::Right;
 			right.Normalize();
 			return right;
 		}
@@ -112,9 +112,9 @@ namespace SaplingEngine
 		 * \brief	获取up向量
 		 * \return	up向量
 		 */
-		Vector3 GetUp() const
+		Vector3 GetUp()
 		{
-			auto up = m_Rotation * Vector3::Up;
+			auto up = GetRotation() * Vector3::Up;
 			up.Normalize();
 			return up;
 		}

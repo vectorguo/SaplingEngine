@@ -1,3 +1,4 @@
+#include "Application/GameSetting.h"
 #include "Camera.h"
 #include "CameraManager.h"
 #include "GameObject/GameObject.h"
@@ -31,11 +32,17 @@ namespace SaplingEngine
 
 	void Camera::Awake()
 	{
+		//初始化窗口参数
+		m_WindowWidth = static_cast<float>(GameSetting::ScreenWidth());
+		m_WindowHeight = static_cast<float>(GameSetting::ScreenHeight());
+
+		//添加相机到CameraManager
 		CameraManager::AddCamera(std::static_pointer_cast<Camera>(shared_from_this()));
 	}
 
 	void Camera::OnDestroy()
 	{
+		//从CameraManager中删除相机
 		CameraManager::RemoveCamera(std::static_pointer_cast<Camera>(shared_from_this()));
 	}
 

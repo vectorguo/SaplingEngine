@@ -34,14 +34,14 @@ namespace SaplingEngine
 	*/
 	const Vector3& Transform::GetPosition()
 	{
-		if (IsDirty(0x02))
+		if (IsDirty(0x04))
 		{
 			//局部坐标系下的位置有更新，需要将局部坐标系下的位置转换成世界坐标系下的位置
 			auto& localToWorldMatrix = m_GameObjectSptr->GetParent()->GetTransform()->GetLocalToWorldMatrix();
 			m_Position = localToWorldMatrix.MultiplyPoint(m_LocalPosition);
 
 			//清除脏标记
-			SetDirty(0x02, false);
+			SetDirty(0x04, false);
 		}
 		return m_Position;
 	}
@@ -52,14 +52,14 @@ namespace SaplingEngine
 	*/
 	const Quaternion& Transform::GetRotation()
 	{
-		if (IsDirty(0x04))
+		if (IsDirty(0x08))
 		{
 			//局部坐标系下的旋转有更新，需要将局部坐标系下的旋转转换成世界坐标系下的旋转
 			auto& parentRotation = m_GameObjectSptr->GetParent()->GetTransform()->GetRotation();
-			m_Rotation = m_LocalRotation * parentRotation;
+			m_Rotation = parentRotation * m_LocalRotation;
 
 			//清除脏标记
-			SetDirty(0x04, false);
+			SetDirty(0x08, false);
 		}
 		return m_Rotation;
 	}
@@ -70,6 +70,15 @@ namespace SaplingEngine
 	*/
 	const Vector3& Transform::GetLocalPosition()
 	{
+		if (IsDirty(0x01))
+		{
+			//世界坐标系下的位置有更新，需要将世界坐标系下的位置转换成局部坐标系下的位置
+			auto& worldToLocalMatrix = m_GameObjectSptr->GetParent()->GetTransform()->GetWorldToLocalMatrix();
+			m_LocalPosition = worldToLocalMatrix.MultiplyPoint(m_Position);
+
+			//清除脏标记
+			SetDirty(0x01, false);
+		}
 		return m_LocalPosition;
 	}
 
@@ -79,6 +88,15 @@ namespace SaplingEngine
 	*/
 	const Quaternion& Transform::GetLocalRotation()
 	{
+		if (IsDirty(0x02))
+		{
+			//世界坐标系下的旋转有更新，需要将世界坐标系下的旋转转换成局部坐标系下的旋转
+			auto& parentRotation = m_GameObjectSptr->GetParent()->GetTransform()->GetRotation();
+			m_LocalRotation = parentRotation.Inverse() * m_Rotation;
+
+			//清除脏标记
+			SetDirty(0x02, false);
+		}
 		return m_LocalRotation;
 	}
 
@@ -100,13 +118,13 @@ namespace SaplingEngine
 		m_Position = position;
 		if (m_GameObjectSptr->HasParent())
 		{
-			SetDirty(0x00, true);
-			SetDirty(0x02, false);
-			SetDirty(0x10, true);
+			SetDirty(0x01, true);
+			SetDirty(0x04, false);
+			SetDirty(0x20, true);
 		}
 		else
 		{
-			SetDirty(0x10, true);
+			SetDirty(0x20, true);
 			m_LocalPosition = position;
 		}
 	}
@@ -120,13 +138,13 @@ namespace SaplingEngine
 		m_Rotation = rotation;
 		if (m_GameObjectSptr->HasParent())
 		{
-			SetDirty(0x01, true);
-			SetDirty(0x04, false);
-			SetDirty(0x10, true);
+			SetDirty(0x02, true);
+			SetDirty(0x08, false);
+			SetDirty(0x20, true);
 		}
 		else
 		{
-			SetDirty(0x10, true);
+			SetDirty(0x20, true);
 			m_LocalRotation = rotation;
 		}
 	}
@@ -140,16 +158,15 @@ namespace SaplingEngine
 		m_LocalPosition = localPosition;
 		if (m_GameObjectSptr->HasParent())
 		{
-			SetDirty(0x00, false);
-			SetDirty(0x02, true);
-			SetDirty(0x10, true);
+			SetDirty(0x01, false);
+			SetDirty(0x04, true);
+			SetDirty(0x20, true);
 		}
 		else
 		{
-			SetDirty(0x10, true);
+			SetDirty(0x20, true);
 			m_Position = localPosition;
 		}
-
 	}
 
 	/**
@@ -161,13 +178,13 @@ namespace SaplingEngine
 		m_LocalRotation = localRotation;
 		if (m_GameObjectSptr->HasParent())
 		{
-			SetDirty(0x01, false);
-			SetDirty(0x04, true);
-			SetDirty(0x10, true);
+			SetDirty(0x02, false);
+			SetDirty(0x08, true);
+			SetDirty(0x20, true);
 		}
 		else
 		{
-			SetDirty(0x10, true);
+			SetDirty(0x20, true);
 			m_Rotation = localRotation;
 		}
 	}
@@ -181,12 +198,12 @@ namespace SaplingEngine
 		m_LocalScale = localScale;
 		if (m_GameObjectSptr->HasParent())
 		{
-			SetDirty(0x08, true);
 			SetDirty(0x10, true);
+			SetDirty(0x20, true);
 		}
 		else
 		{
-			SetDirty(0x10, true);
+			SetDirty(0x20, true);
 		}
 	}
 
@@ -195,8 +212,28 @@ namespace SaplingEngine
 	 */
 	void Transform::RefreshMatrix()
 	{
-		if (IsDirty(0x10))
+		if (IsDirty(0x20))
 		{
+			if (IsDirty(0x01))
+			{
+				//世界坐标系下的位置有更新，需要将世界坐标系下的位置转换成局部坐标系下的位置
+				auto& worldToLocalMatrix = m_GameObjectSptr->GetParent()->GetTransform()->GetWorldToLocalMatrix();
+				m_LocalPosition = worldToLocalMatrix.MultiplyPoint(m_Position);
+
+				//清除脏标记
+				SetDirty(0x01, false);
+			}
+
+			if (IsDirty(0x02))
+			{
+				//世界坐标系下的旋转有更新，需要将世界坐标系下的旋转转换成局部坐标系下的旋转
+				auto& parentRotation = m_GameObjectSptr->GetParent()->GetTransform()->GetRotation();
+				m_LocalRotation = parentRotation.Inverse() * m_Rotation;
+
+				//清除脏标记
+				SetDirty(0x02, false);
+			}
+
 			m_LocalToWorldMatrix = Matrix4x4::Scale(m_LocalScale) * Matrix4x4::Rotate(m_LocalRotation) * Matrix4x4::Translate(m_LocalPosition);
 			if (m_GameObjectSptr->HasParent())
 			{
@@ -204,7 +241,7 @@ namespace SaplingEngine
 			}
 			m_WorldToLocalMatrix = m_LocalToWorldMatrix.Inverse();
 
-			SetDirty(0x10, false);
+			SetDirty(0x20, false);
 		}
 	}
 }

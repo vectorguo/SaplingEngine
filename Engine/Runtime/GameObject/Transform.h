@@ -92,7 +92,7 @@ namespace SaplingEngine
 		 */
 		Vector3 GetForward() const
 		{
-			auto forward = m_Rotation.operator*(Vector3::Forward);
+			auto forward = m_Rotation * Vector3::Forward;
 			forward.Normalize();
 			return forward;
 		}
@@ -103,7 +103,7 @@ namespace SaplingEngine
 		 */
 		Vector3 GetRight() const
 		{
-			auto right = m_Rotation.operator*(Vector3::Right);
+			auto right = m_Rotation * Vector3::Right;
 			right.Normalize();
 			return right;
 		}
@@ -114,7 +114,7 @@ namespace SaplingEngine
 		 */
 		Vector3 GetUp() const
 		{
-			auto up = m_Rotation.operator*(Vector3::Up);
+			auto up = m_Rotation * Vector3::Up;
 			up.Normalize();
 			return up;
 		}
@@ -138,12 +138,12 @@ namespace SaplingEngine
 	private:
 		/**
 		 * \brief	对应标记的数据是否是脏数据
-		 *			0x00: 世界空间下的位置
-		 *			0x01: 世界空间下的旋转
-		 *			0x02: 局部空间下的位置
-		 *			0x04: 局部空间下的旋转
-		 *			0x08: 局部空间下的缩放
-		 *			0x10: 变换矩阵
+		 *			0x01: 世界空间下的位置
+		 *			0x02: 世界空间下的旋转
+		 *			0x04: 局部空间下的位置
+		 *			0x08: 局部空间下的旋转
+		 *			0x10: 局部空间下的缩放
+		 *			0x20: 变换矩阵
 		 * \param	flag		标记类型
 		 */
 		inline bool IsDirty(uint8_t flag) const
@@ -153,12 +153,12 @@ namespace SaplingEngine
 
 		/**
 		 * \brief	设置对应标记的数据是脏数据
-		 *			0x00: 世界空间下的位置
-		 *			0x01: 世界空间下的旋转
-		 *			0x02: 局部空间下的位置
-		 *			0x04: 局部空间下的旋转
-		 *			0x08: 局部空间下的缩放
-		 * 			0x10: 变换矩阵
+		 *			0x01: 世界空间下的位置
+		 *			0x02: 世界空间下的旋转
+		 *			0x04: 局部空间下的位置
+		 *			0x08: 局部空间下的旋转
+		 *			0x10: 局部空间下的缩放
+		 * 			0x20: 变换矩阵
 		 * \param	flag		标记类型
 		 * \param	isDirty		是否是脏数据
 		 */
@@ -218,6 +218,6 @@ namespace SaplingEngine
 		/**
 		 * \brief	数据是否有变化
 		 */
-		uint8_t m_DirtyFlag = 0x10;
+		uint8_t m_DirtyFlag = 0x20;
 	};
 }

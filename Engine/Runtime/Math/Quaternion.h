@@ -44,7 +44,7 @@ namespace SaplingEngine
 				return Vector3(XMVector3TransformNormal(v, XMMatrixRotationQuaternion(XMLoadFloat4(&value))));
 			}
 
-			operator XMVECTOR() const
+			inline operator XMVECTOR() const
 			{
 				return XMLoadFloat4(&value);
 			}
@@ -57,11 +57,16 @@ namespace SaplingEngine
 				this->w = w;
 			}
 
+			Quaternion Inverse() const
+			{
+				return Quaternion(XMQuaternionInverse(XMLoadFloat4(&value)));
+			}
+
 			void Normalize()
 			{
 				XMStoreFloat4(&value, XMQuaternionNormalize(XMLoadFloat4(&value)));
 			}
-			
+		
 			/*
 			 * Creates a rotation which rotates angle degrees around axis
 			 */

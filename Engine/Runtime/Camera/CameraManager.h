@@ -13,7 +13,7 @@ namespace SaplingEngine
 		 * \brief 获取所有相机
 		 * \return 相机列表
 		 */
-		static const CameraList& GetCameras()
+		static const std::vector<Camera*>& GetCameras()
 		{
 			return m_Cameras;
 		}
@@ -31,11 +31,11 @@ namespace SaplingEngine
 		static void OnSceneResize(uint32_t width, uint32_t height);
 		
 	private:
-		static void AddCamera(CameraSptr&& pCamera);
-		static void RemoveCamera(const CameraSptr& pCamera);
+		static void AddCamera(Camera* pCamera);
+		static void RemoveCamera(Camera* pCamera);
 		static void SortCamera();
 		
 	private:
-		static CameraList m_Cameras;
+		static std::vector<Camera*> m_Cameras;
 	};
 }

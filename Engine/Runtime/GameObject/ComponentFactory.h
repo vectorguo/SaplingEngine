@@ -4,8 +4,6 @@
 
 namespace SaplingEngine
 {
-	class Component;
-	
 	class ComponentFactory final
 	{
 		friend class GameObject;

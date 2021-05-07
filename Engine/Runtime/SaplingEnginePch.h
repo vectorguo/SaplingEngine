@@ -41,15 +41,47 @@
 #include "Math/Vector3.h"
 #include "Math/Vector4.h"
 
+/*
+ * Memory
+ */
+#include "Memory/SharedPtr.h"
+
+/*
+ * Utility
+ */
 #include "Utility/Exception.h"
 #include "Utility/Log.h"
 #include "Utility/Singleton.h"
 #include "Utility/Time.h"
 #include "Utility/Utility.h"
 
-using SaplingEngine::Math::Color;
-using SaplingEngine::Math::Matrix4x4;
-using SaplingEngine::Math::Quaternion;
-using SaplingEngine::Math::Vector2;
-using SaplingEngine::Math::Vector3;
-using SaplingEngine::Math::Vector4;
+namespace SaplingEngine
+{
+	using Math::Color;
+	using Math::Matrix4x4;
+	using Math::Quaternion;
+	using Math::Vector2;
+	using Math::Vector3;
+	using Math::Vector4;
+
+	/*
+	 * Ç°ÏòÉùÃ÷
+	 */
+	class Component;
+	class Camera;
+	class MeshRenderer;
+	class Renderer;
+	class Transform;
+
+	class GameObject;
+
+	class Scene;
+
+	using ComponentSptr		= SharedPtr<Component>;
+	using CameraSptr		= SharedPtr<Camera>;
+	using TransformSptr		= SharedPtr<Transform>;
+	using GameObjectSptr	= SharedPtr<GameObject>;
+
+	using ComponentList = std::vector<ComponentSptr>;
+	using GameObjectList = std::vector<GameObjectSptr>;
+}

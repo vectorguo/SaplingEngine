@@ -37,7 +37,7 @@ namespace SaplingEngine
 		if (IsDirty(0x04))
 		{
 			//局部坐标系下的位置有更新，需要将局部坐标系下的位置转换成世界坐标系下的位置
-			auto& localToWorldMatrix = m_GameObjectSptr->GetParent()->GetTransform()->GetLocalToWorldMatrix();
+			auto& localToWorldMatrix = m_GameObjectPtr->GetParent()->GetTransform()->GetLocalToWorldMatrix();
 			m_Position = localToWorldMatrix.MultiplyPoint(m_LocalPosition);
 
 			//清除脏标记
@@ -55,7 +55,7 @@ namespace SaplingEngine
 		if (IsDirty(0x08))
 		{
 			//局部坐标系下的旋转有更新，需要将局部坐标系下的旋转转换成世界坐标系下的旋转
-			auto& parentRotation = m_GameObjectSptr->GetParent()->GetTransform()->GetRotation();
+			auto& parentRotation = m_GameObjectPtr->GetParent()->GetTransform()->GetRotation();
 			m_Rotation = parentRotation * m_LocalRotation;
 
 			//清除脏标记
@@ -73,7 +73,7 @@ namespace SaplingEngine
 		if (IsDirty(0x01))
 		{
 			//世界坐标系下的位置有更新，需要将世界坐标系下的位置转换成局部坐标系下的位置
-			auto& worldToLocalMatrix = m_GameObjectSptr->GetParent()->GetTransform()->GetWorldToLocalMatrix();
+			auto& worldToLocalMatrix = m_GameObjectPtr->GetParent()->GetTransform()->GetWorldToLocalMatrix();
 			m_LocalPosition = worldToLocalMatrix.MultiplyPoint(m_Position);
 
 			//清除脏标记
@@ -91,7 +91,7 @@ namespace SaplingEngine
 		if (IsDirty(0x02))
 		{
 			//世界坐标系下的旋转有更新，需要将世界坐标系下的旋转转换成局部坐标系下的旋转
-			auto& parentRotation = m_GameObjectSptr->GetParent()->GetTransform()->GetRotation();
+			auto& parentRotation = m_GameObjectPtr->GetParent()->GetTransform()->GetRotation();
 			m_LocalRotation = parentRotation.Inverse() * m_Rotation;
 
 			//清除脏标记
@@ -116,7 +116,7 @@ namespace SaplingEngine
 	void Transform::SetPosition(const Vector3& position)
 	{
 		m_Position = position;
-		if (m_GameObjectSptr->HasParent())
+		if (m_GameObjectPtr->HasParent())
 		{
 			SetDirty(0x01, true);
 			SetDirty(0x04, false);
@@ -136,7 +136,7 @@ namespace SaplingEngine
 	void Transform::SetRotation(const Quaternion& rotation)
 	{
 		m_Rotation = rotation;
-		if (m_GameObjectSptr->HasParent())
+		if (m_GameObjectPtr->HasParent())
 		{
 			SetDirty(0x02, true);
 			SetDirty(0x08, false);
@@ -156,7 +156,7 @@ namespace SaplingEngine
 	void Transform::SetLocalPosition(const Vector3& localPosition)
 	{
 		m_LocalPosition = localPosition;
-		if (m_GameObjectSptr->HasParent())
+		if (m_GameObjectPtr->HasParent())
 		{
 			SetDirty(0x01, false);
 			SetDirty(0x04, true);
@@ -176,7 +176,7 @@ namespace SaplingEngine
 	void Transform::SetLocalRotation(const Quaternion& localRotation)
 	{
 		m_LocalRotation = localRotation;
-		if (m_GameObjectSptr->HasParent())
+		if (m_GameObjectPtr->HasParent())
 		{
 			SetDirty(0x02, false);
 			SetDirty(0x08, true);
@@ -196,7 +196,7 @@ namespace SaplingEngine
 	void Transform::SetLocalScale(const Vector3& localScale)
 	{
 		m_LocalScale = localScale;
-		if (m_GameObjectSptr->HasParent())
+		if (m_GameObjectPtr->HasParent())
 		{
 			SetDirty(0x10, true);
 			SetDirty(0x20, true);
@@ -217,7 +217,7 @@ namespace SaplingEngine
 			if (IsDirty(0x01))
 			{
 				//世界坐标系下的位置有更新，需要将世界坐标系下的位置转换成局部坐标系下的位置
-				auto& worldToLocalMatrix = m_GameObjectSptr->GetParent()->GetTransform()->GetWorldToLocalMatrix();
+				auto& worldToLocalMatrix = m_GameObjectPtr->GetParent()->GetTransform()->GetWorldToLocalMatrix();
 				m_LocalPosition = worldToLocalMatrix.MultiplyPoint(m_Position);
 
 				//清除脏标记
@@ -227,7 +227,7 @@ namespace SaplingEngine
 			if (IsDirty(0x02))
 			{
 				//世界坐标系下的旋转有更新，需要将世界坐标系下的旋转转换成局部坐标系下的旋转
-				auto& parentRotation = m_GameObjectSptr->GetParent()->GetTransform()->GetRotation();
+				auto& parentRotation = m_GameObjectPtr->GetParent()->GetTransform()->GetRotation();
 				m_LocalRotation = parentRotation.Inverse() * m_Rotation;
 
 				//清除脏标记
@@ -235,9 +235,9 @@ namespace SaplingEngine
 			}
 
 			m_LocalToWorldMatrix = Matrix4x4::Scale(m_LocalScale) * Matrix4x4::Rotate(m_LocalRotation) * Matrix4x4::Translate(m_LocalPosition);
-			if (m_GameObjectSptr->HasParent())
+			if (m_GameObjectPtr->HasParent())
 			{
-				m_LocalToWorldMatrix *= m_GameObjectSptr->GetParentSptr()->GetTransform()->GetLocalToWorldMatrix();
+				m_LocalToWorldMatrix *= m_GameObjectPtr->GetParentSptr()->GetTransform()->GetLocalToWorldMatrix();
 			}
 			m_WorldToLocalMatrix = m_LocalToWorldMatrix.Inverse();
 

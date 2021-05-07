@@ -5,7 +5,7 @@
 namespace SaplingEngine
 {
 	//静态成员初始化
-	CameraList CameraManager::m_Cameras;
+	std::vector<Camera*> CameraManager::m_Cameras;
 	
 	/**
 	 * \brief 销毁
@@ -28,7 +28,7 @@ namespace SaplingEngine
 		}
 	}
 
-	void CameraManager::AddCamera(CameraSptr&& pCamera)
+	void CameraManager::AddCamera(Camera* pCamera)
 	{
 		m_Cameras.push_back(pCamera);
 
@@ -36,7 +36,7 @@ namespace SaplingEngine
 		SortCamera();
 	}
 
-	void CameraManager::RemoveCamera(const CameraSptr& pCamera)
+	void CameraManager::RemoveCamera(Camera* pCamera)
 	{
 		for (auto iter = m_Cameras.begin(); iter != m_Cameras.end(); ++iter)
 		{
@@ -50,9 +50,9 @@ namespace SaplingEngine
 
 	void CameraManager::SortCamera()
 	{
-		std::sort(m_Cameras.begin(), m_Cameras.end(), [](const CameraSptr& c1, const CameraSptr& c2)
+		std::sort(m_Cameras.begin(), m_Cameras.end(), [](const Camera* pCamera1, const Camera* pCamera2)
 			{
-				return c1->GetPriority() < c2->GetPriority();
+				return pCamera1->GetPriority() < pCamera2->GetPriority();
 			});
 	}
 }

@@ -4,11 +4,7 @@
 
 namespace SaplingEngine
 {
-	class GameObject;
-	class Transform;
-	using TransformSptr = std::shared_ptr<Transform>;
-	
-	class Component : public std::enable_shared_from_this<Component>
+	class Component
 	{
 		friend class GameObject;
 
@@ -44,21 +40,36 @@ namespace SaplingEngine
 		}
 
 		/**
+		 * \brief	添加组件
+		 */
+		template<typename T>
+		SharedPtr<T> AddComponent();
+
+		/**
+		 * \brief	销毁组件
+		 */
+		template<typename T>
+		void DestroyComponent();
+
+		/**
+		 * \brief	获取组件
+		 */
+		template<typename T>
+		SharedPtr<T> GetComponent();
+
+		/**
+		 * \brief	是否已经添加某组类型的组件
+		 */
+		template<typename T>
+		bool HasComponent();
+
+		/**
 		 * \brief	获取GameObject指针
 		 * \return	GameObject指针
 		 */
 		GameObject* GetGameObject() const
 		{
-			return m_GameObjectSptr.get();
-		}
-
-		/**
-		 * \brief	获取GameObject智能指针
-		 * \return	GameObject智能指针
-		 */
-		const std::shared_ptr<GameObject>& GetGameObjectSptr() const
-		{
-			return m_GameObjectSptr;
+			return m_GameObjectPtr;
 		}
 
 		/**
@@ -144,12 +155,6 @@ namespace SaplingEngine
 		}
 
 	private:
-		void SetGameObject(std::shared_ptr<GameObject> pOwner)
-		{
-			m_GameObjectSptr.swap(pOwner);
-		}
-		
-	private:
 		/**
 		 * \brief	 组件类型
 		 */
@@ -159,7 +164,7 @@ namespace SaplingEngine
 		/**
 		 * \brief	 组件所在对象
 		 */
-		std::shared_ptr<GameObject> m_GameObjectSptr;
+		GameObject* m_GameObjectPtr = nullptr;
 
 		/**
 		 * \brief	是否处于活动状态
@@ -171,8 +176,4 @@ namespace SaplingEngine
 		 */
 		bool m_IsDestroyed = false;
 	};
-
-	using ComponentSptr = std::shared_ptr<Component>;
-	using ComponentList = std::vector<ComponentSptr>;
-	using ComponentMap = std::map<uint32_t, ComponentSptr>;
 }

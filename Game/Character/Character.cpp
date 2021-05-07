@@ -17,7 +17,7 @@ namespace Warcraft
 	 */
 	void Character::Start()
 	{
-		auto meshRenderer = m_GameObjectSptr->AddComponent<MeshRenderer>();
+		auto meshRenderer = m_GameObjectPtr->AddComponent<MeshRenderer>();
 		auto* pMaterial = meshRenderer->SetMaterial("Opaque");
 		pMaterial->SetColor("baseColor", Color::Red);
 

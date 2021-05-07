@@ -58,15 +58,15 @@ namespace SaplingEngine
 
 		//执行Render Pass
 		const auto& cameras = CameraManager::GetCameras();
-		for (const auto& pCamera : cameras)
+		for (auto* pCamera : cameras)
 		{
 			//更新常量缓冲区数据
-			UpdateCbvData(pCamera.get());
+			UpdateCbvData(pCamera);
 
 			//渲染Pass
 			for (auto iter = renderPasses.begin(); iter != renderPasses.end(); ++iter)
 			{
-				(*iter)->Render(pCamera.get());
+				(*iter)->Render(pCamera);
 			}
 		}
 		

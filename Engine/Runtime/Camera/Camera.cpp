@@ -37,13 +37,13 @@ namespace SaplingEngine
 		m_WindowHeight = static_cast<float>(GameSetting::ScreenHeight());
 
 		//添加相机到CameraManager
-		CameraManager::AddCamera(std::static_pointer_cast<Camera>(shared_from_this()));
+		CameraManager::AddCamera(this);
 	}
 
 	void Camera::OnDestroy()
 	{
 		//从CameraManager中删除相机
-		CameraManager::RemoveCamera(std::static_pointer_cast<Camera>(shared_from_this()));
+		CameraManager::RemoveCamera(this);
 	}
 
 	/**
@@ -52,7 +52,7 @@ namespace SaplingEngine
 	void Camera::RefreshMatrix()
 	{
 		//计算视图矩阵
-		m_WorldToViewMatrix = m_GameObjectSptr->GetTransform()->GetWorldToLocalMatrix();
+		m_WorldToViewMatrix = GetTransform()->GetWorldToLocalMatrix();
 
 		if (m_IsDirty)
 		{

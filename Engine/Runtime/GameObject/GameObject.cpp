@@ -1,20 +1,12 @@
-#include "GameObject.h"
-#include "ComponentFactory.h"
+#include "GameObject/Component.h"
+#include "GameObject/ComponentFactory.h"
+#include "GameObject/GameObject.h"
+#include "GameObject/Transform.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneManager.h"
-#include "Transform.h"
 
 namespace SaplingEngine
 {
-	/**
-	 * \brief Ïú»ÙGameObject
-	 * \param gameObject go
-	 */
-	void DestroyGameObject(const GameObjectSptr& gameObject)
-	{
-		gameObject->m_IsDestroyed = true;
-	}
-	
 	ComponentList GameObject::newComponents;
 	ComponentList GameObject::destroyedComponents;
 
@@ -78,9 +70,9 @@ namespace SaplingEngine
 				}
 				else
 				{
-					auto* pComponent = iter2->get();
+					auto* pComponent = iter2->Get();
 					pComponent->OnDestroy();
-					pComponent->m_GameObjectSptr = nullptr;
+					pComponent->m_GameObjectPtr = nullptr;
 					pComponent->m_IsDestroyed = true;
 					pGameObject->m_Components.erase(iter2);
 				}
@@ -104,7 +96,7 @@ namespace SaplingEngine
 		}
 		else
 		{
-			m_Transform = AddComponent<Transform>();
+			m_TransformSptr = AddComponent<Transform>();
 		}
 		return true;
 	}
@@ -130,7 +122,7 @@ namespace SaplingEngine
 		{
 			m_Parent->m_Children.erase(std::find_if(m_Parent->m_Children.begin(), m_Parent->m_Children.end(), [this](const GameObjectSptr& pChild)
 			{
-				return pChild.get() == this;
+				return pChild.Get() == this;
 			}));
 			m_Parent = nullptr;
 		}
@@ -187,7 +179,7 @@ namespace SaplingEngine
 		{
 			m_Parent->m_Children.erase(std::find_if(m_Parent->m_Children.begin(), m_Parent->m_Children.end(), [this](const GameObjectSptr& pChild)
 			{
-				return pChild.get() == this;
+				return pChild.Get() == this;
 			}));
 		}
 
@@ -263,12 +255,12 @@ namespace SaplingEngine
 	{
 		newComponents.emplace_back(pComponent);
 
-		pComponent->SetGameObject(shared_from_this());
+		pComponent->m_GameObjectPtr = this;
 		pComponent->Awake();
 
 		if (componentType == ComponentType_Transform)
 		{
-			m_Transform = std::static_pointer_cast<Transform>(*newComponents.rbegin());
+			m_TransformSptr = StaticPointerCast<Transform>(*newComponents.rbegin());
 		}
 	}
 
@@ -282,9 +274,9 @@ namespace SaplingEngine
 		{
 			if ((*iter)->GetGameObject() == this)
 			{
-				auto* pComponent = iter->get();
+				auto* pComponent = iter->Get();
 				pComponent->OnDestroy();
-				pComponent->m_GameObjectSptr = nullptr;
+				pComponent->m_GameObjectPtr = nullptr;
 				pComponent->m_IsDestroyed = true;
 				iter = newComponents.erase(iter);
 			}
@@ -308,9 +300,9 @@ namespace SaplingEngine
 
 		for (auto iter = m_Components.begin(); iter != m_Components.end(); ++iter)
 		{
-			auto* pComponent = iter->get();
+			auto* pComponent = iter->Get();
 			pComponent->OnDestroy();
-			pComponent->m_GameObjectSptr = nullptr;
+			pComponent->m_GameObjectPtr = nullptr;
 			pComponent->m_IsDestroyed = true;
 		}
 		m_Components.clear();
@@ -321,5 +313,14 @@ namespace SaplingEngine
 			child->m_Parent = nullptr;
 		}
 		m_Children.clear();
+	}
+
+	/**
+	 * \brief Ïú»ÙGameObject
+	 * \param gameObject go
+	 */
+	void DestroyGameObject(const GameObjectSptr& gameObject)
+	{
+		gameObject->m_IsDestroyed = true;
 	}
 }

@@ -1,23 +1,10 @@
 #pragma once
 
 #include "SaplingEnginePch.h"
-#include "Component.h"
-#include "Transform.h"
 
 namespace SaplingEngine
 {
-	class GameObject;
-	class Scene;
-	
-	using GameObjectSptr = std::shared_ptr<GameObject>;
-	using GameObjectList = std::vector<GameObjectSptr>;
-	
-	/*
-	 * 销毁GameObject
-	 */
-	void DestroyGameObject(const GameObjectSptr& gameObject);
-	
-	class GameObject : public std::enable_shared_from_this<GameObject>
+	class GameObject
 	{
 		friend void DestroyGameObject(const GameObjectSptr&);
 		
@@ -102,16 +89,7 @@ namespace SaplingEngine
 		 */
 		const TransformSptr& GetTransformSptr() const
 		{
-			return m_Transform;
-		}
-
-		/**
-		 * \brief 获取Transform
-		 * \return Transform
-		 */
-		TransformSptr& GetTransformSptr()
-		{
-			return m_Transform;
+			return m_TransformSptr;
 		}
 
 		/**
@@ -120,7 +98,7 @@ namespace SaplingEngine
 		 */
 		Transform* GetTransform() const
 		{
-			return m_Transform.get();
+			return m_TransformSptr.Get();
 		}
 
 		/**
@@ -138,7 +116,7 @@ namespace SaplingEngine
 		 */
 		GameObject* GetParent() const
 		{
-			return m_Parent.get();
+			return m_Parent.Get();
 		}
 
 		/**
@@ -169,25 +147,25 @@ namespace SaplingEngine
 		 * \brief	添加组件
 		 */
 		template<typename T>
-		std::shared_ptr<T> AddComponent();
-
-		/**
-		 * \brief	获取组件
-		 */
-		template<typename T>
-		std::shared_ptr<T> GetComponent();
-
-		/**
-		 * \brief	是否已经添加某组类型的组件
-		 */
-		template<typename T>
-		bool HasComponent();
+		SharedPtr<T> AddComponent();
 
 		/**
 		 * \brief	销毁组件
 		 */
 		template<typename T>
 		void DestroyComponent();
+
+		/**
+		 * \brief	获取组件
+		 */
+		template<typename T>
+		SharedPtr<T> GetComponent();
+
+		/**
+		 * \brief	是否已经添加某组类型的组件
+		 */
+		template<typename T>
+		bool HasComponent();
 		
 		/**
 		 * \brief 序列化
@@ -226,11 +204,6 @@ namespace SaplingEngine
 		std::string m_Name;
 
 		/**
-		 * \brief LayerMask
-		 */
-		int32_t m_LayerMask = 1;
-
-		/**
 		 * \brief 是否处于活动状态
 		 */
 		bool m_IsActive = true;
@@ -239,6 +212,11 @@ namespace SaplingEngine
 		 * \brief 是否被标记销毁
 		 */
 		bool m_IsDestroyed = false;
+
+		/**
+		 * \brief LayerMask
+		 */
+		int32_t m_LayerMask = 1;
 		
 		/*
 		 * 所有组件
@@ -248,7 +226,7 @@ namespace SaplingEngine
 		/**
 		 * \brief transform组件
 		 */
-		TransformSptr m_Transform;
+		TransformSptr m_TransformSptr;
 
 		/**
 		 * \brief 父节点
@@ -278,16 +256,21 @@ namespace SaplingEngine
 	};
 
 	/*
+	 * 销毁GameObject
+	 */
+	void DestroyGameObject(const GameObjectSptr& gameObject);
+
+	/*
 	 * inline functions
 	 */
 	template <typename T>
-	std::shared_ptr<T> GameObject::AddComponent()
+	SharedPtr<T> GameObject::AddComponent()
 	{
 		if (!HasComponent<T>())
 		{
-			auto componentPtr = std::make_shared<T>();
+			auto componentPtr = MakeShared<T>();
 			newComponents.emplace_back(componentPtr);
-			componentPtr->SetGameObject(shared_from_this());
+			componentPtr->m_GameObjectPtr = this;
 			componentPtr->Awake();
 			return componentPtr;
 		}
@@ -298,14 +281,27 @@ namespace SaplingEngine
 	}
 
 	template <typename T>
-	std::shared_ptr<T> GameObject::GetComponent()
+	void GameObject::DestroyComponent()
 	{
-		for (auto iter = newComponents.begin(); iter != newComponents.end(); ++iter)
+		auto componentSptr = GetComponent<T>();
+		if (componentSptr != nullptr)
 		{
-			auto& componentSptr = *iter;
-			if (componentSptr->GetGameObject() == this && componentSptr->GetComponentType() == T::GetStaticComponentType())
+			destroyedComponents.emplace_back(std::move(componentSptr));
+		}
+	}
+
+	template <typename T>
+	SharedPtr<T> GameObject::GetComponent()
+	{
+		if (!newComponents.empty())
+		{
+			for (auto iter = newComponents.begin(); iter != newComponents.end(); ++iter)
 			{
-				return std::static_pointer_cast<T>(componentSptr);
+				auto& componentSptr = *iter;
+				if (componentSptr->GetGameObject() == this && componentSptr->GetComponentType() == T::GetStaticComponentType())
+				{
+					return StaticPointerCast<T>(componentSptr);
+				}
 			}
 		}
 
@@ -313,18 +309,21 @@ namespace SaplingEngine
 			{
 				return componentSptr->GetComponentType() == T::GetStaticComponentType();
 			});
-		return iter == m_Components.end() ? nullptr : std::static_pointer_cast<T>(*iter);
+		return iter == m_Components.end() ? nullptr : StaticPointerCast<T>(*iter);
 	}
 
 	template <typename T>
 	bool GameObject::HasComponent()
 	{
-		for (auto iter = newComponents.begin(); iter != newComponents.end(); ++iter)
+		if (!newComponents.empty())
 		{
-			auto pComponent = iter->get();
-			if (pComponent->GetGameObject() == this && pComponent->GetComponentType() == T::GetStaticComponentType())
+			for (auto iter = newComponents.begin(); iter != newComponents.end(); ++iter)
 			{
-				return true;
+				auto pComponent = iter->get();
+				if (pComponent->GetGameObject() == this && pComponent->GetComponentType() == T::GetStaticComponentType())
+				{
+					return true;
+				}
 			}
 		}
 
@@ -335,13 +334,27 @@ namespace SaplingEngine
 		return iter != m_Components.end();
 	}
 
-	template <typename T>
-	void GameObject::DestroyComponent()
+	template<typename T>
+	inline SharedPtr<T> Component::AddComponent()
 	{
-		auto componentSptr = GetComponent<T>();
-		if (componentSptr != nullptr)
-		{
-			destroyedComponents.emplace_back(std::move(componentSptr));
-		}
+		return m_GameObjectPtr->AddComponent<T>();
+	}
+
+	template<typename T>
+	inline void Component::DestroyComponent()
+	{
+		m_GameObjectPtr->DestroyComponent<T>();
+	}
+	
+	template<typename T>
+	inline SharedPtr<T> Component::GetComponent()
+	{
+		return m_GameObjectPtr->GetComponent<T>();
+	}
+	
+	template<typename T>
+	inline bool Component::HasComponent()
+	{
+		return m_GameObjectPtr->HasComponent<T>();
 	}
 }

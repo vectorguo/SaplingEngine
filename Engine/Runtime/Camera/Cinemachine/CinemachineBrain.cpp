@@ -67,7 +67,7 @@ namespace SaplingEngine
 
     void CinemachineBrain::Start()
     {
-        m_CameraSptr = m_GameObjectSptr->GetComponent<Camera>();
+        m_CameraSptr = GetComponent<Camera>();
         if (m_CameraSptr == nullptr)
         {
             throw new Exception("CinemachineBrain的对象上没有Camera组件");
@@ -82,7 +82,7 @@ namespace SaplingEngine
         }
 
         //同步虚拟相机位置参数给真实相机
-        auto* pTransform = m_GameObjectSptr->GetTransform();
+        auto* pTransform = GetTransform();
         pTransform->SetPosition(m_pCurrentVirtualCamera->GetTransform()->GetPosition());
     }
 }

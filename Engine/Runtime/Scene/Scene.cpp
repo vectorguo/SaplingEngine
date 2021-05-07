@@ -14,7 +14,7 @@ namespace SaplingEngine
 	 */
 	Scene::Scene(const std::string& sceneName) : m_SceneName(sceneName), m_IsActive(false)
 	{
-		
+		 
 	}
 
 	Scene::~Scene() = default;

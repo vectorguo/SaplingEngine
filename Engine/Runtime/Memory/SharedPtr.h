@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <new>
 #include <utility>
 
 namespace SaplingEngine
@@ -8,36 +9,36 @@ namespace SaplingEngine
 	template <typename T1>
 	class SharedPtr
 	{
-		template <typename TY1, typename... Params>
-		friend SharedPtr<TY1> MakeShared(Params&&... params) noexcept;
+		template <typename T1, typename... Params>
+		friend SharedPtr<T1> MakeShared(Params&&... params) noexcept;
 
-		template <typename TY1, typename TY2>
-		friend SharedPtr<T1> StaticPointerCast(const SharedPtr<TY2>& other) noexcept;
+		template <typename T1, typename T2>
+		friend SharedPtr<T1> StaticPointerCast(const SharedPtr<T2>& other) noexcept;
 
-		template <typename TY1, typename TY2>
-		friend SharedPtr<T1> StaticPointerCast(SharedPtr<TY2>&& other) noexcept;
+		template <typename T1, typename T2>
+		friend SharedPtr<T1> StaticPointerCast(SharedPtr<T2>&& other) noexcept;
 
-		template <typename TY1, typename TY2>
-		friend SharedPtr<T1> ConstPointerCast(const SharedPtr<TY2>& other) noexcept;
+		template <typename T1, typename T2>
+		friend SharedPtr<T1> ConstPointerCast(const SharedPtr<T2>& other) noexcept;
 
-		template <typename TY1, typename TY2>
-		friend SharedPtr<T1> ConstPointerCast(SharedPtr<TY2>&& other) noexcept;
+		template <typename T1, typename T2>
+		friend SharedPtr<T1> ConstPointerCast(SharedPtr<T2>&& other) noexcept;
 
-		template <typename TY1, typename TY2>
-		friend SharedPtr<T1> ReinterpretPointerCast(const SharedPtr<TY2>& other) noexcept;
+		template <typename T1, typename T2>
+		friend SharedPtr<T1> ReinterpretPointerCast(const SharedPtr<T2>& other) noexcept;
 
-		template <typename TY1, typename TY2>
-		friend SharedPtr<T1> ReinterpretPointerCast(SharedPtr<TY2>&& other) noexcept;
+		template <typename T1, typename T2>
+		friend SharedPtr<T1> ReinterpretPointerCast(SharedPtr<T2>&& other) noexcept;
 
 	public:
 		using ElementType = T1;
 
 	private:
-		SharedPtr(T1* pointer) noexcept :
+		SharedPtr(T1* pointer, int32_t* refCountPtr) noexcept :
 			m_Pointer(pointer),
-			m_RefCountPtr(new int32_t)
+			m_RefCountPtr(refCountPtr)
 		{
-			*m_RefCountPtr = 1;
+			IncRef();
 		}
 
 		template <typename T2>
@@ -177,8 +178,8 @@ namespace SaplingEngine
 
 		void Destroy()
 		{
-			delete m_Pointer;
-			delete m_RefCountPtr;
+			m_Pointer->~T1();
+			::operator delete(m_RefCountPtr);
 		}
 
 		void Swap(SharedPtr& other)
@@ -190,24 +191,27 @@ namespace SaplingEngine
 	private:
 		T1* m_Pointer = nullptr;
 		int32_t* m_RefCountPtr = nullptr;
-		int32_t m_Size = 0;
 	};
 
-	template <typename TY1, typename... Params>
-	SharedPtr<TY1> MakeShared(Params&&... params) noexcept
+	template <typename T1, typename... Params>
+	SharedPtr<T1> MakeShared(Params&&... params) noexcept
 	{
-		auto* pointer = new TY1(std::forward<Params>(params)...);
-		return SharedPtr<TY1>(pointer);
+		auto blockSize = sizeof(T) + sizeof(int32_t) + sizeof(int32_t);
+		auto* pRefCount = static_cast<int32_t>(::operator new(blockSize));
+		*pRefCount = 0;
+		*(pRefCount + 1) = blockSize;
+		auto* pointer = ::new (pSize + 2) T1(std::forward<Params>(params)...);
+		return SharedPtr<T1>(pointer);
 	}
 
-	template <typename TY1, typename TY2>
-	bool operator==(const SharedPtr<TY1>& left, const SharedPtr<TY2>& right) noexcept
+	template <typename T1, typename T2>
+	bool operator==(const SharedPtr<T1>& left, const SharedPtr<T2>& right) noexcept
 	{
 		return left.Get() == right.Get();
 	}
 
-	template <typename TY1, typename TY2>
-	bool operator!=(const SharedPtr<TY1>& left, const SharedPtr<TY2>& right) noexcept
+	template <typename T1, typename T2>
+	bool operator!=(const SharedPtr<T1>& left, const SharedPtr<T2>& right) noexcept
 	{
 		return left.Get() != right.Get();
 	}
@@ -236,45 +240,52 @@ namespace SaplingEngine
 		return nullptr != right.Get();
 	}
 
-	template <typename TY1, typename TY2>
-	SharedPtr<TY1> StaticPointerCast(const SharedPtr<TY2>& other) noexcept
+	template <typename T1, typename T2>
+	SharedPtr<T1> StaticPointerCast(const SharedPtr<T2>& other) noexcept
 	{
-		const auto pointer = static_cast<typename SharedPtr<TY1>::ElementType*>(other.Get());
-		return SharedPtr<TY1>(other, pointer);
+		const auto pointer = static_cast<typename SharedPtr<T1>::ElementType*>(other.Get());
+		return SharedPtr<T1>(other, pointer);
 	}
 
-	template <typename TY1, typename TY2>
-	SharedPtr<TY1> StaticPointerCast(SharedPtr<TY2>&& other) noexcept
+	template <typename T1, typename T2>
+	SharedPtr<T1> StaticPointerCast(SharedPtr<T2>&& other) noexcept
 	{
-		const auto pointer = static_cast<typename SharedPtr<TY1>::ElementType*>(other.Get());
-		return SharedPtr<TY1>(std::move(other), pointer);
+		const auto pointer = static_cast<typename SharedPtr<T1>::ElementType*>(other.Get());
+		return SharedPtr<T1>(std::move(other), pointer);
 	}
 
-	template <typename TY1, typename TY2>
-	SharedPtr<TY1> ConstPointerCast(const SharedPtr<TY2>& other) noexcept
+	template <typename T1, typename T2>
+	SharedPtr<T1> ConstPointerCast(const SharedPtr<T2>& other) noexcept
 	{
-		const auto pointer = const_cast<typename SharedPtr<TY1>::ElementType*>(other.Get());
-		return SharedPtr<TY1>(other, pointer);
+		const auto pointer = const_cast<typename SharedPtr<T1>::ElementType*>(other.Get());
+		return SharedPtr<T1>(other, pointer);
 	}
 
-	template <typename TY1, typename TY2>
-	SharedPtr<TY1> ConstPointerCast(SharedPtr<TY2>&& other) noexcept
+	template <typename T1, typename T2>
+	SharedPtr<T1> ConstPointerCast(SharedPtr<T2>&& other) noexcept
 	{
-		const auto pointer = const_cast<typename SharedPtr<TY1>::ElementType*>(other.Get());
-		return SharedPtr<TY1>(std::move(other), pointer);
+		const auto pointer = const_cast<typename SharedPtr<T1>::ElementType*>(other.Get());
+		return SharedPtr<T1>(std::move(other), pointer);
 	}
 
-	template <typename TY1, typename TY2>
-	SharedPtr<TY1> ReinterpretPointerCast(const SharedPtr<TY2>& other) noexcept
+	template <typename T1, typename T2>
+	SharedPtr<T1> ReinterpretPointerCast(const SharedPtr<T2>& other) noexcept
 	{
-		const auto pointer = reinterpret_cast<typename SharedPtr<TY1>::ElementType*>(other.Get());
-		return SharedPtr<TY1>(other, pointer);
+		const auto pointer = reinterpret_cast<typename SharedPtr<T1>::ElementType*>(other.Get());
+		return SharedPtr<T1>(other, pointer);
 	}
 
-	template <typename TY1, typename TY2>
-	SharedPtr<TY1> ReinterpretPointerCast(SharedPtr<TY2>&& other) noexcept
+	template <typename T1, typename T2>
+	SharedPtr<T1> ReinterpretPointerCast(SharedPtr<T2>&& other) noexcept
 	{
-		const auto pointer = reinterpret_cast<typename SharedPtr<TY1>::ElementType*>(other.Get());
-		return SharedPtr<TY1>(std::move(other), pointer);
+		const auto pointer = reinterpret_cast<typename SharedPtr<T1>::ElementType*>(other.Get());
+		return SharedPtr<T1>(std::move(other), pointer);
+	}
+
+	template <typename T>
+	SharedPtr<T> SharedFromThis(T* pointer)
+	{
+		auto* pRefCount = static_cast<int32_t*>(pointer) - 2;
+		return SharedPtr<T>(pointer, pRefCount);
 	}
 }

@@ -171,6 +171,12 @@
     <ClInclude Include="..\..\..\Engine\Runtime\GameObject\ComponentType.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Memory\SharedPtr.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Memory\Allocator.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Runtime\Utility\Time.cpp">
@@ -342,6 +348,9 @@
     </Filter>
     <Filter Include="Camera\Cinemachine">
       <UniqueIdentifier>{4e6896b6-6aa0-4d4d-82e8-5e7e9c2e2c95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory">
+      <UniqueIdentifier>{eb12a9e7-56b7-4d46-b420-c7b604dc92b5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

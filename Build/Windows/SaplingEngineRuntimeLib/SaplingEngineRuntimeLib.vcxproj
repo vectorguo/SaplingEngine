@@ -115,6 +115,8 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Math\Vector2.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Math\Vector3.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Math\Vector4.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Memory\Allocator.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Memory\SharedPtr.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Process\Process.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Process\ProcessManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\ConstantBufferData.h" />

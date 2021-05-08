@@ -25,11 +25,7 @@
     <gameObject name="ground" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="30" subType="0" material="ground" meshName="ground">
-                <material shader="Opaque">
-                    <property name="baseColor" type="2" r="1" g="0.945" b="0.627" a="1"/>
-                </material>
-            </component>
+            <component type="30" subType="0" material="ground" meshName="ground"/>
         </components>
         <children>
         </children>
@@ -38,11 +34,7 @@
     <gameObject name="ground_under" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="30" subType="0" material="ground_under" meshName="ground_under">
-                <material shader="Opaque">
-                    <property name="baseColor" type="2" r="0.647" g="0.396" b="0.259" a="1"/>
-                </material>
-            </component>
+            <component type="30" subType="0" material="ground_under" meshName="ground_under"/>
         </components>
         <children>
         </children>
@@ -51,11 +43,7 @@
     <gameObject name="ground_grass" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="30" subType="0" material="ground_grass" meshName="ground_grass">
-                <material shader="Opaque">
-                    <property name="baseColor" type="2" r="0.372" g="0.521" b="0.243" a="1"/>
-                </material>
-            </component>
+            <component type="30" subType="0" material="ground_grass" meshName="ground_grass"/>
         </components>
         <children>
         </children>
@@ -64,9 +52,7 @@
     <gameObject name="bridge" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="30" subType="0" material="bridge" meshName="bridge">
-                <material shader="Color"/>
-            </component>
+            <component type="30" subType="0" material="bridge" meshName="bridge"/>
         </components>
         <children>
         </children>
@@ -75,9 +61,7 @@
     <gameObject name="camp" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="30" subType="0" material="camp" meshName="camp">
-                <material shader="Color"/>
-            </component>
+            <component type="30" subType="0" material="camp" meshName="camp"/>
         </components>
         <children>
         </children>
@@ -86,9 +70,7 @@
     <gameObject name="road" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="30" subType="0" material="road" meshName="road">
-                <material shader="Color"/>
-            </component>
+            <component type="30" subType="0" material="road" meshName="road"/>
         </components>
         <children>
         </children>
@@ -97,9 +79,7 @@
     <gameObject name="rock" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="30" subType="0" material="rock" meshName="rock">
-                <material shader="Color"/>
-            </component>
+            <component type="30" subType="0" material="rock" meshName="rock"/>
         </components>
         <children>
         </children>

@@ -51,5 +51,5 @@ namespace Warcraft
 		void Update() override;
 	};
 
-	using CharacterSptr = std::shared_ptr<Character>;
+	using CharacterSptr = SharedPtr<Character>;
 }

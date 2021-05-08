@@ -17,14 +17,12 @@ namespace Warcraft
 	
 	void WarcraftGameMain::Start()
 	{
-		auto* pActiveScene = SaplingEngine::SceneManager::GetActiveScene();
-
 		//创建玩家角色
-		auto pCharacterObj = pActiveScene->CreateGameObject("Player");
+		auto pCharacterObj = CreateGameObject("Player");
 		m_PlayerSptr = pCharacterObj->AddComponent<Character>();
 
 		//初始化InputSystem
-		InputSystem::Initialize(m_PlayerSptr.get());
+		InputSystem::Initialize(m_PlayerSptr.Get());
 	}
 	
 	void WarcraftGameMain::Update()

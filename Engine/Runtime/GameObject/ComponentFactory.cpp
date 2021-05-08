@@ -11,32 +11,32 @@
 namespace SaplingEngine
 {
 	//静态成员初始化
-	std::function<Component* (uint32_t, int32_t)> ComponentFactory::m_CustomCreator;
+	std::function<ComponentSptr (uint32_t, int32_t)> ComponentFactory::m_CustomCreator;
 	
 	/**
-	 * \brief 根据组件类型创建组件
-	 * \param componentType 组件类型
-	 * \param componentSubType 组件子类型
-	 * \return 组件指针
+	 * \brief	根据组件类型创建组件
+	 * \param	componentType		组件类型
+	 * \param	componentSubType	组件子类型
+	 * \return	创建的组件的智能指针
 	 */
-	Component* ComponentFactory::CreateComponent(uint32_t componentType, int32_t componentSubType)
+	ComponentSptr ComponentFactory::CreateComponent(uint32_t componentType, int32_t componentSubType)
 	{
 		switch (componentType)
 		{
 			case 0:
 				throw Exception("illegal component type");
 			case ComponentType_Transform:
-				return new Transform();
+				return MakeShared<Transform>();
 			case ComponentType_Camera:
-				return new Camera();
+				return MakeShared<Camera>();
 			case ComponentType_CinemachineBrain:
-				return new CinemachineBrain();
+				return MakeShared<CinemachineBrain>();
 			case ComponentType_CinemachineVirtualCamera:
-				return new CinemachineVirtualCamera();
+				return MakeShared<CinemachineVirtualCamera>();
 			case ComponentType_Light:
-				return new Light();
+				return MakeShared<Light>();
 			case ComponentType_Renderer:
-				return componentSubType == 0 ? new MeshRenderer() : nullptr;
+				return componentSubType == 0 ? MakeShared<MeshRenderer>() : nullptr;
 			default:
 				return m_CustomCreator(componentType, componentSubType);
 		}

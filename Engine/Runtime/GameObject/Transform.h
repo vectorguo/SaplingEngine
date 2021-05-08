@@ -6,6 +6,8 @@ namespace SaplingEngine
 {
 	class Transform final : public Component
 	{
+		friend class GameObject;
+
 	public:
 		Transform();
 
@@ -18,13 +20,6 @@ namespace SaplingEngine
 		{
 			return ComponentType_Transform;
 		}
-
-		/**
-		 * \brief	反序列化
-		 * \param	pNode		配置节点指针
-		 * \return	反序列化是否成功
-		 */
-		bool Deserialize(const XmlNode* pNode) override;
 
 		/**
 		 * \brief	获取位置
@@ -55,19 +50,54 @@ namespace SaplingEngine
 		 * \return	缩放（不可修改）
 		 */
 		const Vector3& GetLocalScale();
+	
+
+		/**
+		 * \brief	获取forward向量
+		 * \return	forward向量
+		 */
+		Vector3 GetForward();
+
+		/**
+		 * \brief	获取right向量
+		 * \return	right向量
+		 */
+		Vector3 GetRight();
+
+		/**
+		 * \brief	获取up向量
+		 * \return	up向量
+		 */
+		Vector3 GetUp();
 		
+		/**
+		 * \brief	获取局部坐标到世界坐标的变换矩阵
+		 * \return	局部坐标到世界坐标的变换矩阵
+		 */
+		const Matrix4x4& GetLocalToWorldMatrix()
+		{
+			RefreshMatrix();
+			return m_LocalToWorldMatrix;
+		}
+
+		const Matrix4x4& GetWorldToLocalMatrix()
+		{
+			RefreshMatrix();
+			return m_WorldToLocalMatrix;
+		}
+
 		/**
 		 * \brief	设置位置
 		 * \param	position		位置
 		 */
 		void SetPosition(const Vector3& position);
-		
+
 		/**
 		 * \brief	设置旋转
 		 * \param	rotation		旋转
 		 */
 		void SetRotation(const Quaternion& rotation);
-		
+
 		/**
 		 * \brief	设置局部坐标下的位置
 		 * \param	localPosition	局部坐标下的位置
@@ -87,53 +117,59 @@ namespace SaplingEngine
 		void SetLocalScale(const Vector3& localScale);
 
 		/**
-		 * \brief	获取forward向量
-		 * \return	forward向量
+		 * \brief	获取parent指针
+		 * \return	parent指针
 		 */
-		Vector3 GetForward()
+		inline Transform* GetParent() const
 		{
-			auto forward = GetRotation() * Vector3::Forward;
-			forward.Normalize();
-			return forward;
+			return m_Parent;
 		}
 
 		/**
-		 * \brief	获取right向量
-		 * \return	right向量
+		 * \brief	获取parent的智能指针
+		 * \return	parent智能指针
 		 */
-		Vector3 GetRight()
+		inline TransformSptr GetParentSptr() const
 		{
-			auto right = GetRotation() * Vector3::Right;
-			right.Normalize();
-			return right;
+			return SharedFromThis(m_Parent);
 		}
 
 		/**
-		 * \brief	获取up向量
-		 * \return	up向量
+		 * \brief	是否有父节点
+		 * \return	是否有父节点
 		 */
-		Vector3 GetUp()
+		inline bool HasParent() const
 		{
-			auto up = GetRotation() * Vector3::Up;
-			up.Normalize();
-			return up;
-		}
-		
-		/**
-		 * \brief	获取局部坐标到世界坐标的变换矩阵
-		 * \return	局部坐标到世界坐标的变换矩阵
-		 */
-		const Matrix4x4& GetLocalToWorldMatrix()
-		{
-			RefreshMatrix();
-			return m_LocalToWorldMatrix;
+			return m_Parent != nullptr;
 		}
 
-		const Matrix4x4& GetWorldToLocalMatrix()
+		/**
+		 * \brief	设置parent
+		 * \param	pParent			parent指针
+		 */
+		void SetParent(Transform* pParent);
+
+		/**
+		 * \brief	设置parent
+		 * \param	parentSptr		parent智能指针
+		 */
+		void SetParent(const TransformSptr& parentSptr)
 		{
-			RefreshMatrix();
-			return m_WorldToLocalMatrix;
+			SetParent(parentSptr.Get());
 		}
+
+	protected:
+		/**
+		 * \brief	反序列化
+		 * \param	pNode		配置节点指针
+		 * \return	反序列化是否成功
+		 */
+		bool Deserialize(const XmlNode* pNode) override;
+
+		/**
+		 * \brief	Transform被销毁时的回调
+		 */
+		void OnDestroy() override;
 
 	private:
 		/**
@@ -179,6 +215,24 @@ namespace SaplingEngine
 		 */
 		void RefreshMatrix();
 
+		/**
+		 * \brief	添加子节点
+		 * \param	pChild		子节点指针
+		 */
+		void AddChild(Transform* pChild)
+		{
+			m_Children.push_back(pChild);
+		}
+
+		/**
+		 * \brief	删除子节点
+		 * \param	pChild		子节点指针
+		 */
+		void RemoveChild(Transform* pChild)
+		{
+			m_Children.erase(std::find(m_Children.begin(), m_Children.end(), pChild));
+		}
+
 	private:
 		/**
 		 * \brief	world position
@@ -219,5 +273,15 @@ namespace SaplingEngine
 		 * \brief	数据是否有变化
 		 */
 		uint8_t m_DirtyFlag = 0x20;
+
+		/**
+		 * \brief	父节点
+		 */
+		Transform* m_Parent = nullptr;
+
+		/**
+		 * \brief	所有子节点
+		 */
+		std::vector<Transform*> m_Children;
 	};
 }

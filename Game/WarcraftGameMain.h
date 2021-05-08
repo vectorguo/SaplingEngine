@@ -53,7 +53,7 @@ namespace Warcraft
 		 */
 		Character* GetPlayer() const
 		{
-			return m_PlayerSptr.get();
+			return m_PlayerSptr.Get();
 		}
 
 	protected:

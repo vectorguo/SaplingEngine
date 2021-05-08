@@ -142,13 +142,7 @@ namespace SaplingEngine
 	 */
 	void GameApplication::Update()
 	{
-		//处理新创建的组件
-		GameObject::HandleNewComponents();
-		
-		SceneManager::Update();
-
-		//处理要删除的组件
-		GameObject::HandleDestroyedComponents();
+		GameObject::UpdateAll();
 	}
 
 	/**

@@ -1,17 +1,24 @@
 #pragma once
 
 #include "SaplingEnginePch.h"
+#include "GameObject/Transform.h"
 
 namespace SaplingEngine
 {
 	class GameObject
 	{
+		friend class GameApplication;
+		friend class Scene;
+		friend GameObjectSptr CreateGameObject();
+		friend GameObjectSptr CreateGameObject(const std::string&);
+		friend GameObjectSptr CreateGameObject(std::string&&);
+		friend void DestroyGameObject(GameObject*);
 		friend void DestroyGameObject(const GameObjectSptr&);
 		
 	public:
-		explicit GameObject(uint32_t id);
-		GameObject(uint32_t id, const std::string& name);
-		GameObject(uint32_t id, std::string&& name);
+		explicit GameObject();
+		GameObject(const std::string& name);
+		GameObject(std::string&& name);
 		~GameObject();
 
 		/*
@@ -21,24 +28,6 @@ namespace SaplingEngine
 		GameObject(GameObject&&) = delete;
 		GameObject& operator= (const GameObject&) = delete;
 		GameObject& operator= (GameObject&&) = delete;
-
-		/**
-		 * \brief	处理新创建的组件
-		 */
-		static void HandleNewComponents();
-
-		/**
-		 * \brief	处理要销毁的组件
-		 */
-		static void HandleDestroyedComponents();
-		
-		/**
-		 * \brief 初始化
-		 * \param pScene 所属场景
-		 * \param isDeserialized 是否时反序列化的GameObject初始化
-		 * \return 初始化是否成功
-		 */
-		bool Initialize(Scene* pScene, bool isDeserialized = false);
 		
 		/**
 		 * \brief 更新
@@ -70,11 +59,6 @@ namespace SaplingEngine
 		void SetActive(bool active);
 
 		/**
-		 * \brief 是否处于销毁状态
-		 */
-		bool IsDestroyed() const { return m_IsDestroyed; }
-
-		/**
 		 * \brief 获取LayerMask
 		 * \return LayerMask
 		 */
@@ -87,9 +71,9 @@ namespace SaplingEngine
 		 * \brief 获取Transform
 		 * \return Transform
 		 */
-		const TransformSptr& GetTransformSptr() const
-		{
-			return m_TransformSptr;
+		TransformSptr GetTransformSptr() const
+ 		{
+			return SharedFromThis(m_TransformPtr);
 		}
 
 		/**
@@ -98,51 +82,9 @@ namespace SaplingEngine
 		 */
 		Transform* GetTransform() const
 		{
-			return m_TransformSptr.Get();
+			return m_TransformPtr;
 		}
 
-		/**
-		 * \brief 获取parent智能指针
-		 * \return parent智能指针
-		 */
-		const GameObjectSptr& GetParentSptr() const
-		{
-			return m_Parent;
-		}
-
-		/**
-		 * \brief 获取parent指针
-		 * \return parent指针
-		 */
-		GameObject* GetParent() const
-		{
-			return m_Parent.Get();
-		}
-
-		/**
-		 * \brief 是否有父节点
-		 * \return 是否有父节点
-		 */
-		bool HasParent() const
-		{
-			return m_Parent != nullptr;
-		}
-
-		/**
-		 * \brief 设置parent
-		 * \param parent parent
-		 */
-		void SetParent(const GameObjectSptr& parent);
-
-		/**
-		 * \brief 获取所在场景指针
-		 * \return 场景指针
-		 */
-		Scene* GetScene() const
-		{
-			return m_pScene;
-		}
-		
 		/**
 		 * \brief	添加组件
 		 */
@@ -166,31 +108,34 @@ namespace SaplingEngine
 		 */
 		template<typename T>
 		bool HasComponent();
-		
+
+	private:
 		/**
-		 * \brief 序列化
+		 * \brief	更新所有GameObjects
+		 */
+		static void UpdateAll();
+
+		/**
+		 * \brief	反序列化
+		 * \param	pNode		配置节点指针
+		 * \return	反序列化是否成功
+		 */
+		bool Deserialize(const XmlNode* pNode);
+
+		/**
+		 * \brief	序列化
 		 */
 		void Serialize();
 
 		/**
-		 * \brief 反序列化
-		 * \param pNode 配置节点指针
-		 * \return 反序列化是否成功
+		 * \brief	初始化
 		 */
-		bool Deserialize(const XmlNode* pNode);
+		void Initialize();
 
-	private:
 		/**
-		 * \brief 添加组件，只能添加通过ComponentFactory创建的组件
-		 * \param componentType 组件类型
-		 * \param pComponent 要被添加的组件指针
+		 * \brief	设置对象被销毁
 		 */
-		void AddComponent(uint32_t componentType, Component* pComponent);
-		
-		/**
-		 * \brief 销毁
-		 */
-		void DestroyInternal();
+		void SetDestroyed();
 
 	private:
 		/**
@@ -226,22 +171,7 @@ namespace SaplingEngine
 		/**
 		 * \brief transform组件
 		 */
-		TransformSptr m_TransformSptr;
-
-		/**
-		 * \brief 父节点
-		 */
-		GameObjectSptr m_Parent;
-		
-		/**
-		 * \brief 子节点
-		 */
-		GameObjectList m_Children;
-
-		/**
-		 * \brief 所在场景的指针
-		 */
-		Scene* m_pScene = nullptr;
+		Transform* m_TransformPtr;
 
 	private:
 		/**
@@ -253,12 +183,55 @@ namespace SaplingEngine
 		 * \brief	要删除的组件列表
 		 */
 		static ComponentList destroyedComponents;
+
+		/**
+		 * \brief	新创建的GameObject列表
+		 */
+		static GameObjectList newGameObjects;
+
+		/**
+		 * \brief	所有已经创建的GameObject列表
+		 */
+		static GameObjectList allGameObjects;
 	};
 
-	/*
-	 * 销毁GameObject
+	/**
+	 * \brief	创建GameObject
+	 * \return	GameObject智能指针
 	 */
-	void DestroyGameObject(const GameObjectSptr& gameObject);
+	GameObjectSptr CreateGameObject();
+
+	/**
+	 * \brief	创建GameObject
+	 * \param	name			GameObject名称
+	 * \return	GameObject智能指针
+	 */
+	GameObjectSptr CreateGameObject(const std::string& name);
+
+	/**
+	 * \brief	创建GameObject
+	 * \param	name			GameObject名称
+	 * \return	GameObject智能指针
+	 */
+	GameObjectSptr CreateGameObject(std::string&& name);
+
+	/**
+	 * \brief	销毁GameObject
+	 * \param	pGameObject		要被删除对象的指针
+	 */
+	inline void DestroyGameObject(GameObject* pGameObject)
+	{
+		pGameObject->SetDestroyed();
+	}
+
+	/**
+	 * \brief	销毁GameObject
+	 * \param	gameObject		要被删除对象的智能指针
+	 */
+	inline void DestroyGameObject(const GameObjectSptr& gameObject)
+	{
+		gameObject->SetDestroyed();
+	}
 
 	/*
 	 * inline functions
@@ -268,11 +241,11 @@ namespace SaplingEngine
 	{
 		if (!HasComponent<T>())
 		{
-			auto componentPtr = MakeShared<T>();
-			newComponents.emplace_back(componentPtr);
-			componentPtr->m_GameObjectPtr = this;
-			componentPtr->Awake();
-			return componentPtr;
+			auto componentSptr = MakeShared<T>();
+			newComponents.emplace_back(componentSptr);
+			componentSptr->m_GameObjectPtr = this;
+			componentSptr->Awake();
+			return componentSptr;
 		}
 		else
 		{
@@ -319,7 +292,7 @@ namespace SaplingEngine
 		{
 			for (auto iter = newComponents.begin(); iter != newComponents.end(); ++iter)
 			{
-				auto pComponent = iter->get();
+				auto pComponent = iter->Get();
 				if (pComponent->GetGameObject() == this && pComponent->GetComponentType() == T::GetStaticComponentType())
 				{
 					return true;

@@ -174,6 +174,7 @@ namespace SaplingEngine
 			return m_CullingMask;
 		}
 
+	private:
 		/**
 		 * \brief 反序列化
 		 * \param pNode 配置节点指针
@@ -181,7 +182,6 @@ namespace SaplingEngine
 		 */
 		bool Deserialize(const XmlNode* pNode) override;
 
-	private:
 		void Awake() override;
 		void OnDestroy() override;
 

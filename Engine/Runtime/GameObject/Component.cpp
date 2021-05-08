@@ -18,7 +18,7 @@ namespace SaplingEngine
 		return m_GameObjectPtr->GetTransform();
 	}
 
-	TransformSptr& Component::GetTransformSptr() const
+	TransformSptr Component::GetTransformSptr() const
 	{
 		return m_GameObjectPtr->GetTransformSptr();
 	}
@@ -45,14 +45,6 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief 序列化
-	 */
-	void Component::Serialize()
-	{
-		
-	}
-
-	/**
 	 * \brief 反序列化
 	 * \param pNode 配置节点指针
 	 * \return 反序列化是否成功
@@ -60,5 +52,13 @@ namespace SaplingEngine
 	bool Component::Deserialize(const XmlNode* pNode)
 	{
 		return true;
+	}
+
+	/**
+	 * \brief 序列化
+	 */
+	void Component::Serialize()
+	{
+
 	}
 }

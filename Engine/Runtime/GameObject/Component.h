@@ -82,7 +82,7 @@ namespace SaplingEngine
 		 * \brief	获取Transform智能指针
 		 * \return	Transform智能指针
 		 */
-		TransformSptr& GetTransformSptr() const;
+		TransformSptr GetTransformSptr() const;
 
 		/**
 		 * \brief	是否是活动状态
@@ -99,18 +99,6 @@ namespace SaplingEngine
 		void SetEnabled(bool enabled);
 
 		/**
-		 * \brief 序列化
-		 */
-		virtual void Serialize();
-
-		/**
-		 * \brief 反序列化
-		 * \param pNode 配置节点指针
-		 * \return 反序列化是否成功
-		 */
-		virtual bool Deserialize(const XmlNode* pNode);
-
-		/**
 		 * \brief 是否被销毁
 		 */
 		bool IsDestroyed() const
@@ -119,6 +107,18 @@ namespace SaplingEngine
 		}
 		
 	protected:
+		/**
+		 * \brief 反序列化
+		 * \param pNode 配置节点指针
+		 * \return 反序列化是否成功
+		 */
+		virtual bool Deserialize(const XmlNode* pNode);
+
+		/**
+		 * \brief 序列化
+		 */
+		virtual void Serialize();
+
 		virtual void Awake()
 		{
 			

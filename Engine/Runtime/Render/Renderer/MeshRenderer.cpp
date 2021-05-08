@@ -9,26 +9,6 @@ namespace SaplingEngine
 {
 	MeshRenderer::MeshRenderer() = default;
 	MeshRenderer::~MeshRenderer() = default;
-
-	/**
-	 * \brief 反序列化
-	 * \param pNode 配置节点指针
-	 * \return 反序列化是否成功
-	 */
-	bool MeshRenderer::Deserialize(const XmlNode* pNode)
-	{
-		//创建Mesh
-		m_pMesh = MeshFactory::CreateMesh(XmlGetAttributeValue<const char*>(pNode, "meshName"));
-		
-		//创建材质
-		m_pMaterial = new Material();
-		m_pMaterial->Deserialize(pNode->first_node("material"));
-
-		//根据材质创建不同的Special Ocb Data
-		m_FillSpecialOcbDataHandler = GetFillSpecialOcbDataHandler(m_pMaterial->GetShaderType());
-		
-		return true;
-	}
 	
 	/**
 	 * \brief	设置Mesh
@@ -59,5 +39,25 @@ namespace SaplingEngine
 	void MeshRenderer::SetMesh(const std::string& path)
 	{
 		m_pMesh = MeshFactory::CreateMesh(path);
+	}
+
+	/**
+	 * \brief 反序列化
+	 * \param pNode 配置节点指针
+	 * \return 反序列化是否成功
+	 */
+	bool MeshRenderer::Deserialize(const XmlNode* pNode)
+	{
+		//创建Mesh
+		m_pMesh = MeshFactory::CreateMesh(XmlGetAttributeValue<const char*>(pNode, "meshName"));
+
+		//创建材质
+		m_pMaterial = new Material();
+		m_pMaterial->Deserialize(pNode->first_node("material"));
+
+		//根据材质创建不同的Special Ocb Data
+		m_FillSpecialOcbDataHandler = GetFillSpecialOcbDataHandler(m_pMaterial->GetShaderType());
+
+		return true;
 	}
 }

@@ -14,14 +14,14 @@ namespace Warcraft
 	 * \param componentSubType 组件子类型
 	 * \return 组件指针
 	 */
-	inline SaplingEngine::Component* CreateComponent(uint32_t componentType, int32_t componentSubType = 0)
+	inline SaplingEngine::ComponentSptr CreateComponent(uint32_t componentType, int32_t componentSubType = 0)
 	{
 		switch (componentType)
 		{
 			case ComponentType_WarcraftGameMain:
-				return new WarcraftGameMain();
+				return MakeShared<WarcraftGameMain>();
 			case ComponentType_Character:
-				return new Character();
+				return MakeShared<Character>();
 			default:
 				return nullptr;
 		}

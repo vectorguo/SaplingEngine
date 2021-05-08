@@ -154,6 +154,4 @@ namespace SaplingEngine
 		 */
 		Vector3 m_FollowOffset;
 	};
-
-	using CinemachineVirtualCameraSptr = std::shared_ptr<CinemachineVirtualCamera>;
 }

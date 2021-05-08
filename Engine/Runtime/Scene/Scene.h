@@ -51,40 +51,6 @@ namespace SaplingEngine
 		void SetActive(bool active);
 
 		/**
-		 * \brief 创建GameObject
-		 * \return GameObject
-		 */
-		GameObjectSptr CreateGameObject();
-		
-		/**
-		 * \brief 创建GameObject
-		 * \param name GameObject名称
-		 * \return GameObject
-		 */
-		GameObjectSptr CreateGameObject(const std::string& name);
-
-		/**
-		 * \brief 创建GameObject
-		 * \param name GameObject名称
-		 * \return GameObject
-		 */
-		GameObjectSptr CreateGameObject(std::string&& name);
-
-		/**
-		 * \brief 获取对象
-		 * \param name 对象名称
-		 * \return 对象指针
-		 */
-		GameObject* GetGameObject(const std::string& name);
-		
-		/**
-		 * \brief 获取对象
-		 * \param name 对象名称
-		 * \return 对象智能指针
-		 */
-		GameObjectSptr GetGameObjectSptr(const std::string& name);
-
-		/**
 		 * \brief 获取所有游戏对象
 		 * \return 游戏对象
 		 */
@@ -101,13 +67,6 @@ namespace SaplingEngine
 		{
 			return m_GameObjects;
 		}
-
-	private:
-		/**
-		 * \brief 创建GameObject
-		 * \return GameObject
-		 */
-		GameObjectSptr CreateGameObjectInternal();
 		
 	private:
 		/**
@@ -124,10 +83,5 @@ namespace SaplingEngine
 		 * \brief 此场景中的GameObject
 		 */
 		std::vector<GameObjectSptr> m_GameObjects;
-
-		/**
-		 * \brief 新创建的GameObject
-		 */
-		std::vector<GameObjectSptr> m_NewGameObjects;
 	};
 }

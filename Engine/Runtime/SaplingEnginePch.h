@@ -69,6 +69,8 @@ namespace SaplingEngine
 	 */
 	class Component;
 	class Camera;
+	class CinemachineBrain;
+	class CinemachineVirtualCamera;
 	class MeshRenderer;
 	class Renderer;
 	class Transform;
@@ -77,11 +79,14 @@ namespace SaplingEngine
 
 	class Scene;
 
-	using ComponentSptr		= SharedPtr<Component>;
-	using CameraSptr		= SharedPtr<Camera>;
-	using TransformSptr		= SharedPtr<Transform>;
-	using GameObjectSptr	= SharedPtr<GameObject>;
+	class Material;
 
-	using ComponentList = std::vector<ComponentSptr>;
-	using GameObjectList = std::vector<GameObjectSptr>;
+	using ComponentSptr					= SharedPtr<Component>;
+	using CameraSptr					= SharedPtr<Camera>;
+	using CinemachineVirtualCameraSptr	= SharedPtr<CinemachineVirtualCamera>;
+	using TransformSptr					= SharedPtr<Transform>;
+	using GameObjectSptr				= SharedPtr<GameObject>;
+
+	using ComponentList		= std::vector<ComponentSptr>;
+	using GameObjectList	= std::vector<GameObjectSptr>;
 }

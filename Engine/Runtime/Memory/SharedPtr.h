@@ -6,35 +6,41 @@
 
 namespace SaplingEngine
 {
-	template <typename T1>
+	template <typename T>
 	class SharedPtr
 	{
 		template <typename T1, typename... Params>
-		friend SharedPtr<T1> MakeShared(Params&&... params) noexcept;
+		friend SharedPtr<T1> MakeShared(Params&&...) noexcept;
 
 		template <typename T1, typename T2>
-		friend SharedPtr<T1> StaticPointerCast(const SharedPtr<T2>& other) noexcept;
+		friend SharedPtr<T1> StaticPointerCast(const SharedPtr<T2>&) noexcept;
 
 		template <typename T1, typename T2>
-		friend SharedPtr<T1> StaticPointerCast(SharedPtr<T2>&& other) noexcept;
+		friend SharedPtr<T1> StaticPointerCast(SharedPtr<T2>&&) noexcept;
 
 		template <typename T1, typename T2>
-		friend SharedPtr<T1> ConstPointerCast(const SharedPtr<T2>& other) noexcept;
+		friend SharedPtr<T1> ConstPointerCast(const SharedPtr<T2>&) noexcept;
 
 		template <typename T1, typename T2>
-		friend SharedPtr<T1> ConstPointerCast(SharedPtr<T2>&& other) noexcept;
+		friend SharedPtr<T1> ConstPointerCast(SharedPtr<T2>&&) noexcept;
 
 		template <typename T1, typename T2>
-		friend SharedPtr<T1> ReinterpretPointerCast(const SharedPtr<T2>& other) noexcept;
+		friend SharedPtr<T1> ReinterpretPointerCast(const SharedPtr<T2>&) noexcept;
 
 		template <typename T1, typename T2>
-		friend SharedPtr<T1> ReinterpretPointerCast(SharedPtr<T2>&& other) noexcept;
+		friend SharedPtr<T1> ReinterpretPointerCast(SharedPtr<T2>&&) noexcept;
+
+		template <typename T1>
+		friend SharedPtr<T1> SharedFromThis(T1*) noexcept;
+
+		template <class T1>
+		friend class SharedPtr;
 
 	public:
-		using ElementType = T1;
+		using ElementType = T;
 
 	private:
-		SharedPtr(T1* pointer, int32_t* refCountPtr) noexcept :
+		SharedPtr(T* pointer, int32_t* refCountPtr) noexcept :
 			m_Pointer(pointer),
 			m_RefCountPtr(refCountPtr)
 		{
@@ -42,7 +48,7 @@ namespace SaplingEngine
 		}
 
 		template <typename T2>
-		SharedPtr(const SharedPtr<T2>& other, T1* pointer) noexcept
+		SharedPtr(const SharedPtr<T2>& other, T* pointer) noexcept
 		{
 			other.IncRef();
 
@@ -51,7 +57,7 @@ namespace SaplingEngine
 		}
 
 		template <typename T2>
-		SharedPtr(SharedPtr<T2>&& other, T1* pointer) noexcept :
+		SharedPtr(SharedPtr<T2>&& other, T* pointer) noexcept :
 			m_Pointer(pointer),
 			m_RefCountPtr(other.m_RefCountPtr)
 		{
@@ -128,12 +134,12 @@ namespace SaplingEngine
 			return *this;
 		}
 
-		inline T1& operator*() const noexcept
+		inline T& operator*() const noexcept
 		{
 			return *m_Pointer;
 		}
 
-		inline T1* operator->() const noexcept
+		inline T* operator->() const noexcept
 		{
 			return m_Pointer;
 		}
@@ -143,7 +149,7 @@ namespace SaplingEngine
 			return m_Pointer != nullptr;
 		}
 
-		inline T1* Get() const noexcept
+		inline T* Get() const noexcept
 		{
 			return m_Pointer;
 		}
@@ -178,7 +184,7 @@ namespace SaplingEngine
 
 		void Destroy()
 		{
-			m_Pointer->~T1();
+			m_Pointer->~T();
 			::operator delete(m_RefCountPtr);
 		}
 
@@ -189,19 +195,19 @@ namespace SaplingEngine
 		}
 
 	private:
-		T1* m_Pointer = nullptr;
+		T* m_Pointer = nullptr;
 		int32_t* m_RefCountPtr = nullptr;
 	};
 
 	template <typename T1, typename... Params>
 	SharedPtr<T1> MakeShared(Params&&... params) noexcept
 	{
-		auto blockSize = sizeof(T) + sizeof(int32_t) + sizeof(int32_t);
-		auto* pRefCount = static_cast<int32_t>(::operator new(blockSize));
+		auto blockSize = sizeof(T1) + sizeof(int32_t) + sizeof(int32_t);
+		auto* pRefCount = static_cast<int32_t*>(::operator new(blockSize));
 		*pRefCount = 0;
-		*(pRefCount + 1) = blockSize;
-		auto* pointer = ::new (pSize + 2) T1(std::forward<Params>(params)...);
-		return SharedPtr<T1>(pointer);
+		*(pRefCount + 1) = static_cast<int32_t>(blockSize);
+		auto* pointer = ::new (pRefCount + 2) T1(std::forward<Params>(params)...);
+		return SharedPtr<T1>(pointer, pRefCount);
 	}
 
 	template <typename T1, typename T2>
@@ -282,10 +288,10 @@ namespace SaplingEngine
 		return SharedPtr<T1>(std::move(other), pointer);
 	}
 
-	template <typename T>
-	SharedPtr<T> SharedFromThis(T* pointer)
+	template <typename T1>
+	SharedPtr<T1> SharedFromThis(T1* pointer) noexcept
 	{
-		auto* pRefCount = static_cast<int32_t*>(pointer) - 2;
-		return SharedPtr<T>(pointer, pRefCount);
+		auto* pRefCount = (int32_t*)pointer - 2;
+		return SharedPtr<T1>(pointer, pRefCount);
 	}
 }

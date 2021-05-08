@@ -15,10 +15,8 @@ namespace Warcraft
 	 */
 	void InputSystem::Initialize(Character* pPlayer)
 	{
-		auto* pActiveScene = SceneManager::GetActiveScene();
-
 		//创建角色虚拟相机
-		auto pVirtualCameraObj = pActiveScene->CreateGameObject("CharacterVirtualCamera");
+		auto pVirtualCameraObj = CreateGameObject("CharacterVirtualCamera");
 		characterVirtualCameraSptr = pVirtualCameraObj->AddComponent<CinemachineVirtualCamera>();
 		characterVirtualCameraSptr->SetFollowTarget(pPlayer->GetTransformSptr());
 		characterVirtualCameraSptr->SetLookAtTarget(pPlayer->GetTransformSptr());
@@ -26,10 +24,10 @@ namespace Warcraft
 		characterVirtualCameraSptr->SetPriority(11);
 
 		//创建编辑器虚拟相机目标
-		editorTarget = pActiveScene->CreateGameObject("EditorVirtualCameraTarget");
+		editorTarget = CreateGameObject("EditorVirtualCameraTarget");
 
 		//创建编辑器虚拟相机
-		pVirtualCameraObj = pActiveScene->CreateGameObject("EditorVirtualCamera");
+		pVirtualCameraObj = CreateGameObject("EditorVirtualCamera");
 		editorVirtualCameraSptr = pVirtualCameraObj->AddComponent<CinemachineVirtualCamera>();
 		editorVirtualCameraSptr->SetFollowTarget(editorTarget->GetTransformSptr());
 		editorVirtualCameraSptr->SetLookAtTarget(editorTarget->GetTransformSptr());

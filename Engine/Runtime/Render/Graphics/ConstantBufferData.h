@@ -1,24 +1,9 @@
 #pragma once
 
-#include <functional>
-
-#include "Math/Color.h"
-#include "Math/Matrix4x4.h"
+#include "SaplingEnginePch.h"
 
 namespace SaplingEngine
 {
-	using Math::Color;
-	using Math::Matrix4x4;
-	using Math::Vector3;
-	using Math::Vector4;
-
-	/**
-	 * \brief 前置声明
-	 */
-	class Camera;
-	class Material;
-	class Transform;
-	
 	/**
 	 * \brief	物体的通用常量缓冲区数据，不能超过256个字节
 	 */

@@ -9,97 +9,22 @@ namespace SaplingEngine
 {
 	ComponentList GameObject::newComponents;
 	ComponentList GameObject::destroyedComponents;
+	GameObjectList GameObject::newGameObjects;
+	GameObjectList GameObject::allGameObjects;
 
-	GameObject::GameObject(uint32_t id) : m_Id(id)
+	GameObject::GameObject()
 	{
 	}
 
-	GameObject::GameObject(uint32_t id, const std::string& name) : m_Id(id), m_Name(name)
+	GameObject::GameObject(const std::string& name) : m_Name(name)
 	{
 	}
 
-	GameObject::GameObject(uint32_t id, std::string&& name) : m_Id(id), m_Name(std::move(name))
+	GameObject::GameObject(std::string&& name) : m_Name(std::move(name))
 	{
 	}
 
 	GameObject::~GameObject() = default;
-
-	/**
-	 * \brief	处理新创建的组件
-	 */
-	void GameObject::HandleNewComponents()
-	{
-		if (!newComponents.empty())
-		{
-			static ComponentList tempComponents;
-
-			tempComponents.insert(tempComponents.end(), newComponents.begin(), newComponents.end());
-			newComponents.clear();
-
-			//将新创建的组件添加到GameObject的组件列表中
-			for (auto iter = tempComponents.begin(); iter != tempComponents.end(); ++iter)
-			{
-				auto* pGameObject = (*iter)->GetGameObject();
-				pGameObject->m_Components.emplace_back(*iter);
-			}
-
-			for (auto iter = tempComponents.begin(); iter != tempComponents.end(); ++iter)
-			{
-				(*iter)->Start();
-				(*iter)->OnEnable();
-			}
-
-			tempComponents.clear();
-		}
-	}
-
-	/**
-	 * \brief	处理要销毁的组件
-	 */
-	void GameObject::HandleDestroyedComponents()
-	{
-		if (!destroyedComponents.empty())
-		{
-			for (auto iter1 = destroyedComponents.begin(); iter1 != destroyedComponents.end(); ++iter1)
-			{
-				auto pGameObject = (*iter1)->GetGameObject();
-				auto iter2 = std::find(pGameObject->m_Components.begin(), pGameObject->m_Components.end(), *iter1);
-				if (iter2 == pGameObject->m_Components.end())
-				{
-					throw Exception("***");
-				}
-				else
-				{
-					auto* pComponent = iter2->Get();
-					pComponent->OnDestroy();
-					pComponent->m_GameObjectPtr = nullptr;
-					pComponent->m_IsDestroyed = true;
-					pGameObject->m_Components.erase(iter2);
-				}
-			}
-			destroyedComponents.clear();
-		}
-	}
-
-	/**
-	 * \brief 初始化
-	 * \param pScene 所属场景
-	 * \param isDeserialized 是否时反序列化的GameObject初始化
-	 * \return 是否初始化成功
-	 */
-	bool GameObject::Initialize(Scene* pScene, bool isDeserialized)
-	{
-		m_pScene = pScene;
-		if (isDeserialized)
-		{
-			
-		}
-		else
-		{
-			m_TransformSptr = AddComponent<Transform>();
-		}
-		return true;
-	}
 
 	/**
 	 * \brief 更新
@@ -118,17 +43,43 @@ namespace SaplingEngine
 	 */
 	void GameObject::Destroy()
 	{
-		if (m_Parent != nullptr)
+		//销毁组件
+		for (auto iter = newComponents.begin(); iter != newComponents.end();)
 		{
-			m_Parent->m_Children.erase(std::find_if(m_Parent->m_Children.begin(), m_Parent->m_Children.end(), [this](const GameObjectSptr& pChild)
+			if ((*iter)->GetGameObject() == this)
 			{
-				return pChild.Get() == this;
-			}));
-			m_Parent = nullptr;
+				auto* pComponent = iter->Get();
+				pComponent->OnDestroy();
+				pComponent->m_GameObjectPtr = nullptr;
+				pComponent->m_IsDestroyed = true;
+				iter = newComponents.erase(iter);
+			}
+			else
+			{
+				++iter;
+			}
 		}
 
-		//销毁子节点
-		DestroyInternal();
+		for (auto iter = destroyedComponents.begin(); iter != destroyedComponents.end();)
+		{
+			if ((*iter)->GetGameObject() == this)
+			{
+				iter = destroyedComponents.erase(iter);
+			}
+			else
+			{
+				++iter;
+			}
+		}
+
+		for (auto iter = m_Components.rbegin(); iter != m_Components.rend(); ++iter)
+		{
+			auto* pComponent = iter->Get();
+			pComponent->OnDestroy();
+			pComponent->m_GameObjectPtr = nullptr;
+			pComponent->m_IsDestroyed = true;
+		}
+		m_Components.clear();
 	}
 
 	/**
@@ -165,38 +116,79 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief 设置parent
-	 * \param parent parent
+	 * \brief	更新所有GameObjects
 	 */
-	void GameObject::SetParent(const GameObjectSptr& parent)
+	void GameObject::UpdateAll()
 	{
-		if (m_Parent == parent)
+		//处理新创建的组件
+		if (!newComponents.empty())
 		{
-			return;
-		}
+			static ComponentList tempComponents;
 
-		if (m_Parent != nullptr)
-		{
-			m_Parent->m_Children.erase(std::find_if(m_Parent->m_Children.begin(), m_Parent->m_Children.end(), [this](const GameObjectSptr& pChild)
+			tempComponents.insert(tempComponents.end(), newComponents.begin(), newComponents.end());
+			newComponents.clear();
+
+			//将新创建的组件添加到GameObject的组件列表中
+			for (auto iter = tempComponents.begin(); iter != tempComponents.end(); ++iter)
 			{
-				return pChild.Get() == this;
-			}));
+				auto* pGameObject = (*iter)->GetGameObject();
+				pGameObject->m_Components.emplace_back(*iter);
+			}
+
+			for (auto iter = tempComponents.begin(); iter != tempComponents.end(); ++iter)
+			{
+				(*iter)->Start();
+				(*iter)->OnEnable();
+			}
+
+			tempComponents.clear();
 		}
 
-		m_Parent = parent;
-
-		if (m_Parent != nullptr)
+		//处理新创建的GameObjects
+		if (!newGameObjects.empty())
 		{
-			m_Parent->m_Children.push_back(shared_from_this());
+			allGameObjects.insert(allGameObjects.end(), newGameObjects.begin(), newGameObjects.end());
+			newGameObjects.clear();
 		}
-	}
 
-	/**
-	 * \brief 序列化
-	 */
-	void GameObject::Serialize()
-	{
-		
+		//更新所有GameObjects
+		for (auto iter = allGameObjects.begin(); iter != allGameObjects.end();)
+		{
+			auto* pGameObject = iter->Get();
+			if (pGameObject->m_IsDestroyed)
+			{
+				pGameObject->Destroy();
+				iter = allGameObjects.erase(iter);
+			}
+			else
+			{
+				pGameObject->Update();
+				++iter;
+			}
+		}
+
+		//处理要销毁的组件
+		if (!destroyedComponents.empty())
+		{
+			for (auto iter1 = destroyedComponents.begin(); iter1 != destroyedComponents.end(); ++iter1)
+			{
+				auto pGameObject = (*iter1)->GetGameObject();
+				auto iter2 = std::find(pGameObject->m_Components.begin(), pGameObject->m_Components.end(), *iter1);
+				if (iter2 == pGameObject->m_Components.end())
+				{
+					throw Exception("***");
+				}
+				else
+				{
+					auto* pComponent = iter2->Get();
+					pComponent->OnDestroy();
+					pComponent->m_GameObjectPtr = nullptr;
+					pComponent->m_IsDestroyed = true;
+					pGameObject->m_Components.erase(iter2);
+				}
+			}
+			destroyedComponents.clear();
+		}
 	}
 
 	/**
@@ -219,9 +211,19 @@ namespace SaplingEngine
 			{
 				const auto componentType = XmlGetAttributeValue<uint32_t>(pCmpNode, "type");
 				const auto componentSubType = XmlGetAttributeValue<uint32_t>(pCmpNode, "subType");
-				auto* pComponent = ComponentFactory::CreateComponent(componentType, componentSubType);
-				pComponent->Deserialize(pCmpNode);
-				AddComponent(componentType, pComponent);
+				if (componentType == ComponentType_Transform)
+				{
+					m_TransformPtr->Deserialize(pCmpNode);
+					m_TransformPtr->Awake();
+				}
+				else
+				{
+					auto componentSptr = ComponentFactory::CreateComponent(componentType, componentSubType);
+					newComponents.emplace_back(componentSptr);
+					componentSptr->m_GameObjectPtr = this;
+					componentSptr->Deserialize(pCmpNode);
+					componentSptr->Awake();
+				}
 			}
 		}
 		else
@@ -234,12 +236,11 @@ namespace SaplingEngine
 		auto* pChildNodes = pNode->first_node("children");
 		if (pChildNodes)
 		{
-			auto* pActiveScene = SceneManager::GetActiveScene();
 			for (const auto* pChildNode = pChildNodes->first_node(); pChildNode; pChildNode = pChildNode->next_sibling())
 			{
-				auto pChild = pActiveScene->CreateGameObjectInternal();
-				pChild->Deserialize(pChildNode);
-				pChild->SetParent(shared_from_this());
+				auto childObject = CreateGameObject();
+				childObject->Deserialize(pChildNode);
+				childObject->m_TransformPtr->SetParent(m_TransformPtr);
 			}
 		}
 		
@@ -247,80 +248,82 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief	添加组件，只能添加通过ComponentFactory创建的组件
-	 * \param	componentType	组件类型
-	 * \param	pComponent		要被添加的组件指针
+	 * \brief 序列化
 	 */
-	void GameObject::AddComponent(uint32_t componentType, Component* pComponent)
+	void GameObject::Serialize()
 	{
-		newComponents.emplace_back(pComponent);
 
-		pComponent->m_GameObjectPtr = this;
-		pComponent->Awake();
+	}
 
-		if (componentType == ComponentType_Transform)
+	/**
+	 * \brief 初始化
+	 */
+	void GameObject::Initialize()
+	{
+		//创建Transform
+		auto transformSptr = AddComponent<Transform>();
+		m_TransformPtr = transformSptr.Get();
+	}
+
+	/**
+	 * \brief	设置对象被销毁
+	 */
+	void GameObject::SetDestroyed()
+	{
+		if (m_IsDestroyed)
 		{
-			m_TransformSptr = StaticPointerCast<Transform>(*newComponents.rbegin());
+			return;
+		}
+
+		m_IsDestroyed = true;
+
+		//销毁所有子节点
+		auto& children = m_TransformPtr->m_Children;
+		if (!children.empty())
+		{
+			for (auto iter = children.begin(); iter != children.end(); ++iter)
+			{
+				auto pChild = (*iter)->m_GameObjectPtr;
+				pChild->SetDestroyed();
+			}
 		}
 	}
 
 	/**
-	 * \brief 销毁子节点
+	 * \brief	创建GameObject
+	 * \return	GameObject智能指针
 	 */
-	void GameObject::DestroyInternal()
+	GameObjectSptr CreateGameObject()
 	{
-		//销毁组件
-		for (auto iter = newComponents.begin(); iter != newComponents.end();)
-		{
-			if ((*iter)->GetGameObject() == this)
-			{
-				auto* pComponent = iter->Get();
-				pComponent->OnDestroy();
-				pComponent->m_GameObjectPtr = nullptr;
-				pComponent->m_IsDestroyed = true;
-				iter = newComponents.erase(iter);
-			}
-			else
-			{
-				++iter;
-			}
-		}
-
-		for (auto iter = destroyedComponents.begin(); iter != destroyedComponents.end();)
-		{
-			if ((*iter)->GetGameObject() == this)
-			{
-				iter = destroyedComponents.erase(iter);
-			}
-			else
-			{
-				++iter;
-			}
-		}
-
-		for (auto iter = m_Components.begin(); iter != m_Components.end(); ++iter)
-		{
-			auto* pComponent = iter->Get();
-			pComponent->OnDestroy();
-			pComponent->m_GameObjectPtr = nullptr;
-			pComponent->m_IsDestroyed = true;
-		}
-		m_Components.clear();
-
-		for (auto& child : m_Children)
-		{
-			child->Destroy();
-			child->m_Parent = nullptr;
-		}
-		m_Children.clear();
+		auto gameObject = MakeShared<GameObject>();
+		gameObject->Initialize();
+		GameObject::newGameObjects.emplace_back(gameObject);
+		return gameObject;
+	}
+	
+	/**
+	 * \brief	创建GameObject
+	 * \param	name			GameObject名称
+	 * \return	GameObject智能指针
+	 */
+	GameObjectSptr CreateGameObject(const std::string& name)
+	{
+		auto gameObject = MakeShared<GameObject>(name);
+		gameObject->Initialize();
+		GameObject::newGameObjects.emplace_back(gameObject);
+		return gameObject;
 	}
 
 	/**
-	 * \brief 销毁GameObject
-	 * \param gameObject go
+	 * \brief	创建GameObject
+	 * \param	name			GameObject名称
+	 * \return	GameObject智能指针
 	 */
-	void DestroyGameObject(const GameObjectSptr& gameObject)
+	GameObjectSptr CreateGameObject(std::string&& name)
 	{
-		gameObject->m_IsDestroyed = true;
+		auto gameObject = MakeShared<GameObject>(std::move(name));
+		gameObject->Initialize();
+		GameObject::newGameObjects.emplace_back(gameObject);
+		return gameObject;
 	}
 }

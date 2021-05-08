@@ -140,7 +140,29 @@ namespace SaplingEngine
 		else
 		{
 			SetDirty(0x20, true);
-			m_LocalPosition = position;
+			m_LocalPosition = m_Position;
+		}
+	}
+
+	/**
+	 * \brief	设置位置
+	 * \param	x				x坐标
+	 * \param	y				y坐标
+	 * \param	z				z坐标
+	 */
+	void Transform::SetPosition(float x, float y, float z)
+	{
+		m_Position.Set(x, y, z);
+		if (HasParent())
+		{
+			SetDirty(0x01, true);
+			SetDirty(0x04, false);
+			SetDirty(0x20, true);
+		}
+		else
+		{
+			SetDirty(0x20, true);
+			m_LocalPosition = m_Position;
 		}
 	}
 

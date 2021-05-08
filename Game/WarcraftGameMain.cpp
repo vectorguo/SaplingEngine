@@ -19,6 +19,7 @@ namespace Warcraft
 	{
 		//创建玩家角色
 		auto pCharacterObj = CreateGameObject("Player");
+		pCharacterObj->GetTransform()->SetPosition(80.0f, 0, -70.0f);
 		m_PlayerSptr = pCharacterObj->AddComponent<Character>();
 
 		//初始化InputSystem

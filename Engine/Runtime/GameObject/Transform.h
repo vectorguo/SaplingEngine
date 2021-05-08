@@ -93,6 +93,14 @@ namespace SaplingEngine
 		void SetPosition(const Vector3& position);
 
 		/**
+		 * \brief	设置位置
+		 * \param	x				x坐标
+		 * \param	y				y坐标
+		 * \param	z				z坐标
+		 */
+		void SetPosition(float x, float y, float z);
+
+		/**
 		 * \brief	设置旋转
 		 * \param	rotation		旋转
 		 */

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <materials>
+        <material name="bridge" shader="Standard">
+        </material>
+
+        <material name="camp" shader="Standard">
+        </material>
+
+        <material name="ground" shader="Standard">
+            <property name="baseColor" type="2" r="1" g="0.945" b="0.627" a="1"/>
+        </material>
+
+        <material name="ground_grass" shader="Standard">
+            <property name="baseColor" type="2" r="0.372" g="0.521" b="0.243" a="1"/>
+        </material>
+
+        <material name="ground_under" shader="Standard">
+            <property name="baseColor" type="2" r="0.647" g="0.396" b="0.259" a="1"/>
+        </material>
+
+        <material name="road" shader="Standard">
+        </material>
+
+        <material name="rock" shader="Standard">
+        </material>
+    </materials>
+</root>

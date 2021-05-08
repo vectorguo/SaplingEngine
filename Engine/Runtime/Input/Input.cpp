@@ -3,8 +3,7 @@
 namespace SaplingEngine
 {
 	//静态成员初始化
-	EKeyState			Input::keyState = EKeyState::None;
-	EKeyCode			Input::keyCode = EKeyCode::None;
+	std::map<EKeyCode, EKeyState> Input::keyMap;
 
 	EMouseButtonState	Input::mouseButtonState = EMouseButtonState::None;
 	Vector2				Input::mousePosition(0, 0);
@@ -23,16 +22,24 @@ namespace SaplingEngine
 	*/
 	void Input::Reset()
 	{
-		if (keyState == EKeyState::KeyDown)
+		//更新键盘状态
+		for (auto iter = keyMap.begin(); iter != keyMap.end();)
 		{
-			keyState = EKeyState::KeyPress;
-		}
-		if (keyState == EKeyState::KeyUp)
-		{
-			keyState = EKeyState::None;
-			keyCode = EKeyCode::None;
+			if (iter->second == EKeyState::KeyUp)
+			{
+				iter = keyMap.erase(iter);
+			}
+			else
+			{
+				if (iter->second == EKeyState::KeyDown)
+				{
+					iter->second = EKeyState::KeyPress;
+				}
+				++iter;
+			}
 		}
 
+		//更新鼠标状态
 		if (mouseButtonState == EMouseButtonState::LeftMouseButtonUp ||
 			mouseButtonState == EMouseButtonState::RightMouseButtonUp)
 		{
@@ -54,19 +61,14 @@ namespace SaplingEngine
 	{
 		if (state == EKeyState::KeyUp)
 		{
-			keyState = state;
-			keyCode = code;
+			keyMap[code] = state;
 		}
 		else
 		{
-			if (keyCode == code)
+			auto iter = keyMap.find(code);
+			if (iter == keyMap.end())
 			{
-				keyState = EKeyState::KeyPress;
-			}
-			else
-			{
-				keyState = EKeyState::KeyDown;
-				keyCode = code;
+				keyMap.emplace(code, state);
 			}
 		}
 	}

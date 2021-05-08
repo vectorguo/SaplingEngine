@@ -20,8 +20,6 @@ namespace SaplingEngine
 
 	enum class EKeyState
 	{
-		None,
-
 		KeyDown,
 		KeyUp,
 		KeyPress,
@@ -79,31 +77,14 @@ namespace SaplingEngine
 		static void Destroy();
 		
 		/**
-		 * \brief 获取按键状态
-		 * \return 按键状态
-		 */
-		static EKeyState GetKeyState()
-		{
-			return keyState;
-		}
-
-		/**
-		 * \brief 获取按键
-		 * \return 按键
-		 */
-		static EKeyCode GetKeyCode()
-		{
-			return keyCode;
-		}
-
-		/**
 		 * \brief	按键是否按下
 		 * \param	code		按键码
 		 * \return	是否按下
 		 */
 		static bool IsKeyDown(EKeyCode code)
 		{
-			return keyState == EKeyState::KeyDown && keyCode == code;
+			auto iter = keyMap.find(code);
+			return iter != keyMap.end() && iter->second == EKeyState::KeyDown;
 		}
 
 		/**
@@ -113,7 +94,8 @@ namespace SaplingEngine
 		 */
 		static bool IsKeyPress(EKeyCode code)
 		{
-			return keyState == EKeyState::KeyPress && keyCode == code;
+			auto iter = keyMap.find(code);
+			return iter != keyMap.end() && iter->second == EKeyState::KeyPress;
 		}
 
 		/**
@@ -123,7 +105,8 @@ namespace SaplingEngine
 		 */
 		static bool IsKeyUp(EKeyCode code)
 		{
-			return keyState == EKeyState::KeyUp && keyCode == code;
+			auto iter = keyMap.find(code);
+			return iter != keyMap.end() && iter->second == EKeyState::KeyUp;
 		}
 
 		/**
@@ -175,8 +158,7 @@ namespace SaplingEngine
 		static void SetMouseButton(EMouseButtonState buttonState, int32_t x, int32_t y);
 		
 	private:
-		static EKeyState keyState;
-		static EKeyCode keyCode;
+		static std::map<EKeyCode, EKeyState> keyMap;
 
 		static EMouseButtonState mouseButtonState;
 		static Vector2 mousePosition;

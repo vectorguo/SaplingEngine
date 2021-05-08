@@ -76,15 +76,15 @@ namespace Warcraft
 		{
 			offset += Vector3::Forward * Time::DeltaTime();
 		}
-		else if (Input::IsKeyPress(EKeyCode::S))
+		if (Input::IsKeyPress(EKeyCode::S))
 		{
 			offset -= Vector3::Forward * Time::DeltaTime();
 		}
-		else if (Input::IsKeyPress(EKeyCode::A))
+		if (Input::IsKeyPress(EKeyCode::A))
 		{
 			offset -= Vector3::Right * Time::DeltaTime();
 		}
-		else if (Input::IsKeyPress(EKeyCode::D))
+		if (Input::IsKeyPress(EKeyCode::D))
 		{
 			offset += Vector3::Right * Time::DeltaTime();
 		}

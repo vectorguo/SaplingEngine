@@ -139,39 +139,44 @@ namespace SaplingEngine
 
 	private:
 		/**
-		 * \brief GameObject ID
+		 * \brief	GameObject ID
 		 */
 		uint32_t m_Id = 0;
 
 		/**
-		 * \brief GameObject Name
+		 * \brief	GameObject Name
 		 */
 		std::string m_Name;
 
 		/**
-		 * \brief 是否处于活动状态
+		 * \brief	是否处于活动状态
 		 */
 		bool m_IsActive = true;
 
 		/**
-		 * \brief 是否被标记销毁
+		 * \brief	是否被标记销毁
 		 */
 		bool m_IsDestroyed = false;
 
 		/**
-		 * \brief LayerMask
+		 * \brief	LayerMask
 		 */
 		int32_t m_LayerMask = 1;
 		
-		/*
-		 * 所有组件
-		 */	
+		/**
+		 * \brief	所有组件
+		 */
 		ComponentList m_Components;
 		
 		/**
-		 * \brief transform组件
+		 * \brief	transform组件
 		 */
-		Transform* m_TransformPtr;
+		Scene* m_ScenePtr = nullptr;
+
+		/**
+		 * \brief	transform组件
+		 */
+		Transform* m_TransformPtr = nullptr;
 
 	private:
 		/**

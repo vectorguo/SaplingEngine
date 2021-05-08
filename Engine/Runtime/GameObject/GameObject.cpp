@@ -43,6 +43,13 @@ namespace SaplingEngine
 	 */
 	void GameObject::Destroy()
 	{
+		//从场景中删除自己
+		if (m_ScenePtr)
+		{
+			m_ScenePtr->RemoveGameObject(this);
+			m_ScenePtr = nullptr;
+		}
+
 		//销毁组件
 		for (auto iter = newComponents.begin(); iter != newComponents.end();)
 		{
@@ -298,6 +305,12 @@ namespace SaplingEngine
 		auto gameObject = MakeShared<GameObject>();
 		gameObject->Initialize();
 		GameObject::newGameObjects.emplace_back(gameObject);
+
+		//添加到活动场景
+		auto* pActiveScene = SceneManager::GetActiveScene();
+		pActiveScene->AddGameObject(gameObject.Get());
+		gameObject->m_ScenePtr = pActiveScene;
+
 		return gameObject;
 	}
 	
@@ -311,6 +324,12 @@ namespace SaplingEngine
 		auto gameObject = MakeShared<GameObject>(name);
 		gameObject->Initialize();
 		GameObject::newGameObjects.emplace_back(gameObject);
+
+		//添加到活动场景
+		auto* pActiveScene = SceneManager::GetActiveScene();
+		pActiveScene->AddGameObject(gameObject.Get());
+		gameObject->m_ScenePtr = pActiveScene;
+
 		return gameObject;
 	}
 
@@ -324,6 +343,12 @@ namespace SaplingEngine
 		auto gameObject = MakeShared<GameObject>(std::move(name));
 		gameObject->Initialize();
 		GameObject::newGameObjects.emplace_back(gameObject);
+
+		//添加到活动场景
+		auto* pActiveScene = SceneManager::GetActiveScene();
+		pActiveScene->AddGameObject(gameObject.Get());
+		gameObject->m_ScenePtr = pActiveScene;
+
 		return gameObject;
 	}
 }

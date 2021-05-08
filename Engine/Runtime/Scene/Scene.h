@@ -9,6 +9,11 @@ namespace SaplingEngine
 	class Scene
 	{
 		friend class GameObject;
+		friend GameObjectSptr CreateGameObject();
+		friend GameObjectSptr CreateGameObject(const std::string&);
+		friend GameObjectSptr CreateGameObject(std::string&&);
+		friend void DestroyGameObject(GameObject*);
+		friend void DestroyGameObject(const GameObjectSptr&);
 		
 	public:
 		explicit Scene(const std::string& sceneName);
@@ -20,24 +25,24 @@ namespace SaplingEngine
 		Scene& operator=(Scene&&) = delete;
 		
 		/**
-		 * \brief 初始化场景
-		 * \param pNode 配置节点指针
+		 * \brief	初始化场景
+		 * \param	pNode		配置节点指针
 		 */
 		void Initialize(const XmlNode* pNode);
 
 		/**
-		 * \brief 更新
+		 * \brief	更新
 		 */
 		void Update();
 
 		/**
-		 * \brief 销毁场景
+		 * \brief	销毁场景
 		 */
 		void Destroy();
 		
 		/**
-		 * \brief 是否是活动状态
-		 * \return 活动状态
+		 * \brief	是否是活动状态
+		 * \return	活动状态
 		 */
 		bool IsActive() const
 		{
@@ -45,29 +50,42 @@ namespace SaplingEngine
 		}
 		
 		/**
-		 * \brief 设置活动状态
-		 * \param active 是否时活动状态
+		 * \brief	设置活动状态
+		 * \param	active		是否时活动状态
 		 */
 		void SetActive(bool active);
 
 		/**
-		 * \brief 获取所有游戏对象
-		 * \return 游戏对象
+		 * \brief	获取所有游戏对象
+		 * \return	游戏对象
 		 */
-		const std::vector<GameObjectSptr>& GetGameObjects() const
+		const std::vector<GameObject*>& GetGameObjects() const
 		{
 			return m_GameObjects;
 		}
 
 		/**
-		 * \brief 获取所有游戏对象
-		 * \return 游戏对象
+		 * \brief	获取所有游戏对象
+		 * \return	游戏对象
 		 */
-		std::vector<GameObjectSptr>& GetGameObjects()
+		std::vector<GameObject*>& GetGameObjects()
 		{
 			return m_GameObjects;
 		}
 		
+	private:
+		/**
+		 * \brief	添加游戏对象
+		 * \param	pGameObject	游戏对象指针
+		 */
+		void AddGameObject(GameObject* pGameObject);
+
+		/**
+		 * \brief	删除游戏对象
+		 * \param	pGameObject	游戏对象指针
+		 */
+		void RemoveGameObject(GameObject* pGameObject);
+
 	private:
 		/**
 		 * \brief 场景名称
@@ -82,6 +100,6 @@ namespace SaplingEngine
 		/**
 		 * \brief 此场景中的GameObject
 		 */
-		std::vector<GameObjectSptr> m_GameObjects;
+		std::vector<GameObject*> m_GameObjects;
 	};
 }

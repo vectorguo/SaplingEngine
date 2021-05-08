@@ -58,8 +58,9 @@ namespace SaplingEngine
 
 		//创建并初始化场景
 		auto* pScene = new Scene(sceneName);
-		pScene->Initialize(document.first_node());
 		m_Scenes.emplace(sceneName, pScene);
+		SetActiveScene(sceneName);
+		pScene->Initialize(document.first_node());
 	}
 
 	/**

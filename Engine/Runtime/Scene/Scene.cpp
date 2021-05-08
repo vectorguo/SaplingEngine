@@ -47,8 +47,11 @@ namespace SaplingEngine
 		//销毁场景中的对象
 		for (auto iter = m_GameObjects.begin(); iter != m_GameObjects.end(); ++iter)
 		{
-			(*iter)->Destroy();
+			auto* pGameObject = *iter;
+			pGameObject->m_ScenePtr = nullptr;
+			DestroyGameObject(pGameObject);
 		}
+		m_GameObjects.clear();
 	}
 
 	/**
@@ -66,5 +69,35 @@ namespace SaplingEngine
 		{
 			//TODO
 		}
+	}
+	
+	/**
+	 * \brief	添加游戏对象
+	 * \param	pGameObject	游戏对象指针
+	 */
+	void Scene::AddGameObject(GameObject* pGameObject)
+	{
+#if _DEBUG
+		auto iter = std::find(m_GameObjects.begin(), m_GameObjects.end(), pGameObject);
+		if (iter == m_GameObjects.end())
+		{
+			m_GameObjects.push_back(pGameObject);
+		}
+		else
+		{
+			throw Exception("重复给Scene添加相同的对象");
+		}
+#else
+		m_GameObjects.push_back(pGameObject);
+#endif
+	}
+	
+	/**
+	 * \brief	删除游戏对象
+	 * \param	pGameObject	游戏对象指针
+	 */
+	void Scene::RemoveGameObject(GameObject* pGameObject)
+	{
+		m_GameObjects.erase(std::find(m_GameObjects.begin(), m_GameObjects.end(), pGameObject));
 	}
 }

@@ -177,6 +177,9 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Memory\Allocator.h">
       <Filter>Memory</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\MaterialManager.h">
+      <Filter>Render\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Runtime\Utility\Time.cpp">
@@ -295,6 +298,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\Camera\Cinemachine\CinemachineVirtualCamera.cpp">
       <Filter>Camera\Cinemachine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\MaterialManager.cpp">
+      <Filter>Render\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

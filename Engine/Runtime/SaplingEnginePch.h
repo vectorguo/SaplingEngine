@@ -85,7 +85,10 @@ namespace SaplingEngine
 	using CameraSptr					= SharedPtr<Camera>;
 	using CinemachineVirtualCameraSptr	= SharedPtr<CinemachineVirtualCamera>;
 	using TransformSptr					= SharedPtr<Transform>;
+
 	using GameObjectSptr				= SharedPtr<GameObject>;
+
+	using MaterialSptr					= SharedPtr<Material>;
 
 	using ComponentList		= std::vector<ComponentSptr>;
 	using GameObjectList	= std::vector<GameObjectSptr>;

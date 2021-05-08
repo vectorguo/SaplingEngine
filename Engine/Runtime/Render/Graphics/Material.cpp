@@ -2,16 +2,6 @@
 
 namespace SaplingEngine
 {
-	Material::Material()
-	{
-		
-	}
-
-	Material::~Material()
-	{
-		
-	}
-
 	/**
 	 * \brief 反序列化
 	 * \param pNode 配置节点指针

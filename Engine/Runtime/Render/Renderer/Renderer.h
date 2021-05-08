@@ -38,7 +38,16 @@ namespace SaplingEngine
 		 */
 		Material* GetMaterial() const
 		{
-			return m_pMaterial;
+			return m_MaterialSptr.Get();
+		}
+
+		/**
+		 * \brief	获取Material智能指针
+		 * \return	Material
+		 */
+		const MaterialSptr& GetMaterialSptr() const
+		{
+			return m_MaterialSptr;
 		}
 
 		/**
@@ -46,7 +55,7 @@ namespace SaplingEngine
 		 * \param	shaderName	Shader名称
 		 * \return	材质
 		 */
-		virtual Material* SetMaterial(const std::string& shaderName) = 0;
+		virtual MaterialSptr& SetMaterial(const std::string& shaderName) = 0;
 
 		/**
 		 * \brief	获取Mesh
@@ -106,7 +115,7 @@ namespace SaplingEngine
 		/**
 		 * \brief	材质
 		 */
-		Material* m_pMaterial = nullptr;
+		MaterialSptr m_MaterialSptr;
 
 		/**
 		 * \brief	Mesh

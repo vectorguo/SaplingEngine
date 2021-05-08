@@ -1,7 +1,7 @@
-#include "GameApplication.h"
-#include "GameSetting.h"
-
+#include "Application/GameApplication.h"
+#include "Application/GameSetting.h"
 #include "Input/Input.h"
+#include "Render/Graphics/MaterialManager.h"
 #include "Render/Graphics/ShaderManager.h"
 #include "Resource/ResourceManager.h"
 #include "Scene/SceneManager.h"
@@ -40,6 +40,9 @@ namespace SaplingEngine
 
 		//初始化Shader
 		ShaderManager::Initialize();
+
+		//材质初始化
+		MaterialManager::Initialize();
 
 		//初始化场景
 		SceneManager::Initialize();
@@ -93,6 +96,7 @@ namespace SaplingEngine
 	{
 		CameraManager::Destroy();
 		Input::Destroy();
+		MaterialManager::Destroy();
 		SceneManager::Destroy();
 		ShaderManager::Destroy();
 		RenderPipeline::Destroy();

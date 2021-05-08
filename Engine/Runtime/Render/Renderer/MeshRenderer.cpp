@@ -2,6 +2,7 @@
 
 #include "Render/Graphics/ConstantBufferData.h"
 #include "Render/Graphics/Material.h"
+#include "Render/Graphics/MaterialManager.h"
 #include "Render/Graphics/Mesh.h"
 #include "Render/Graphics/MeshFactory.h"
 
@@ -15,21 +16,15 @@ namespace SaplingEngine
 	 * \param	shaderName	Shader名称
 	 * \return	材质
 	 */
-	Material* MeshRenderer::SetMaterial(const std::string& shaderName)
+	MaterialSptr& MeshRenderer::SetMaterial(const std::string& shaderName)
 	{
-		if (m_pMaterial != nullptr)
-		{
-			delete m_pMaterial;
-		}
-
 		//创建材质
-		m_pMaterial = new Material();
-		m_pMaterial->SetShader(shaderName);
+		m_MaterialSptr = MaterialManager::CreateMaterial(shaderName);
 
 		//根据材质创建不同的Special Ocb Data
-		m_FillSpecialOcbDataHandler = GetFillSpecialOcbDataHandler(m_pMaterial->GetShaderType());
+		m_FillSpecialOcbDataHandler = GetFillSpecialOcbDataHandler(m_MaterialSptr->GetShaderType());
 
-		return m_pMaterial;
+		return m_MaterialSptr;
 	}
 
 	/**
@@ -48,15 +43,14 @@ namespace SaplingEngine
 	 */
 	bool MeshRenderer::Deserialize(const XmlNode* pNode)
 	{
-		//创建Mesh
-		m_pMesh = MeshFactory::CreateMesh(XmlGetAttributeValue<const char*>(pNode, "meshName"));
-
 		//创建材质
-		m_pMaterial = new Material();
-		m_pMaterial->Deserialize(pNode->first_node("material"));
+		m_MaterialSptr = MaterialManager::GetSharedMaterial(XmlGetAttributeValue<const char*>(pNode, "material"));
 
 		//根据材质创建不同的Special Ocb Data
-		m_FillSpecialOcbDataHandler = GetFillSpecialOcbDataHandler(m_pMaterial->GetShaderType());
+		m_FillSpecialOcbDataHandler = GetFillSpecialOcbDataHandler(m_MaterialSptr->GetShaderType());
+
+		//创建Mesh
+		m_pMesh = MeshFactory::CreateMesh(XmlGetAttributeValue<const char*>(pNode, "meshName"));
 
 		return true;
 	}

@@ -8,21 +8,16 @@ namespace SaplingEngine
 {
 	class Material final
 	{
+		friend class MaterialManager;
+
 	public:
-		Material();
-		~Material();
+		Material() {}
+		~Material() {}
 
 		Material(const Material&) = delete;
 		Material(Material&&) = delete;
 		Material& operator=(const Material&) = delete;
 		Material& operator=(Material&&) = delete;
-		
-		/**
-		 * \brief	反序列化
-		 * \param	pNode		配置节点指针
-		 * \return	反序列化是否成功
-		 */
-		bool Deserialize(const XmlNode* pNode);
 
 		/**
 		 * \brief	获取材质使用的Shader的名称
@@ -49,6 +44,15 @@ namespace SaplingEngine
 		inline uint8_t GetShaderType() const
 		{
 			return m_pShader->GetType();
+		}
+
+		/**
+		 * \brief	设置Shader
+		 * \param	shaderID		ShaderID
+		 */
+		inline void SetShader(size_t shaderID)
+		{
+			m_pShader = ShaderManager::GetShader(shaderID);
 		}
 
 		/**
@@ -260,6 +264,13 @@ namespace SaplingEngine
 			m_Properties[propertyID].SetVector4(x, y, z, w);
 		}
 		
+		/**
+		 * \brief	反序列化
+		 * \param	pNode		配置节点指针
+		 * \return	反序列化是否成功
+		 */
+		bool Deserialize(const XmlNode* pNode);
+
 	private:
 		/**
 		 * \brief	材质使用的shader

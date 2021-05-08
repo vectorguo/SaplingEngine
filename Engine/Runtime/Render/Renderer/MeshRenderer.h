@@ -33,7 +33,7 @@ namespace SaplingEngine
 		 * \param	shaderName	ShaderÃû³Æ
 		 * \return	²ÄÖÊ
 		 */
-		Material* SetMaterial(const std::string& shaderName) override;
+		MaterialSptr& SetMaterial(const std::string& shaderName) override;
 
 		/**
 		 * \brief	ÉèÖÃMesh

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "MaterialProperty.h"
-#include "Shader.h"
-#include "ShaderManager.h"
+#include "Render/Graphics/MaterialProperty.h"
+#include "Render/Graphics/Shader.h"
+#include "Render/Graphics/ShaderManager.h"
 
 namespace SaplingEngine
 {
@@ -128,6 +128,27 @@ namespace SaplingEngine
 		}
 
 		/**
+		 * \brief	获取Vector3类型的属性值
+		 * \param	propertyName	属性名称
+		 * \return	Vector3类型的属性值
+		 */
+		inline const Vector3& GetVector3(const std::string& propertyName) const
+		{
+			return GetVector3(StringToHash(propertyName));
+		}
+
+		/**
+		 * \brief	获取Vector3类型的属性值
+		 * \param	propertyID		属性ID
+		 * \return	Vector3类型的属性值
+		 */
+		inline const Vector3& GetVector3(size_t propertyID) const
+		{
+			auto iter = m_Properties.find(propertyID);
+			return iter == m_Properties.cend() ? Vector3::Zero : iter->second.GetVector3();
+		}
+
+		/**
 		 * \brief	获取Vector4类型的属性值
 		 * \param	propertyName	属性名称
 		 * \return	Vector4类型的属性值
@@ -224,6 +245,44 @@ namespace SaplingEngine
 		inline void SetColor(size_t propertyID, float r, float g, float b, float a)
 		{
 			m_Properties[propertyID].SetColor(r, g, b, a);
+		}
+
+		/**
+		 * \brief	设置Vector3类型的属性值
+		 * \param	propertyName	属性名称
+		 * \param	value			属性值
+		 */
+		inline void SetVector3(const std::string& propertyName, const Vector3& value)
+		{
+			return SetVector3(StringToHash(propertyName), value);
+		}
+
+		/**
+		 * \brief	设置Vector3类型的属性值
+		 * \param	propertyID		属性ID
+		 * \param	value			属性值
+		 */
+		inline void SetVector3(size_t propertyID, const Vector3& value)
+		{
+			m_Properties[propertyID].SetVector3(value);
+		}
+
+		/**
+		 * \brief	设置Vector3类型的属性值
+		 * \param	propertyName	属性名称
+		 */
+		inline void SetVector3(const std::string& propertyName, float x, float y, float z)
+		{
+			return SetVector3(StringToHash(propertyName), x, y, z);
+		}
+
+		/**
+		 * \brief	设置Vector3类型的属性值
+		 * \param	propertyID		属性ID
+		 */
+		inline void SetVector3(size_t propertyID, float x, float y, float z)
+		{
+			m_Properties[propertyID].SetVector3(x, y, z);
 		}
 
 		/**

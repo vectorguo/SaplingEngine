@@ -31,8 +31,14 @@ namespace SaplingEngine
 						XmlGetAttributeValue<float>(pPropertyNode, "b"),
 						XmlGetAttributeValue<float>(pPropertyNode, "a"));
 					break;
-				case 3:		//Vector4
-					SetColor(propertyName,
+				case 3:		//Vector3
+					SetVector3(propertyName,
+						XmlGetAttributeValue<float>(pPropertyNode, "x"),
+						XmlGetAttributeValue<float>(pPropertyNode, "y"),
+						XmlGetAttributeValue<float>(pPropertyNode, "z"));
+					break;
+				case 4:		//Vector4
+					SetVector4(propertyName,
 						XmlGetAttributeValue<float>(pPropertyNode, "x"),
 						XmlGetAttributeValue<float>(pPropertyNode, "y"),
 						XmlGetAttributeValue<float>(pPropertyNode, "z"),

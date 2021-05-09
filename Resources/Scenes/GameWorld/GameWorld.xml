@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<root>
+<root ambient_r="0.05" ambient_g="0.05" ambient_b="0.05" ambient_a="1">
     <gameObject name="gameMain" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
@@ -18,7 +18,7 @@
     <gameObject name="light" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="10" lpz="0" lrx="0.382684" lry="0" lrz="0" lrw="0.923879" lsx="1" lsy="1" lsz="1"/>
-            <component type="20" />
+            <component type="20" type="0" r="1" g="1" b="1" a="1"/>
         </components>
     </gameObject>
 

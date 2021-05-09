@@ -180,6 +180,9 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\MaterialManager.h">
       <Filter>Render\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\LightManager.h">
+      <Filter>Render\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Runtime\Utility\Time.cpp">
@@ -300,6 +303,9 @@
       <Filter>Camera\Cinemachine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\MaterialManager.cpp">
+      <Filter>Render\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\LightManager.cpp">
       <Filter>Render\Graphics</Filter>
     </ClCompile>
   </ItemGroup>

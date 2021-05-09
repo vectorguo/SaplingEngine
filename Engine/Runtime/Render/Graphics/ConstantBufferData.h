@@ -41,8 +41,11 @@ namespace SaplingEngine
 			Matrix4x4 SAPLING_MATRIX_V = Matrix4x4::Identity;
 			Matrix4x4 SAPLING_MATRIX_VP = Matrix4x4::Identity;
 
-			Vector3 MAIN_LIGHT_POSITION{ 0, 0, 0 };
+			Color AMBIENT_LIGHT_COLOR{ 0.0f, 0.2f, 0.2f, 1.0f };
+
+			Color MAIN_LIGHT_COLOR{ 1.0f, 1.0f, 1.0f, 1.0f };
 			Vector3 MAIN_LIGHT_DIRECTION{ 0, 0, 0 };
+			Vector3 MAIN_LIGHT_POSITION{ 0, 0, 0 };
 		};
 
 	public:
@@ -90,11 +93,24 @@ namespace SaplingEngine
 	/**
 	 * \brief 物体的特殊的常量缓冲区数据，不能超过512个字节
 	 */
-	class SpecialOcbData0 final
+	class SpecialOcbData_Standard final
 	{
 		struct OcbData
 		{
+			/**
+			 * \brief	基础颜色
+			 */
 			Color BaseColor;
+
+			/**
+			 * \brief	菲涅尔系数
+			 */
+			Vector3 Fresnel;
+
+			/**
+			 * \brief	表面粗糙度
+			 */
+			float Roughness;
 		};
 
 	public:

@@ -4,11 +4,24 @@
 
 namespace SaplingEngine
 {
+	/**
+	 * \brief	光照类型
+	 */
+	enum class ELightType : uint8_t
+	{
+		DirectionalLight,
+		PointLight,
+		SpotLight,
+	};
+
 	class Light final : public Component
 	{
 	public:
-		Light();
-		~Light() override;
+		Light() : Component(ComponentType_Light)
+		{
+
+		}
+		~Light() override = default;
 
 		/*
 		 * 禁止拷贝和移动
@@ -28,6 +41,42 @@ namespace SaplingEngine
 			return ComponentType_Light;
 		}
 
+	public:
+		/**
+		 * \brief	获取光照类型
+		 */
+		ELightType GetLightType() const
+		{
+			return m_LightType;
+		}
+
+		/**
+		 * \brief	获取光照颜色
+		 */
+		const Color& GetLightColor() const
+		{
+			return m_LightColor;
+		}
+
+		/**
+		 * \brief	获取光照颜色
+		 */
+		Color& GetLightColor()
+		{
+			return m_LightColor;
+		}
+
+		/**
+		 * \brief	获取光照方向
+		 */
+		Vector3 GetLightDirection() const;
+
+		/**
+		 * \brief	获取光照位置
+		 */
+		const Vector3& GetLightPosition() const;
+
+	private:
 		/**
 		 * \brief 反序列化
 		 * \param pNode 配置节点指针
@@ -35,20 +84,25 @@ namespace SaplingEngine
 		 */
 		bool Deserialize(const XmlNode* pNode) override;
 
-	public:
 		/**
-		 * \brief 获取单例
-		 * \return 单例指针
+		 * \brief	Awake
 		 */
-		static Light* Instance()
-		{
-			return m_pInstance;
-		}
+		void Awake() override;
+
+		/**
+		 * \brief	OnDestroy
+		 */
+		void OnDestroy() override;
 
 	private:
 		/**
-		 * \brief 单例
+		 * \brief	光照类型
 		 */
-		static Light* m_pInstance;
+		ELightType m_LightType = ELightType::DirectionalLight;
+
+		/**
+		 * \brief	光照颜色
+		 */
+		Color m_LightColor;
 	};
 }

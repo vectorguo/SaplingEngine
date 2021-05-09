@@ -25,6 +25,14 @@ namespace SaplingEngine
 	 */
 	void Scene::Initialize(const XmlNode* pNode)
 	{
+		//环境光颜色
+		m_AmbientLightColor.Set(
+			XmlGetAttributeValue<float>(pNode, "ambient_r"),
+			XmlGetAttributeValue<float>(pNode, "ambient_g"),
+			XmlGetAttributeValue<float>(pNode, "ambient_b"),
+			XmlGetAttributeValue<float>(pNode, "ambient_a"));
+
+		//节点
 		for (auto* pChild = pNode->first_node(); pChild != nullptr; pChild = pChild->next_sibling())
 		{
 			auto gameObject = CreateGameObject();

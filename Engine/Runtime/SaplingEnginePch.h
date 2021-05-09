@@ -71,6 +71,7 @@ namespace SaplingEngine
 	class Camera;
 	class CinemachineBrain;
 	class CinemachineVirtualCamera;
+	class Light;
 	class MeshRenderer;
 	class Renderer;
 	class Transform;

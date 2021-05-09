@@ -1,20 +1,23 @@
-#include "Light.h"
+#include "GameObject/Transform.h"
+#include "Render/Graphics/Light.h"
+#include "Render/Graphics/LightManager.h"
 
 namespace SaplingEngine
 {
-	Light* Light::m_pInstance = nullptr;
-	
-	Light::Light() : Component(ComponentType_Light)
+	/**
+	 * \brief	获取光照方向
+	 */
+	Vector3 Light::GetLightDirection() const
 	{
-		m_pInstance = this;
+		return GetTransform()->GetForward();
 	}
 
-	Light::~Light()
+	/**
+	 * \brief	获取光照位置
+	 */
+	const Vector3& Light::GetLightPosition() const
 	{
-		if (m_pInstance == this)
-		{
-			m_pInstance = nullptr;
-		}
+		return GetTransform()->GetPosition();
 	}
 
 	/**
@@ -24,6 +27,40 @@ namespace SaplingEngine
 	 */
 	bool Light::Deserialize(const XmlNode* pNode)
 	{
+		m_LightType = static_cast<ELightType>(XmlGetAttributeValue<uint8_t>(pNode, "type"));
+		m_LightColor.Set(
+			XmlGetAttributeValue<float>(pNode, "r"),
+			XmlGetAttributeValue<float>(pNode, "g"),
+			XmlGetAttributeValue<float>(pNode, "b"),
+			XmlGetAttributeValue<float>(pNode, "a"));
 		return true;
+	}
+	
+	/**
+	 * \brief	Awake
+	 */
+	void Light::Awake()
+	{
+		switch (m_LightType)
+		{
+			case ELightType::DirectionalLight:
+				LightManager::SetDirectionalLight(this);
+			default:
+				break;
+		}
+	}
+	
+	/**
+	 * \brief	OnDestroy
+	 */
+	void Light::OnDestroy()
+	{
+		switch (m_LightType)
+		{
+			case ELightType::DirectionalLight:
+				LightManager::SetDirectionalLight(nullptr);
+			default:
+				break;
+		}
 	}
 }

@@ -20,7 +20,7 @@ namespace Warcraft
 		characterVirtualCameraSptr = pVirtualCameraObj->AddComponent<CinemachineVirtualCamera>();
 		characterVirtualCameraSptr->SetFollowTarget(pPlayer->GetTransformSptr());
 		characterVirtualCameraSptr->SetLookAtTarget(pPlayer->GetTransformSptr());
-		characterVirtualCameraSptr->SetFollowOffset(Vector3(0, 10, -10));
+		characterVirtualCameraSptr->SetFollowOffset(Vector3(0, 15, -15));
 		characterVirtualCameraSptr->SetPriority(11);
 
 		//创建编辑器虚拟相机目标
@@ -31,7 +31,7 @@ namespace Warcraft
 		editorVirtualCameraSptr = pVirtualCameraObj->AddComponent<CinemachineVirtualCamera>();
 		editorVirtualCameraSptr->SetFollowTarget(editorTarget->GetTransformSptr());
 		editorVirtualCameraSptr->SetLookAtTarget(editorTarget->GetTransformSptr());
-		editorVirtualCameraSptr->SetFollowOffset(Vector3(0, 150, -150));
+		editorVirtualCameraSptr->SetFollowOffset(Vector3(0, 50, -50));
 		editorVirtualCameraSptr->SetPriority(10);
 
 		isEditorMode = false;

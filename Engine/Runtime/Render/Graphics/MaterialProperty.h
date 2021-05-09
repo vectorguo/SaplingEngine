@@ -29,6 +29,11 @@ namespace SaplingEngine
 			return c;
 		}
 
+		inline const Vector3& GetVector3() const
+		{
+			return v3;
+		}
+
 		inline const Vector4& GetVector4() const
 		{
 			return v4;
@@ -57,6 +62,18 @@ namespace SaplingEngine
 			c.a = a;
 		}
 
+		inline void SetVector3(const Vector3& v)
+		{
+			v3 = v;
+		}
+
+		inline void SetVector3(float x, float y, float z)
+		{
+			v3.x = x;
+			v3.y = y;
+			v3.z = z;
+		}
+
 		inline void SetVector4(const Vector4& v)
 		{
 			v4 = v;
@@ -76,6 +93,7 @@ namespace SaplingEngine
 			int32_t i;
 			float	f;
 			Color	c;
+			Vector3 v3;
 			Vector4 v4;
 		};
 	};

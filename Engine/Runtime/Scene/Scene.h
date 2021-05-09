@@ -72,6 +72,36 @@ namespace SaplingEngine
 		{
 			return m_GameObjects;
 		}
+
+		/**
+		 * \brief	获取环境光颜色
+		 * \return	环境光颜色
+		 */
+		const Color& GetAmbientLightColor() const
+		{
+			return m_AmbientLightColor;
+		}
+
+		/**
+		 * \brief	设置环境光颜色
+		 * \param	color		环境光颜色
+		 */
+		void SetAmbientLightColor(const Color& color)
+		{
+			m_AmbientLightColor = color;
+		}
+
+		/**
+		 * \brief	设置环境光颜色
+		 * \param	r			环境光颜色r通道
+		 * \param	g			环境光颜色g通道
+		 * \param	b			环境光颜色b通道
+		 * \param	a			环境光颜色a通道
+		 */
+		void SetAmbientLightColor(float r, float g, float b, float a)
+		{
+			m_AmbientLightColor.Set(r, g, b, a);
+		}
 		
 	private:
 		/**
@@ -88,18 +118,23 @@ namespace SaplingEngine
 
 	private:
 		/**
-		 * \brief 场景名称
+		 * \brief	场景名称
 		 */
 		std::string m_SceneName;
 
 		/**
-		 * \brief 是否活动状态
+		 * \brief	是否活动状态
 		 */
 		bool m_IsActive;
 
 		/**
-		 * \brief 此场景中的GameObject
+		 * \brief	此场景中的GameObject
 		 */
 		std::vector<GameObject*> m_GameObjects;
+
+		/**
+		 * \brief	此场景中的环境光颜色
+		 */
+		Color m_AmbientLightColor;
 	};
 }

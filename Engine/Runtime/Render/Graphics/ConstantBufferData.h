@@ -36,16 +36,30 @@ namespace SaplingEngine
 	 */
 	class CommonPcbData final
 	{
+		struct LightData
+		{
+			Color LightColor;
+			Vector3 Direction;
+			float Placeholder1;
+			Vector3 Position;
+			float Placeholder2;
+		};
+
 		struct PcbData
 		{
 			Matrix4x4 SAPLING_MATRIX_V = Matrix4x4::Identity;
 			Matrix4x4 SAPLING_MATRIX_VP = Matrix4x4::Identity;
 
-			Color AMBIENT_LIGHT_COLOR{ 0.0f, 0.2f, 0.2f, 1.0f };
+			Color AmbientLightColor{ 0.0f, 0.2f, 0.2f, 1.0f };
 
-			Color MAIN_LIGHT_COLOR{ 1.0f, 1.0f, 1.0f, 1.0f };
-			Vector3 MAIN_LIGHT_DIRECTION{ 0, 0, 0 };
-			Vector3 MAIN_LIGHT_POSITION{ 0, 0, 0 };
+			Vector3 WorldSpaceCameraPosition{ 0, 0, 0 };
+
+			/**
+			 * \brief	Õ¼Î»·û
+			 */
+			float Placeholder1;
+
+			LightData MainLight;
 		};
 
 	public:

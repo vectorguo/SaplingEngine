@@ -27,7 +27,7 @@ namespace SaplingEngine
 	 */
 	bool Light::Deserialize(const XmlNode* pNode)
 	{
-		m_LightType = static_cast<ELightType>(XmlGetAttributeValue<uint8_t>(pNode, "type"));
+		m_LightType = static_cast<ELightType>(XmlGetAttributeValue<uint8_t>(pNode, "light_type"));
 		m_LightColor.Set(
 			XmlGetAttributeValue<float>(pNode, "r"),
 			XmlGetAttributeValue<float>(pNode, "g"),

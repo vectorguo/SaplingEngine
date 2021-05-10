@@ -207,6 +207,28 @@ namespace SaplingEngine
 	}
 
 	/**
+	 * \brief	设置局部坐标下的位置
+	 * \param	x				x坐标
+	 * \param	y				y坐标
+	 * \param	z				z坐标
+	 */
+	void Transform::SetLocalPosition(float x, float y, float z)
+	{
+		m_LocalPosition.Set(x, y, z);
+		if (HasParent())
+		{
+			SetDirty(0x01, false);
+			SetDirty(0x04, true);
+			SetDirty(0x20, true);
+		}
+		else
+		{
+			SetDirty(0x20, true);
+			m_Position = m_LocalPosition;
+		}
+	}
+
+	/**
 	 * \brief	设置局部坐标下的旋转
 	 * \param	localRotation	局部坐标下的旋转
 	 */
@@ -226,6 +248,22 @@ namespace SaplingEngine
 		}
 	}
 
+	void Transform::SetLocalRotation(float x, float y, float z, float w)
+	{
+		m_LocalRotation.Set(x, y, z, w);
+		if (HasParent())
+		{
+			SetDirty(0x02, false);
+			SetDirty(0x08, true);
+			SetDirty(0x20, true);
+		}
+		else
+		{
+			SetDirty(0x20, true);
+			m_Rotation = m_LocalRotation;
+		}
+	}
+
 	/**
 	 * \brief	设置缩放
 	 * \param	localScale		缩放
@@ -233,6 +271,20 @@ namespace SaplingEngine
 	void Transform::SetLocalScale(const Vector3& localScale)
 	{
 		m_LocalScale = localScale;
+		if (HasParent())
+		{
+			SetDirty(0x10, true);
+			SetDirty(0x20, true);
+		}
+		else
+		{
+			SetDirty(0x20, true);
+		}
+	}
+
+	void Transform::SetLocalScale(float x, float y, float z)
+	{
+		m_LocalScale.Set(x, y, z);
 		if (HasParent())
 		{
 			SetDirty(0x10, true);
@@ -274,9 +326,9 @@ namespace SaplingEngine
 	 */
 	bool Transform::Deserialize(const XmlNode* pNode)
 	{
-		m_LocalPosition.Set(XmlGetAttributeValue<float>(pNode, "lpx"), XmlGetAttributeValue<float>(pNode, "lpy"), XmlGetAttributeValue<float>(pNode, "lpz"));
-		m_LocalRotation.Set(XmlGetAttributeValue<float>(pNode, "lrx"), XmlGetAttributeValue<float>(pNode, "lry"), XmlGetAttributeValue<float>(pNode, "lrz"), XmlGetAttributeValue<float>(pNode, "lrw"));
-		m_LocalScale.Set(XmlGetAttributeValue<float>(pNode, "lsx"), XmlGetAttributeValue<float>(pNode, "lsy"), XmlGetAttributeValue<float>(pNode, "lsz"));
+		SetLocalPosition(XmlGetAttributeValue<float>(pNode, "lpx"), XmlGetAttributeValue<float>(pNode, "lpy"), XmlGetAttributeValue<float>(pNode, "lpz"));
+		SetLocalRotation(XmlGetAttributeValue<float>(pNode, "lrx"), XmlGetAttributeValue<float>(pNode, "lry"), XmlGetAttributeValue<float>(pNode, "lrz"), XmlGetAttributeValue<float>(pNode, "lrw"));
+		SetLocalScale(XmlGetAttributeValue<float>(pNode, "lsx"), XmlGetAttributeValue<float>(pNode, "lsy"), XmlGetAttributeValue<float>(pNode, "lsz"));
 
 		return true;
 	}

@@ -246,8 +246,8 @@ namespace SaplingEngine
 			for (const auto* pChildNode = pChildNodes->first_node(); pChildNode; pChildNode = pChildNode->next_sibling())
 			{
 				auto childObject = CreateGameObject();
-				childObject->Deserialize(pChildNode);
 				childObject->m_TransformPtr->SetParent(m_TransformPtr);
+				childObject->Deserialize(pChildNode);
 			}
 		}
 		

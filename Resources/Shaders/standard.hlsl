@@ -17,11 +17,13 @@ cbuffer CBufferPassCommon : register(b2)
 	float4x4 SAPLING_MATRIX_V;			//局部坐标到世界坐标的变换矩阵
 	float4x4 SAPLING_MATRIX_VP;			//世界坐标到投影坐标的变换矩阵
 
-	float4 AMBIENT_LIGHT_COLOR;			//环境光
+	float4 AmbientLightColor;			//环境光
 
-	float4 MAIN_LIGHT_COLOR;
-	float3 MAIN_LIGHT_DIRECTION;
-	float3 MAIN_LIGHT_POSITION;
+	float3 WorldSpaceCameraPosition;	//世界坐标下的相机位置
+
+	float Placeholder1;					//占位符
+
+	Light MainLight;					//主光源
 };
 
 struct VertexIn
@@ -36,6 +38,7 @@ struct VertexIn
 struct VertexOut
 {
 	float4 PositionCS  	: SV_POSITION;
+	float3 PositionWS	: POSITION;
 	float3 NormalWS		: NORMAL;
     float4 Color 		: COLOR;
 };
@@ -44,7 +47,9 @@ VertexOut Vert(VertexIn input)
 {
 	VertexOut output;
 	
-	output.PositionCS = mul(mul(float4(input.PositionOS, 1.0f), SAPLING_MATRIX_M), SAPLING_MATRIX_VP);
+	float4 worldPosition = mul(float4(input.PositionOS, 1.0f), SAPLING_MATRIX_M);
+	output.PositionCS = mul(worldPosition, SAPLING_MATRIX_VP);
+	output.PositionWS = worldPosition.xyz;
 	output.NormalWS = mul(input.NormalOS, (float3x3)SAPLING_MATRIX_M);
     output.Color = input.Color;
     
@@ -54,17 +59,15 @@ VertexOut Vert(VertexIn input)
 float4 Frag(VertexOut input) : SV_Target
 {
 	float4 diffuseTex = float4(1, 1, 1, 1) * _BaseColor;
+	float3 normal = normalize(input.NormalWS);
+	float3 toEye = normalize(WorldSpaceCameraPosition - input.PositionWS);
 
 	//环境光
-	float4 ambient = diffuseTex * AMBIENT_LIGHT_COLOR;
-
-	//漫反射
-	float3 normal = normalize(input.NormalWS);
-	float nDotL = dot(-MAIN_LIGHT_DIRECTION, normal);
-	nDotL = nDotL * 0.5 + 0.5;
-	float4 diffuseColor = diffuseTex * nDotL * MAIN_LIGHT_COLOR;
-
-    return ambient + diffuseColor;
+	float4 ambient = diffuseTex * AmbientLightColor;
+	
+	//方向光
+	float4 color = Standard_DirectionalLight(MainLight, normal, toEye, diffuseTex, _Fresnel, 1 - _Roughness);
+    return ambient + color;
 }
 
 

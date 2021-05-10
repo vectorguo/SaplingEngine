@@ -2,36 +2,45 @@
 <root>
     <materials>
         <material name="bridge" shader="Standard">
+            <property name="baseColor" type="2" r="0.6" g="0.6" b="0.6" a="1"/>
+            <property name="fresnel" type="3" r="0.01" g="0.01" b="0.01"/>
+            <property name="roughtness" type="1" value="0.25"/>
         </material>
 
         <material name="camp" shader="Standard">
+            <property name="baseColor" type="2" r="0.6" g="0.6" b="0.6" a="1"/>
+            <property name="fresnel" type="3" r="0.01" g="0.01" b="0.01"/>
+            <property name="roughtness" type="1" value="0.25"/>
         </material>
 
         <material name="ground" shader="Standard">
             <property name="baseColor" type="2" r="1" g="0.945" b="0.627" a="1"/>
-            <property name="fresnel" type="3" r="1" g="0.945" b="0.627"/>
-            <property name="roughtness" type="1" value="0"/>
+            <property name="fresnel" type="3" r="0.01" g="0.01" b="0.01"/>
+            <property name="roughtness" type="1" value="0.25"/>
         </material>
 
         <material name="ground_grass" shader="Standard">
             <property name="baseColor" type="2" r="0.372" g="0.521" b="0.243" a="1"/>
-            <property name="fresnel" type="3" r="1" g="0.945" b="0.627"/>
-            <property name="roughtness" type="1" value="0"/>
+            <property name="fresnel" type="3" r="0.01" g="0.01" b="0.01"/>
+            <property name="roughtness" type="1" value="0.25"/>
         </material>
 
         <material name="ground_under" shader="Standard">
             <property name="baseColor" type="2" r="0.647" g="0.396" b="0.259" a="1"/>
-            <property name="fresnel" type="3" r="1" g="0.945" b="0.627"/>
-            <property name="roughtness" type="1" value="0"/>
+            <property name="fresnel" type="3" r="0.01" g="0.01" b="0.01"/>
+            <property name="roughtness" type="1" value="0.25"/>
         </material>
 
         <material name="road" shader="Standard">
+            <property name="baseColor" type="2" r="0.6" g="0.6" b="0.6" a="1"/>
+            <property name="fresnel" type="3" r="0.01" g="0.01" b="0.01"/>
+            <property name="roughtness" type="1" value="0.25"/>
         </material>
 
         <material name="rock" shader="Standard">
-            <property name="baseColor" type="2" r="0.6" g="0.6" b="0.6" a="1"/>
-            <property name="fresnel" type="3" r="0.5" g="0.5" b="0.5"/>
-            <property name="roughtness" type="1" value="0"/>
+            <property name="baseColor" type="2" r="0.75" g="0.75" b="0.75" a="1"/>
+            <property name="fresnel" type="3" r="0.01" g="0.01" b="0.01"/>
+            <property name="roughtness" type="1" value="0.5"/>
         </material>
     </materials>
 </root>

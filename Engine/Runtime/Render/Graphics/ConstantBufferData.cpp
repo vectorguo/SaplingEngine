@@ -49,9 +49,9 @@ namespace SaplingEngine
 			m_Data.SAPLING_MATRIX_VP = worldToProjMatrix.Transpose();
 
 			//设置主光源参数
-			m_Data.MAIN_LIGHT_COLOR = pDirectionalLight->GetLightColor();
-			m_Data.MAIN_LIGHT_DIRECTION = pDirectionalLight->GetLightDirection();
-			m_Data.MAIN_LIGHT_POSITION = pDirectionalLight->GetLightPosition();
+			m_Data.MainLight.LightColor = pDirectionalLight->GetLightColor();
+			m_Data.MainLight.Direction = pDirectionalLight->GetLightDirection();
+			m_Data.MainLight.Position = pDirectionalLight->GetLightPosition();
 		}
 		else
 		{
@@ -59,14 +59,18 @@ namespace SaplingEngine
 			m_Data.SAPLING_MATRIX_VP = worldToProjMatrix.Transpose();
 
 			//设置主光源参数
-			m_Data.MAIN_LIGHT_COLOR.Set(1.0f, 1.0f, 1.0f, 1.0f);
-			m_Data.MAIN_LIGHT_DIRECTION.Set(-0.8f, -0.6f, 0.2f);
-			m_Data.MAIN_LIGHT_POSITION.Set(0, 0, 0);
+			m_Data.MainLight.LightColor.Set(1.0f, 1.0f, 1.0f, 1.0f);
+			m_Data.MainLight.Direction.Set(-0.8f, -0.6f, 0.2f);
+			m_Data.MainLight.Position.Set(0, 0, 0);
 		}
 
 		//设置场景的环境光
 		auto* pActiveScene = SceneManager::GetActiveScene();
-		m_Data.AMBIENT_LIGHT_COLOR = pActiveScene->GetAmbientLightColor();
+		m_Data.AmbientLightColor = pActiveScene->GetAmbientLightColor();
+
+		//设置相机参数
+		m_Data.WorldSpaceCameraPosition = pCamera->GetTransform()->GetPosition();
+		m_Data.MainLight.Direction = pCamera->GetTransform()->GetForward();
 		
 		return static_cast<void*>(&m_Data);
 	}

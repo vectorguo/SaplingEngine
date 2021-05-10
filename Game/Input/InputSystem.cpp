@@ -91,7 +91,7 @@ namespace Warcraft
 		
 		auto* pPlayer = WarcraftGameMain::Instance()->GetPlayer();
 		auto* pPlayerTransform = pPlayer->GetTransform();
-		pPlayerTransform->SetPosition(pPlayerTransform->GetPosition() + offset);
+		pPlayerTransform->SetPosition(pPlayerTransform->GetPosition() + offset * 5);
 	}
 	
 	/**

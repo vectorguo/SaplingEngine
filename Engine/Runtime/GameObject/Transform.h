@@ -113,16 +113,28 @@ namespace SaplingEngine
 		void SetLocalPosition(const Vector3& localPosition);
 
 		/**
+		 * \brief	设置局部坐标下的位置
+		 * \param	x				x坐标
+		 * \param	y				y坐标
+		 * \param	z				z坐标
+		 */
+		void SetLocalPosition(float x, float y, float z);
+
+		/**
 		 * \brief	设置局部坐标下的旋转
 		 * \param	localRotation	局部坐标下的旋转
 		 */
 		void SetLocalRotation(const Quaternion& localRotation);
+
+		void SetLocalRotation(float x, float y, float z, float w);
 
 		/**
 		 * \brief	设置缩放
 		 * \param	localScale		缩放
 		 */
 		void SetLocalScale(const Vector3& localScale);
+
+		void SetLocalScale(float x, float y, float z);
 
 		/**
 		 * \brief	获取parent指针

@@ -70,7 +70,6 @@ namespace SaplingEngine
 
 		//设置相机参数
 		m_Data.WorldSpaceCameraPosition = pCamera->GetTransform()->GetPosition();
-		m_Data.MainLight.Direction = pCamera->GetTransform()->GetForward();
 		
 		return static_cast<void*>(&m_Data);
 	}

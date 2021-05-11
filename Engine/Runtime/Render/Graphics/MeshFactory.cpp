@@ -1,7 +1,7 @@
-#include "DirectX12/Dx12GraphicsManager.h"
-
-#include "Mesh.h"
-#include "MeshFactory.h"
+#include "Render/Graphics/DirectX12/Dx12GraphicsManager.h"
+#include "Render/Graphics/Mesh.h"
+#include "Render/Graphics/MeshFactory.h"
+#include "Resource/ResourceManager.h"
 
 namespace SaplingEngine
 {
@@ -12,28 +12,23 @@ namespace SaplingEngine
 	 * \param	path		Mesh的资源路径
 	 * \return	指向创建好的Mesh的指针
 	 */
-	Mesh* MeshFactory::CreateMesh(const std::string& path)
+	MeshSptr MeshFactory::CreateMesh(const std::string& path)
 	{
-		auto* pMesh = new Mesh();
-		pMesh->Load(path);
-
-		unreadyMeshes.emplace_back(pMesh);
-
-		return pMesh;
+		auto meshSptr = ResourceManager::Load<Mesh>(path);
+		unreadyMeshes.emplace_back(meshSptr.Get());
+		return meshSptr;
 	}
 	
 	/**
 	 * \brief	删除Mesh
-	 * \param	pMesh		要被删除的Mesh的指针
+	 * \param	meshSptr	要被删除的Mesh的指针
 	 */
-	void MeshFactory::DestroyMesh(Mesh* pMesh)
+	void MeshFactory::DestroyMesh(MeshSptr&& meshSptr)
 	{
-		if (!pMesh->IsReady())
+		if (!meshSptr->IsReady())
 		{
-			unreadyMeshes.erase(std::find(unreadyMeshes.begin(), unreadyMeshes.end(), pMesh));
+			unreadyMeshes.erase(std::find(unreadyMeshes.begin(), unreadyMeshes.end(), meshSptr.Get()));
 		}
-
-		delete pMesh;
 	}
 
 	/**

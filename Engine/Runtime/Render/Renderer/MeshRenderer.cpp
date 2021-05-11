@@ -33,7 +33,7 @@ namespace SaplingEngine
 	 */
 	void MeshRenderer::SetMesh(const std::string& path)
 	{
-		m_pMesh = MeshFactory::CreateMesh(path);
+		m_MeshSptr = MeshFactory::CreateMesh(path);
 	}
 
 	/**
@@ -50,7 +50,7 @@ namespace SaplingEngine
 		m_FillSpecialOcbDataHandler = GetFillSpecialOcbDataHandler(m_MaterialSptr->GetShaderType());
 
 		//´´½¨Mesh
-		m_pMesh = MeshFactory::CreateMesh(XmlGetAttributeValue<const char*>(pNode, "meshName"));
+		m_MeshSptr = MeshFactory::CreateMesh(XmlGetAttributeValue<const char*>(pNode, "mesh"));
 
 		return true;
 	}

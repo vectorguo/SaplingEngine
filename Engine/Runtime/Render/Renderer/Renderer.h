@@ -63,7 +63,7 @@ namespace SaplingEngine
 		 */
 		Mesh* GetMesh() const
 		{
-			return m_pMesh;
+			return m_MeshSptr.Get();
 		}
 
 		/**
@@ -120,7 +120,7 @@ namespace SaplingEngine
 		/**
 		 * \brief	Mesh
 		 */
-		Mesh* m_pMesh = nullptr;
+		MeshSptr m_MeshSptr;
 
 		/**
 		 * \brief	Object的特殊常量缓冲区数据Fill回调

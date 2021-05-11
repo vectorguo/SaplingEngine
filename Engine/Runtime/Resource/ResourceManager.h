@@ -1,16 +1,13 @@
 #pragma once
 
-#include "IResource.h"
-#include "SaplingEnginePch.h"
+#include "Render/Graphics/Mesh.h"
+#include "Resource/ResourceAsyncRequest.h"
+#include "Resource/ResourceLoader.h"
 
 namespace SaplingEngine
 {
 	class ResourceManager final
 	{
-		using ResourceMap = std::map<EResourceType, std::map<std::string, IResourceSptr>>;
-		using LoadDelegate = std::function<IResource* (const std::string&)>;
-		using MeshConfig = std::tuple<std::string, uint32_t, uint32_t>;
-		
 	public:
 		/**
 		 * \brief	初始化
@@ -19,67 +16,51 @@ namespace SaplingEngine
 		static bool Initialize();
 
 		/**
-		 * \brief	获取mesh配置信息
-		 * \param	meshName		mesh名称
-		 * \return	mesh配置指针
+		 * \brief	更新
 		 */
-		static const MeshConfig* GetMeshConfig(const std::string& meshName)
-		{
-			const auto iter = m_MeshConfigs.find(meshName);
-			return iter == m_MeshConfigs.end() ? nullptr : &iter->second;
-		}
-		
+		static void Update();
+
+		/**
+		 * \brief	加载资源
+		 * \param	path		资源路径
+		 */
 		template <typename T>
-		static std::shared_ptr<T> LoadResource(const std::string& path);
+		static SharedPtr<T> Load(const std::string& path);
 
-	private:
 		/**
-		 * \brief 加载资源配置
+		 * \brief	加载Mesh
+		 * \param	path		Mesh路径
 		 */
-		static void LoadResourceConfigs();
+		template <>
+		static SharedPtr<Mesh> Load<Mesh>(const std::string& path)
+		{
+			auto* pAsset = LoadMeshAsset(path);
+			return MakeShared<Mesh>(pAsset);
+		}
+
+		/**
+		 * \brief	异步加载资源
+		 * \param	path		资源路径
+		 * \return	异步加载请求
+		 */
+		template <typename T>
+		static ResourceAsyncRequestSptr LoadAsync(const std::string& path);
+
+		/**
+		 * \brief	异步加载Mesh
+		 * \param	path		Mesh路径
+		 * \return	异步加载请求
+		 */
+		template <>
+		static ResourceAsyncRequestSptr LoadAsync<Mesh>(const std::string& path)
+		{
+
+		}
 		
 	private:
 		/**
-		 * \brief 加载完的资源列表
+		 * \brief	所有异步加载请求列表
 		 */
-		static ResourceMap m_Resources;
-
-		/**
-		 * \brief 资源加载器
-		 */
-		static std::map<EResourceType, LoadDelegate> m_ResourceLoaders;
-
-		/**
-		 * \brief Mesh资源配置
-		 */
-		static std::map<std::string, MeshConfig> m_MeshConfigs;
+		static std::vector<ResourceAsyncRequestSptr> asyncRequests;
 	};
-
-	template <typename T>
-	std::shared_ptr<T> ResourceManager::LoadResource(const std::string& path)
-	{
-		const auto resourceType = T::GetResourceType();
-		auto& resources = m_Resources[resourceType];
-		const auto iter = resources.find(path);
-		if (iter != resources.end())
-		{
-			return std::static_pointer_cast<T>(iter->second);
-		}
-		else
-		{
-			//获取加载器
-			auto loaderIter = m_ResourceLoaders.find(resourceType);
-			if (loaderIter != m_ResourceLoaders.end())
-			{
-				auto* pResource = loaderIter->second(path);
-				auto resourceSptr = std::shared_ptr<T>(dynamic_cast<T*>(pResource));
-				resources.emplace(path, resourceSptr);
-				return resourceSptr;
-			}
-			else
-			{
-				return nullptr;
-			}
-		}
-	}
 }

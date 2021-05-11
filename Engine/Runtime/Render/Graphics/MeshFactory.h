@@ -13,13 +13,13 @@ namespace SaplingEngine
 		 * \param	path		Mesh的资源路径
 		 * \return	指向创建好的Mesh的智能指针
 		 */
-		static Mesh* CreateMesh(const std::string& path);
+		static MeshSptr CreateMesh(const std::string& path);
 
 		/**
 		 * \brief	删除Mesh
-		 * \param	pMesh		要被删除的Mesh的智能指针的引用
+		 * \param	meshSptr	要被删除的Mesh的智能指针的引用
 		 */
-		static void DestroyMesh(Mesh* pMesh);
+		static void DestroyMesh(MeshSptr&& meshSptr);
 
 		/**
 		 * \brief	上传Mesh数据到GPU

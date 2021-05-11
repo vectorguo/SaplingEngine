@@ -1,13 +1,13 @@
 #pragma once
 
-#include "MeshResource.h"
-
 namespace SaplingEngine
 {
+	struct MeshAsset;
+
 	/**
-	 * \brief 加载Mesh资源
-	 * \param meshName Mesh名称
-	 * \return Resource指针
+	 * \brief	加载Mesh资源
+	 * \param	path		Mesh资源路径
+	 * \return	MeshAsset指针
 	 */
-	IResource* LoadMeshResource(const std::string& meshName);
+	MeshAsset* LoadMeshAsset(const std::string& path);
 }

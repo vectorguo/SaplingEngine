@@ -3,9 +3,7 @@
 
 namespace SaplingEngine
 {
-	ResourceManager::ResourceMap							ResourceManager::m_Resources;
-	std::map<EResourceType, ResourceManager::LoadDelegate>	ResourceManager::m_ResourceLoaders;
-	std::map<std::string, ResourceManager::MeshConfig>		ResourceManager::m_MeshConfigs;
+	std::vector<ResourceAsyncRequestSptr> ResourceManager::asyncRequests;
 
 	/**
 	 * \brief 初始化
@@ -13,38 +11,13 @@ namespace SaplingEngine
 	 */
 	bool ResourceManager::Initialize()
 	{
-		//设置资源加载器
-		m_ResourceLoaders.emplace(EResourceType::Mesh, LoadMeshResource);
-
-		//加载资源配置
-		LoadResourceConfigs();
-
 		return true;
 	}
-
+	
 	/**
-	 * \brief 加载Mesh配置
+	 * \brief	更新
 	 */
-	void ResourceManager::LoadResourceConfigs()
+	void ResourceManager::Update()
 	{
-		auto* pDocumentFile = new XmlDocumentFile("Resources/Configs/ResourceConfig.xml");
-		auto* pDocument = new XmlDocument();
-		pDocument->parse<0>(pDocumentFile->data());
-		const auto* pRootNode = pDocument->first_node();
-
-		//加载Mesh资源配置
-		const auto* pMeshesNode = pRootNode->first_node();
-		for (auto* pChild = pMeshesNode->first_node(); pChild; pChild = pChild->next_sibling())
-		{
-			const auto* meshName = XmlGetAttributeValue<const char*>(pChild, "name");
-			const auto* meshPath = XmlGetAttributeValue<const char*>(pChild, "path");
-			const auto vertexCount = XmlGetAttributeValue<uint32_t>(pChild, "vertexCount");
-			const auto indexCount = XmlGetAttributeValue<uint32_t>(pChild, "indexCount");
-			m_MeshConfigs.emplace(meshName, std::make_tuple(meshPath, vertexCount, indexCount));
-		}
-
-		//卸载XML
-		delete pDocument;
-		delete pDocumentFile;
 	}
 }

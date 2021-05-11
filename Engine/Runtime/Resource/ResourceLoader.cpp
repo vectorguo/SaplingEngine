@@ -1,37 +1,31 @@
-#include "ResourceLoader.h"
-
 #include <chrono>
 
-
-#include "ResourceManager.h"
+#include "Render/Graphics/Mesh.h"
+#include "Resource/ResourceLoader.h"
 
 namespace SaplingEngine
 {
 	/**
-	 * \brief 加载Mesh资源
-	 * \param meshName Mesh名称
-	 * \return Resource指针
+	 * \brief	加载Mesh资源
+	 * \param	path		Mesh资源路径
+	 * \return	MeshAsset指针
 	 */
-	IResource* LoadMeshResource(const std::string& meshName)
+	MeshAsset* LoadMeshAsset(const std::string& path)
 	{
-		//获取Mesh数据
-		const auto* pMeshConfig = ResourceManager::GetMeshConfig(meshName);
-		
 		//打开文件
 		std::fstream fs;
-		fs.open(std::get<0>(*pMeshConfig), std::ios::in);
+		fs.open(path, std::ios::in);
 
 		//检查文件打开是否成功
 		if (!fs.is_open())
 		{
 			fs.close();
-			std::cout << meshName << " open failed!" << std::endl;
 			return nullptr;
 		}
 
 		//顶点数据和索引数据
-		std::vector<VertexData> vertexDatas(std::get<1>(*pMeshConfig));
-		std::vector<uint16_t> indices(std::get<2>(*pMeshConfig));
+		std::vector<VertexData> vertexDatas;
+		std::vector<uint16_t> indices;
 
 		//解析
 		std::string line;
@@ -151,9 +145,9 @@ namespace SaplingEngine
 		//关闭文件
 		fs.close();
 		
-		auto* pMeshResource = new MeshResource();
-		pMeshResource->SetVertexDatas(std::move(vertexDatas));
-		pMeshResource->SetIndices(std::move(indices));
-		return pMeshResource;
+		auto* pMeshAsset = new MeshAsset();
+		pMeshAsset->vertexDatas = std::move(vertexDatas);
+		pMeshAsset->indices = std::move(indices);
+		return pMeshAsset;
 	}
 }

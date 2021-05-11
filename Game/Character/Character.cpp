@@ -21,7 +21,7 @@ namespace Warcraft
 		auto& material = meshRenderer->SetMaterial("Opaque");
 		material->SetColor("baseColor", Color::Red);
 
-		meshRenderer->SetMesh("player");
+		meshRenderer->SetMesh("Resources/Characters/player.obj");
 	}
 
 	/**

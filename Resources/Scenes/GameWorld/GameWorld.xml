@@ -25,7 +25,7 @@
     <gameObject name="ground" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="30" subType="0" material="ground" meshName="ground"/>
+            <component type="30" subType="0" material="ground" mesh="Resources/Scenes/GameWorld/Meshes/ground.obj"/>
         </components>
         <children>
         </children>
@@ -34,7 +34,7 @@
     <gameObject name="ground_under" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="30" subType="0" material="ground_under" meshName="ground_under"/>
+            <component type="30" subType="0" material="ground_under" mesh="Resources/Scenes/GameWorld/Meshes/ground_under.obj"/>
         </components>
         <children>
         </children>
@@ -43,7 +43,7 @@
     <gameObject name="ground_grass" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="30" subType="0" material="ground_grass" meshName="ground_grass"/>
+            <component type="30" subType="0" material="ground_grass" mesh="Resources/Scenes/GameWorld/Meshes/ground_grass.obj"/>
         </components>
         <children>
         </children>
@@ -52,7 +52,7 @@
     <gameObject name="bridge" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="30" subType="0" material="bridge" meshName="bridge"/>
+            <component type="30" subType="0" material="bridge" mesh="Resources/Scenes/GameWorld/Meshes/bridge.obj"/>
         </components>
         <children>
         </children>
@@ -61,7 +61,7 @@
     <gameObject name="camp" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="30" subType="0" material="camp" meshName="camp"/>
+            <component type="30" subType="0" material="camp" mesh="Resources/Scenes/GameWorld/Meshes/camp.obj"/>
         </components>
         <children>
         </children>
@@ -70,7 +70,7 @@
     <gameObject name="road" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="30" subType="0" material="road" meshName="road"/>
+            <component type="30" subType="0" material="road" mesh="Resources/Scenes/GameWorld/Meshes/road.obj"/>
         </components>
         <children>
         </children>
@@ -79,7 +79,7 @@
     <gameObject name="rock" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="30" subType="0" material="rock" meshName="rock"/>
+            <component type="30" subType="0" material="rock" mesh="Resources/Scenes/GameWorld/Meshes/rock.obj"/>
         </components>
         <children>
         </children>

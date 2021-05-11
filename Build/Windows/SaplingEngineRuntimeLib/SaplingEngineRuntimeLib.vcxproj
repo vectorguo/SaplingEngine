@@ -141,9 +141,8 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\RenderOpaquePass.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\RenderPass.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\RenderPipeline\RenderPipeline.h" />
-    <ClInclude Include="..\..\..\Engine\Runtime\Resource\IResource.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Resource\ResourceAsyncRequest.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Resource\ResourceLoader.h" />
-    <ClInclude Include="..\..\..\Engine\Runtime\Resource\MeshResource.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Resource\ResourceManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\SaplingEngineHeader.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\SaplingEnginePch.h" />
@@ -151,6 +150,7 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Scene\SceneManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Utility\Exception.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Utility\Log.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Utility\Object.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Utility\RapidXml\rapidxml.hpp" />
     <ClInclude Include="..\..\..\Engine\Runtime\Utility\RapidXml\rapidxml_iterators.hpp" />
     <ClInclude Include="..\..\..\Engine\Runtime\Utility\RapidXml\rapidxml_print.hpp" />

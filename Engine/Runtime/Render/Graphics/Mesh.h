@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Resource/MeshResource.h"
+#include "Render/Graphics/VertexData.h"
 #include "Resource/ResourceManager.h"
 
 namespace SaplingEngine
@@ -13,27 +13,34 @@ namespace SaplingEngine
 		Cube,
 	};
 	
+	/**
+	 * \brief Mesh资源
+	 */
+	struct MeshAsset
+	{
+		/**
+		 * \brief	顶点数据
+		 */
+		std::vector<VertexData> vertexDatas;
+
+		/**
+		 * \brief	索引数据
+		 */
+		std::vector<uint16_t> indices;
+	};
+
 	class Mesh
 	{
 		friend class MeshFactory;
 
 	public:
-		Mesh();
+		Mesh(MeshAsset*);
 		~Mesh();
 		
 		Mesh(const Mesh&) = delete;
 		Mesh(Mesh&&) = delete;
 		Mesh& operator=(const Mesh&) = delete;
 		Mesh& operator=(Mesh&&) = delete;
-
-		/**
-		 * \brief	加载Mesh资源
-		 * \param	path	Mesh路径
-		 */
-		void Load(const std::string& path)
-		{
-			m_MeshResourceSptr = ResourceManager::LoadResource<MeshResource>(path);
-		}
 
 		/**
 		 * \brief	顶点和索引数据是否已经上传到默认缓冲区
@@ -64,22 +71,22 @@ namespace SaplingEngine
 
 		const VertexData* GetVertexDatas() const
 		{
-			return m_MeshResourceSptr->GetVertexDatas().data();
+			return m_AssetPtr->vertexDatas.data();
 		}
 		
 		uint32_t GetVertexCount() const
 		{
-			return m_MeshResourceSptr->GetVertexCount();
+			return static_cast<uint32_t>(m_AssetPtr->vertexDatas.size());
 		}
 
 		const uint16_t* GetIndices() const
 		{
-			return m_MeshResourceSptr->GetIndices().data();
+			return m_AssetPtr->indices.data();
 		}
 		
 		uint32_t GetIndexCount() const
 		{
-			return m_MeshResourceSptr->GetIndexCount();
+			return static_cast<uint32_t>(m_AssetPtr->indices.size());
 		}
 
 	private:
@@ -90,9 +97,9 @@ namespace SaplingEngine
 		bool m_IsReady = false;
 
 		/**
-		 * \brief Mesh资源
+		 * \brief Mesh资源指针
 		 */
-		std::shared_ptr<MeshResource> m_MeshResourceSptr;
+		MeshAsset* m_AssetPtr;
 		
 		ComPtr<ID3D12Resource> m_VertexBufferOnGpu = nullptr;
 		D3D12_VERTEX_BUFFER_VIEW* m_pVertexBufferView = nullptr;
@@ -100,8 +107,6 @@ namespace SaplingEngine
 		ComPtr<ID3D12Resource> m_IndexBufferOnGpu = nullptr;
 		D3D12_INDEX_BUFFER_VIEW* m_pIndexBufferView = nullptr;
 	};
-
-	using MeshSptr = std::shared_ptr<Mesh>;
 	
 	// class Mesh
 	// {

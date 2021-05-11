@@ -51,6 +51,7 @@
  */
 #include "Utility/Exception.h"
 #include "Utility/Log.h"
+#include "Utility/Object.h"
 #include "Utility/Singleton.h"
 #include "Utility/Time.h"
 #include "Utility/Utility.h"
@@ -78,18 +79,23 @@ namespace SaplingEngine
 
 	class GameObject;
 
-	class Scene;
-
+	class IResource;
 	class Material;
+	class Mesh;
+	class Scene;
 
 	using ComponentSptr					= SharedPtr<Component>;
 	using CameraSptr					= SharedPtr<Camera>;
 	using CinemachineVirtualCameraSptr	= SharedPtr<CinemachineVirtualCamera>;
 	using TransformSptr					= SharedPtr<Transform>;
 
+	using ObjectSptr					= SharedPtr<Object>;
 	using GameObjectSptr				= SharedPtr<GameObject>;
 
+	using IResourceSptr					= SharedPtr<IResource>;
+
 	using MaterialSptr					= SharedPtr<Material>;
+	using MeshSptr						= SharedPtr<Mesh>;
 
 	using ComponentList		= std::vector<ComponentSptr>;
 	using GameObjectList	= std::vector<GameObjectSptr>;

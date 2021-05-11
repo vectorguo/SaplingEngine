@@ -14,7 +14,7 @@ namespace SaplingEngine
 	Renderer::~Renderer()
 	{
 		//É¾³ýMesh
-		MeshFactory::DestroyMesh(m_pMesh);
+		MeshFactory::DestroyMesh(std::move(m_MeshSptr));
 	}	
 
 	void Renderer::Start()

@@ -93,12 +93,6 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Resource\ResourceManager.h">
       <Filter>Resource</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\Resource\IResource.h">
-      <Filter>Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\Resource\MeshResource.h">
-      <Filter>Resource</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\Resource\ResourceLoader.h">
       <Filter>Resource</Filter>
     </ClInclude>
@@ -182,6 +176,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\LightManager.h">
       <Filter>Render\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Resource\ResourceAsyncRequest.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Utility\Object.h">
+      <Filter>Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

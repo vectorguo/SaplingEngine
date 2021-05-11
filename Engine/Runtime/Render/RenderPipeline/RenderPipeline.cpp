@@ -3,10 +3,10 @@
 #include "Application/GameSetting.h"
 #include "Camera/CameraManager.h"
 #include "Render/Graphics/ConstantBufferData.h"
-#include "Render/Graphics/MeshFactory.h"
 #include "Render/Graphics/DirectX12/Dx12CommandManager.h"
 #include "Render/Graphics/DirectX12/Dx12GraphicsManager.h"
-#include "Render/Renderer/Renderer.h"
+#include "Render/Graphics/MeshManager.h"
+#include "Render/Graphics/TextureManager.h"
 #include "Render/RenderPipeline/RenderPass/RenderOpaquePass.h"
 #include "Scene/SceneManager.h"
 
@@ -144,7 +144,10 @@ namespace SaplingEngine
 		CommandManager::PreRender();
 		
 		//上传新创建的Mesh数据
-		MeshFactory::UploadMeshDatas();
+		MeshManager::UploadMeshDatas();
+
+		//创建贴图资源
+		TextureManager::UploadTextureDatas();
 	}
 
 	/**

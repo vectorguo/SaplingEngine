@@ -82,6 +82,8 @@ namespace SaplingEngine
 	class IResource;
 	class Material;
 	class Mesh;
+	class Texture2D;
+
 	class Scene;
 
 	using ComponentSptr					= SharedPtr<Component>;
@@ -96,6 +98,7 @@ namespace SaplingEngine
 
 	using MaterialSptr					= SharedPtr<Material>;
 	using MeshSptr						= SharedPtr<Mesh>;
+	using Texture2DSptr					= SharedPtr<Texture2D>;
 
 	using ComponentList		= std::vector<ComponentSptr>;
 	using GameObjectList	= std::vector<GameObjectSptr>;

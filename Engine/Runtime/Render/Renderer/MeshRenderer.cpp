@@ -4,7 +4,7 @@
 #include "Render/Graphics/Material.h"
 #include "Render/Graphics/MaterialManager.h"
 #include "Render/Graphics/Mesh.h"
-#include "Render/Graphics/MeshFactory.h"
+#include "Render/Graphics/MeshManager.h"
 
 namespace SaplingEngine
 {
@@ -33,7 +33,7 @@ namespace SaplingEngine
 	 */
 	void MeshRenderer::SetMesh(const std::string& path)
 	{
-		m_MeshSptr = MeshFactory::CreateMesh(path);
+		m_MeshSptr = MeshManager::CreateMesh(path);
 	}
 
 	/**
@@ -50,7 +50,7 @@ namespace SaplingEngine
 		m_FillSpecialOcbDataHandler = GetFillSpecialOcbDataHandler(m_MaterialSptr->GetShaderType());
 
 		//´´½¨Mesh
-		m_MeshSptr = MeshFactory::CreateMesh(XmlGetAttributeValue<const char*>(pNode, "mesh"));
+		m_MeshSptr = MeshManager::CreateMesh(XmlGetAttributeValue<const char*>(pNode, "mesh"));
 
 		return true;
 	}

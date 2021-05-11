@@ -3,6 +3,7 @@
 #include "Input/Input.h"
 #include "Render/Graphics/MaterialManager.h"
 #include "Render/Graphics/ShaderManager.h"
+#include "Render/Graphics/TextureManager.h"
 #include "Resource/ResourceManager.h"
 #include "Scene/SceneManager.h"
 
@@ -40,6 +41,9 @@ namespace SaplingEngine
 
 		//初始化Shader
 		ShaderManager::Initialize();
+
+		//贴图初始化
+		TextureManager::Initialize();
 
 		//材质初始化
 		MaterialManager::Initialize();

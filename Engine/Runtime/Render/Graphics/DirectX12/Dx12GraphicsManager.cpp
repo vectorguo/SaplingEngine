@@ -325,38 +325,78 @@ namespace SaplingEngine
 	 */
 	void Dx12GraphicsManager::CreateRootSignature()
 	{
-		D3D12_DESCRIPTOR_RANGE cbvTable0
+		CD3DX12_STATIC_SAMPLER_DESC samplerDescriptors[6] =
 		{
-			D3D12_DESCRIPTOR_RANGE_TYPE_CBV,
+			CD3DX12_STATIC_SAMPLER_DESC
+			(
+				0,									// shaderRegister
+				D3D12_FILTER_MIN_MAG_MIP_POINT,		// filter
+				D3D12_TEXTURE_ADDRESS_MODE_WRAP,	// addressU
+				D3D12_TEXTURE_ADDRESS_MODE_WRAP,	// addressV
+				D3D12_TEXTURE_ADDRESS_MODE_WRAP		// addressW
+			),
+
+			CD3DX12_STATIC_SAMPLER_DESC
+			(
+				1,									// shaderRegister
+				D3D12_FILTER_MIN_MAG_MIP_POINT,		// filter
+				D3D12_TEXTURE_ADDRESS_MODE_CLAMP,	// addressU
+				D3D12_TEXTURE_ADDRESS_MODE_CLAMP,	// addressV
+				D3D12_TEXTURE_ADDRESS_MODE_CLAMP	// addressW
+			),
+
+			CD3DX12_STATIC_SAMPLER_DESC(
+				2,									// shaderRegister
+				D3D12_FILTER_MIN_MAG_MIP_LINEAR,	// filter
+				D3D12_TEXTURE_ADDRESS_MODE_WRAP,	// addressU
+				D3D12_TEXTURE_ADDRESS_MODE_WRAP,	// addressV
+				D3D12_TEXTURE_ADDRESS_MODE_WRAP		// addressW
+			),
+
+			CD3DX12_STATIC_SAMPLER_DESC(
+				3,									// shaderRegister
+				D3D12_FILTER_MIN_MAG_MIP_LINEAR,	// filter
+				D3D12_TEXTURE_ADDRESS_MODE_CLAMP,	// addressU
+				D3D12_TEXTURE_ADDRESS_MODE_CLAMP,	// addressV
+				D3D12_TEXTURE_ADDRESS_MODE_CLAMP	// addressW
+			),
+
+			CD3DX12_STATIC_SAMPLER_DESC(
+				4,									// shaderRegister
+				D3D12_FILTER_ANISOTROPIC,			// filter
+				D3D12_TEXTURE_ADDRESS_MODE_WRAP,	// addressU
+				D3D12_TEXTURE_ADDRESS_MODE_WRAP,	// addressV
+				D3D12_TEXTURE_ADDRESS_MODE_WRAP,	// addressW
+				0.0f,								// mipLODBias
+				8									// maxAnisotropy
+			),
+
+			CD3DX12_STATIC_SAMPLER_DESC(
+				5,									// shaderRegister
+				D3D12_FILTER_ANISOTROPIC,			// filter
+				D3D12_TEXTURE_ADDRESS_MODE_CLAMP,	// addressU
+				D3D12_TEXTURE_ADDRESS_MODE_CLAMP,	// addressV
+				D3D12_TEXTURE_ADDRESS_MODE_CLAMP,	// addressW
+				0.0f,								// mipLODBias
+				8									// maxAnisotropy
+			)
+		};
+
+		D3D12_DESCRIPTOR_RANGE srvTable0
+		{
+			D3D12_DESCRIPTOR_RANGE_TYPE_SRV,
 			1,
 			0,
 			0,
 			D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND
 		};
 
-		D3D12_DESCRIPTOR_RANGE cbvTable1
-		{
-			D3D12_DESCRIPTOR_RANGE_TYPE_CBV,
-			1,
-			1,
-			0,
-			D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND
-		};
-
-		D3D12_DESCRIPTOR_RANGE cbvTable2
-		{
-			D3D12_DESCRIPTOR_RANGE_TYPE_CBV,
-			1,
-			2,
-			0,
-			D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND
-		};
-
-		CD3DX12_ROOT_PARAMETER slotRootParameter[3];
-		slotRootParameter[0].InitAsDescriptorTable(1, &cbvTable0);
-		slotRootParameter[1].InitAsDescriptorTable(1, &cbvTable1);
-		slotRootParameter[2].InitAsDescriptorTable(1, &cbvTable2);
-		CD3DX12_ROOT_SIGNATURE_DESC rootSigDesc(3, slotRootParameter, 0, nullptr,
+		CD3DX12_ROOT_PARAMETER slotRootParameter[4];
+		slotRootParameter[0].InitAsDescriptorTable(1, &srvTable0, D3D12_SHADER_VISIBILITY_PIXEL);
+		slotRootParameter[1].InitAsConstantBufferView(0);
+		slotRootParameter[2].InitAsConstantBufferView(1);
+		slotRootParameter[3].InitAsConstantBufferView(2);
+		CD3DX12_ROOT_SIGNATURE_DESC rootSigDesc(4, slotRootParameter, 6, samplerDescriptors,
 			D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
 		ComPtr<ID3DBlob> serializedRootSig = nullptr;

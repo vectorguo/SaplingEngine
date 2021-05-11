@@ -1,5 +1,14 @@
 #include "lighting.hlsl"
 
+Texture2D _BaseMap : register(t0);
+
+SamplerState SamplerPointWrap        : register(s0);
+SamplerState SamplerPointClamp       : register(s1);
+SamplerState SamplerLinearWrap       : register(s2);
+SamplerState SamplerLinearClamp      : register(s3);
+SamplerState SamplerAnisotropicWrap  : register(s4);
+SamplerState SamplerAnisotropicClamp : register(s5);
+
 cbuffer CBufferObjectCommon : register(b0)
 {
 	float4x4 SAPLING_MATRIX_M;			//局部坐标到世界坐标的变换矩阵
@@ -31,7 +40,7 @@ struct VertexIn
 	float3 PositionOS	: POSITION;
 	float3 NormalOS		: NORMAL;
     float4 Color		: COLOR;
-	float2 UV0			: TEXCOORD0;
+	float2 UV0			: TEXCOORD;
 	float2 UV1			: TEXCOORD1;
 };
 
@@ -41,6 +50,7 @@ struct VertexOut
 	float3 PositionWS	: POSITION;
 	float3 NormalWS		: NORMAL;
     float4 Color 		: COLOR;
+	float2 UV0			: TEXCOORD;
 };
 
 VertexOut Vert(VertexIn input)
@@ -52,13 +62,14 @@ VertexOut Vert(VertexIn input)
 	output.PositionWS = worldPosition.xyz;
 	output.NormalWS = mul(input.NormalOS, (float3x3)SAPLING_MATRIX_M);
     output.Color = input.Color;
+	output.UV0 = input.UV0;
     
     return output;
 }
 
 float4 Frag(VertexOut input) : SV_Target
 {
-	float4 diffuseTex = float4(1, 1, 1, 1) * _BaseColor;
+	float4 diffuseTex = _BaseMap.Sample(SamplerLinearWrap, input.UV0) * _BaseColor;
 	float3 normal = normalize(input.NormalWS);
 	float3 toEye = normalize(WorldSpaceCameraPosition - input.PositionWS);
 

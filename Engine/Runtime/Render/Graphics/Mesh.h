@@ -31,7 +31,7 @@ namespace SaplingEngine
 
 	class Mesh
 	{
-		friend class MeshFactory;
+		friend class MeshManager;
 
 	public:
 		Mesh(MeshAsset*);

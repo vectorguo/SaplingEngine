@@ -38,7 +38,17 @@ namespace SaplingEngine
 		 */
 		static D3D12_GPU_DESCRIPTOR_HANDLE GetPassCbvDescriptor(size_t shaderHashValue)
 		{
-			return GetGPUHandleFromDescriptorHeap(m_CbvDescriptorHeapPointers[shaderHashValue], DoubleConstantBufferElementCount, CbvDescriptorSize);
+			return GetGPUHandleFromDescriptorHeap(cbvDescriptorHeapPointers[shaderHashValue], DoubleConstantBufferElementCount, cbvSrvDescriptorSize);
+		}
+
+		/**
+		 * \brief	获取Pass常量缓冲区地址
+		 * \return	常量Pass缓冲区地址
+		 */
+		static D3D12_GPU_VIRTUAL_ADDRESS GetPassCbAddress(size_t shaderHashValue)
+		{
+			const auto& uploadBuffer = objectUploadBuffers[shaderHashValue];
+			return uploadBuffer.PassUploadBuffer->GetGPUVirtualAddress();
 		}
 		
 		/**
@@ -47,16 +57,12 @@ namespace SaplingEngine
 		 */
 		static ID3D12DescriptorHeap** GetCbvDescriptorHeaps(size_t shaderHashValue)
 		{
-			return &m_CbvDescriptorHeapPointers[shaderHashValue];
+			return &cbvDescriptorHeapPointers[shaderHashValue];
 		}
 
-		/**
-		 * \brief	获取常量缓冲区描述符堆的数量
-		 * \return	常量缓冲区描述符堆的数量
-		 */
-		static uint32_t GetCbvDescriptorHeapCount()
+		static ID3D12DescriptorHeap** GetSrvDescriptorHeaps()
 		{
-			return static_cast<uint32_t>(m_CbvDescriptorHeapPointers.size());
+			return &srvDescriptorHeapPointer;
 		}
 
 		/**
@@ -67,7 +73,11 @@ namespace SaplingEngine
 		/**
 		 * \brief	弹出可用的物体常量缓冲区索引
 		 */
-		static uint32_t PopCbvIndex(size_t shaderHashValue, D3D12_GPU_DESCRIPTOR_HANDLE& commonCbvDescriptor, D3D12_GPU_DESCRIPTOR_HANDLE& specialCbvDescriptor);
+		static uint32_t PopCbvIndex(size_t shaderHashValue, D3D12_GPU_DESCRIPTOR_HANDLE& commonCbvDescriptor, D3D12_GPU_DESCRIPTOR_HANDLE& specialCbvDescriptor, D3D12_GPU_VIRTUAL_ADDRESS& commonCbAddress, D3D12_GPU_VIRTUAL_ADDRESS& specialCbAddress);
+
+		static void PushSrvIndex(uint32_t index);
+
+		static void PopSrvIndex(Texture2D* pTexture2D);
 
 		/**
 		 * \brief	填充物体常量缓冲区数据
@@ -107,6 +117,11 @@ namespace SaplingEngine
 		
 	public:
 		/**
+		 * \brief	常量缓冲区描述符大小
+		 */
+		static uint32_t cbvSrvDescriptorSize;
+
+		/**
 		 * \brief	常量缓冲区的元素数量
 		 */
 		static constexpr uint32_t ConstantBufferElementCount = 100;
@@ -117,26 +132,38 @@ namespace SaplingEngine
 		static constexpr uint32_t PassCommonCbSize = 512;
 
 		/**
-		 * \brief	常量缓冲区描述符大小
+		 * \brief	SRV
 		 */
-		static uint32_t CbvDescriptorSize;
+		static constexpr uint32_t SrvCount = 100;
 
 	private:
 		/**
 		 * \brief	常量缓冲区描述符堆指针
 		 */
-		static std::map<size_t, ComPtr<ID3D12DescriptorHeap>> m_CbvDescriptorHeaps;
-		static std::map<size_t, ID3D12DescriptorHeap*> m_CbvDescriptorHeapPointers;
+		static std::map<size_t, ComPtr<ID3D12DescriptorHeap>> cbvDescriptorHeaps;
+		static std::map<size_t, ID3D12DescriptorHeap*> cbvDescriptorHeapPointers;
+
+		/**
+		 * \brief	SRV描述符堆
+		 */
+		static ComPtr<ID3D12DescriptorHeap> srvDescriptorHeap;
+
+		static ID3D12DescriptorHeap* srvDescriptorHeapPointer;
 		
 		/**
 		 * \brief	Object的数据的上传缓冲区列表
 		 */
-		static std::map<size_t, ObjectUploadBufferData> m_ObjectUploadBuffers;
+		static std::map<size_t, ObjectUploadBufferData> objectUploadBuffers;
 
 		/**
 		 * \brief	可用的物体上传缓冲区索引列表
 		 */
 		static std::map<size_t, std::vector<uint32_t>> availableCbvIndices;
+
+		/**
+		 * \brief	可用的SRV索引列表
+		 */
+		static std::vector<uint32_t> availableSrvIndices;
 	};
 
 	using CBufferManager = Dx12CBufferManager;

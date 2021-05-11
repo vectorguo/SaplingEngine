@@ -3,6 +3,7 @@
 #include "Render/Graphics/MaterialProperty.h"
 #include "Render/Graphics/Shader.h"
 #include "Render/Graphics/ShaderManager.h"
+#include "Render/Graphics/Texture2D.h"
 
 namespace SaplingEngine
 {
@@ -11,7 +12,7 @@ namespace SaplingEngine
 		friend class MaterialManager;
 
 	public:
-		Material() {}
+		Material();
 		~Material() {}
 
 		Material(const Material&) = delete;
@@ -167,6 +168,11 @@ namespace SaplingEngine
 		{
 			auto iter = m_Properties.find(propertyID);
 			return iter == m_Properties.cend() ? Vector4::Zero : iter->second.GetVector4();
+		}
+
+		inline const Texture2DSptr& GetMainTexture() const
+		{
+			return m_MainTexture;
 		}
 
 		/**
@@ -340,5 +346,10 @@ namespace SaplingEngine
 		 * \brief	材质的属性列表
 		 */
 		std::map<size_t, MaterialProperty> m_Properties;
+
+		/**
+		 * \brief	主帖图
+		 */
+		Texture2DSptr m_MainTexture;
 	};
 }

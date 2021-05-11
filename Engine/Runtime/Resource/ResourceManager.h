@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Render/Graphics/Mesh.h"
+#include "Render/Graphics/Texture2D.h"
 #include "Resource/ResourceAsyncRequest.h"
 #include "Resource/ResourceLoader.h"
 
@@ -36,6 +37,16 @@ namespace SaplingEngine
 		{
 			auto* pAsset = LoadMeshAsset(path);
 			return MakeShared<Mesh>(pAsset);
+		}
+
+		/**
+		 * \brief	¼ÓÔØTexture2D
+		 * \param	path		Texture2DÂ·¾¶
+		 */
+		template <>
+		static SharedPtr<Texture2D> Load<Texture2D>(const std::string& path)
+		{
+			return LoadTexture2D(path);
 		}
 
 		/**

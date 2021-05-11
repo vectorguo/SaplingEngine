@@ -1,7 +1,5 @@
-#include "DirectX12/Dx12GraphicsManager.h"
-
-#include "Mesh.h"
-#include "MeshFactory.h"
+#include "Render/Graphics/DirectX12/Dx12GraphicsManager.h"
+#include "Render/Graphics/Mesh.h"
 
 namespace SaplingEngine
 {

@@ -98,6 +98,24 @@ namespace SaplingEngine
 		{
 			return m_SpecialCbvDescriptor;
 		}
+
+		/**
+		 * \brief	获取通用数据对应的常量缓冲区描述符
+		 * \return	通用数据对应的常量缓冲区描述符
+		 */
+		D3D12_GPU_VIRTUAL_ADDRESS GetCommonCbAddress() const
+		{
+			return m_CommonCbAddress;
+		}
+
+		/**
+		 * \brief	获取特殊数据对应的常量缓冲区地址
+		 * \return	特殊数据对应的常量缓冲区地址
+		 */
+		D3D12_GPU_VIRTUAL_ADDRESS GetSpecialCbAddress() const
+		{
+			return m_SpecialCbAddress;
+		}
 		
 		/**
 		 * \brief	填充SpecialOcbData
@@ -139,8 +157,18 @@ namespace SaplingEngine
 		D3D12_GPU_DESCRIPTOR_HANDLE m_CommonCbvDescriptor{};
 
 		/**
+		 * \brief	通用数据常量缓冲区地址
+		 */
+		D3D12_GPU_VIRTUAL_ADDRESS m_CommonCbAddress{};
+
+		/**
 		 * \brief	特殊数据常量缓冲区的描述符
 		 */
 		D3D12_GPU_DESCRIPTOR_HANDLE m_SpecialCbvDescriptor{};
+
+		/**
+		 * \brief	特殊数据常量缓冲区地址
+		 */
+		D3D12_GPU_VIRTUAL_ADDRESS m_SpecialCbAddress{};
 	};
 }

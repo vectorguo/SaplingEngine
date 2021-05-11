@@ -150,7 +150,7 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CBufferManager.h">
       <Filter>Render\Graphics\DirectX12</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\MeshFactory.h">
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\MeshManager.h">
       <Filter>Render\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\MaterialProperty.h">
@@ -182,6 +182,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\Utility\Object.h">
       <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\Texture2D.h">
+      <Filter>Render\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\DDSTextureLoader.h">
+      <Filter>Render\Graphics\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\TextureManager.h">
+      <Filter>Render\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -293,7 +302,7 @@
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CBufferManager.cpp">
       <Filter>Render\Graphics\DirectX12</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\MeshFactory.cpp">
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\MeshManager.cpp">
       <Filter>Render\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\Camera\Cinemachine\CinemachineBrain.cpp">
@@ -306,6 +315,15 @@
       <Filter>Render\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\LightManager.cpp">
+      <Filter>Render\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\DDSTextureLoader.cpp">
+      <Filter>Render\Graphics\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\TextureManager.cpp">
+      <Filter>Render\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\Texture2D.cpp">
       <Filter>Render\Graphics</Filter>
     </ClCompile>
   </ItemGroup>

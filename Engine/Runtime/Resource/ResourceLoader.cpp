@@ -1,6 +1,7 @@
 #include <chrono>
 
 #include "Render/Graphics/Mesh.h"
+#include "Render/Graphics/Texture2D.h"
 #include "Resource/ResourceLoader.h"
 
 namespace SaplingEngine
@@ -70,7 +71,7 @@ namespace SaplingEngine
 				}
 				else if (line[0] == 'v' && line[1] == 't')
 				{
-					if (sscanf_s(line.c_str(), "vt %f %f %f", fValue, fValue + 1, fValue + 2) == 3)
+					if (sscanf_s(line.c_str(), "vt %f %f", fValue, fValue + 1) == 2)
 					{
 						if (vertexDatas.size() <= vtIndex)
 						{
@@ -122,7 +123,7 @@ namespace SaplingEngine
 				}
 				else if (line[0] == 'v' && line[1] == 't')
 				{
-					if (sscanf_s(line.c_str(), "vt %f %f %f", fValue, fValue + 1, fValue + 2) == 3)
+					if (sscanf_s(line.c_str(), "vt %f %f", fValue, fValue + 1) == 2)
 					{
 						auto& uv0 = vertexDatas[vtIndex++].UV0;
 						uv0.x = fValue[0];
@@ -149,5 +150,16 @@ namespace SaplingEngine
 		pMeshAsset->vertexDatas = std::move(vertexDatas);
 		pMeshAsset->indices = std::move(indices);
 		return pMeshAsset;
+	}
+	
+	/**
+	 * \brief	加载Texture2D
+	 * \param	path		Texture2D资源路径
+	 * \return	Texture2D智能指针
+	 */
+	Texture2DSptr LoadTexture2D(const std::string& path)
+	{
+		auto texture2D = MakeShared<Texture2D>(path);
+		return texture2D;
 	}
 }

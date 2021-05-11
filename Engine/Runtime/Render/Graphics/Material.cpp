@@ -1,7 +1,13 @@
-#include "Material.h"
+#include "Render/Graphics/Material.h"
+#include "Render/Graphics/TextureManager.h"
 
 namespace SaplingEngine
 {
+	Material::Material() : 
+		m_MainTexture(TextureManager::White)
+	{
+	}
+	
 	/**
 	 * \brief 反序列化
 	 * \param pNode 配置节点指针
@@ -14,7 +20,7 @@ namespace SaplingEngine
 		
 		for (const auto* pPropertyNode = pNode->first_node(); pPropertyNode; pPropertyNode = pPropertyNode->next_sibling())
 		{
-			auto propertyName = XmlGetAttributeValue<const char*>(pPropertyNode, "name");
+			std::string propertyName = XmlGetAttributeValue<const char*>(pPropertyNode, "name");
 			auto propertyType = XmlGetAttributeValue<int32_t>(pPropertyNode, "type");
 			switch (propertyType)
 			{
@@ -43,6 +49,12 @@ namespace SaplingEngine
 						XmlGetAttributeValue<float>(pPropertyNode, "y"),
 						XmlGetAttributeValue<float>(pPropertyNode, "z"),
 						XmlGetAttributeValue<float>(pPropertyNode, "w"));
+					break;
+				case 5:		//Texture2D
+					if (propertyName == "baseMap")
+					{
+						m_MainTexture = TextureManager::CreateTexture2D(XmlGetAttributeValue<const char*>(pPropertyNode, "path"));
+					}
 					break;
 				default:
 					break;

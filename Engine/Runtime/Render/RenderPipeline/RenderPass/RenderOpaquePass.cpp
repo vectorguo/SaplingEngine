@@ -33,9 +33,9 @@ namespace SaplingEngine
 			pCommandList->SetPipelineState(GraphicsManager::GetPipelineState(shaderHashValue));
 
 			//设置跟描述符表和常量缓冲区，将常量缓冲区绑定到渲染流水线上
-			pCommandList->SetDescriptorHeaps(1, CBufferManager::GetCbvDescriptorHeaps(shaderHashValue));
+			pCommandList->SetDescriptorHeaps(1, CBufferManager::GetSrvDescriptorHeaps());
 			pCommandList->SetGraphicsRootSignature(GraphicsManager::GetRootSignature());
-			pCommandList->SetGraphicsRootDescriptorTable(2, CBufferManager::GetPassCbvDescriptor(shaderHashValue));
+			pCommandList->SetGraphicsRootConstantBufferView(3, CBufferManager::GetPassCbAddress(shaderHashValue));
 
 			//绘制物体
 			auto items = iter->second;

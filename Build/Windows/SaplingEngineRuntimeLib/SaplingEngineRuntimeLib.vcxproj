@@ -121,6 +121,7 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Process\ProcessManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\ConstantBufferData.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\d3dx12.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\DDSTextureLoader.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CommandManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CBufferManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12GraphicsManager.h" />
@@ -132,9 +133,11 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\MaterialManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\MaterialProperty.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\Mesh.h" />
-    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\MeshFactory.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\MeshManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\Shader.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\ShaderManager.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\Texture2D.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\TextureManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\VertexData.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Renderer\MeshRenderer.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Renderer\Renderer.h" />
@@ -180,6 +183,7 @@
     <ClCompile Include="..\..\..\Engine\Runtime\Process\Process.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Process\ProcessManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\ConstantBufferData.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\DDSTextureLoader.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CommandManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CBufferManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12GraphicsManager.cpp" />
@@ -188,9 +192,11 @@
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\Material.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\MaterialManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\Mesh.cpp" />
-    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\MeshFactory.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\MeshManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\Shader.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\ShaderManager.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\Texture2D.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\TextureManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Renderer\MeshRenderer.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Renderer\Renderer.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\RenderOpaquePass.cpp" />

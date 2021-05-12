@@ -1,49 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
     <materials>
-        <material name="bridge" shader="Standard">
-            <property name="baseMap" type="5" index="0" path="Resources/Scenes/GameWorld/Textures/bridge.dds"/>
-            <property name="baseColor" type="2" r="0.6" g="0.6" b="0.6" a="1"/>
-            <property name="fresnel" type="3" r="0.01" g="0.01" b="0.01"/>
-            <property name="roughtness" type="1" value="0.25"/>
-        </material>
-
         <material name="camp" shader="Standard">
             <property name="baseMap" type="5" index="0" path="Resources/Scenes/GameWorld/Textures/camp.dds"/>
             <property name="baseColor" type="2" r="1" g="1" b="1" a="1"/>
-            <property name="fresnel" type="3" r="0.01" g="0.01" b="0.01"/>
+            <property name="fresnel" type="3" x="0.01" y="0.01" z="0.01"/>
+            <property name="metallic" type="1" value="0"/>
             <property name="roughtness" type="1" value="0.8"/>
         </material>
 
         <material name="ground" shader="Standard">
-            <property name="baseColor" type="2" r="1" g="0.945" b="0.627" a="1"/>
-            <property name="fresnel" type="3" r="0.01" g="0.01" b="0.01"/>
-            <property name="roughtness" type="1" value="0.25"/>
+            <property name="baseColor" type="2" r="0.54" g="0.68" b="0.43" a="1"/>
+            <property name="fresnel" type="3" x="0.01" y="0.01" z="0.01"/>
+            <property name="metallic" type="1" value="0"/>
+            <property name="roughtness" type="1" value="0.15"/>
         </material>
 
-        <material name="ground_grass" shader="Standard">
-            <property name="baseColor" type="2" r="0.372" g="0.521" b="0.243" a="1"/>
-            <property name="fresnel" type="3" r="0.01" g="0.01" b="0.01"/>
+        <material name="village" shader="Standard">
+            <property name="baseMap" type="5" index="0" path="Resources/Scenes/GameWorld/Textures/village.dds"/>
+            <property name="baseColor" type="2" r="1" g="1" b="1" a="1"/>
+            <property name="fresnel" type="3" x="0.01" y="0.01" z="0.01"/>
+            <property name="metallic" type="1" value="0"/>
             <property name="roughtness" type="1" value="0.25"/>
-        </material>
-
-        <material name="ground_under" shader="Standard">
-            <property name="baseColor" type="2" r="0.647" g="0.396" b="0.259" a="1"/>
-            <property name="fresnel" type="3" r="0.01" g="0.01" b="0.01"/>
-            <property name="roughtness" type="1" value="0.25"/>
-        </material>
-
-        <material name="road" shader="Standard">
-            <property name="baseColor" type="2" r="0.6" g="0.6" b="0.6" a="1"/>
-            <property name="fresnel" type="3" r="0.01" g="0.01" b="0.01"/>
-            <property name="roughtness" type="1" value="0.25"/>
-        </material>
-
-        <material name="rock" shader="Standard">
-            <property name="baseMap" type="5" index="0" path="Resources/Scenes/GameWorld/Textures/rock01.dds"/>
-            <property name="baseColor" type="2" r="0.9" g="0.9" b="0.9" a="1"/>
-            <property name="fresnel" type="3" r="0.01" g="0.01" b="0.01"/>
-            <property name="roughtness" type="1" value="0.5"/>
         </material>
     </materials>
 </root>

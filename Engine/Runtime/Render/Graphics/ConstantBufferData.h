@@ -122,9 +122,29 @@ namespace SaplingEngine
 			Vector3 Fresnel;
 
 			/**
+			 * \brief	金属度
+			 */
+			float Metallic;
+
+			/**
 			 * \brief	表面粗糙度
 			 */
 			float Roughness;
+
+			/**
+			 * \brief	占位符
+			 */
+			float Placeholder1;
+
+			/**
+			 * \brief	占位符
+			 */
+			float Placeholder2;
+
+			/**
+			 * \brief	占位符
+			 */
+			float Placeholder3;
 		};
 
 	public:

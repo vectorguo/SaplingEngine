@@ -31,55 +31,55 @@
         </children>
     </gameObject>  
     
-    <gameObject name="ground_under" layerMask="1" isActive="1">
+    <gameObject name="village_path" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="30" subType="0" material="ground_under" mesh="Resources/Scenes/GameWorld/Meshes/ground_under.obj"/>
+            <component type="30" subType="0" material="village" mesh="Resources/Scenes/GameWorld/Meshes/village_path.obj"/>
         </components>
         <children>
         </children>
     </gameObject>  
 
-    <gameObject name="ground_grass" layerMask="1" isActive="1">
+    <gameObject name="village_building1" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="30" subType="0" material="ground_grass" mesh="Resources/Scenes/GameWorld/Meshes/ground_grass.obj"/>
+            <component type="30" subType="0" material="village" mesh="Resources/Scenes/GameWorld/Meshes/village_building1.obj"/>
+        </components>
+        <children>
+        </children>
+    </gameObject> 
+    
+    <gameObject name="village_building2" layerMask="1" isActive="1">
+        <components>
+            <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
+            <component type="30" subType="0" material="village" mesh="Resources/Scenes/GameWorld/Meshes/village_building2.obj"/>
         </components>
         <children>
         </children>
     </gameObject>  
 
-    <gameObject name="bridge" layerMask="1" isActive="1">
+    <gameObject name="village_tree" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="30" subType="0" material="bridge" mesh="Resources/Scenes/GameWorld/Meshes/bridge.obj"/>
+            <component type="30" subType="0" material="village" mesh="Resources/Scenes/GameWorld/Meshes/village_tree.obj"/>
         </components>
         <children>
         </children>
     </gameObject>
 
-    <gameObject name="camp" layerMask="1" isActive="1">
+    <gameObject name="village_grass" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="30" subType="0" material="camp" mesh="Resources/Scenes/GameWorld/Meshes/camp.obj"/>
+            <component type="30" subType="0" material="village" mesh="Resources/Scenes/GameWorld/Meshes/village_grass.obj"/>
         </components>
         <children>
         </children>
     </gameObject>
 
-    <gameObject name="road" layerMask="1" isActive="1">
+    <gameObject name="village_flower" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="30" subType="0" material="road" mesh="Resources/Scenes/GameWorld/Meshes/road.obj"/>
-        </components>
-        <children>
-        </children>
-    </gameObject>
-
-    <gameObject name="rock" layerMask="1" isActive="1">
-        <components>
-            <component type="1" lpx="0" lpy="0" lpz="0" lrx="0" lry="0" lrz="0" lrw="1" lsx="1" lsy="1" lsz="1"/>
-            <component type="30" subType="0" material="rock" mesh="Resources/Scenes/GameWorld/Meshes/rock.obj"/>
+            <component type="30" subType="0" material="village" mesh="Resources/Scenes/GameWorld/Meshes/village_flower.obj"/>
         </components>
         <children>
         </children>

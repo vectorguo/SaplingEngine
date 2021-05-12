@@ -12,6 +12,7 @@ namespace SaplingEngine
 {
 	static size_t BaseColorPropertyID	= StringToHash("baseColor");
 	static size_t FresnelPropertyID		= StringToHash("fresnel");
+	static size_t MetallicPropertyID	= StringToHash("metallic");
 	static size_t RoughnessPropertyID	= StringToHash("roughness");
 
 	CommonOcbData::OcbData				CommonOcbData::m_Data;
@@ -101,7 +102,8 @@ namespace SaplingEngine
 		//填充数据
 		m_Data.BaseColor = pMaterial->GetColor(BaseColorPropertyID);
 		m_Data.Fresnel = pMaterial->GetVector3(FresnelPropertyID);
-		m_Data.Roughness = pMaterial->GetFloat(RoughnessPropertyID);
+		m_Data.Metallic = 0.5;		// pMaterial->GetFloat(MetallicPropertyID);
+		m_Data.Roughness = 0.15f;	// pMaterial->GetFloat(RoughnessPropertyID);
 
 		//设置数据大小
 		size = DataSize;

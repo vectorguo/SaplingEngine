@@ -16,7 +16,11 @@ cbuffer CBufferObjectSpecial : register(b1)
 {
 	float4 _BaseColor;
 	float3 _Fresnel;
+	float _Metallic;
 	float _Roughness;
+	float _Placeholder1;
+	float _Placeholder2;
+	float _Placeholder3;
 };
 
 cbuffer CBufferPassCommon : register(b2)
@@ -75,8 +79,8 @@ float4 Frag(VertexOut input) : SV_Target
 	float4 ambient = diffuseTex * AmbientLightColor;
 	
 	//方向光
-	float4 color = Standard_DirectionalLight(MainLight, normal, toEye, diffuseTex, _Fresnel, 1 - _Roughness);
-    return ambient + color;
+	float4 color = Standard_DirectionalLight(MainLight, normal, toEye, diffuseTex, _Fresnel, _Metallic, _Roughness);
+    return color;
 }
 
 

@@ -24,6 +24,9 @@ namespace Warcraft
 		material->SetFloat("roughtness", 0.5f);
 
 		meshRenderer->SetMesh("Resources/Characters/player.obj");
+
+		//ÉèÖÃ³õÊ¼Î»ÖÃ
+		GetTransform()->SetPosition(5.55f, 0, -124.0f);
 	}
 
 	/**

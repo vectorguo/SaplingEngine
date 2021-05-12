@@ -36,7 +36,8 @@ namespace SaplingEngine
 	Shader::Shader(const XmlNode* pShaderNode) :
 		m_Name(XmlGetAttributeValue<const char*>(pShaderNode, "name")),
  		m_HashValue(StringToHash(m_Name)),
-		m_Type(XmlGetAttributeValue<uint8_t>(pShaderNode, "type"))
+		m_OcbType(XmlGetAttributeValue<uint8_t>(pShaderNode, "ocb_type")),
+		m_TextureCount(XmlGetAttributeValue<uint8_t>(pShaderNode, "texture_count"))
 	{
 		const auto path = CharToWChar(pShaderNode->first_attribute("path")->value());
 		m_VsShader = CompileShader(path, nullptr, XmlGetAttributeValue<const char*>(pShaderNode, "vert"), "vs_5_1");

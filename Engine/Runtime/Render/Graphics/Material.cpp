@@ -3,9 +3,24 @@
 
 namespace SaplingEngine
 {
-	Material::Material() : 
-		m_MainTexture(TextureManager::White)
+	Material::Material()
 	{
+	}
+
+	/**
+	* \brief	…Ë÷√Shader
+	* \param	shaderID		ShaderID
+	*/
+	void Material::SetShader(size_t shaderID)
+	{
+		m_ShaderPtr = ShaderManager::GetShader(shaderID);
+
+		auto count = m_ShaderPtr->GetTextureCount();
+		m_Textures.reserve(count);
+		for (auto i = 0; i < count; ++i)
+		{
+			m_Textures.emplace_back(TextureManager::White);
+		}
 	}
 	
 	/**
@@ -15,8 +30,8 @@ namespace SaplingEngine
 	 */
 	bool Material::Deserialize(const XmlNode* pNode)
 	{
-		auto shaderName = XmlGetAttributeValue<const char*>(pNode, "shader");
-		m_pShader = ShaderManager::GetShader(shaderName);
+		//…Ë÷√Shader
+		SetShader(XmlGetAttributeValue<const char*>(pNode, "shader"));
 		
 		for (const auto* pPropertyNode = pNode->first_node(); pPropertyNode; pPropertyNode = pPropertyNode->next_sibling())
 		{
@@ -51,11 +66,12 @@ namespace SaplingEngine
 						XmlGetAttributeValue<float>(pPropertyNode, "w"));
 					break;
 				case 5:		//Texture2D
-					if (propertyName == "baseMap")
-					{
-						m_MainTexture = TextureManager::CreateTexture2D(XmlGetAttributeValue<const char*>(pPropertyNode, "path"));
-					}
+				{
+					auto texture = TextureManager::CreateTexture2D(XmlGetAttributeValue<const char*>(pPropertyNode, "path"));
+					auto textureIndex = XmlGetAttributeValue<uint32_t>(pPropertyNode, "index");
+					SetTexture(texture, textureIndex);
 					break;
+				}
 				default:
 					break;
 			}

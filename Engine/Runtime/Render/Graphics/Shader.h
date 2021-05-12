@@ -34,12 +34,17 @@ namespace SaplingEngine
 		}
 
 		/**
-		 * \brief 获取Shader类型
-		 * \return Shader类型
+		 * \brief 获取Shader对应的物体常量缓冲区类型
+		 * \return Shader对应的物体常量缓冲区类型
 		 */
-		uint8_t GetType() const
+		uint8_t GetOcbType() const
 		{
-			return m_Type;
+			return m_OcbType;
+		}
+
+		uint32_t GetTextureCount() const
+		{
+			return m_TextureCount;
 		}
 
 		uint8_t* GetVsBufferPoint() const
@@ -85,7 +90,12 @@ namespace SaplingEngine
 		/**
 		 * \brief Shader类型，用于区分不同shader对应的SpecialCBuffer
 		 */
-		uint8_t m_Type;
+		uint8_t m_OcbType;
+
+		/**
+		 * \brief Shader所需的贴图数量
+		 */
+		uint32_t m_TextureCount;
 
 		ComPtr<ID3DBlob> m_VsShader;
 		ComPtr<ID3DBlob> m_PsShader;

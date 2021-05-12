@@ -18,8 +18,8 @@ namespace SaplingEngine
 	ComPtr<ID3D12Resource>					Dx12GraphicsManager::m_DepthStencilBuffer;
 	DXGI_FORMAT								Dx12GraphicsManager::m_SwapChainBufferFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
 	DXGI_FORMAT								Dx12GraphicsManager::m_DepthStencilViewFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	ComPtr<ID3D12RootSignature>				Dx12GraphicsManager::m_RootSignature = nullptr;
 	Dx12GraphicsManager::PipelineStateMap	Dx12GraphicsManager::m_PipelineStates;
+	Dx12GraphicsManager::RootSignatureMap	Dx12GraphicsManager::m_RootSignatures;
 	D3D12_VIEWPORT							Dx12GraphicsManager::m_Viewport;
 	D3D12_RECT								Dx12GraphicsManager::m_ScissorRect;
 	std::map<ComPtr<ID3D12Resource>, uint64_t> Dx12GraphicsManager::m_UnusedUploadBuffers;
@@ -325,7 +325,7 @@ namespace SaplingEngine
 	 */
 	void Dx12GraphicsManager::CreateRootSignature()
 	{
-		CD3DX12_STATIC_SAMPLER_DESC samplerDescriptors[6] =
+		CD3DX12_STATIC_SAMPLER_DESC samplerDescriptors[4] =
 		{
 			CD3DX12_STATIC_SAMPLER_DESC
 			(
@@ -360,54 +360,43 @@ namespace SaplingEngine
 				D3D12_TEXTURE_ADDRESS_MODE_CLAMP,	// addressV
 				D3D12_TEXTURE_ADDRESS_MODE_CLAMP	// addressW
 			),
-
-			CD3DX12_STATIC_SAMPLER_DESC(
-				4,									// shaderRegister
-				D3D12_FILTER_ANISOTROPIC,			// filter
-				D3D12_TEXTURE_ADDRESS_MODE_WRAP,	// addressU
-				D3D12_TEXTURE_ADDRESS_MODE_WRAP,	// addressV
-				D3D12_TEXTURE_ADDRESS_MODE_WRAP,	// addressW
-				0.0f,								// mipLODBias
-				8									// maxAnisotropy
-			),
-
-			CD3DX12_STATIC_SAMPLER_DESC(
-				5,									// shaderRegister
-				D3D12_FILTER_ANISOTROPIC,			// filter
-				D3D12_TEXTURE_ADDRESS_MODE_CLAMP,	// addressU
-				D3D12_TEXTURE_ADDRESS_MODE_CLAMP,	// addressV
-				D3D12_TEXTURE_ADDRESS_MODE_CLAMP,	// addressW
-				0.0f,								// mipLODBias
-				8									// maxAnisotropy
-			)
 		};
-
-		D3D12_DESCRIPTOR_RANGE srvTable0
-		{
-			D3D12_DESCRIPTOR_RANGE_TYPE_SRV,
-			1,
-			0,
-			0,
-			D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND
-		};
-
-		CD3DX12_ROOT_PARAMETER slotRootParameter[4];
-		slotRootParameter[0].InitAsDescriptorTable(1, &srvTable0, D3D12_SHADER_VISIBILITY_PIXEL);
-		slotRootParameter[1].InitAsConstantBufferView(0);
-		slotRootParameter[2].InitAsConstantBufferView(1);
-		slotRootParameter[3].InitAsConstantBufferView(2);
-		CD3DX12_ROOT_SIGNATURE_DESC rootSigDesc(4, slotRootParameter, 6, samplerDescriptors,
-			D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
 		ComPtr<ID3DBlob> serializedRootSig = nullptr;
 		ComPtr<ID3DBlob> errorBlob = nullptr;
-		const auto hr = D3D12SerializeRootSignature(&rootSigDesc, D3D_ROOT_SIGNATURE_VERSION_1, serializedRootSig.GetAddressOf(), errorBlob.GetAddressOf());
-		if (errorBlob != nullptr)
+
+		//为每一个shader都创建一个根签名
+		const auto& shaders = ShaderManager::GetAllShaders();
+		for (auto iter = shaders.begin(); iter != shaders.end(); ++iter)
 		{
-			OutputDebugStringA(static_cast<char*>(errorBlob->GetBufferPointer()));
+			const auto* pShader = iter->second;
+			const auto textureCount = pShader->GetTextureCount();
+
+			CD3DX12_ROOT_PARAMETER* pSlotRootParameter = new CD3DX12_ROOT_PARAMETER[3 + textureCount];
+			pSlotRootParameter[0].InitAsConstantBufferView(0);
+			pSlotRootParameter[1].InitAsConstantBufferView(1);
+			pSlotRootParameter[2].InitAsConstantBufferView(2);
+
+			for (uint32_t i = 0; i < textureCount; ++i)
+			{
+				D3D12_DESCRIPTOR_RANGE srvTable { D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, i, 0, D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND };
+				pSlotRootParameter[3 + i].InitAsDescriptorTable(1, &srvTable, D3D12_SHADER_VISIBILITY_PIXEL);
+			}
+
+			CD3DX12_ROOT_SIGNATURE_DESC rootSigDesc(3 + textureCount, pSlotRootParameter, 4, samplerDescriptors, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+			ComPtr<ID3D12RootSignature> rootSignature;
+			const auto hr = D3D12SerializeRootSignature(&rootSigDesc, D3D_ROOT_SIGNATURE_VERSION_1, serializedRootSig.GetAddressOf(), errorBlob.GetAddressOf());
+			if (errorBlob != nullptr)
+			{
+				OutputDebugStringA(static_cast<char*>(errorBlob->GetBufferPointer()));
+			}
+			ThrowIfFailed(hr);
+			ThrowIfFailed(m_D3D12Device->CreateRootSignature(0, serializedRootSig->GetBufferPointer(), serializedRootSig->GetBufferSize(), IID_PPV_ARGS(&rootSignature)));
+
+			m_RootSignatures.emplace(pShader->GetHashValue(), rootSignature);
+
+			delete[] pSlotRootParameter;
 		}
-		ThrowIfFailed(hr);
-		ThrowIfFailed(m_D3D12Device->CreateRootSignature(0, serializedRootSig->GetBufferPointer(), serializedRootSig->GetBufferSize(), IID_PPV_ARGS(&m_RootSignature)));
 	}
 
 	/**
@@ -418,7 +407,6 @@ namespace SaplingEngine
 		//创建基础的PipelineState描述符
 		D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc;
 		ZeroMemory(&psoDesc, sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC));
-		psoDesc.pRootSignature = m_RootSignature.Get();
 		psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
 		psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
 		psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
@@ -440,6 +428,7 @@ namespace SaplingEngine
 			psoDesc.InputLayout = { pShaderInputLayout->data(), static_cast<uint32_t>(pShaderInputLayout->size()) };
 			psoDesc.VS = { pShader->GetVsBufferPoint(), pShader->GetVsBufferSize() };
 			psoDesc.PS = { pShader->GetPsBufferPoint(), pShader->GetPsBufferSize() };
+			psoDesc.pRootSignature = m_RootSignatures[pShader->GetHashValue()].Get();
 
 			ComPtr<ID3D12PipelineState> pipelineState;
 			ThrowIfFailed(m_D3D12Device->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&pipelineState)));

@@ -13,6 +13,7 @@ namespace SaplingEngine
 		friend class Dx12CommandManager;
 		friend class Dx12CBufferManager;
 
+		using RootSignatureMap = std::map<size_t, ComPtr<ID3D12RootSignature>>;
 		using PipelineStateMap = std::map<size_t, ComPtr<ID3D12PipelineState>>;
 		
 	public:
@@ -53,11 +54,13 @@ namespace SaplingEngine
 
 		/**
 		 * \brief	获取RootSignature
+		 * \param	shaderHashValue		Shader对应的HashValue
 		 * \return	RootSignature指针
 		 */
-		static ID3D12RootSignature* GetRootSignature()
+		static ID3D12RootSignature* GetRootSignature(size_t shaderHashValue)
 		{
-			return m_RootSignature.Get();
+			const auto iter = m_RootSignatures.find(shaderHashValue);
+			return iter == m_RootSignatures.end() ? nullptr : iter->second.Get();
 		}
 
 		/**
@@ -224,14 +227,14 @@ namespace SaplingEngine
 		static DXGI_FORMAT m_DepthStencilViewFormat;
 
 		/**
-		 * \brief	跟签名和描述符
-		 */
-		static ComPtr<ID3D12RootSignature> m_RootSignature;
-
-		/**
 		 * \brief	流水线状态
 		 */
 		static PipelineStateMap m_PipelineStates;
+
+		/**
+		 * \brief	跟签名和描述符
+		 */
+		static RootSignatureMap m_RootSignatures;
 
 		/**
 		 * \brief	视图窗口

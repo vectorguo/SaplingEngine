@@ -100,11 +100,14 @@ namespace SaplingEngine
 		m_CommandList->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 		const auto* pMaterial = pRenderer->GetMaterial();
+		const auto& textures = pMaterial->GetTextures();
+		for (auto i = 0; i < textures.size(); ++i)
+		{
+			m_CommandList->SetGraphicsRootDescriptorTable(3 + i, textures[i]->GetSrvDescriptor());
+		}
 
-		//获取该Renderer所对应的常量缓冲区描述符
-		m_CommandList->SetGraphicsRootDescriptorTable(0, pMaterial->GetMainTexture()->GetSrvDescriptor());
-		m_CommandList->SetGraphicsRootConstantBufferView(1, pRenderer->GetCommonCbAddress());
-		m_CommandList->SetGraphicsRootConstantBufferView(2, pRenderer->GetSpecialCbAddress());
+		m_CommandList->SetGraphicsRootConstantBufferView(0, pRenderer->GetCommonCbAddress());
+		m_CommandList->SetGraphicsRootConstantBufferView(1, pRenderer->GetSpecialCbAddress());
 		m_CommandList->DrawIndexedInstanced(pMesh->GetIndexCount(), 1, 0, 0, 0);
 	}
 

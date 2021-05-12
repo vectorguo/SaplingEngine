@@ -34,8 +34,8 @@ namespace SaplingEngine
 
 			//设置跟描述符表和常量缓冲区，将常量缓冲区绑定到渲染流水线上
 			pCommandList->SetDescriptorHeaps(1, CBufferManager::GetSrvDescriptorHeaps());
-			pCommandList->SetGraphicsRootSignature(GraphicsManager::GetRootSignature());
-			pCommandList->SetGraphicsRootConstantBufferView(3, CBufferManager::GetPassCbAddress(shaderHashValue));
+			pCommandList->SetGraphicsRootSignature(GraphicsManager::GetRootSignature(shaderHashValue));
+			pCommandList->SetGraphicsRootConstantBufferView(2, CBufferManager::GetPassCbAddress(shaderHashValue));
 
 			//绘制物体
 			auto items = iter->second;

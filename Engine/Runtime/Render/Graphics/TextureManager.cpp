@@ -8,8 +8,9 @@
 
 namespace SaplingEngine
 {
-	Texture2DSptr TextureManager::White;
-	std::vector<Texture2D*>	TextureManager::unreadyTexture2Ds;
+	Texture2DSptr					TextureManager::White;
+	std::map<size_t, Texture2DSptr> TextureManager::texture2Ds;
+	std::vector<Texture2D*>			TextureManager::unreadyTexture2Ds;
 
 	void TextureManager::Initialize()
 	{
@@ -23,9 +24,19 @@ namespace SaplingEngine
 	 */
 	Texture2DSptr TextureManager::CreateTexture2D(const std::string& path)
 	{
-		auto texture2DSptr = ResourceManager::Load<Texture2D>(path);
-		unreadyTexture2Ds.emplace_back(texture2DSptr.Get());
-		return texture2DSptr;
+		const auto hashValue = StringToHash(path);
+		auto iter = texture2Ds.find(hashValue);
+		if (iter == texture2Ds.end())
+		{
+			auto texture2DSptr = ResourceManager::Load<Texture2D>(path);
+			texture2Ds.emplace(hashValue, texture2DSptr);
+			unreadyTexture2Ds.emplace_back(texture2DSptr.Get());
+			return texture2DSptr;
+		}
+		else
+		{
+			return iter->second;
+		}
 	}
 
 	/**

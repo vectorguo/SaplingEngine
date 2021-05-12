@@ -32,6 +32,11 @@ namespace SaplingEngine
 
 	private:
 		/**
+		 * \brief	所有Texture2D
+		 */
+		static std::map<size_t, Texture2DSptr> texture2Ds;
+
+		/**
 		 * \brief	数据没有准备好的Texture2D
 		 */
 		static std::vector<Texture2D*> unreadyTexture2Ds;

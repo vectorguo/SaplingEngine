@@ -26,7 +26,7 @@ namespace SaplingEngine
 		 */
 		inline const std::string& GetShaderName() const
 		{
-			return m_pShader->GetName();
+			return m_ShaderPtr->GetName();
 		}
 
 		/**
@@ -35,26 +35,23 @@ namespace SaplingEngine
 		 */
 		inline size_t GetShaderHashValue() const
 		{
-			return m_pShader->GetHashValue();
+			return m_ShaderPtr->GetHashValue();
 		}
 
 		/**
 		 * \brief	获取材质使用的Shader的类型
 		 * \return	Shader的类型
 		 */
-		inline uint8_t GetShaderType() const
+		inline uint8_t GetShaderOcbType() const
 		{
-			return m_pShader->GetType();
+			return m_ShaderPtr->GetOcbType();
 		}
 
 		/**
 		 * \brief	设置Shader
 		 * \param	shaderID		ShaderID
 		 */
-		inline void SetShader(size_t shaderID)
-		{
-			m_pShader = ShaderManager::GetShader(shaderID);
-		}
+		void SetShader(size_t shaderID);
 
 		/**
 		 * \brief	设置Shader
@@ -62,7 +59,7 @@ namespace SaplingEngine
 		 */
 		inline void SetShader(const std::string& shaderName)
 		{
-			m_pShader = ShaderManager::GetShader(shaderName);
+			SetShader(StringToHash(shaderName));
 		}
 
 		/**
@@ -170,9 +167,22 @@ namespace SaplingEngine
 			return iter == m_Properties.cend() ? Vector4::Zero : iter->second.GetVector4();
 		}
 
-		inline const Texture2DSptr& GetMainTexture() const
+		/**
+		 * \brief	获取贴图
+		 * \param	index			贴图索引
+		 * \return	对应索引位置上的贴图
+		 */
+		inline const Texture2DSptr& GetTexture(int32_t index) const
 		{
-			return m_MainTexture;
+			return m_Textures[index];
+		}
+
+		/**
+		 * \brief	获取材质的所有贴图
+		 */
+		inline const std::vector<Texture2DSptr> GetTextures() const
+		{
+			return m_Textures;
 		}
 
 		/**
@@ -328,7 +338,18 @@ namespace SaplingEngine
 		{
 			m_Properties[propertyID].SetVector4(x, y, z, w);
 		}
+
+		/**
+		 * \brief	设置贴图
+		 * \param	texture			贴图
+		 * \param	index			贴图索引
+		 */
+		inline void SetTexture(const Texture2DSptr& texture, int32_t index)
+		{
+			m_Textures[index] = texture;
+		}
 		
+	private:
 		/**
 		 * \brief	反序列化
 		 * \param	pNode		配置节点指针
@@ -340,7 +361,7 @@ namespace SaplingEngine
 		/**
 		 * \brief	材质使用的shader
 		 */
-		const Shader* m_pShader = nullptr;
+		const Shader* m_ShaderPtr = nullptr;
 
 		/**
 		 * \brief	材质的属性列表
@@ -350,6 +371,6 @@ namespace SaplingEngine
 		/**
 		 * \brief	主帖图
 		 */
-		Texture2DSptr m_MainTexture;
+		std::vector<Texture2DSptr> m_Textures;
 	};
 }

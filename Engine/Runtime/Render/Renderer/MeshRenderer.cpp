@@ -22,7 +22,7 @@ namespace SaplingEngine
 		m_MaterialSptr = MaterialManager::CreateMaterial(shaderName);
 
 		//根据材质创建不同的Special Ocb Data
-		m_FillSpecialOcbDataHandler = GetFillSpecialOcbDataHandler(m_MaterialSptr->GetShaderType());
+		m_FillSpecialOcbDataHandler = GetFillSpecialOcbDataHandler(m_MaterialSptr->GetShaderOcbType());
 
 		return m_MaterialSptr;
 	}
@@ -47,7 +47,7 @@ namespace SaplingEngine
 		m_MaterialSptr = MaterialManager::GetSharedMaterial(XmlGetAttributeValue<const char*>(pNode, "material"));
 
 		//根据材质创建不同的Special Ocb Data
-		m_FillSpecialOcbDataHandler = GetFillSpecialOcbDataHandler(m_MaterialSptr->GetShaderType());
+		m_FillSpecialOcbDataHandler = GetFillSpecialOcbDataHandler(m_MaterialSptr->GetShaderOcbType());
 
 		//创建Mesh
 		m_MeshSptr = MeshManager::CreateMesh(XmlGetAttributeValue<const char*>(pNode, "mesh"));

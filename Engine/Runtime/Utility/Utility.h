@@ -396,9 +396,22 @@ namespace SaplingEngine
 	/**
 	 * \brief ×Ö·û´®×ª»»³ÉHashValue
 	 */
-	inline size_t StringToHash(const std::string& s)
+	/*inline size_t StringToHash(const std::string& s)
 	{
 		static std::hash<std::string> hash;
 		return hash(s);
+	}*/
+
+	inline size_t StringToHash(const char* s)
+	{
+		unsigned long h = 0;
+		for (; *s; ++s)
+			h = 5 * h + *s;
+		return size_t(h);
+	}
+
+	inline size_t StringToHash(const std::string& s)
+	{
+		return StringToHash(s.c_str());
 	}
 }

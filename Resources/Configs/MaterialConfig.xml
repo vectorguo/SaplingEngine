@@ -6,14 +6,14 @@
             <property name="baseColor" type="2" r="1" g="1" b="1" a="1"/>
             <property name="fresnel" type="3" x="0.01" y="0.01" z="0.01"/>
             <property name="metallic" type="1" value="0"/>
-            <property name="roughtness" type="1" value="0.8"/>
+            <property name="roughness" type="1" value="0.8"/>
         </material>
 
         <material name="ground" shader="Standard">
-            <property name="baseColor" type="2" r="0.54" g="0.68" b="0.43" a="1"/>
+            <property name="baseColor" type="2" r="0.81" g="1" b="0.72" a="1"/>
             <property name="fresnel" type="3" x="0.01" y="0.01" z="0.01"/>
             <property name="metallic" type="1" value="0"/>
-            <property name="roughtness" type="1" value="0.15"/>
+            <property name="roughness" type="1" value="0.85"/>
         </material>
 
         <material name="village" shader="Standard">
@@ -21,7 +21,7 @@
             <property name="baseColor" type="2" r="1" g="1" b="1" a="1"/>
             <property name="fresnel" type="3" x="0.01" y="0.01" z="0.01"/>
             <property name="metallic" type="1" value="0"/>
-            <property name="roughtness" type="1" value="0.25"/>
+            <property name="roughness" type="1" value="0.85"/>
         </material>
     </materials>
 </root>

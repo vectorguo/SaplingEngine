@@ -102,8 +102,8 @@ namespace SaplingEngine
 		//填充数据
 		m_Data.BaseColor = pMaterial->GetColor(BaseColorPropertyID);
 		m_Data.Fresnel = pMaterial->GetVector3(FresnelPropertyID);
-		m_Data.Metallic = 0.5;		// pMaterial->GetFloat(MetallicPropertyID);
-		m_Data.Roughness = 0.15f;	// pMaterial->GetFloat(RoughnessPropertyID);
+		m_Data.Metallic = pMaterial->GetFloat(MetallicPropertyID);
+		m_Data.Roughness = pMaterial->GetFloat(RoughnessPropertyID);
 
 		//设置数据大小
 		size = DataSize;

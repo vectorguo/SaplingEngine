@@ -17,7 +17,7 @@ namespace SaplingEngine
 
 		auto count = m_ShaderPtr->GetTextureCount();
 		m_Textures.reserve(count);
-		for (auto i = 0; i < count; ++i)
+		for (uint32_t i = 0; i < count; ++i)
 		{
 			m_Textures.emplace_back(TextureManager::White);
 		}

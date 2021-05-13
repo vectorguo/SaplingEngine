@@ -10,8 +10,8 @@
         </material>
 
         <material name="ground" shader="Standard">
-            <property name="baseColor" type="2" r="0.81" g="1" b="0.72" a="1"/>
-            <property name="fresnel" type="3" x="0.01" y="0.01" z="0.01"/>
+            <property name="baseColor" type="2" r="0.703" g="0.887" b="0.626" a="1"/>
+            <property name="fresnel" type="3" x="1" y="1" z="1"/>
             <property name="metallic" type="1" value="0"/>
             <property name="roughness" type="1" value="0.85"/>
         </material>
@@ -19,7 +19,7 @@
         <material name="village" shader="Standard">
             <property name="baseMap" type="5" index="0" path="Resources/Scenes/GameWorld/Textures/village.dds"/>
             <property name="baseColor" type="2" r="1" g="1" b="1" a="1"/>
-            <property name="fresnel" type="3" x="0.01" y="0.01" z="0.01"/>
+            <property name="fresnel" type="3" x="1" y="1" z="1"/>
             <property name="metallic" type="1" value="0"/>
             <property name="roughness" type="1" value="0.85"/>
         </material>

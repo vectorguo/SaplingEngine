@@ -66,7 +66,7 @@ float3 Standard_Pbr(float3 lightColor, float3 lightDir, float3 normal, float3 to
 	float3 kD = float3(1.0f, 1.0f, 1.0f) - kS;
 	kD *= 1.0 - metallic;
 
-	float3 color = (diffuseColor + specular) * lightColor * nDotL;
+	float3 color = (diffuseColor + specular) * lightColor * (nDotL * 0.5f + 0.5f);
     return color;
 }
 

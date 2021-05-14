@@ -27,14 +27,13 @@ namespace SaplingEngine
 		srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 		srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 		ThrowIfFailed(GraphicsManager::GetDx12Device()->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvDescriptorHeap)));
-
 		srvDescriptorHeapPointer = srvDescriptorHeap.Get();
 
 		availableSrvIndices.reserve(SrvCount);
 		for (auto i = 0; i < SrvCount; ++i)
 		{
 			availableSrvIndices.push_back(i);
-		}
+		}		
 	}
 
 	/**
@@ -112,6 +111,22 @@ namespace SaplingEngine
 		GraphicsManager::GetDx12Device()->CreateShaderResourceView(pTextureResource.Get(), &srvDesc, GetCPUHandleFromDescriptorHeap(srvDescriptorHeap.Get(), index, cbvSrvDescriptorSize));
 	}
 
+	int32_t Dx12CBufferManager::PopSrvIndex(D3D12_CPU_DESCRIPTOR_HANDLE& cpuHandle, D3D12_GPU_DESCRIPTOR_HANDLE& gpuHandle)
+	{
+		if (availableSrvIndices.empty())
+		{
+			throw Exception("贴图数量太多，无可用Srv描述符堆空间");
+		}
+
+		auto index = *availableSrvIndices.rbegin();
+		availableSrvIndices.pop_back();
+
+		cpuHandle = GetCPUHandleFromDescriptorHeap(srvDescriptorHeap.Get(), index, cbvSrvDescriptorSize);
+		gpuHandle = GetGPUHandleFromDescriptorHeap(srvDescriptorHeap.Get(), index, cbvSrvDescriptorSize);
+
+		return index;
+	}
+
 	/**
 	 * \brief	创建常量缓冲区描述符
 	 */
@@ -123,7 +138,7 @@ namespace SaplingEngine
 		//常量缓冲区描述符/着色器资源描述符/无需访问描述符堆
 		D3D12_DESCRIPTOR_HEAP_DESC heapDesc;
 		heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-		heapDesc.NumDescriptors = DoubleConstantBufferElementCount + 1;
+		heapDesc.NumDescriptors = DoubleConstantBufferElementCount + 2;
 		heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 		heapDesc.NodeMask = 0;
 
@@ -136,7 +151,7 @@ namespace SaplingEngine
 		auto& objectUploadBuffer = objectUploadBuffers[shaderHashValue];
 		CreateUploadBuffer(cbvDescriptorHeap.Get(), objectUploadBuffer.CommonUploadBuffer, objectUploadBuffer.CommonMappedData, ConstantBufferElementCount, ObjectCommonCbSize, 0);
 		CreateUploadBuffer(cbvDescriptorHeap.Get(), objectUploadBuffer.SpecialUploadBuffer, objectUploadBuffer.SpecialMappedData, ConstantBufferElementCount, ObjectSpecialCbSize, ConstantBufferElementCount);
-		CreateUploadBuffer(cbvDescriptorHeap.Get(), objectUploadBuffer.PassUploadBuffer, objectUploadBuffer.PassMappedData, 1, PassCommonCbSize, DoubleConstantBufferElementCount);
+		CreateUploadBuffer(cbvDescriptorHeap.Get(), objectUploadBuffer.PassUploadBuffer, objectUploadBuffer.PassMappedData, 2, PassCommonCbSize, DoubleConstantBufferElementCount);
 
 		//记录可用Object上传缓冲区索引
 		auto& objectCbIndices = availableCbvIndices[shaderHashValue];
@@ -173,6 +188,18 @@ namespace SaplingEngine
 	{
 		const auto& uploadBuffer = Dx12CBufferManager::objectUploadBuffers[shaderHashValue];
 		memcpy(uploadBuffer.PassMappedData, pData, dataSize);
+	}
+
+	/**
+	 * \brief	填充ShadowPass常量缓冲区数据
+	 * \param	shaderHashValue	Shader对应的HashValue
+	 * \param	pData			通用数据
+	 * \param	dataSize		通用数据大小
+	 */
+	void Dx12CBufferManager::FillShadowPcbData(size_t shaderHashValue, const void* pData, size_t dataSize)
+	{
+		const auto& uploadBuffer = Dx12CBufferManager::objectUploadBuffers[shaderHashValue];
+		memcpy(uploadBuffer.PassMappedData + static_cast<uint64_t>(Dx12CBufferManager::PassCommonCbSize), pData, dataSize);
 	}
 
 	/**

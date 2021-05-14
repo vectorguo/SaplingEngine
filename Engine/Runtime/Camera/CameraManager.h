@@ -17,6 +17,11 @@ namespace SaplingEngine
 		{
 			return m_Cameras;
 		}
+
+		static Camera* GetMainCamera()
+		{
+			return m_Cameras[0];
+		}
 		
 		/**
 		 * \brief Ïú»Ù

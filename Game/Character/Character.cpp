@@ -26,7 +26,7 @@ namespace Warcraft
 		meshRenderer->SetMesh("Resources/Characters/player.obj");
 
 		//ÉèÖÃ³õÊ¼Î»ÖÃ
-		GetTransform()->SetPosition(5.55f, 0, -124.0f);
+		GetTransform()->SetPosition(0, 0, -120.0f);
 	}
 
 	/**

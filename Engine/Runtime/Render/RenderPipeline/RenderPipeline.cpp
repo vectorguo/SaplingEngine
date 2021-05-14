@@ -8,6 +8,7 @@
 #include "Render/Graphics/MeshManager.h"
 #include "Render/Graphics/TextureManager.h"
 #include "Render/RenderPipeline/RenderPass/RenderOpaquePass.h"
+#include "Render/RenderPipeline/RenderPass/ShadowPass.h"
 #include "Scene/SceneManager.h"
 
 namespace SaplingEngine
@@ -36,8 +37,16 @@ namespace SaplingEngine
 
 		//初始化渲染管线
 		auto* pOpaquePass = new RenderOpaquePass("Render Opaque");
+		pOpaquePass->SetPriority(10);
 		pOpaquePass->SetBackgroundColor(Color::LightBlue);
 		renderPasses.push_back(pOpaquePass);
+
+		auto* pShadowPass = new ShadowPass("ShadowCaster");
+		pShadowPass->SetPriority(1);
+		renderPasses.push_back(pShadowPass);
+
+		//排序渲染管线
+		SortRenderPass();
 	}
 
 	/**
@@ -101,6 +110,11 @@ namespace SaplingEngine
 			screenWidth = width;
 			screenHeight = height;
 			GraphicsManager::OnWindowResize(screenWidth, screenHeight);
+
+			for (auto iter = renderPasses.begin(); iter != renderPasses.end(); ++iter)
+			{
+				(*iter)->OnSceneResize(screenWidth, screenHeight);
+			}
 		}
 	}
 
@@ -117,6 +131,7 @@ namespace SaplingEngine
 		if (iter == renderPasses.end())
 		{
 			renderPasses.push_back(pRenderPass);
+			SortRenderPass();
 		}
 	}
 	
@@ -134,6 +149,17 @@ namespace SaplingEngine
 		{
 			renderPasses.erase(iter);
 		}
+	}
+
+	/**
+	 * \brief	根据优先级对RenderPass进行排序
+	 */
+	void RenderPipeline::SortRenderPass()
+	{
+		std::sort(renderPasses.begin(), renderPasses.end(), [](const RenderPass* rp1, const RenderPass* rp2)
+			{
+				return rp1->GetPriority() < rp2->GetPriority();
+			});
 	}
 
 	/**
@@ -159,17 +185,6 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief	根据优先级对RenderPass进行排序
-	 */
-	void RenderPipeline::SortRenderPass()
-	{
-		std::sort(renderPasses.begin(), renderPasses.end(), [](const RenderPass* rp1, const RenderPass* rp2)
-			{
-				return rp1->GetPriority() < rp2->GetPriority();
-			});
-	}
-
-	/**
 	 * \brief	更新常量缓冲区数据
 	 */
 	void RenderPipeline::UpdateCbvData(Camera* pCamera)
@@ -177,17 +192,17 @@ namespace SaplingEngine
 		size_t specialDataSize;
 		for (auto iter1 = renderItems.begin(); iter1 != renderItems.end(); ++iter1)
 		{
-			const auto& shaderName = iter1->first;
+			const auto& shaderHashValue = iter1->first;
 			const auto& items = iter1->second;
 			for (auto iter2 = items.begin(); iter2 != items.end(); ++iter2)
 			{
 				auto* pRenderer = *iter2;
 				const auto* pCommonData = CommonOcbData::FillOcbData(pRenderer->GetTransform());
 				const auto* pSpecialData = pRenderer->FillSpecialOcbData(specialDataSize, pRenderer->GetMaterial());
-				Dx12CBufferManager::FillOcbData(shaderName, pRenderer->GetCbvIndex(), pCommonData, CommonOcbData::DataSize, pSpecialData, specialDataSize);
+				Dx12CBufferManager::FillOcbData(shaderHashValue, pRenderer->GetCbvIndex(), pCommonData, CommonOcbData::DataSize, pSpecialData, specialDataSize);
 			}
 
-			Dx12CBufferManager::FillPcbData(shaderName, CommonPcbData::FillPcbData(pCamera), CommonPcbData::DataSize);
+			Dx12CBufferManager::FillPcbData(shaderHashValue, CommonPcbData::FillPcbData(pCamera), CommonPcbData::DataSize);
 		}
 	}
 }

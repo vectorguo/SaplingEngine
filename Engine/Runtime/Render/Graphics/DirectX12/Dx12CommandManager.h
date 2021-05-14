@@ -61,6 +61,12 @@ namespace SaplingEngine
 		 * \param pRenderer renderer
 		 */
 		static void DrawIndexedInstanced(const Renderer* pRenderer);
+
+		/**
+		 * \brief 为ShadowMap绘制物体
+		 * \param pRenderer renderer
+		 */
+		static void DrawIndexedInstancedForShadowMap(const Renderer* pRenderer);
 		
 		/**
 		 * \brief 缓存资源转换

@@ -22,14 +22,14 @@ namespace SaplingEngine
 		RenderPass& operator=(RenderPass&&) = delete;
 
 		/**
-		 * \brief 渲染
-		 * \param pCamera 渲染使用的相机
+		 * \brief	渲染
+		 * \param	pCamera		渲染使用的相机
 		 */
 		virtual void Render(const Camera* pCamera) = 0;
 		
 		/**
-		 * \brief 获取RenderPass名称
-		 * \return RenderPass名称
+		 * \brief	获取RenderPass名称
+		 * \return	RenderPass名称
 		 */
 		const std::string& GetName() const
 		{
@@ -37,22 +37,41 @@ namespace SaplingEngine
 		}
 
 		/**
-		 * \brief 获取优先级
-		 * \return 优先级
+		 * \brief	获取优先级
+		 * \return	优先级
 		 */
 		int32_t GetPriority() const
 		{
 			return m_Priority;
 		}
+
+		/**
+		 * \brief	设置优先级
+		 * \param	priority	优先级
+		 */
+		void SetPriority(int32_t priority)
+		{
+			m_Priority = priority;
+		}
+
+		/**
+		 * \brief	设置宽度和高度
+		 * \param	width		屏幕宽度
+		 * \param	height		屏幕高度
+		 */
+		virtual void OnSceneResize(uint32_t width, uint32_t height)
+		{
+
+		}
 		
 	private:
 		/**
-		 * \brief RenderPass名称
+		 * \brief	RenderPass名称
 		 */
 		std::string m_Name;
 
 		/**
-		 * \brief RenderPass的渲染优先级
+		 * \brief	RenderPass的渲染优先级
 		 */
 		int32_t m_Priority = 0;
 	};

@@ -25,6 +25,7 @@ namespace Warcraft
 
 		//创建编辑器虚拟相机目标
 		editorTarget = CreateGameObject("EditorVirtualCameraTarget");
+		editorTarget->GetTransform()->SetPosition(0, 0, -120.0f);
 
 		//创建编辑器虚拟相机
 		pVirtualCameraObj = CreateGameObject("EditorVirtualCamera");

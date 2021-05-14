@@ -103,6 +103,16 @@ namespace SaplingEngine
 			return m_DsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
 		}
 		
+		static const D3D12_VIEWPORT& GetViewport()
+		{
+			return m_Viewport;
+		}
+
+		static const D3D12_RECT& GetScissorRect()
+		{
+			return m_ScissorRect;
+		}
+
 		/**
 		 * \brief	创建默认缓冲区并上传数据
 		 * \param	initData		初始化数据

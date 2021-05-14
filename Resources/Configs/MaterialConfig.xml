@@ -10,7 +10,7 @@
         </material>
 
         <material name="ground" shader="Standard">
-            <property name="baseColor" type="2" r="0.703" g="0.887" b="0.626" a="1"/>
+            <property name="baseColor" type="2" r="0.640" g="0.887" b="0.626" a="1"/>
             <property name="fresnel" type="3" x="1" y="1" z="1"/>
             <property name="metallic" type="1" value="0"/>
             <property name="roughness" type="1" value="0.85"/>

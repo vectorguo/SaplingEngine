@@ -25,7 +25,7 @@ namespace SaplingEngine
 				
 			}
 
-			explicit Matrix4x4(FXMMATRIX m): m_Value()
+			Matrix4x4(FXMMATRIX m): m_Value()
 			{
 				XMStoreFloat4x4(&m_Value, m);
 			}
@@ -47,6 +47,11 @@ namespace SaplingEngine
 			operator XMMATRIX() const
 			{
 				return XMLoadFloat4x4(&m_Value);
+			}
+
+			operator XMFLOAT4X4() const
+			{
+				return m_Value;
 			}
 
 			/*

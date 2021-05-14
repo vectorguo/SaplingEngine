@@ -3,6 +3,7 @@
 #include "Render/Graphics/Material.h"
 #include "Render/Graphics/Mesh.h"
 #include "Render/Renderer/Renderer.h"
+#include "Render/RenderPipeline/RenderPass/ShadowPass.h"
 
 namespace SaplingEngine
 {
@@ -53,14 +54,6 @@ namespace SaplingEngine
 		//ÖØÖÃÃüÁî
 		ThrowIfFailed(m_CommandAllocator->Reset());
 		ThrowIfFailed(m_CommandList->Reset(m_CommandAllocator.Get(), nullptr));
-
-		//ÉèÖÃViewPortºÍScissorRect
-		m_CommandList->RSSetViewports(1, &GraphicsManager::m_Viewport);
-		m_CommandList->RSSetScissorRects(1, &GraphicsManager::m_ScissorRect);
-
-		//äÖÈ¾»º´æ´Ó³ÊÏÖ×´Ì¬ÇÐ»»µ½RT×´Ì¬
-		auto resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(GraphicsManager::GetCurrentRt(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
-		m_CommandList->ResourceBarrier(1, &resourceBarrier);
 	}
 
 	/**
@@ -68,9 +61,6 @@ namespace SaplingEngine
 	 */
 	void Dx12CommandManager::PostRender()
 	{
-		//äÖÈ¾»º´æ´ÓRT×´Ì¬ÇÐ»»µ½³ÊÏÖ×´Ì¬
-		auto resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(GraphicsManager::GetCurrentRt(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
-		m_CommandList->ResourceBarrier(1, &resourceBarrier);
 		ExecuteCommandList();
 
 		//½»»»ºóÌ¨»º³åºÍÇ°Ì¨»º³å
@@ -99,12 +89,31 @@ namespace SaplingEngine
 		m_CommandList->IASetIndexBuffer(pMesh->GetIndexBufferView());
 		m_CommandList->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+		//ÉèÖÃÒõÓ°ÌùÍ¼
+		m_CommandList->SetGraphicsRootDescriptorTable(3, ShadowPass::m_GpuDescriptorHandle);
+
 		const auto* pMaterial = pRenderer->GetMaterial();
 		const auto& textures = pMaterial->GetTextures();
 		for (auto i = 0; i < textures.size(); ++i)
 		{
-			m_CommandList->SetGraphicsRootDescriptorTable(3 + i, textures[i]->GetSrvDescriptor());
+			m_CommandList->SetGraphicsRootDescriptorTable(4 + i, textures[i]->GetSrvDescriptor());
 		}
+
+		m_CommandList->SetGraphicsRootConstantBufferView(0, pRenderer->GetCommonCbAddress());
+		m_CommandList->SetGraphicsRootConstantBufferView(1, pRenderer->GetSpecialCbAddress());
+		m_CommandList->DrawIndexedInstanced(pMesh->GetIndexCount(), 1, 0, 0, 0);
+	}
+
+	/**
+	 * \brief ÎªShadowMap»æÖÆÎïÌå
+	 * \param pRenderer renderer
+	 */
+	void Dx12CommandManager::DrawIndexedInstancedForShadowMap(const Renderer* pRenderer)
+	{
+		const auto* pMesh = pRenderer->GetMesh();
+		m_CommandList->IASetVertexBuffers(0, 1, pMesh->GetVertexBufferView());
+		m_CommandList->IASetIndexBuffer(pMesh->GetIndexBufferView());
+		m_CommandList->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 		m_CommandList->SetGraphicsRootConstantBufferView(0, pRenderer->GetCommonCbAddress());
 		m_CommandList->SetGraphicsRootConstantBufferView(1, pRenderer->GetSpecialCbAddress());

@@ -325,7 +325,7 @@ namespace SaplingEngine
 	 */
 	void Dx12GraphicsManager::CreateRootSignature()
 	{
-		CD3DX12_STATIC_SAMPLER_DESC samplerDescriptors[4] =
+		CD3DX12_STATIC_SAMPLER_DESC samplerDescriptors[5] =
 		{
 			CD3DX12_STATIC_SAMPLER_DESC
 			(
@@ -360,6 +360,18 @@ namespace SaplingEngine
 				D3D12_TEXTURE_ADDRESS_MODE_CLAMP,	// addressV
 				D3D12_TEXTURE_ADDRESS_MODE_CLAMP	// addressW
 			),
+
+			CD3DX12_STATIC_SAMPLER_DESC(
+				4,									// shaderRegister
+				D3D12_FILTER_COMPARISON_MIN_MAG_LINEAR_MIP_POINT, // filter
+				D3D12_TEXTURE_ADDRESS_MODE_BORDER,  // addressU
+				D3D12_TEXTURE_ADDRESS_MODE_BORDER,  // addressV
+				D3D12_TEXTURE_ADDRESS_MODE_BORDER,  // addressW
+				0,									// mipLODBias
+				16,                                 // maxAnisotropy
+				D3D12_COMPARISON_FUNC_LESS_EQUAL,
+				D3D12_STATIC_BORDER_COLOR_OPAQUE_BLACK
+			),
 		};
 
 		ComPtr<ID3DBlob> serializedRootSig = nullptr;
@@ -372,18 +384,40 @@ namespace SaplingEngine
 			const auto* pShader = iter->second;
 			const auto textureCount = pShader->GetTextureCount();
 
-			CD3DX12_ROOT_PARAMETER* pSlotRootParameter = new CD3DX12_ROOT_PARAMETER[3 + textureCount];
+			CD3DX12_ROOT_PARAMETER* pSlotRootParameter;
+			
+			uint32_t num = 3;
+			if (iter->first == StringToHash("ShadowCaster"))
+			{
+				pSlotRootParameter = new CD3DX12_ROOT_PARAMETER[3];
+			}
+			else
+			{
+				num += textureCount + 1;
+				pSlotRootParameter = new CD3DX12_ROOT_PARAMETER[num];
+
+				D3D12_DESCRIPTOR_RANGE srvTable{ D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 0, D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND };
+				pSlotRootParameter[3].InitAsDescriptorTable(1, &srvTable, D3D12_SHADER_VISIBILITY_PIXEL);
+
+				if (textureCount == 1)
+				{
+					D3D12_DESCRIPTOR_RANGE srvTable1{ D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1, 0, D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND };
+					pSlotRootParameter[4].InitAsDescriptorTable(1, &srvTable1, D3D12_SHADER_VISIBILITY_PIXEL);
+				}
+				else if (textureCount == 2)
+				{
+					D3D12_DESCRIPTOR_RANGE srvTable1{ D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1, 0, D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND };
+					D3D12_DESCRIPTOR_RANGE srvTable2{ D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 2, 0, D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND };
+					pSlotRootParameter[4].InitAsDescriptorTable(1, &srvTable1, D3D12_SHADER_VISIBILITY_PIXEL);
+					pSlotRootParameter[5].InitAsDescriptorTable(1, &srvTable2, D3D12_SHADER_VISIBILITY_PIXEL);
+				}
+			}
+
 			pSlotRootParameter[0].InitAsConstantBufferView(0);
 			pSlotRootParameter[1].InitAsConstantBufferView(1);
 			pSlotRootParameter[2].InitAsConstantBufferView(2);
 
-			for (uint32_t i = 0; i < textureCount; ++i)
-			{
-				D3D12_DESCRIPTOR_RANGE srvTable { D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, i, 0, D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND };
-				pSlotRootParameter[3 + i].InitAsDescriptorTable(1, &srvTable, D3D12_SHADER_VISIBILITY_PIXEL);
-			}
-
-			CD3DX12_ROOT_SIGNATURE_DESC rootSigDesc(3 + textureCount, pSlotRootParameter, 4, samplerDescriptors, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+			CD3DX12_ROOT_SIGNATURE_DESC rootSigDesc(num, pSlotRootParameter, 5, samplerDescriptors, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 			ComPtr<ID3D12RootSignature> rootSignature;
 			const auto hr = D3D12SerializeRootSignature(&rootSigDesc, D3D_ROOT_SIGNATURE_VERSION_1, serializedRootSig.GetAddressOf(), errorBlob.GetAddressOf());
 			if (errorBlob != nullptr)

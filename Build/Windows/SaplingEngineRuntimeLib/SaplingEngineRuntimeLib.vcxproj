@@ -143,6 +143,7 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Renderer\Renderer.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\RenderOpaquePass.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\RenderPass.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\ShadowPass.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\RenderPipeline\RenderPipeline.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Resource\ResourceAsyncRequest.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Resource\ResourceLoader.h" />
@@ -201,6 +202,7 @@
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Renderer\Renderer.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\RenderOpaquePass.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\RenderPass.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\ShadowPass.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\RenderPipeline\RenderPipeline.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Resource\ResourceLoader.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Resource\ResourceManager.cpp" />

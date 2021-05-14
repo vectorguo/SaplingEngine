@@ -5,6 +5,7 @@
 #include "Render/Graphics/Light.h"
 #include "Render/Graphics/LightManager.h"
 #include "Render/Graphics/Material.h"
+#include "Render/RenderPipeline/RenderPass/ShadowPass.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneManager.h"
 
@@ -48,6 +49,7 @@ namespace SaplingEngine
 		{
 			m_Data.SAPLING_MATRIX_V = worldToViewMatrix.Transpose();
 			m_Data.SAPLING_MATRIX_VP = worldToProjMatrix.Transpose();
+			m_Data.SAPLING_MATRIX_SHADOW = ShadowPass::m_ShadowTransform.Transpose();
 
 			//设置主光源参数
 			m_Data.MainLight.LightColor = pDirectionalLight->GetLightColor();
@@ -58,6 +60,7 @@ namespace SaplingEngine
 		{
 			m_Data.SAPLING_MATRIX_V = worldToViewMatrix.Transpose();
 			m_Data.SAPLING_MATRIX_VP = worldToProjMatrix.Transpose();
+			m_Data.SAPLING_MATRIX_SHADOW = ShadowPass::m_ShadowTransform.Transpose();
 
 			//设置主光源参数
 			m_Data.MainLight.LightColor.Set(1.0f, 1.0f, 1.0f, 1.0f);
@@ -72,6 +75,20 @@ namespace SaplingEngine
 		//设置相机参数
 		m_Data.WorldSpaceCameraPosition = pCamera->GetTransform()->GetPosition();
 		
+		return static_cast<void*>(&m_Data);
+	}
+
+	/**
+	 * \brief	填充阴影Pass数据
+	 * \param	view		阴影相机视图矩阵
+	 * \param	proj		阴影相机投影矩阵
+	 * \return	填充好的数据指针
+	 */
+	void* CommonPcbData::FillShadowPcbData(const Matrix4x4& view, const Matrix4x4& proj)
+	{
+		m_Data.SAPLING_MATRIX_V = view.Transpose();
+		m_Data.SAPLING_MATRIX_VP = proj.Transpose();
+
 		return static_cast<void*>(&m_Data);
 	}
 	

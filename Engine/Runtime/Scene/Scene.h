@@ -102,6 +102,11 @@ namespace SaplingEngine
 		{
 			m_AmbientLightColor.Set(r, g, b, a);
 		}
+
+		const DirectX::BoundingSphere& GetSceneBounds() const
+		{
+			return m_SceneBounds;
+		}
 		
 	private:
 		/**
@@ -136,5 +141,10 @@ namespace SaplingEngine
 		 * \brief	此场景中的环境光颜色
 		 */
 		Color m_AmbientLightColor;
+
+		/**
+		 * \brief	场景包围盒
+		 */
+		DirectX::BoundingSphere m_SceneBounds;
 	};
 }

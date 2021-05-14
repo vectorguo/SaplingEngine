@@ -98,6 +98,11 @@ namespace SaplingEngine
 		 * \param	renderPassName	RenderPass名称
 		 */
 		static void RemoveRenderPass(const std::string& renderPassName);
+
+		/**
+		 * \brief	根据优先级对RenderPass进行排序
+		 */
+		static void SortRenderPass();
 		
 	private:
 		/**
@@ -109,11 +114,7 @@ namespace SaplingEngine
 		 * \brief	执行渲染后的清理工作
 		 */
 		static void PostRender();
-		
-		/**
-		 * \brief	根据优先级对RenderPass进行排序
-		 */
-		static void SortRenderPass();
+	
 
 		/**
 		 * \brief	更新常量缓冲区数据

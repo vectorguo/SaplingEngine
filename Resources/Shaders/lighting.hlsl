@@ -9,6 +9,14 @@ struct Light
     float   Placeholder2;
 };
 
+float4 Standard_GammaCorrection(float4 color)
+{
+    float f = 1.0f / 2.2f;
+    color.rgb = color.rgb / (color.rgb + float3(1.0f, 1.0f, 1.0f));
+    color.rgb = pow(color.rgb, f);
+    return color;
+}
+
 //正太分布函数
 float Standard_DistributionGGX(float nDotH, float roughness)
 {
@@ -70,8 +78,8 @@ float3 Standard_Pbr(float3 lightColor, float3 lightDir, float3 normal, float3 to
     return color;
 }
 
-float4 Standard_DirectionalLight(Light light, float3 normal, float3 toEye, float4 diffuseColor, float3 fresnel, float metallic, float roughness)
+float4 Standard_DirectionalLight(Light light, float shadowFactor, float3 normal, float3 toEye, float4 diffuseColor, float3 fresnel, float metallic, float roughness)
 {
     float3 pbrColor = Standard_Pbr(light.Color.rgb, -light.Direction, normal, toEye, diffuseColor.rgb, fresnel, metallic, roughness);
-    return float4(pbrColor, diffuseColor.a);
+    return float4(pbrColor * shadowFactor, diffuseColor.a);
 }

@@ -50,6 +50,8 @@ namespace SaplingEngine
 			Matrix4x4 SAPLING_MATRIX_V = Matrix4x4::Identity;
 			Matrix4x4 SAPLING_MATRIX_VP = Matrix4x4::Identity;
 
+			Matrix4x4 SAPLING_MATRIX_SHADOW = Matrix4x4::Identity;
+
 			Color AmbientLightColor{ 0.0f, 0.2f, 0.2f, 1.0f };
 
 			Vector3 WorldSpaceCameraPosition{ 0, 0, 0 };
@@ -69,6 +71,14 @@ namespace SaplingEngine
 		 * \return	填充好的数据指针
 		 */
 		static void* FillPcbData(Camera* pCamera);
+
+		/**
+		 * \brief	填充阴影Pass数据
+		 * \param	view		阴影相机视图矩阵
+		 * \param	proj		阴影相机投影矩阵
+		 * \return	填充好的数据指针
+		 */
+		static void* FillShadowPcbData(const Matrix4x4& view, const Matrix4x4& proj);
 
 		/**
 		 * \brief	Pass的通用的常量缓冲区数据大小

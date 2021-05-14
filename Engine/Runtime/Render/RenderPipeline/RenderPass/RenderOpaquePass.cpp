@@ -13,8 +13,15 @@ namespace SaplingEngine
 	 */
 	void RenderOpaquePass::Render(const Camera* pCamera)
 	{
-		//Ìí¼ÓäÖÈ¾ÃüÁî
 		auto* pCommandList = CommandManager::GetCommandList();
+
+		//ÉèÖÃViewPortºÍScissorRect
+		pCommandList->RSSetViewports(1, &GraphicsManager::GetViewport());
+		pCommandList->RSSetScissorRects(1, &GraphicsManager::GetScissorRect());
+
+		//äÖÈ¾»º´æ´Ó³ÊÏÖ×´Ì¬ÇÐ»»µ½RT×´Ì¬
+		auto resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(GraphicsManager::GetCurrentRt(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
+		pCommandList->ResourceBarrier(1, &resourceBarrier);
 
 		//ÇåÀíÑÕÉ«»º³åºÍÉî¶È»º³å
 		const auto rtv = GraphicsManager::GetCurrentRtv();
@@ -44,5 +51,9 @@ namespace SaplingEngine
 				CommandManager::DrawIndexedInstanced(*iter2);
 			}
 		}
+
+		//äÖÈ¾»º´æ´ÓRT×´Ì¬ÇÐ»»µ½³ÊÏÖ×´Ì¬
+		resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(GraphicsManager::GetCurrentRt(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
+		pCommandList->ResourceBarrier(1, &resourceBarrier);
 	}
 }

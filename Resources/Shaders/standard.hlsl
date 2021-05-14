@@ -1,41 +1,4 @@
-#include "lighting.hlsl"
-
-Texture2D _BaseMap : register(t0);
-
-SamplerState SamplerPointWrap        : register(s0);
-SamplerState SamplerPointClamp       : register(s1);
-SamplerState SamplerLinearWrap       : register(s2);
-SamplerState SamplerLinearClamp      : register(s3);
-
-cbuffer CBufferObjectCommon : register(b0)
-{
-	float4x4 SAPLING_MATRIX_M;			//局部坐标到世界坐标的变换矩阵
-};
-
-cbuffer CBufferObjectSpecial : register(b1)
-{
-	float4 _BaseColor;
-	float3 _Fresnel;
-	float _Metallic;
-	float _Roughness;
-	float _Placeholder1;
-	float _Placeholder2;
-	float _Placeholder3;
-};
-
-cbuffer CBufferPassCommon : register(b2)
-{
-	float4x4 SAPLING_MATRIX_V;			//局部坐标到世界坐标的变换矩阵
-	float4x4 SAPLING_MATRIX_VP;			//世界坐标到投影坐标的变换矩阵
-
-	float4 AmbientLightColor;			//环境光
-
-	float3 WorldSpaceCameraPosition;	//世界坐标下的相机位置
-
-	float Placeholder1;					//占位符
-
-	Light MainLight;					//主光源
-};
+#include "common.hlsl"
 
 struct VertexIn
 {
@@ -49,10 +12,11 @@ struct VertexIn
 struct VertexOut
 {
 	float4 PositionCS  	: SV_POSITION;
-	float3 PositionWS	: POSITION;
 	float3 NormalWS		: NORMAL;
     float4 Color 		: COLOR;
-	float2 UV0			: TEXCOORD;
+	float2 UV0			: TEXCOORD0;
+	float3 PositionWS	: TEXCOORD1;
+	float4 ShadowCoord	: TEXCOORD2;
 };
 
 VertexOut Vert(VertexIn input)
@@ -65,22 +29,29 @@ VertexOut Vert(VertexIn input)
 	output.NormalWS = mul(input.NormalOS, (float3x3)SAPLING_MATRIX_M);
     output.Color = input.Color;
 	output.UV0 = input.UV0;
+
+	output.ShadowCoord = mul(worldPosition, SAPLING_MATRIX_SHADOW);
     
     return output;
 }
 
 float4 Frag(VertexOut input) : SV_Target
 {
-	float4 diffuseTex = _BaseMap.Sample(SamplerLinearWrap, input.UV0) * _BaseColor;
-	float3 normal = normalize(input.NormalWS);
-	float3 toEye = normalize(WorldSpaceCameraPosition - input.PositionWS);
+	float3 coord = input.ShadowCoord.xyz / input.ShadowCoord.w;
+	return float4(coord.z, 0, 0, 1);
+	// float4 diffuseTex = _BaseMap.Sample(SamplerLinearWrap, input.UV0) * _BaseColor;
+	// float3 normal = normalize(input.NormalWS);
+	// float3 toEye = normalize(WorldSpaceCameraPosition - input.PositionWS);
 
-	//环境光
-	float4 ambient = diffuseTex * AmbientLightColor;
+	// //
+	// float shadowFactor = CalcShadowFactor(input.ShadowCoord);
+
+	// //环境光
+	// float4 ambient = diffuseTex * AmbientLightColor;
 	
-	//方向光
-	float4 color = Standard_DirectionalLight(MainLight, normal, toEye, diffuseTex, _Fresnel, _Metallic, _Roughness);
-    return color;
+	// //方向光
+	// float4 color = Standard_DirectionalLight(MainLight, shadowFactor, normal, toEye, diffuseTex, _Fresnel, _Metallic, _Roughness);
+    // return color;
 }
 
 

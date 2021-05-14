@@ -25,8 +25,10 @@ namespace SaplingEngine
 		}
 
 		//顶点数据和索引数据
-		std::vector<VertexData> vertexDatas;
-		std::vector<uint16_t> indices;
+		static std::vector<VertexData> vertexDatas;
+		static std::vector<uint16_t> indices;
+		vertexDatas.clear();
+		indices.clear();
 
 		//解析
 		std::string line;

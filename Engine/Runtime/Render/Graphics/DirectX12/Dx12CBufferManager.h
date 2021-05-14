@@ -50,7 +50,26 @@ namespace SaplingEngine
 			const auto& uploadBuffer = objectUploadBuffers[shaderHashValue];
 			return uploadBuffer.PassUploadBuffer->GetGPUVirtualAddress();
 		}
-		
+
+		/**
+		 * \brief	获取ShadowPass常量缓冲区描述
+		 * \return	常量ShadowPass缓冲区描述
+		 */
+		static D3D12_GPU_DESCRIPTOR_HANDLE GetShadowPassCbvDescriptor(size_t shaderHashValue)
+		{
+			return GetGPUHandleFromDescriptorHeap(cbvDescriptorHeapPointers[shaderHashValue], DoubleConstantBufferElementCount + 1, cbvSrvDescriptorSize);
+		}
+
+		/**
+		 * \brief	获取ShadowPass常量缓冲区地址
+		 * \return	常量ShadowPass缓冲区地址
+		 */
+		static D3D12_GPU_VIRTUAL_ADDRESS GetShadowPassCbAddress(size_t shaderHashValue)
+		{
+			const auto& uploadBuffer = objectUploadBuffers[shaderHashValue];
+			return uploadBuffer.PassUploadBuffer->GetGPUVirtualAddress() + PassCommonCbSize;
+		}
+
 		/**
 		 * \brief	获取常量缓冲区描述符堆的指针数组
 		 * \return	常量缓冲区描述符堆的指针数组
@@ -79,6 +98,8 @@ namespace SaplingEngine
 
 		static void PopSrvIndex(Texture2D* pTexture2D);
 
+		static int32_t PopSrvIndex(D3D12_CPU_DESCRIPTOR_HANDLE& cpuHandle, D3D12_GPU_DESCRIPTOR_HANDLE& gpuHandle);
+
 		/**
 		 * \brief	填充物体常量缓冲区数据
 		 * \param	shaderHashValue	Shader对应的HashValue
@@ -97,6 +118,14 @@ namespace SaplingEngine
 		 * \param	dataSize		通用数据大小
 		 */
 		static void FillPcbData(size_t shaderHashValue, const void* pData, size_t dataSize);
+
+		/**
+		 * \brief	填充ShadowPass常量缓冲区数据
+		 * \param	shaderHashValue	Shader对应的HashValue
+		 * \param	pData			通用数据
+		 * \param	dataSize		通用数据大小
+		 */
+		static void FillShadowPcbData(size_t shaderHashValue, const void* pData, size_t dataSize);
 		
 	private:
 		/**

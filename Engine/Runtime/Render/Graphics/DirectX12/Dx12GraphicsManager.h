@@ -10,8 +10,8 @@ namespace SaplingEngine
 
 	class Dx12GraphicsManager final
 	{
+		friend class Dx12BufferManager;
 		friend class Dx12CommandManager;
-		friend class Dx12CBufferManager;
 
 		using RootSignatureMap = std::map<size_t, ComPtr<ID3D12RootSignature>>;
 		using PipelineStateMap = std::map<size_t, ComPtr<ID3D12PipelineState>>;

@@ -94,6 +94,14 @@ namespace SaplingEngine
 			}
 
 			/*
+			 * Create an orthogonal projection matrix
+			 */
+			static Matrix4x4 Orthographic(const float viewLeft, const float viewRight, const float viewBottom, const float viewTop, const float nearZ, const float farZ)
+			{
+				return Matrix4x4(XMMatrixOrthographicOffCenterLH(viewLeft, viewRight, viewBottom, viewTop, nearZ, farZ));
+			}
+
+			/*
 			 * Create a perspective projection matrix
 			 */
 			static Matrix4x4 Perspective(const float fovAngleY, const float aspectRatio, const float nearZ, const float farZ)

@@ -122,8 +122,8 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\ConstantBufferData.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\d3dx12.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\DDSTextureLoader.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12BufferManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CommandManager.h" />
-    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CBufferManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12GraphicsManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12UploadBuffer.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\GraphicsPch.h" />
@@ -185,8 +185,8 @@
     <ClCompile Include="..\..\..\Engine\Runtime\Process\ProcessManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\ConstantBufferData.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\DDSTextureLoader.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12BufferManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CommandManager.cpp" />
-    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CBufferManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12GraphicsManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\Light.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\LightManager.cpp" />

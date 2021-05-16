@@ -5,6 +5,7 @@
 #include "Render/Graphics/Light.h"
 #include "Render/Graphics/LightManager.h"
 #include "Render/Graphics/Material.h"
+#include "Render/RenderPipeline/RenderPipeline.h"
 #include "Render/RenderPipeline/RenderPass/ShadowPass.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneManager.h"
@@ -18,6 +19,7 @@ namespace SaplingEngine
 
 	CommonOcbData::OcbData				CommonOcbData::m_Data;
 	CommonPcbData::PcbData				CommonPcbData::m_Data;
+	CommonPcbData::ShadowPcbData		CommonPcbData::m_ShadowData;
 	SpecialOcbData_Default::OcbData		SpecialOcbData_Default::m_Data;
 	SpecialOcbData_Standard::OcbData	SpecialOcbData_Standard::m_Data;
 	SpecialOcbData1::OcbData			SpecialOcbData1::m_Data;
@@ -45,27 +47,34 @@ namespace SaplingEngine
 		const auto& worldToViewMatrix = pCamera->GetWorldToViewMatrix();
 		const auto& worldToProjMatrix = worldToViewMatrix * pCamera->GetViewToProjMatrix();
 		const auto* pDirectionalLight = LightManager::GetDirectionalLight();
+		const auto* pShadowPass = RenderPipeline::GetShadowPass();
 		if (pDirectionalLight)
 		{
 			m_Data.SAPLING_MATRIX_V = worldToViewMatrix.Transpose();
 			m_Data.SAPLING_MATRIX_VP = worldToProjMatrix.Transpose();
-			m_Data.SAPLING_MATRIX_SHADOW = ShadowPass::m_ShadowTransform.Transpose();
+			m_Data.SAPLING_MATRIX_SHADOW = pShadowPass->GetWorldToShadowMatrix().Transpose();
 
 			//设置主光源参数
 			m_Data.MainLight.LightColor = pDirectionalLight->GetLightColor();
 			m_Data.MainLight.Direction = pDirectionalLight->GetLightDirection();
 			m_Data.MainLight.Position = pDirectionalLight->GetLightPosition();
+
+			//设置阴影强度
+			m_Data.ShadowStrength = pDirectionalLight->GetShadowStrength();
 		}
 		else
 		{
 			m_Data.SAPLING_MATRIX_V = worldToViewMatrix.Transpose();
 			m_Data.SAPLING_MATRIX_VP = worldToProjMatrix.Transpose();
-			m_Data.SAPLING_MATRIX_SHADOW = ShadowPass::m_ShadowTransform.Transpose();
+			m_Data.SAPLING_MATRIX_SHADOW = pShadowPass->GetWorldToShadowMatrix().Transpose();
 
 			//设置主光源参数
 			m_Data.MainLight.LightColor.Set(1.0f, 1.0f, 1.0f, 1.0f);
 			m_Data.MainLight.Direction.Set(-0.8f, -0.6f, 0.2f);
 			m_Data.MainLight.Position.Set(0, 0, 0);
+
+			//设置阴影强度
+			m_Data.ShadowStrength = 1.0f;
 		}
 
 		//设置场景的环境光
@@ -86,10 +95,11 @@ namespace SaplingEngine
 	 */
 	void* CommonPcbData::FillShadowPcbData(const Matrix4x4& view, const Matrix4x4& proj)
 	{
-		m_Data.SAPLING_MATRIX_V = view.Transpose();
-		m_Data.SAPLING_MATRIX_VP = proj.Transpose();
+		auto vp = view * proj;
+		m_ShadowData.SAPLING_MATRIX_V = view.Transpose();
+		m_ShadowData.SAPLING_MATRIX_VP = vp.Transpose();
 
-		return static_cast<void*>(&m_Data);
+		return static_cast<void*>(&m_ShadowData);
 	}
 	
 	/**

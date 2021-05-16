@@ -1,5 +1,5 @@
 #include "Application/GameSetting.h"
-#include "Render/Graphics/DirectX12/Dx12CBufferManager.h"
+#include "Render/Graphics/DirectX12/Dx12BufferManager.h"
 #include "Render/Graphics/Light.h"
 #include "Render/Graphics/LightManager.h"
 #include "Render/RenderPipeline/RenderPipeline.h"
@@ -11,16 +11,10 @@ namespace SaplingEngine
 {
 	const size_t ShadowCasterHashValue = StringToHash("ShadowCaster");
 
-	Matrix4x4 ShadowPass::m_ShadowTransform = Matrix4x4::Identity;
-
-	uint32_t ShadowPass::m_SrvIndex;
-	D3D12_CPU_DESCRIPTOR_HANDLE ShadowPass::m_CpuDescriptorHandle;
-	D3D12_GPU_DESCRIPTOR_HANDLE ShadowPass::m_GpuDescriptorHandle;
-
 	ShadowPass::ShadowPass(const std::string& name) :
 		RenderPass(name),
-		m_ShadowMapWidth(GameSetting::ScreenWidth()),
-		m_ShadowMapHeight(GameSetting::ScreenHeight())
+		m_ShadowMapWidth(2048),
+		m_ShadowMapHeight(2048)
 	{
 		//创建阴影所需Dsv描述符堆
 		D3D12_DESCRIPTOR_HEAP_DESC heapDesc;
@@ -30,7 +24,9 @@ namespace SaplingEngine
 		heapDesc.NodeMask = 0;
 		ThrowIfFailed(GraphicsManager::GetDx12Device()->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(m_DsvDescriptorHeap.GetAddressOf())));
 
-		m_SrvIndex = Dx12CBufferManager::PopSrvIndex(m_CpuDescriptorHandle, m_GpuDescriptorHandle);
+		m_SrvIndex = BufferManager::PopSrvIndex();
+		m_CpuDescriptor = BufferManager::GetSrvCpuDescriptor(m_SrvIndex);
+		m_GpuDescriptor = BufferManager::GetSrvGpuDescriptor(m_SrvIndex);
 
 		CreateDescriptors();
 	}
@@ -46,13 +42,6 @@ namespace SaplingEngine
 			return;
 		}
 
-		auto& renderItems = RenderPipeline::GetRenderItems();
-		for (auto iter = renderItems.begin(); iter != renderItems.end(); ++iter)
-		{
-			const auto& shaderHashValue = iter->first;
-			Dx12CBufferManager::FillShadowPcbData(shaderHashValue, CommonPcbData::FillShadowPcbData(m_WorldToLightViewMatrix, m_LightViewToProjMatrix), CommonPcbData::DataSize);
-		}
-
 		//添加渲染命令
 		auto* pCommandList = CommandManager::GetCommandList();
 
@@ -65,25 +54,18 @@ namespace SaplingEngine
 		pCommandList->ResourceBarrier(1, &resourceBarrier);
 
 		auto dsv = m_DsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
-
-		// Clear the back buffer and depth buffer.
 		pCommandList->ClearDepthStencilView(dsv, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
-
-		// Set null render target because we are only going to draw to
-		// depth buffer.  Setting a null render target will disable color writes.
-		// Note the active PSO also must specify a render target count of 0.
 		pCommandList->OMSetRenderTargets(0, nullptr, false, &dsv);
 
 		//需要切换渲染管线状态
 		pCommandList->SetPipelineState(GraphicsManager::GetPipelineState(ShadowCasterHashValue));
-
 		pCommandList->SetGraphicsRootSignature(GraphicsManager::GetRootSignature(ShadowCasterHashValue));
+		pCommandList->SetGraphicsRootConstantBufferView(2, BufferManager::GetShadowPassCbAddress());
 
+		//绘制阴影
+		auto& renderItems = RenderPipeline::GetRenderItems();
 		for (auto iter = renderItems.begin(); iter != renderItems.end(); ++iter)
 		{
-			//设置跟描述符表和常量缓冲区，将常量缓冲区绑定到渲染流水线上
-			pCommandList->SetGraphicsRootConstantBufferView(2, CBufferManager::GetShadowPassCbAddress(iter->first));
-
 			auto items = iter->second;
 			for (auto iter2 = items.begin(); iter2 != items.end(); ++iter2)
 			{
@@ -145,7 +127,7 @@ namespace SaplingEngine
 		srvDesc.Texture2D.MipLevels = 1;
 		srvDesc.Texture2D.ResourceMinLODClamp = 0.0f;
 		srvDesc.Texture2D.PlaneSlice = 0;
-		pDevice->CreateShaderResourceView(m_ShadowMap.Get(), &srvDesc, m_CpuDescriptorHandle);
+		pDevice->CreateShaderResourceView(m_ShadowMap.Get(), &srvDesc, m_CpuDescriptor);
 
 		// Create DSV to resource so we can render to the shadow map.
 		D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc;
@@ -167,43 +149,37 @@ namespace SaplingEngine
 		{
 			return false;
 		}
+		const auto shadowDistance = pMainLight->GetShadowDistance();
 
 		//获取包围盒
-		const auto* pCamera = CameraManager::GetMainCamera();
 		const auto* pActiveScene = SceneManager::GetActiveScene();
 		const auto& sceneBounds = pActiveScene->GetSceneBounds();
 
-		//更新光源的View和Proj投影矩阵
-		XMVECTOR lightPos = XMVectorSet(0, 30, -120, 0);
-		XMVECTOR targetPos = XMVectorSet(0, 0, -120, 0);
-		XMVECTOR lightUp = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-		XMMATRIX lightView = XMMatrixLookAtLH(lightPos, targetPos, lightUp);
+		//计算光源的View矩阵
+		auto targetPosition = Vector3(sceneBounds.Center);
+		auto lightPosition = targetPosition - pMainLight->GetLightDirection() * shadowDistance;
+		auto worldToLightViewMatrix = Matrix4x4::LookAt(lightPosition, targetPosition, Vector3::Up);
 
-		// Transform bounding sphere to light space.
-		XMFLOAT3 sphereCenterLS;
-		XMStoreFloat3(&sphereCenterLS, XMVector3TransformCoord(targetPos, lightView));
+		//计算光源的Proj矩阵
+		auto targetPositionInLightSpace = worldToLightViewMatrix.MultiplyPoint(targetPosition);
+		auto lightViewToProjMatrix = Matrix4x4::Orthographic(
+			targetPositionInLightSpace.x - shadowDistance,
+			targetPositionInLightSpace.x + shadowDistance,
+			targetPositionInLightSpace.y - shadowDistance,
+			targetPositionInLightSpace.y + shadowDistance,
+			targetPositionInLightSpace.z - shadowDistance,
+			targetPositionInLightSpace.z + shadowDistance);
 
-		// Ortho frustum in light space encloses scene.
-		float l = sphereCenterLS.x - sceneBounds.Radius;
-		float b = sphereCenterLS.y - sceneBounds.Radius;
-		float n = sphereCenterLS.z - sceneBounds.Radius;
-		float r = sphereCenterLS.x + sceneBounds.Radius;
-		float t = sphereCenterLS.y + sceneBounds.Radius;
-		float f = sphereCenterLS.z + sceneBounds.Radius;
-
-		XMMATRIX lightProj = XMMatrixOrthographicOffCenterLH(l, r, b, t, n, f);
-
-		XMMATRIX T(
+		static Matrix4x4 t(
 			0.5f, 0.0f, 0.0f, 0.0f,
 			0.0f, -0.5f, 0.0f, 0.0f,
 			0.0f, 0.0f, 1.0f, 0.0f,
 			0.5f, 0.5f, 0.0f, 1.0f);
 
-		m_WorldToLightViewMatrix = lightView;
-		m_LightViewToProjMatrix = lightProj;
-		m_ShadowTransform = lightView * lightProj * T;
+		m_WorldToShadowMatrix = worldToLightViewMatrix * lightViewToProjMatrix * t;
 
-		auto data = m_ShadowTransform.MultiplyPoint(Vector3(20, 10, -120, 1));
+		//填充阴影Pass缓冲区数据
+		BufferManager::FillShadowPcbData(CommonPcbData::FillShadowPcbData(worldToLightViewMatrix, lightViewToProjMatrix), CommonPcbData::ShadowDataSize);
 		return true;
 	}
 }

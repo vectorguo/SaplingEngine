@@ -34,9 +34,8 @@ cbuffer CBufferPassCommon : register(b2)
 
 	float4 AmbientLightColor;			//环境光
 
+    float ShadowStrength;				//阴影强度
 	float3 WorldSpaceCameraPosition;	//世界坐标下的相机位置
-
-	float Placeholder1;					//占位符
 
 	Light MainLight;					//主光源
 };
@@ -59,7 +58,7 @@ float CalcShadowFactor(float4 shadowCoord)
     // Texel size.
     float dx = 1.0f / (float)width;
 
-    float percentLit = 0.0f;
+    float shadowFactor = 0.0f;
     const float2 offsets[9] =
     {
         float2(-dx,  -dx), float2(0.0f,  -dx), float2(dx,  -dx),
@@ -70,8 +69,9 @@ float CalcShadowFactor(float4 shadowCoord)
     [unroll]
     for(int i = 0; i < 9; ++i)
     {
-        percentLit += _ShadowMap.SampleCmpLevelZero(SamplerShadow, shadowCoord.xy + offsets[i], depth).r;
+        shadowFactor += _ShadowMap.SampleCmpLevelZero(SamplerShadow, shadowCoord.xy + offsets[i], depth).r;
     }
-    
-    return percentLit / 9.0f;
+    shadowFactor /= 9.0f;
+    shadowFactor = saturate(shadowFactor + 1 - ShadowStrength);
+    return shadowFactor;
 }

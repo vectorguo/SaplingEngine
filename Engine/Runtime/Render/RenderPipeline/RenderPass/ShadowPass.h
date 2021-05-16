@@ -22,6 +22,24 @@ namespace SaplingEngine
 		 */
 		void OnSceneResize(uint32_t width, uint32_t height) override;
 
+		D3D12_CPU_DESCRIPTOR_HANDLE GetCpuDescriptor() const
+		{
+			return m_CpuDescriptor;
+		}
+
+		D3D12_GPU_DESCRIPTOR_HANDLE GetGpuDescriptor() const
+		{
+			return m_GpuDescriptor;
+		}
+
+		/**
+		 * \brief	获取世界空间到阴影空间的坐标变换矩阵
+		 */
+		const Matrix4x4& GetWorldToShadowMatrix() const
+		{
+			return m_WorldToShadowMatrix;
+		}
+
 	private:
 		void CreateDescriptors();
 
@@ -56,16 +74,6 @@ namespace SaplingEngine
 		 */
 		D3D12_RECT m_ScissorRect{ 0, 0, (int64_t)m_ShadowMapWidth, (int64_t)m_ShadowMapHeight };
 
-		/**
-		 * \brief	世界坐标到光源空间的变换矩阵
-		 */
-		Matrix4x4 m_WorldToLightViewMatrix = Matrix4x4::Identity;
-
-		/**
-		 * \brief	光源空间到投影空间的变换矩阵
-		 */
-		Matrix4x4 m_LightViewToProjMatrix = Matrix4x4::Identity;
-
 		ComPtr<ID3D12Resource> m_ShadowMap = nullptr;
 
 		/**
@@ -77,10 +85,10 @@ namespace SaplingEngine
 		/**
 		 * \brief	阴影变换矩阵
 		 */
-		static Matrix4x4 m_ShadowTransform;
+		Matrix4x4 m_WorldToShadowMatrix;
 
-		static uint32_t m_SrvIndex;
-		static D3D12_CPU_DESCRIPTOR_HANDLE m_CpuDescriptorHandle;
-		static D3D12_GPU_DESCRIPTOR_HANDLE m_GpuDescriptorHandle;
+		uint32_t m_SrvIndex;
+		D3D12_CPU_DESCRIPTOR_HANDLE m_CpuDescriptor;
+		D3D12_GPU_DESCRIPTOR_HANDLE m_GpuDescriptor;
 	};
 } 

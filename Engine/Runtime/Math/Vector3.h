@@ -17,6 +17,10 @@ namespace SaplingEngine
 			{
 				
 			}
+
+			Vector3(XMFLOAT3 v) : value(v)
+			{
+			}
 			
 			explicit Vector3(FXMVECTOR v): value()
 			{
@@ -105,6 +109,11 @@ namespace SaplingEngine
 			operator XMVECTOR() const
 			{
 				return XMLoadFloat3(&value);
+			}
+
+			operator XMFLOAT3() const
+			{
+				return value;
 			}
 
 			void Set(const float x, const float y, const float z)

@@ -52,16 +52,28 @@ namespace SaplingEngine
 
 			Matrix4x4 SAPLING_MATRIX_SHADOW = Matrix4x4::Identity;
 
+			/**
+			 * \brief	环境光颜色
+			 */
 			Color AmbientLightColor{ 0.0f, 0.2f, 0.2f, 1.0f };
 
-			Vector3 WorldSpaceCameraPosition{ 0, 0, 0 };
+			/**
+			 * \brief	阴影强度
+			 */
+			float ShadowStrength;
 
 			/**
-			 * \brief	占位符
+			 * \brief	相机位置
 			 */
-			float Placeholder1;
+			Vector3 WorldSpaceCameraPosition{ 0, 0, 0 };
 
 			LightData MainLight;
+		};
+
+		struct ShadowPcbData
+		{
+			Matrix4x4 SAPLING_MATRIX_V = Matrix4x4::Identity;
+			Matrix4x4 SAPLING_MATRIX_VP = Matrix4x4::Identity;
 		};
 
 	public:
@@ -85,8 +97,14 @@ namespace SaplingEngine
 		 */
 		static const size_t DataSize = sizeof(PcbData);
 
+		/**
+		 * \brief	Pass的通用的常量缓冲区数据大小
+		 */
+		static const size_t ShadowDataSize = sizeof(ShadowPcbData);
+
 	private:
 		static PcbData m_Data;
+		static ShadowPcbData m_ShadowData;
 	};
 
 	/**

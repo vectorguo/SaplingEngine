@@ -26,7 +26,11 @@ namespace Warcraft
 		meshRenderer->SetMesh("Resources/Characters/player.obj");
 
 		//设置初始位置
-		GetTransform()->SetPosition(0, 0, -120.0f);
+		GetTransform()->SetPosition(0, 0, -120);
+
+		//设置场景包围盒中心点
+		auto* pActiveScene = SceneManager::GetActiveScene();
+		pActiveScene->SetCenterOfSceneBounds(GetTransform()->GetPosition());
 	}
 
 	/**

@@ -20,25 +20,11 @@ cbuffer CBufferPassCommon : register(b2)
 {
 	float4x4 SAPLING_MATRIX_V;			//局部坐标到世界坐标的变换矩阵
 	float4x4 SAPLING_MATRIX_VP;			//世界坐标到投影坐标的变换矩阵
-
-	float4x4 SAPLING_MATRIX_SHADOW;		//世界坐标到阴影坐标的变换矩阵
-
-	float4 AmbientLightColor;			//环境光
-
-	float3 WorldSpaceCameraPosition;	//世界坐标下的相机位置
-
-	float Placeholder1;					//占位符
-
-	Light MainLight;					//主光源
 };
 
 struct VertexIn
 {
 	float3 PositionOS	: POSITION;
-	float3 NormalOS		: NORMAL;
-    float4 Color		: COLOR;
-	float2 UV0			: TEXCOORD;
-	float2 UV1			: TEXCOORD1;
 };
 
 struct VertexOut

@@ -3,6 +3,7 @@
 #include "Render/Graphics/Material.h"
 #include "Render/Renderer/Renderer.h"
 #include "Render/RenderPipeline/RenderPipeline.h"
+#include "Render/RenderPipeline/RenderPass/ShadowPass.h"
 #include "Scene/Scene.h"
 
 namespace SaplingEngine
@@ -30,6 +31,9 @@ namespace SaplingEngine
 		pCommandList->ClearDepthStencilView(dsv, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
 		pCommandList->OMSetRenderTargets(1, &rtv, true, &dsv);
 
+		//获取阴影Pass
+		auto* pShadowPass = RenderPipeline::GetShadowPass();
+
 		//获取所有渲染目标
 		auto& renderItems = RenderPipeline::GetRenderItems();
 		for (auto iter = renderItems.begin(); iter != renderItems.end(); ++iter)
@@ -40,9 +44,10 @@ namespace SaplingEngine
 			pCommandList->SetPipelineState(GraphicsManager::GetPipelineState(shaderHashValue));
 
 			//设置跟描述符表和常量缓冲区，将常量缓冲区绑定到渲染流水线上
-			pCommandList->SetDescriptorHeaps(1, CBufferManager::GetSrvDescriptorHeaps());
+			pCommandList->SetDescriptorHeaps(1, BufferManager::GetSrvDescriptorHeaps());
 			pCommandList->SetGraphicsRootSignature(GraphicsManager::GetRootSignature(shaderHashValue));
-			pCommandList->SetGraphicsRootConstantBufferView(2, CBufferManager::GetPassCbAddress(shaderHashValue));
+			pCommandList->SetGraphicsRootConstantBufferView(2, BufferManager::GetPassCbAddress());
+			pCommandList->SetGraphicsRootDescriptorTable(3, pShadowPass->GetGpuDescriptor());
 
 			//绘制物体
 			auto items = iter->second;

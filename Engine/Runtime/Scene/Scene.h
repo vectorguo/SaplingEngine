@@ -103,9 +103,21 @@ namespace SaplingEngine
 			m_AmbientLightColor.Set(r, g, b, a);
 		}
 
+		/**
+		 * \brief	获取场景包围盒
+		 */
 		const DirectX::BoundingSphere& GetSceneBounds() const
 		{
 			return m_SceneBounds;
+		}
+
+		/**
+		 * \brief	设置场景包围盒的中心
+		 * \param	center		新的场景中心
+		 */
+		void SetCenterOfSceneBounds(const Vector3& center)
+		{
+			m_SceneBounds.Center = center;
 		}
 		
 	private:

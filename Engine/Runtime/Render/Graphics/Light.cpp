@@ -33,6 +33,9 @@ namespace SaplingEngine
 			XmlGetAttributeValue<float>(pNode, "g"),
 			XmlGetAttributeValue<float>(pNode, "b"),
 			XmlGetAttributeValue<float>(pNode, "a"));
+
+		m_ShadowDistance = XmlGetAttributeValue<float>(pNode, "shadow_distance");
+		m_ShadowStrength = XmlGetAttributeValue<float>(pNode, "shadow_strength");
 		return true;
 	}
 	

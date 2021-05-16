@@ -25,7 +25,7 @@ namespace Warcraft
 
 		//创建编辑器虚拟相机目标
 		editorTarget = CreateGameObject("EditorVirtualCameraTarget");
-		editorTarget->GetTransform()->SetPosition(0, 0, -120.0f);
+		editorTarget->GetTransform()->SetPosition(0, 0, -120);
 
 		//创建编辑器虚拟相机
 		pVirtualCameraObj = CreateGameObject("EditorVirtualCamera");
@@ -93,6 +93,10 @@ namespace Warcraft
 		auto* pPlayer = WarcraftGameMain::Instance()->GetPlayer();
 		auto* pPlayerTransform = pPlayer->GetTransform();
 		pPlayerTransform->SetPosition(pPlayerTransform->GetPosition() + offset * 5);
+
+		//设置场景包围盒中心点
+		auto* pActiveScene = SceneManager::GetActiveScene();
+		pActiveScene->SetCenterOfSceneBounds(pPlayerTransform->GetPosition());
 	}
 	
 	/**

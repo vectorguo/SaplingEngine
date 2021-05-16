@@ -6,7 +6,7 @@ namespace SaplingEngine
 {
 	class Texture2D
 	{
-		friend class Dx12CBufferManager;
+		friend class Dx12BufferManager;
 		friend class TextureManager;
 
 	public:

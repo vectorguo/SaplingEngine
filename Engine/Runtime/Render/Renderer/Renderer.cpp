@@ -20,7 +20,7 @@ namespace SaplingEngine
 	void Renderer::Start()
 	{
 		const auto& shaderHashValue = m_MaterialSptr->GetShaderHashValue();
-		m_CbvIndex = CBufferManager::PopCbvIndex(shaderHashValue, m_CommonCbvDescriptor, m_SpecialCbvDescriptor, m_CommonCbAddress, m_SpecialCbAddress);
+		m_CbvIndex = BufferManager::PopCbvIndex(m_CommonCbAddress, m_SpecialCbAddress);
 		RenderPipeline::AddRenderItem(this, shaderHashValue);
 	}
 

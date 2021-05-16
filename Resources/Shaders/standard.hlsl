@@ -37,21 +37,19 @@ VertexOut Vert(VertexIn input)
 
 float4 Frag(VertexOut input) : SV_Target
 {
-	float3 coord = input.ShadowCoord.xyz / input.ShadowCoord.w;
-	return float4(coord.z, 0, 0, 1);
-	// float4 diffuseTex = _BaseMap.Sample(SamplerLinearWrap, input.UV0) * _BaseColor;
-	// float3 normal = normalize(input.NormalWS);
-	// float3 toEye = normalize(WorldSpaceCameraPosition - input.PositionWS);
+	float4 diffuseTex = _BaseMap.Sample(SamplerLinearWrap, input.UV0) * _BaseColor;
+	float3 normal = normalize(input.NormalWS);
+	float3 toEye = normalize(WorldSpaceCameraPosition - input.PositionWS);
 
-	// //
-	// float shadowFactor = CalcShadowFactor(input.ShadowCoord);
+	//阴影系数
+	float shadowFactor = CalcShadowFactor(input.ShadowCoord);
 
-	// //环境光
-	// float4 ambient = diffuseTex * AmbientLightColor;
+	//环境光
+	float4 ambient = diffuseTex * AmbientLightColor;
 	
-	// //方向光
-	// float4 color = Standard_DirectionalLight(MainLight, shadowFactor, normal, toEye, diffuseTex, _Fresnel, _Metallic, _Roughness);
-    // return color;
+	//方向光
+	float4 color = Standard_DirectionalLight(MainLight, shadowFactor, normal, toEye, diffuseTex, _Fresnel, _Metallic, _Roughness);
+    return ambient + color;
 }
 
 

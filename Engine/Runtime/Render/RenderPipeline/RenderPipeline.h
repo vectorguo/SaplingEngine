@@ -1,14 +1,16 @@
 #pragma once
 
 #include "SaplingEnginePch.h"
+#include "Render/Graphics/DirectX12/Dx12BufferManager.h"
 #include "Render/Graphics/DirectX12/Dx12CommandManager.h"
-#include "Render/Graphics/DirectX12/Dx12CBufferManager.h"
 #include "Render/Graphics/DirectX12/Dx12GraphicsManager.h"
 #include "Render/Renderer/Renderer.h"
 
 namespace SaplingEngine
 {
 	class RenderPass;
+	class RenderOpaquePass;
+	class ShadowPass;
 	
 	class RenderPipeline final
 	{
@@ -51,7 +53,7 @@ namespace SaplingEngine
 			if (iter == renderItems.end())
 			{
 				std::vector<Renderer*> items;
-				items.reserve(CBufferManager::ConstantBufferElementCount);
+				items.reserve(BufferManager::ConstantBufferElementCount);
 				items.emplace_back(pRenderer);
 				renderItems.emplace(shaderHashValue, std::move(items));
 			}
@@ -83,7 +85,7 @@ namespace SaplingEngine
 				iter1->second.erase(std::find(iter1->second.begin(), iter1->second.end(), pRenderer));
 
 				//归还常量缓冲区索引
-				CBufferManager::PushCbvIndex(shaderHashValue, pRenderer->GetCbvIndex());
+				BufferManager::PushCbvIndex(pRenderer->GetCbvIndex());
 			}
 		}
 
@@ -103,6 +105,14 @@ namespace SaplingEngine
 		 * \brief	根据优先级对RenderPass进行排序
 		 */
 		static void SortRenderPass();
+
+		/**
+		 * \brief	获取ShadowPass
+		 */
+		static const ShadowPass* GetShadowPass()
+		{
+			return shadowPassPtr;
+		}
 		
 	private:
 		/**
@@ -141,5 +151,15 @@ namespace SaplingEngine
 		 * \brief	所有RenderPass
 		 */
 		static std::vector<RenderPass*> renderPasses;
+
+		/**
+		 * \brief	Render Opaque Pass
+		 */
+		static RenderOpaquePass* opaquePassPtr;
+
+		/**
+		 * \brief	Shadow Pass
+		 */
+		static ShadowPass* shadowPassPtr;
 	};
 }

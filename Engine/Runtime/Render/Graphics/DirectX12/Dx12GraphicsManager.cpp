@@ -464,6 +464,13 @@ namespace SaplingEngine
 			psoDesc.PS = { pShader->GetPsBufferPoint(), pShader->GetPsBufferSize() };
 			psoDesc.pRootSignature = m_RootSignatures[pShader->GetHashValue()].Get();
 
+			if (iter->first == StringToHash("ShadowCaster"))
+			{
+				psoDesc.RasterizerState.DepthBias = 100000;
+				psoDesc.RasterizerState.DepthBiasClamp = 0.0f;
+				psoDesc.RasterizerState.SlopeScaledDepthBias = 1.0f;
+			}
+
 			ComPtr<ID3D12PipelineState> pipelineState;
 			ThrowIfFailed(m_D3D12Device->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&pipelineState)));
 			m_PipelineStates.emplace(pShader->GetHashValue(), pipelineState);

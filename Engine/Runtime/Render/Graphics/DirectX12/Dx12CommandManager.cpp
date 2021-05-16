@@ -3,7 +3,6 @@
 #include "Render/Graphics/Material.h"
 #include "Render/Graphics/Mesh.h"
 #include "Render/Renderer/Renderer.h"
-#include "Render/RenderPipeline/RenderPass/ShadowPass.h"
 
 namespace SaplingEngine
 {
@@ -88,9 +87,6 @@ namespace SaplingEngine
 		m_CommandList->IASetVertexBuffers(0, 1, pMesh->GetVertexBufferView());
 		m_CommandList->IASetIndexBuffer(pMesh->GetIndexBufferView());
 		m_CommandList->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-		//ÉèÖÃÒõÓ°ÌùÍ¼
-		m_CommandList->SetGraphicsRootDescriptorTable(3, ShadowPass::m_GpuDescriptorHandle);
 
 		const auto* pMaterial = pRenderer->GetMaterial();
 		const auto& textures = pMaterial->GetTextures();

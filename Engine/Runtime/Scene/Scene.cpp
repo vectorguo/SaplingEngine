@@ -39,7 +39,7 @@ namespace SaplingEngine
 			gameObject->Deserialize(pChild);
 		}
 
-		m_SceneBounds.Center = XMFLOAT3(0, 0, -120.0f);
+		m_SceneBounds.Center = XMFLOAT3(0, 0, 0);
 		m_SceneBounds.Radius = sqrtf(30.0f * 30.0f);
 	}
 

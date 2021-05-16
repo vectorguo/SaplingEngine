@@ -1,5 +1,5 @@
 #include "Render/Graphics/DirectX12/DDSTextureLoader.h"
-#include "Render/Graphics/DirectX12/Dx12CBufferManager.h"
+#include "Render/Graphics/DirectX12/Dx12BufferManager.h"
 #include "Render/Graphics/DirectX12/Dx12CommandManager.h"
 #include "Render/Graphics/DirectX12/Dx12GraphicsManager.h"
 #include "Render/Graphics/Texture2D.h"
@@ -72,7 +72,7 @@ namespace SaplingEngine
 						pTexture2D->m_ResourcePtr,
 						pTexture2D->m_UploadHeap));
 
-				CBufferManager::PopSrvIndex(pTexture2D);
+				BufferManager::PopSrvIndex(pTexture2D);
 			}
 			unreadyTexture2Ds.clear();
 		}

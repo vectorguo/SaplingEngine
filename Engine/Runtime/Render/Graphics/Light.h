@@ -67,6 +67,22 @@ namespace SaplingEngine
 		}
 
 		/**
+		 * \brief	获取阴影距离
+		 */
+		float GetShadowDistance() const
+		{
+			return m_ShadowDistance;
+		}
+
+		/**
+		 * \brief	获取阴影强度
+		 */
+		float GetShadowStrength() const
+		{
+			return m_ShadowStrength;
+		}
+
+		/**
 		 * \brief	获取光照方向
 		 */
 		Vector3 GetLightDirection() const;
@@ -104,5 +120,15 @@ namespace SaplingEngine
 		 * \brief	光照颜色
 		 */
 		Color m_LightColor;
+
+		/**
+		 * \brief	阴影距离
+		 */
+		float m_ShadowDistance = 30.0f;
+
+		/**
+		 * \brief	阴影强度
+		 */
+		float m_ShadowStrength = 1.0f;
 	};
 }

@@ -17,6 +17,8 @@ namespace SaplingEngine
 	uint32_t					RenderPipeline::screenHeight = 0;
 	std::map<size_t, std::vector<Renderer*>> RenderPipeline::renderItems;
 	std::vector<RenderPass*>	RenderPipeline::renderPasses;
+	RenderOpaquePass*			RenderPipeline::opaquePassPtr = nullptr;
+	ShadowPass*					RenderPipeline::shadowPassPtr = nullptr;
 
 	/**
 	 * \brief	开始初始化
@@ -30,20 +32,20 @@ namespace SaplingEngine
 		GraphicsManager::BeginInitialize(hWnd, screenWidth, screenHeight);
 
 		//创建并初始化常量缓冲区管理器
-		CBufferManager::Initialize();
+		BufferManager::Initialize();
 
 		//创建并初始化Command Manager
 		CommandManager::BeginInitialize();
 
 		//初始化渲染管线
-		auto* pOpaquePass = new RenderOpaquePass("Render Opaque");
-		pOpaquePass->SetPriority(10);
-		pOpaquePass->SetBackgroundColor(Color::LightBlue);
-		renderPasses.push_back(pOpaquePass);
+		opaquePassPtr = new RenderOpaquePass("Render Opaque");
+		opaquePassPtr->SetPriority(10);
+		opaquePassPtr->SetBackgroundColor(Color::LightBlue);
+		renderPasses.push_back(opaquePassPtr);
 
-		auto* pShadowPass = new ShadowPass("ShadowCaster");
-		pShadowPass->SetPriority(1);
-		renderPasses.push_back(pShadowPass);
+		shadowPassPtr = new ShadowPass("ShadowCaster");
+		shadowPassPtr->SetPriority(1);
+		renderPasses.push_back(shadowPassPtr);
 
 		//排序渲染管线
 		SortRenderPass();
@@ -94,7 +96,7 @@ namespace SaplingEngine
 		renderPasses.clear();
 		
 		CommandManager::Destroy();
-		CBufferManager::Destroy();
+		BufferManager::Destroy();
 		GraphicsManager::Destroy();
 	}
 
@@ -111,10 +113,10 @@ namespace SaplingEngine
 			screenHeight = height;
 			GraphicsManager::OnWindowResize(screenWidth, screenHeight);
 
-			for (auto iter = renderPasses.begin(); iter != renderPasses.end(); ++iter)
-			{
-				(*iter)->OnSceneResize(screenWidth, screenHeight);
-			}
+			//for (auto iter = renderPasses.begin(); iter != renderPasses.end(); ++iter)
+			//{
+			//	(*iter)->OnSceneResize(screenWidth, screenHeight);
+			//}
 		}
 	}
 
@@ -199,10 +201,10 @@ namespace SaplingEngine
 				auto* pRenderer = *iter2;
 				const auto* pCommonData = CommonOcbData::FillOcbData(pRenderer->GetTransform());
 				const auto* pSpecialData = pRenderer->FillSpecialOcbData(specialDataSize, pRenderer->GetMaterial());
-				Dx12CBufferManager::FillOcbData(shaderHashValue, pRenderer->GetCbvIndex(), pCommonData, CommonOcbData::DataSize, pSpecialData, specialDataSize);
+				BufferManager::FillOcbData(pRenderer->GetCbvIndex(), pCommonData, CommonOcbData::DataSize, pSpecialData, specialDataSize);
 			}
 
-			Dx12CBufferManager::FillPcbData(shaderHashValue, CommonPcbData::FillPcbData(pCamera), CommonPcbData::DataSize);
+			BufferManager::FillPcbData(CommonPcbData::FillPcbData(pCamera), CommonPcbData::DataSize);
 		}
 	}
 }

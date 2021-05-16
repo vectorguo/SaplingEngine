@@ -4,7 +4,7 @@
 #include "Render/Graphics/ConstantBufferData.h"
 #include "Render/Graphics/Material.h"
 #include "Render/Graphics/Mesh.h"
-#include "Render/Graphics/DirectX12/Dx12CBufferManager.h"
+#include "Render/Graphics/DirectX12/Dx12BufferManager.h"
 
 namespace SaplingEngine
 {

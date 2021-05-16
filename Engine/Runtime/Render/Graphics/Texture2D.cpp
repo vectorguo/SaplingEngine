@@ -1,19 +1,19 @@
-#include "Render/Graphics/DirectX12/Dx12CBufferManager.h"
+#include "Render/Graphics/DirectX12/Dx12BufferManager.h"
 #include "Render/Graphics/Texture2D.h"
 
 namespace SaplingEngine
 {
 	Texture2D::Texture2D(std::string path) :
 		m_Path(path),
-		m_SrvIndex(Dx12CBufferManager::SrvCount + 10000)
+		m_SrvIndex(BufferManager::SrvCount + 10000)
 	{
 	}
 	
 	Texture2D::~Texture2D()
 	{
-		if (m_SrvIndex > Dx12CBufferManager::SrvCount)
+		if (m_SrvIndex > BufferManager::SrvCount)
 		{
-			Dx12CBufferManager::PushSrvIndex(m_SrvIndex);
+			BufferManager::PushSrvIndex(m_SrvIndex);
 		}
 	}
 }

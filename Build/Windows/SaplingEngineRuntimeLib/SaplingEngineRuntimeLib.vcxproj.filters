@@ -147,9 +147,6 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\RenderPass.h">
       <Filter>Render\RenderPipeline\RenderPass</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CBufferManager.h">
-      <Filter>Render\Graphics\DirectX12</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\MeshManager.h">
       <Filter>Render\Graphics</Filter>
     </ClInclude>
@@ -194,6 +191,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\ShadowPass.h">
       <Filter>Render\RenderPipeline\RenderPass</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12BufferManager.h">
+      <Filter>Render\Graphics\DirectX12</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -302,9 +302,6 @@
     <ClCompile Include="..\..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\RenderPass.cpp">
       <Filter>Render\RenderPipeline\RenderPass</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CBufferManager.cpp">
-      <Filter>Render\Graphics\DirectX12</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\MeshManager.cpp">
       <Filter>Render\Graphics</Filter>
     </ClCompile>
@@ -331,6 +328,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\ShadowPass.cpp">
       <Filter>Render\RenderPipeline\RenderPass</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12BufferManager.cpp">
+      <Filter>Render\Graphics\DirectX12</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

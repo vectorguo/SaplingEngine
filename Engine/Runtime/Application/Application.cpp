@@ -1,5 +1,5 @@
-#include "Application/GameApplication.h"
-#include "Application/GameSetting.h"
+#include "Application/Application.h"
+#include "Application/Setting.h"
 #include "Input/Input.h"
 #include "Render/Graphics/MaterialManager.h"
 #include "Render/Graphics/ShaderManager.h"
@@ -10,20 +10,20 @@
 namespace SaplingEngine
 {
 	//静态成员初始化
-	HINSTANCE	GameApplication::appInstance = nullptr;
-	HWND		GameApplication::windowHwnd = nullptr;
-	bool		GameApplication::isActive = true;
-	bool		GameApplication::isMinimized = false;
-	bool		GameApplication::isMaximized = false;
-	bool		GameApplication::isResizing = false;
-	bool		GameApplication::isFullscreen = false;
+	HINSTANCE	Application::appInstance = nullptr;
+	HWND		Application::windowHwnd = nullptr;
+	bool		Application::isActive = true;
+	bool		Application::isMinimized = false;
+	bool		Application::isMaximized = false;
+	bool		Application::isResizing = false;
+	bool		Application::isFullscreen = false;
 	
 	/**
 	 * \brief	初始化App
 	 * \param	hInstance		app句柄
 	 * \return	是否初始化成功
 	 */
-	bool GameApplication::Initialize(HINSTANCE hInstance)
+	bool Application::Initialize(HINSTANCE hInstance)
 	{
 		appInstance = hInstance;
 
@@ -64,7 +64,7 @@ namespace SaplingEngine
 	/**
 	 * \brief 运行
 	 */
-	void GameApplication::Run()
+	void Application::Run()
 	{
 		Time::Initialize();
 		
@@ -96,7 +96,7 @@ namespace SaplingEngine
 	/**
 	 * \brief 销毁
 	 */
-	void GameApplication::Destroy()
+	void Application::Destroy()
 	{
 		CameraManager::Destroy();
 		Input::Destroy();
@@ -110,7 +110,7 @@ namespace SaplingEngine
 	 * \brief 初始化窗口
 	 * \return 是否初始化成功
 	 */
-	bool GameApplication::InitializeWindow()
+	bool Application::InitializeWindow()
 	{
 		WNDCLASS wc;
 		wc.style = CS_HREDRAW | CS_VREDRAW;
@@ -130,7 +130,7 @@ namespace SaplingEngine
 			return false;
 		}
 
-		RECT rect = { 0, 0, static_cast<long>(GameSetting::ScreenWidth()), static_cast<long>(GameSetting::ScreenHeight()) };
+		RECT rect = { 0, 0, static_cast<long>(Setting::ScreenWidth()), static_cast<long>(Setting::ScreenHeight()) };
 		AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, false);
 		const int width = rect.right - rect.left;
 		const int height = rect.bottom - rect.top;
@@ -148,7 +148,7 @@ namespace SaplingEngine
 	/**
 	 * \brief 更新
 	 */
-	void GameApplication::Update()
+	void Application::Update()
 	{
 		GameObject::UpdateAll();
 	}
@@ -156,7 +156,7 @@ namespace SaplingEngine
 	/**
 	 * \brief 消息处理
 	 */
-	LRESULT GameApplication::MessageProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+	LRESULT Application::MessageProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		switch (msg)
 		{
@@ -202,7 +202,7 @@ namespace SaplingEngine
 				}
 				else if (isResizing)
 				{
-					GameSetting::SetScreenSize(LOWORD(lParam), HIWORD(lParam));
+					Setting::SetScreenSize(LOWORD(lParam), HIWORD(lParam));
 					return 0;
 				}
 				else

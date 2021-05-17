@@ -1,18 +1,18 @@
-#include "GameSetting.h"
+#include "Setting.h"
 
 namespace SaplingEngine
 {
 	//静态成员初始化
-	uint32_t	GameSetting::screenWidth = 0;
-	uint32_t	GameSetting::screenHeight = 0;
-	std::string GameSetting::startSceneName;
-	std::string GameSetting::startScenePath;
+	uint32_t	Setting::screenWidth = 0;
+	uint32_t	Setting::screenHeight = 0;
+	std::string Setting::startSceneName;
+	std::string Setting::startScenePath;
 	
 	/**
 	 * \brief 初始化
 	 * \return 是否初始化成功
 	 */
-	bool GameSetting::Initialize()
+	bool Setting::Initialize()
 	{
 		//加载XML配置
 		auto* pDocumentFile = new XmlDocumentFile("Resources/Configs/ApplicationConfig.xml");

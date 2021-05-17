@@ -1,4 +1,4 @@
-#include "Character.h"
+#include "Game/Character/Character.h"
 
 namespace Warcraft
 {

@@ -7,7 +7,7 @@ namespace SaplingEngine
 {
 	class GameObject
 	{
-		friend class GameApplication;
+		friend class Application;
 		friend class Scene;
 		friend GameObjectSptr CreateGameObject();
 		friend GameObjectSptr CreateGameObject(const std::string&);

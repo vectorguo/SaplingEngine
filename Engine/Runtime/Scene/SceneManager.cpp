@@ -1,7 +1,7 @@
 #include "Scene.h"
 #include "SceneManager.h"
 
-#include "Application/GameSetting.h"
+#include "Application/Setting.h"
 
 namespace SaplingEngine
 {
@@ -14,8 +14,8 @@ namespace SaplingEngine
 	void SceneManager::Initialize()
 	{
 		//º”‘ÿ∆Ù∂Ø≥°æ∞
-		const auto& startSceneName = GameSetting::StartSceneName();
-		const auto& startScenePath = GameSetting::StartScenePath();
+		const auto& startSceneName = Setting::StartSceneName();
+		const auto& startScenePath = Setting::StartScenePath();
 		LoadScene(startSceneName, startScenePath);
 		SetActiveScene(startSceneName);
 	}

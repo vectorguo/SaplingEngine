@@ -1,6 +1,6 @@
 #include "Dx12CommandManager.h"
 #include "Dx12GraphicsManager.h"
-#include "Application/GameSetting.h"
+#include "Application/Setting.h"
 #include "Render/Graphics/Shader.h"
 #include "Render/Graphics/ShaderManager.h"
 
@@ -257,8 +257,8 @@ namespace SaplingEngine
 		}
 
 		//Set ViewPort And ScissorRect
-		const auto width = GameSetting::ScreenWidth();
-		const auto height = GameSetting::ScreenHeight();
+		const auto width = Setting::ScreenWidth();
+		const auto height = Setting::ScreenHeight();
 		m_Viewport.TopLeftX = 0;
 		m_Viewport.TopLeftY = 0;
 		m_Viewport.Width = static_cast<float>(width);

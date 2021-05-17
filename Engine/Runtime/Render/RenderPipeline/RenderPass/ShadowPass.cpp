@@ -1,4 +1,4 @@
-#include "Application/GameSetting.h"
+#include "Application/Setting.h"
 #include "Render/Graphics/DirectX12/Dx12BufferManager.h"
 #include "Render/Graphics/Light.h"
 #include "Render/Graphics/LightManager.h"

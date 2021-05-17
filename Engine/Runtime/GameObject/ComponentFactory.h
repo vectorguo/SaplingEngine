@@ -7,16 +7,6 @@ namespace SaplingEngine
 	class ComponentFactory final
 	{
 		friend class GameObject;
-	
-	public:
-		/**
-		 * \brief 设置组件构建器
-		 * \param creator 组件构建器
-		 */
-		static void SetComponentCreator(const std::function<ComponentSptr(uint32_t, int32_t)>& creator)
-		{
-			m_CustomCreator = creator;
-		}
 		
 	private:
 		/**
@@ -26,11 +16,13 @@ namespace SaplingEngine
 		 * \return 组件指针
 		 */
 		static ComponentSptr CreateComponent(uint32_t componentType, int32_t componentSubType = 0);
-		
-	private:
+
 		/**
-		 * \brief 自定义的组件构建器
+		 * \brief 根据组件类型创建用户自定义组件
+		 * \param componentType 组件类型
+		 * \param componentSubType 组件子类型
+		 * \return 组件指针
 		 */
-		static std::function<ComponentSptr(uint32_t, int32_t)> m_CustomCreator;
+		static ComponentSptr CreateCustomComponent(uint32_t componentType, int32_t componentSubType = 0);
 	};
 }

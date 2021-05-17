@@ -1,7 +1,7 @@
 #pragma once
 
+#include "Game/WarcraftEnum.h"
 #include "SaplingEngineHeader.h"
-#include "WarcraftEnum.h"
 
 namespace Warcraft
 {

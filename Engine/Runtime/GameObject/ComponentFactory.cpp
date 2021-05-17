@@ -1,18 +1,14 @@
-#include "Component.h"
-#include "ComponentFactory.h"
-
 #include "Camera/Camera.h"
 #include "Camera/Cinemachine/CinemachineBrain.h"
 #include "Camera/Cinemachine/CinemachineVirtualCamera.h"
+#include "GameObject/Component.h"
+#include "GameObject/ComponentFactory.h"
 #include "GameObject/Transform.h"
 #include "Render/Graphics/Light.h"
 #include "Render/Renderer/MeshRenderer.h"
 
 namespace SaplingEngine
 {
-	//静态成员初始化
-	std::function<ComponentSptr (uint32_t, int32_t)> ComponentFactory::m_CustomCreator;
-	
 	/**
 	 * \brief	根据组件类型创建组件
 	 * \param	componentType		组件类型
@@ -38,7 +34,7 @@ namespace SaplingEngine
 			case ComponentType_Renderer:
 				return componentSubType == 0 ? MakeShared<MeshRenderer>() : nullptr;
 			default:
-				return m_CustomCreator(componentType, componentSubType);
+				return CreateCustomComponent(componentType, componentSubType);
 		}
 	}
 }

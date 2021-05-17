@@ -1,20 +1,22 @@
 #pragma once
 
-#include "Character/Character.h"
-#include "Input/InputSystem.h"
-#include "SaplingEngineHeader.h"
-#include "WarcraftEnum.h"
-#include "WarcraftGameMain.h"
+#include "GameObject/ComponentFactory.h"
 
-namespace Warcraft
+#include "Game/Character/Character.h"
+#include "Game/WarcraftEnum.h"
+#include "Game/WarcraftGameMain.h"
+
+using namespace Warcraft;
+
+namespace SaplingEngine
 {
 	/**
-	 * \brief 根据组件类型创建组件
+	 * \brief 根据组件类型创建用户自定义组件
 	 * \param componentType 组件类型
 	 * \param componentSubType 组件子类型
 	 * \return 组件指针
 	 */
-	inline SaplingEngine::ComponentSptr CreateComponent(uint32_t componentType, int32_t componentSubType = 0)
+	ComponentSptr ComponentFactory::CreateCustomComponent(uint32_t componentType, int32_t componentSubType)
 	{
 		switch (componentType)
 		{

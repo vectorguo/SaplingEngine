@@ -4,7 +4,7 @@
 
 namespace SaplingEngine
 {
-	class GameApplication final
+	class Application final
 	{
 	public:
 		/**

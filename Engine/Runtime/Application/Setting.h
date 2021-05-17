@@ -6,7 +6,7 @@
 
 namespace SaplingEngine
 {
-	class GameSetting final
+	class Setting final
 	{
 	public:
 		/**

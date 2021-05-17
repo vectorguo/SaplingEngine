@@ -68,7 +68,7 @@ namespace SaplingEngine
 	
 	class Input final
 	{
-		friend class GameApplication;
+		friend class Application;
 		
 	public:
 		/**

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Application/GameApplication.h"
-#include "Application/GameSetting.h"
+#include "Application/Application.h"
+#include "Application/Setting.h"
 
 #include "Camera/Camera.h"
 #include "Camera/Cinemachine/CinemachineBrain.h"

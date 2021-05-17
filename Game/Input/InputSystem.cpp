@@ -1,6 +1,6 @@
-#include "Character/Character.h"
-#include "InputSystem.h"
-#include "WarcraftGameMain.h"
+#include "Game/Character/Character.h"
+#include "Game/Input/InputSystem.h"
+#include "Game/WarcraftGameMain.h"
 
 namespace Warcraft
 {

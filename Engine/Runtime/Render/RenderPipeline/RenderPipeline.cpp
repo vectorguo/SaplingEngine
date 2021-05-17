@@ -1,6 +1,6 @@
 #include "RenderPipeline.h"
 
-#include "Application/GameSetting.h"
+#include "Application/Setting.h"
 #include "Camera/CameraManager.h"
 #include "Render/Graphics/ConstantBufferData.h"
 #include "Render/Graphics/DirectX12/Dx12CommandManager.h"
@@ -25,8 +25,8 @@ namespace SaplingEngine
 	 */
 	void RenderPipeline::BeginInitialize(HWND hWnd)
 	{
-		screenWidth = GameSetting::ScreenWidth();
-		screenHeight = GameSetting::ScreenHeight();
+		screenWidth = Setting::ScreenWidth();
+		screenHeight = Setting::ScreenHeight();
 
 		//创建并初始化Graphics Manager
 		GraphicsManager::BeginInitialize(hWnd, screenWidth, screenHeight);

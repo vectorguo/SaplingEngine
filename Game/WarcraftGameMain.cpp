@@ -1,5 +1,5 @@
-#include "Input/InputSystem.h"
-#include "WarcraftGameMain.h"
+#include "Game/Input/InputSystem.h"
+#include "Game/WarcraftGameMain.h"
 
 namespace Warcraft
 {

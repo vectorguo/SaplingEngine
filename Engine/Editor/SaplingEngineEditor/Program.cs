@@ -16,16 +16,8 @@ namespace SaplingEngineEditor
 
             try
             {
-                //配置信息初始化
-                if (NativeMethods.Setting_Initialize())
-                {
-                    var mainWindow = new MainWindow();
-                    Application.Run(mainWindow);
-                }
-                else
-                {
-                    MessageBox.Show("配置信息初始化失败");
-                }
+                var mainWindow = new MainWindow();
+                Application.Run(mainWindow);
             }
             catch (Exception e)
             {

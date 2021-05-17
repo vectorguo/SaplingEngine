@@ -11,9 +11,15 @@ namespace SaplingEngineEditor
         public static extern int Test();
 
         [DllImport(NativeDllName, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool Setting_Initialize();
+        public static extern bool Setting_Initialize(uint windowWidth, uint windowHeight);
 
         [DllImport(NativeDllName, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool Application_Initialize(IntPtr instancePtrAddress, IntPtr hWndPtrAddress, int windowWidth, int windowHeight);
+        public static extern bool Application_Initialize(IntPtr instancePtrAddress, IntPtr hWndPtrAddress);
+
+        [DllImport(NativeDllName, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void Application_Run();
+
+        [DllImport(NativeDllName, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void Application_Destroy();
     }
 }

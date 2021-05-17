@@ -18,11 +18,9 @@ namespace SaplingEngine
 		 * \brief	初始化App
 		 * \param	hInstance		app句柄
 		 * \param	hwnd			窗口句柄
-		 * \param	windowWidth		窗口宽度
-		 * \param	windowHeight	窗口高度
 		 * \return	是否初始化成功
 		 */
-		static bool Initialize(HINSTANCE hInstance, HWND hwnd, int windowWidth, int windowHeight);
+		static bool Initialize(HINSTANCE hInstance, HWND hwnd);
 
 		/*
 		 * \brief	运行

@@ -10,14 +10,22 @@ namespace SaplingEngine
 	{
 	public:
 		/**
-		 * \brief 初始化
-		 * \return 是否初始化成功
+		 * \brief	初始化
+		 * \return	是否初始化成功
 		 */
 		static bool Initialize();
 
 		/**
-		 * \brief 获取屏幕宽度
-		 * \return 屏幕宽度
+		 * \brief	初始化
+		 * \param	width		屏幕宽度
+		 * \param	height		屏幕高度
+		 * \return	是否初始化成功
+		 */
+		static bool Initialize(uint32_t width, uint32_t height);
+
+		/**
+		 * \brief	获取屏幕宽度
+		 * \return	屏幕宽度
 		 */
 		inline static uint32_t ScreenWidth()
 		{
@@ -25,8 +33,8 @@ namespace SaplingEngine
 		}
 
 		/**
-		 * \brief 获取屏幕高度
-		 * \return 屏幕高度
+		 * \brief	获取屏幕高度
+		 * \return	屏幕高度
 		 */
 		inline static uint32_t ScreenHeight()
 		{
@@ -34,9 +42,9 @@ namespace SaplingEngine
 		}
 
 		/**
-		 * \brief 设置屏幕尺寸
-		 * \param width 屏幕宽度
-		 * \param height 屏幕高度
+		 * \brief	设置屏幕尺寸
+		 * \param	width		屏幕宽度
+		 * \param	height		屏幕高度
 		 */
 		static void SetScreenSize(uint32_t width, uint32_t height)
 		{

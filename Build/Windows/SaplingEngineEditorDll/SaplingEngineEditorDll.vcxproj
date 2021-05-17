@@ -192,7 +192,8 @@
       <EnableUAC>false</EnableUAC>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(TargetDir)SaplingEngineEditorDll.dll $(SolutionDir)..\..\..\Engine\Editor\SaplingEngineEditor\bin\$(Configuration)\SaplingEngineEditorDll.dll /Y</Command>
+      <Command>copy $(TargetDir)SaplingEngineEditorDll.dll $(SolutionDir)..\..\..\Engine\Editor\SaplingEngineEditor\bin\$(Configuration)\SaplingEngineEditorDll.dll /Y
+copy $(TargetDir)SaplingEngineEditorDll.pdb $(SolutionDir)..\..\..\Engine\Editor\SaplingEngineEditor\bin\$(Configuration)\SaplingEngineEditorDll.pdb /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

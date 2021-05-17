@@ -65,11 +65,9 @@ namespace SaplingEngine
 	 * \brief	初始化App
 	 * \param	hInstance		app句柄
 	 * \param	hwnd			窗口句柄
-	 * \param	windowWidth		窗口宽度
-	 * \param	windowHeight	窗口高度
 	 * \return	是否初始化成功
 	 */
-	bool Application::Initialize(HINSTANCE hInstance, HWND hwnd, int windowWidth, int windowHeight)
+	bool Application::Initialize(HINSTANCE hInstance, HWND hwnd)
 	{
 		appInstance = hInstance;
 
@@ -218,6 +216,9 @@ namespace SaplingEngine
 
 		RECT rect = { 0, 0, static_cast<long>(Setting::ScreenWidth()), static_cast<long>(Setting::ScreenHeight()) };
 		AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, false);
+
+		//使用已经创建好的窗口句柄
+		windowHwnd = hwnd;
 
 		return true;
 	}

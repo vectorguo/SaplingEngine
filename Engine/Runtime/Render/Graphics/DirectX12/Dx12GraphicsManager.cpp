@@ -292,7 +292,7 @@ namespace SaplingEngine
 		sd.Windowed = true;
 		sd.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 		sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
-		m_DXGIFactory->CreateSwapChain(CommandManager::GetCommandQueue(), &sd, m_SwapChain.GetAddressOf());
+		ThrowIfFailed(m_DXGIFactory->CreateSwapChain(CommandManager::GetCommandQueue(), &sd, m_SwapChain.GetAddressOf()));
 	}
 
 	/**

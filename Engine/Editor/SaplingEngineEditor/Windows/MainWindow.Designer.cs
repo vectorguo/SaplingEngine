@@ -34,17 +34,20 @@ namespace SaplingEngineEditor
             // 
             // DirectXPanel
             // 
-            this.DirectXPanel.Location = new System.Drawing.Point(200, 10);
+            this.DirectXPanel.Location = new System.Drawing.Point(300, 15);
+            this.DirectXPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.DirectXPanel.Name = "DirectXPanel";
-            this.DirectXPanel.Size = new System.Drawing.Size(927, 659);
+            this.DirectXPanel.Size = new System.Drawing.Size(1390, 988);
             this.DirectXPanel.TabIndex = 0;
+            this.DirectXPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.DirectXPanel_Paint);
             // 
             // MainWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.ClientSize = new System.Drawing.Size(1896, 1022);
             this.Controls.Add(this.DirectXPanel);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "MainWindow";
             this.Text = "MainWindow";
             this.ResumeLayout(false);

@@ -13,7 +13,11 @@ namespace SaplingEngineEditor
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new SaplingEngineMainWindow());
+
+            var i = NativeMethods.Test();
+
+            var mainWindow = new SaplingEngineMainWindow();
+            Application.Run(mainWindow);
         }
     }
 }

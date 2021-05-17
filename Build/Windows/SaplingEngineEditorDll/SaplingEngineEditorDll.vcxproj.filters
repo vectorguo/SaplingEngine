@@ -70,6 +70,12 @@
     <Filter Include="Game\Utility">
       <UniqueIdentifier>{75be2e1a-9e79-49e7-8ec9-3376a2f19252}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Editor">
+      <UniqueIdentifier>{e10105e5-b788-49ff-bed2-8bb5f09a8e41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Editor\Wrap">
+      <UniqueIdentifier>{beaa868b-8b49-441d-990d-d9c9dd0f0466}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Runtime\Application\Application.cpp">
@@ -215,6 +221,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Game\Utility\WarcraftComponentFactory.cpp">
       <Filter>Game\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Editor\Wrap\SaplingEngineWrap.cpp">
+      <Filter>Engine\Editor\Wrap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -421,6 +430,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Game\WarcraftGameMain.h">
       <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Editor\Wrap\SaplingEngineWrap.h">
+      <Filter>Engine\Editor\Wrap</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

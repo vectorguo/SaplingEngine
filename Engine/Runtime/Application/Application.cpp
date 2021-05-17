@@ -62,6 +62,52 @@ namespace SaplingEngine
 	}
 
 	/**
+	 * \brief	初始化App
+	 * \param	hInstance		app句柄
+	 * \param	hwnd			窗口句柄
+	 * \param	windowWidth		窗口宽度
+	 * \param	windowHeight	窗口高度
+	 * \return	是否初始化成功
+	 */
+	bool Application::Initialize(HINSTANCE hInstance, HWND hwnd, int windowWidth, int windowHeight)
+	{
+		appInstance = hInstance;
+
+		//初始化窗口
+		if (!InitializeWindow(hwnd))
+		{
+			return false;
+		}
+
+		//初始化资源管理器
+		ResourceManager::Initialize();
+
+		//渲染管线开始初始化
+		RenderPipeline::BeginInitialize(windowHwnd);
+
+		//初始化Shader
+		ShaderManager::Initialize();
+
+		//贴图初始化
+		TextureManager::Initialize();
+
+		//材质初始化
+		MaterialManager::Initialize();
+
+		//初始化场景
+		SceneManager::Initialize();
+
+		//渲染管线结束初始化
+		RenderPipeline::EndInitialize(windowHwnd);
+
+		//显示并更新窗口
+		ShowWindow(windowHwnd, SW_SHOW);
+		UpdateWindow(windowHwnd);
+
+		return true;
+	}
+
+	/**
 	 * \brief 运行
 	 */
 	void Application::Run()
@@ -142,6 +188,37 @@ namespace SaplingEngine
 			return false;
 		}
 		
+		return true;
+	}
+
+	/**
+	 * \brief	初始化窗口
+	 * \param	hwnd			窗口句柄
+	 * \return	是否初始化成功
+	 */
+	bool Application::InitializeWindow(HWND hwnd)
+	{
+		WNDCLASS wc;
+		wc.style = CS_HREDRAW | CS_VREDRAW;
+		wc.lpfnWndProc = MessageProcess;
+		wc.cbClsExtra = 0;
+		wc.cbWndExtra = 0;
+		wc.hInstance = appInstance;
+		wc.hIcon = LoadIcon(nullptr, IDI_APPLICATION);
+		wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
+		wc.hbrBackground = static_cast<HBRUSH>(GetStockObject(NULL_BRUSH));
+		wc.lpszMenuName = nullptr;
+		wc.lpszClassName = L"MainWnd";
+
+		if (!RegisterClass(&wc))
+		{
+			MessageBox(nullptr, L"RegisterClass Failed.", nullptr, 0);
+			return false;
+		}
+
+		RECT rect = { 0, 0, static_cast<long>(Setting::ScreenWidth()), static_cast<long>(Setting::ScreenHeight()) };
+		AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, false);
+
 		return true;
 	}
 

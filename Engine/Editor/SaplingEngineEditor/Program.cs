@@ -14,10 +14,23 @@ namespace SaplingEngineEditor
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var i = NativeMethods.Test();
-
-            var mainWindow = new SaplingEngineMainWindow();
-            Application.Run(mainWindow);
+            try
+            {
+                //配置信息初始化
+                if (NativeMethods.Setting_Initialize())
+                {
+                    var mainWindow = new MainWindow();
+                    Application.Run(mainWindow);
+                }
+                else
+                {
+                    MessageBox.Show("配置信息初始化失败");
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Error: " + e.ToString());
+            }
         }
     }
 }

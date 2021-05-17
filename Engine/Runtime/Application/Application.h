@@ -14,6 +14,16 @@ namespace SaplingEngine
 		 */
 		static bool Initialize(HINSTANCE hInstance);
 
+		/**
+		 * \brief	初始化App
+		 * \param	hInstance		app句柄
+		 * \param	hwnd			窗口句柄
+		 * \param	windowWidth		窗口宽度
+		 * \param	windowHeight	窗口高度
+		 * \return	是否初始化成功
+		 */
+		static bool Initialize(HINSTANCE hInstance, HWND hwnd, int windowWidth, int windowHeight);
+
 		/*
 		 * \brief	运行
 		 */
@@ -30,6 +40,13 @@ namespace SaplingEngine
 		 * \return	是否初始化成功
 		 */
 		static bool InitializeWindow();
+
+		/**
+		 * \brief	初始化窗口
+		 * \param	hwnd			窗口句柄
+		 * \return	是否初始化成功
+		 */
+		static bool InitializeWindow(HWND hwnd);
 
 		/**
 		 * \brief	更新

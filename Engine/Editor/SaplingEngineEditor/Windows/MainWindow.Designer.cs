@@ -1,7 +1,7 @@
 ﻿
 namespace SaplingEngineEditor
 {
-    partial class SaplingEngineMainWindow
+    partial class MainWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -29,12 +29,30 @@ namespace SaplingEngineEditor
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.DirectXPanel = new System.Windows.Forms.Panel();
+            this.SuspendLayout();
+            // 
+            // DirectXPanel
+            // 
+            this.DirectXPanel.Location = new System.Drawing.Point(200, 10);
+            this.DirectXPanel.Name = "DirectXPanel";
+            this.DirectXPanel.Size = new System.Drawing.Size(927, 659);
+            this.DirectXPanel.TabIndex = 0;
+            // 
+            // MainWindow
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "SaplingEngineMainWindow";
+            this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.DirectXPanel);
+            this.Name = "MainWindow";
+            this.Text = "MainWindow";
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private System.Windows.Forms.Panel DirectXPanel;
     }
 }

@@ -103,3 +103,11 @@ namespace SaplingEngine
 	using ComponentList		= std::vector<ComponentSptr>;
 	using GameObjectList	= std::vector<GameObjectSptr>;
 }
+
+#if SAPLING_EDITOR
+namespace SaplingEditor
+{
+	class EditorApplication;
+	class EditorSetting;
+}
+#endif

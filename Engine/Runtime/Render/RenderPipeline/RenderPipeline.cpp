@@ -1,5 +1,3 @@
-#include "RenderPipeline.h"
-
 #include "Application/Setting.h"
 #include "Camera/CameraManager.h"
 #include "Render/Graphics/ConstantBufferData.h"
@@ -7,6 +5,7 @@
 #include "Render/Graphics/DirectX12/Dx12GraphicsManager.h"
 #include "Render/Graphics/MeshManager.h"
 #include "Render/Graphics/TextureManager.h"
+#include "Render/RenderPipeline/RenderPipeline.h"
 #include "Render/RenderPipeline/RenderPass/RenderOpaquePass.h"
 #include "Render/RenderPipeline/RenderPass/ShadowPass.h"
 #include "Scene/SceneManager.h"

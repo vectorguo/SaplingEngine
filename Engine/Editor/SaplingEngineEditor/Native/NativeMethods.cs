@@ -8,21 +8,15 @@ namespace SaplingEngineEditor
         const string NativeDllName = "SaplingEngineEditorDll.dll";
 
         [DllImport(NativeDllName, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool Setting_Initialize(uint windowWidth, uint windowHeight);
+        public static extern bool Editor_Initialize(IntPtr instancePtrAddress, IntPtr hWndPtrAddress, uint windowWidth, uint windowHeight);
 
         [DllImport(NativeDllName, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool Application_Initialize(IntPtr instancePtrAddress, IntPtr hWndPtrAddress);
+        public static extern void Editor_Run();
 
         [DllImport(NativeDllName, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void Application_Run();
+        public static extern void Editor_Destroy();
 
         [DllImport(NativeDllName, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void Application_RunFrame();
-
-        [DllImport(NativeDllName, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void Application_Destroy();
-
-        [DllImport(NativeDllName, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void Application_MessageProcess(IntPtr hWndPtrAddress, int msg, int wParam, int lParam);
+        public static extern void Editor_MessageProcess(IntPtr hWndPtrAddress, int msg, int wParam, int lParam);
     }
 }

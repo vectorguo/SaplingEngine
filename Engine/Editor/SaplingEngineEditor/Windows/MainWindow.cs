@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -14,22 +15,14 @@ namespace SaplingEngineEditor
 
             try
             {
-                //初始化配置信息
-                if (NativeMethods.Setting_Initialize((uint)DirectXPanel.Width, (uint)DirectXPanel.Height))
+                //初始化编辑器
+                IntPtr hInstance = Marshal.GetHINSTANCE(GetType().Module);
+                if (NativeMethods.Editor_Initialize(hInstance, DirectXPanel.Handle, (uint)DirectXPanel.Width, (uint)DirectXPanel.Height))
                 {
-                    //初始化DirectX窗口
-                    IntPtr hInstance = Marshal.GetHINSTANCE(GetType().Module);
-                    if (NativeMethods.Application_Initialize(hInstance, DirectXPanel.Handle))
-                    {
-                    }
-                    else
-                    {
-                        MessageBox.Show("DirectX窗口初始化失败");
-                    }
                 }
                 else
                 {
-                    MessageBox.Show("配置信息初始化失败");
+                    MessageBox.Show("编辑器初始化失败");
                 }
             }
             catch (Exception e)
@@ -38,6 +31,11 @@ namespace SaplingEngineEditor
             }
 
             MessageHandler = new MessageHandler(DirectXPanel, this);
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            NativeMethods.Editor_Destroy();
         }
     }
 }

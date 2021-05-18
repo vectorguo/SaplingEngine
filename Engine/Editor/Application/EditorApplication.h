@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SaplingEnginePch.h"
+#include "Application/Application.h"
 
 namespace SaplingEditor
 {
@@ -24,6 +25,11 @@ namespace SaplingEditor
 		 * \brief	销毁
 		 */
 		static void Destroy();
+
+		/**
+		 * \brief	消息处理
+		 */
+		static LRESULT CALLBACK MessageProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 	private:
 		/**

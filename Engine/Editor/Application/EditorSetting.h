@@ -1,11 +1,10 @@
 #pragma once
 
 #include "SaplingEnginePch.h"
-#include "Application/Setting.h"
 
 namespace SaplingEditor
 {
-	class EditorSetting : public SaplingEngine::Setting
+	class EditorSetting
 	{
 	public:
 		/**
@@ -15,5 +14,34 @@ namespace SaplingEditor
 		 * \return	是否初始化成功
 		 */
 		static void Initialize(uint32_t width, uint32_t height);
+
+		/**
+		 * \brief	获取编辑器启动场景名称
+		 * \return	编辑器启动场景名称
+		 */
+		inline static const std::string& StartSceneName()
+		{
+			return startSceneName;
+		}
+
+		/**
+		 * \brief	获取编辑器启动场景路径
+		 * \return	编辑器启动场景路径
+		 */
+		inline static const std::string& StartScenePath()
+		{
+			return startScenePath;
+		}
+
+	private:
+		/**
+		 * \brief	编辑器起始场景名称
+		 */
+		static std::string startSceneName;
+
+		/**
+		 * \brief	编辑器起始场景路径
+		 */
+		static std::string startScenePath;
 	};
 }

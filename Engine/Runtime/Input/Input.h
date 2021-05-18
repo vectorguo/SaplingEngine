@@ -65,11 +65,15 @@ namespace SaplingEngine
 		Y		= 0x59,
 		Z		= 0x5A,
 	};
-	
+
 	class Input final
 	{
 		friend class Application;
-		
+
+#if SAPLING_EDITOR
+		friend class SaplingEditor::EditorApplication;
+#endif
+
 	public:
 		/**
 		 * \brief Ïú»Ù

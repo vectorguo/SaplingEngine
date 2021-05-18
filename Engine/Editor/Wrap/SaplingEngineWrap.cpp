@@ -19,54 +19,25 @@ SaplingEngineExport bool Editor_Initialize(int* instanceAddress, int* hwndAddres
 }
 
 /**
- * \brief	配置信息初始化
- * \param	screenWidth		窗口宽度
- * \param	screenHeight	窗口高度
- */
-SaplingEngineExport bool Setting_Initialize(uint32_t screenWidth, uint32_t screenHeight)
-{
-	return Setting::Initialize(screenWidth, screenHeight);
-}
-
-/**
- * \brief	初始化App
- * \param	instanceAddress app句柄
- * \param	hwndAddress		窗口句柄
- * \return	是否初始化成功
- */
-SaplingEngineExport bool Application_Initialize(int* instanceAddress, int* hwndAddress)
-{
-	return Application::Initialize((HINSTANCE)instanceAddress, (HWND)hwndAddress);
-}
-
-/**
  * \brief	Application运行
  */
-SaplingEngineExport void Application_Run()
+SaplingEngineExport void Editor_Run()
 {
-	Application::Run();
-}
-
-/**
- * \brief	Application运行一帧
- */
-SaplingEngineExport void Application_RunFrame()
-{
-	Application::RunFrame();
+	EditorApplication::Run();
 }
 
 /**
  * \brief	Application销毁
  */
-SaplingEngineExport void Application_Destroy()
+SaplingEngineExport void Editor_Destroy()
 {
-	Application::Destroy();
+	EditorApplication::Destroy();
 }
 
 /**
  * \brief	Application消息处理
  */
-SaplingEngineExport void Application_MessageProcess(int* hWndPtrAddress, int msg, int wParam, int lParam)
+SaplingEngineExport void Editor_MessageProcess(int* hWndPtrAddress, int msg, int wParam, int lParam)
 {
-	Application::MessageProcess((HWND)hWndPtrAddress, msg, wParam, lParam);
+	EditorApplication::MessageProcess((HWND)hWndPtrAddress, msg, wParam, lParam);
 }

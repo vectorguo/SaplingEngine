@@ -8,20 +8,16 @@ namespace SaplingEngine
 {
 	class Setting
 	{
+#if SAPLING_EDITOR
+		friend class SaplingEditor::EditorSetting;
+#endif
+
 	public:
 		/**
 		 * \brief	初始化
 		 * \return	是否初始化成功
 		 */
 		static bool Initialize();
-
-		/**
-		 * \brief	初始化
-		 * \param	width		屏幕宽度
-		 * \param	height		屏幕高度
-		 * \return	是否初始化成功
-		 */
-		static bool Initialize(uint32_t width, uint32_t height);
 
 		/**
 		 * \brief	是否是编辑器模式

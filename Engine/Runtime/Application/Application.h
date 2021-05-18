@@ -4,8 +4,12 @@
 
 namespace SaplingEngine
 {
-	class Application final
+	class Application
 	{
+#if SAPLING_EDITOR
+		friend class SaplingEditor::EditorApplication;
+#endif
+
 	public:
 		/**
 		 * \brief	初始化App
@@ -14,23 +18,10 @@ namespace SaplingEngine
 		 */
 		static bool Initialize(HINSTANCE hInstance);
 
-		/**
-		 * \brief	初始化App
-		 * \param	hInstance		app句柄
-		 * \param	hwnd			窗口句柄
-		 * \return	是否初始化成功
-		 */
-		static bool Initialize(HINSTANCE hInstance, HWND hwnd);
-
 		/*
 		 * \brief	运行
 		 */
 		static void Run();
-
-		/*
-		 * \brief	运行一帧
-		 */
-		static void RunFrame();
 
 		/**
 		 * \brief	销毁
@@ -48,13 +39,6 @@ namespace SaplingEngine
 		 * \return	是否初始化成功
 		 */
 		static bool InitializeWindow();
-
-		/**
-		 * \brief	初始化窗口
-		 * \param	hwnd			窗口句柄
-		 * \return	是否初始化成功
-		 */
-		static bool InitializeWindow(HWND hwnd);
 
 		/**
 		 * \brief	更新

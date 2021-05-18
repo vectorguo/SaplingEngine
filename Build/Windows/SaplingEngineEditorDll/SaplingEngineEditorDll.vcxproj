@@ -11,6 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Engine\Editor\Application\EditorApplication.cpp" />
+    <ClCompile Include="..\..\..\Engine\Editor\Application\EditorSetting.cpp" />
+    <ClCompile Include="..\..\..\Engine\Editor\Input\EditorInputSystem.cpp" />
     <ClCompile Include="..\..\..\Engine\Editor\Wrap\SaplingEngineWrap.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Application\Application.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Application\Setting.cpp" />
@@ -61,6 +64,9 @@
     <ClCompile Include="..\..\..\Game\WarcraftGameMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Engine\Editor\Application\EditorApplication.h" />
+    <ClInclude Include="..\..\..\Engine\Editor\Application\EditorSetting.h" />
+    <ClInclude Include="..\..\..\Engine\Editor\Input\EditorInputSystem.h" />
     <ClInclude Include="..\..\..\Engine\Editor\Wrap\SaplingEngineWrap.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Application\Application.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Application\Setting.h" />
@@ -181,7 +187,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;SAPLINGENGINEEDITORDLL_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;SAPLING_EDITOR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -202,7 +208,7 @@ copy $(TargetDir)SaplingEngineEditorDll.pdb $(SolutionDir)..\..\..\Engine\Editor
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;SAPLINGENGINEEDITORDLL_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;SAPLING_EDITOR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>

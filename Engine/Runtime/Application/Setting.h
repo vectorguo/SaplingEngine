@@ -6,7 +6,7 @@
 
 namespace SaplingEngine
 {
-	class Setting final
+	class Setting
 	{
 	public:
 		/**
@@ -82,7 +82,7 @@ namespace SaplingEngine
 			return startScenePath;
 		}
 
-	private:
+	protected:
 		/**
 		 * \brief 是否是编辑器模式
 		 */

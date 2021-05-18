@@ -42,7 +42,7 @@ namespace SaplingEngine
 		 */
 		static LRESULT CALLBACK MessageProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-	private:
+	protected:
 		/**
 		 * \brief	初始化窗口
 		 * \return	是否初始化成功
@@ -61,7 +61,7 @@ namespace SaplingEngine
 		 */
 		static void Update();
 
-	private:
+	protected:
 		/**
 		 * \brief	Application句柄
 		 */

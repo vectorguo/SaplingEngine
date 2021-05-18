@@ -34,6 +34,8 @@ namespace SaplingEngineEditor
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.newSceneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openSceneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -43,6 +45,7 @@ namespace SaplingEngineEditor
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.DirectXPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.DirectXPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.DirectXPanel.Location = new System.Drawing.Point(250, 26);
             this.DirectXPanel.MaximumSize = new System.Drawing.Size(960, 720);
             this.DirectXPanel.MinimumSize = new System.Drawing.Size(960, 720);
@@ -63,6 +66,9 @@ namespace SaplingEngineEditor
             // 
             // fileToolStripMenuItem
             // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.newSceneToolStripMenuItem,
+            this.openSceneToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(39, 21);
             this.fileToolStripMenuItem.Text = "File";
@@ -71,6 +77,18 @@ namespace SaplingEngineEditor
             // 
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
+            // newSceneToolStripMenuItem
+            // 
+            this.newSceneToolStripMenuItem.Name = "newSceneToolStripMenuItem";
+            this.newSceneToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newSceneToolStripMenuItem.Text = "NewScene";
+            // 
+            // openSceneToolStripMenuItem
+            // 
+            this.openSceneToolStripMenuItem.Name = "openSceneToolStripMenuItem";
+            this.openSceneToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openSceneToolStripMenuItem.Text = "OpenScene";
             // 
             // MainWindow
             // 
@@ -99,5 +117,7 @@ namespace SaplingEngineEditor
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem newSceneToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openSceneToolStripMenuItem;
     }
 }

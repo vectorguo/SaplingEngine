@@ -76,6 +76,12 @@
     <Filter Include="Engine\Editor\Wrap">
       <UniqueIdentifier>{beaa868b-8b49-441d-990d-d9c9dd0f0466}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Editor\Input">
+      <UniqueIdentifier>{0a04afee-b1c8-440b-bd8b-c67a0c0ed637}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Editor\Application">
+      <UniqueIdentifier>{a9b55a7a-cdda-4feb-aa8f-255dfd4ec0bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Runtime\Application\Application.cpp">
@@ -224,6 +230,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Engine\Editor\Wrap\SaplingEngineWrap.cpp">
       <Filter>Engine\Editor\Wrap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Editor\Input\EditorInputSystem.cpp">
+      <Filter>Engine\Editor\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Editor\Application\EditorSetting.cpp">
+      <Filter>Engine\Editor\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Editor\Application\EditorApplication.cpp">
+      <Filter>Engine\Editor\Application</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -433,6 +448,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Engine\Editor\Wrap\SaplingEngineWrap.h">
       <Filter>Engine\Editor\Wrap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Editor\Input\EditorInputSystem.h">
+      <Filter>Engine\Editor\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Editor\Application\EditorSetting.h">
+      <Filter>Engine\Editor\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Editor\Application\EditorApplication.h">
+      <Filter>Engine\Editor\Application</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

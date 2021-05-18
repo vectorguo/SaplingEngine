@@ -33,24 +33,21 @@ namespace SaplingEngine
 	void GameObject::Update()
 	{
 		//更新组件
-		if (Setting::IsEditorMode())
+#if SAPLING_EDITOR
+		for (auto iter = m_Components.begin(); iter != m_Components.end(); ++iter)
 		{
-			for (auto iter = m_Components.begin(); iter != m_Components.end(); ++iter)
-			{
-				auto* pComponent = iter->Get();
-				if (pComponent->m_RunInEditorMode)
-				{
-					(*iter)->Update();
-				}
-			}
-		}
-		else
-		{
-			for (auto iter = m_Components.begin(); iter != m_Components.end(); ++iter)
+			auto* pComponent = iter->Get();
+			if (pComponent->m_RunInEditorMode)
 			{
 				(*iter)->Update();
 			}
 		}
+#else
+		for (auto iter = m_Components.begin(); iter != m_Components.end(); ++iter)
+		{
+			(*iter)->Update();
+		}
+#endif
 	}
 
 	/**

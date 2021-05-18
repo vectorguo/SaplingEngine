@@ -1,10 +1,21 @@
 #include "Editor/Wrap/SaplingEngineWrap.h"
+#include "Editor/Application/EditorApplication.h"
+#include "Editor/Application/EditorSetting.h"
 
+using namespace SaplingEditor;
 using namespace SaplingEngine;
 
-int Test()
+/**
+ * \brief	初始化
+ * \param	instanceAddress app句柄
+ * \param	hwndAddress		窗口句柄
+ * \param	screenWidth		窗口宽度
+ * \param	screenHeight	窗口高度
+ */
+SaplingEngineExport bool Editor_Initialize(int* instanceAddress, int* hwndAddress, uint32_t screenWidth, uint32_t screenHeight)
 {
-	return 20;
+	EditorSetting::Initialize(screenWidth, screenHeight);
+	return EditorApplication::Initialize((HINSTANCE)instanceAddress, (HWND)hwndAddress);
 }
 
 /**

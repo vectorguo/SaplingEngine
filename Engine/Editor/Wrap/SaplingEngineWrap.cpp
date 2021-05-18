@@ -37,9 +37,25 @@ SaplingEngineExport void Application_Run()
 }
 
 /**
+ * \brief	Application运行一帧
+ */
+SaplingEngineExport void Application_RunFrame()
+{
+	Application::RunFrame();
+}
+
+/**
  * \brief	Application销毁
  */
 SaplingEngineExport void Application_Destroy()
 {
 	Application::Destroy();
+}
+
+/**
+ * \brief	Application消息处理
+ */
+SaplingEngineExport void Application_MessageProcess(int* hWndPtrAddress, int msg, int wParam, int lParam)
+{
+	Application::MessageProcess((HWND)hWndPtrAddress, msg, wParam, lParam);
 }

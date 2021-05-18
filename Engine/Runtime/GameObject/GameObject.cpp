@@ -1,3 +1,4 @@
+#include "Application/Setting.h"
 #include "GameObject/Component.h"
 #include "GameObject/ComponentFactory.h"
 #include "GameObject/GameObject.h"
@@ -32,9 +33,23 @@ namespace SaplingEngine
 	void GameObject::Update()
 	{
 		//更新组件
-		for (auto iter = m_Components.begin(); iter != m_Components.end(); ++iter)
+		if (Setting::IsEditorMode())
 		{
-			(*iter)->Update();
+			for (auto iter = m_Components.begin(); iter != m_Components.end(); ++iter)
+			{
+				auto* pComponent = iter->Get();
+				if (pComponent->m_RunInEditorMode)
+				{
+					(*iter)->Update();
+				}
+			}
+		}
+		else
+		{
+			for (auto iter = m_Components.begin(); iter != m_Components.end(); ++iter)
+			{
+				(*iter)->Update();
+			}
 		}
 	}
 

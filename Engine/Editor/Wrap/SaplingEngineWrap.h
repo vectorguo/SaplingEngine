@@ -29,7 +29,17 @@ extern "C"
 	SaplingEngineExport void Application_Run();
 
 	/**
+	 * \brief	Application运行一帧
+	 */
+	SaplingEngineExport void Application_RunFrame();
+
+	/**
 	 * \brief	Application销毁
 	 */
 	SaplingEngineExport void Application_Destroy();
+
+	/**
+	 * \brief	Application消息处理
+	 */
+	SaplingEngineExport void Application_MessageProcess(int* hWndPtrAddress, int msg, int wParam, int lParam);
 }

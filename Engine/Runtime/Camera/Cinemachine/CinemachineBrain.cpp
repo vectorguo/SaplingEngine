@@ -18,6 +18,8 @@ namespace SaplingEngine
         {
             m_pCurrentVirtualCamera = virtualCameras[0];
         }
+
+        m_RunInEditorMode = true;
     }
 
     /**

@@ -11,7 +11,7 @@ namespace SaplingEngine
 		m_LocalRotation(Quaternion::Identity),
 		m_LocalScale(1, 1, 1)
 	{
-
+		m_RunInEditorMode = true;
 	}
 
 	/**

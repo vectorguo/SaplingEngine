@@ -9,6 +9,7 @@ namespace SaplingEngine
 {
 	Renderer::Renderer() : Component(ComponentType_Renderer)
 	{
+		m_RunInEditorMode = true;
 	}
 
 	Renderer::~Renderer()

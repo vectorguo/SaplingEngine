@@ -10,7 +10,7 @@ namespace SaplingEngine
 	public:
 		CinemachineVirtualCamera() : Component(ComponentType_CinemachineVirtualCamera)
 		{
-
+			m_RunInEditorMode = true;
 		}
 		~CinemachineVirtualCamera() override = default;
 

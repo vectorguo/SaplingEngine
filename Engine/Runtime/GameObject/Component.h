@@ -99,7 +99,7 @@ namespace SaplingEngine
 		void SetEnabled(bool enabled);
 
 		/**
-		 * \brief 是否被销毁
+		 * \brief	是否被销毁
 		 */
 		bool IsDestroyed() const
 		{
@@ -175,5 +175,10 @@ namespace SaplingEngine
 		 * \brief	是否被销毁
 		 */
 		bool m_IsDestroyed = false;
+
+		/**
+		 * \brief	在编辑器模式下是否可以运行
+		 */
+		bool m_RunInEditorMode = false;
 	};
 }

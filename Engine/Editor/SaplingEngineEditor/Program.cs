@@ -17,6 +17,12 @@ namespace SaplingEngineEditor
             try
             {
                 var mainWindow = new MainWindow();
+                var messageHandler = mainWindow.MessageHandler;
+                if (messageHandler != null)
+                {
+                    Application.AddMessageFilter(messageHandler);
+                    Application.Idle += new EventHandler(messageHandler.ApplicationIdle);
+                }
                 Application.Run(mainWindow);
             }
             catch (Exception e)

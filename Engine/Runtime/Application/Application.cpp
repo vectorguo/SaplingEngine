@@ -95,6 +95,9 @@ namespace SaplingEngine
 		//初始化场景
 		SceneManager::Initialize();
 
+		//时间初始化
+		Time::Initialize();
+
 		//渲染管线结束初始化
 		RenderPipeline::EndInitialize(windowHwnd);
 
@@ -110,8 +113,6 @@ namespace SaplingEngine
 	 */
 	void Application::Run()
 	{
-		Time::Initialize();
-		
 		MSG msg = {};
 		while (msg.message != WM_QUIT)
 		{
@@ -137,6 +138,24 @@ namespace SaplingEngine
 		}
 	}
 
+	/*
+	 * \brief	运行一帧
+	 */
+	void Application::RunFrame()
+	{
+		//时间更新
+		Time::Tick();
+
+		//逻辑更新
+		Update();
+
+		//Input重置
+		Input::Reset();
+
+		//渲染
+		RenderPipeline::Render();
+	}
+
 	/**
 	 * \brief 销毁
 	 */
@@ -148,6 +167,124 @@ namespace SaplingEngine
 		SceneManager::Destroy();
 		ShaderManager::Destroy();
 		RenderPipeline::Destroy();
+	}
+
+	/**
+	 * \brief 消息处理
+	 */
+	LRESULT Application::MessageProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+	{
+		switch (msg)
+		{
+			case WM_ACTIVATE:
+				if (LOWORD(wParam) == WA_INACTIVE)
+				{
+					isActive = false;
+					Time::Stop();
+				}
+				else
+				{
+					isActive = true;
+					Time::Start();
+				}
+				return 0;
+
+			case WM_SIZE:
+				if (wParam == SIZE_MINIMIZED)
+				{
+					isActive = false;
+					isMinimized = true;
+					isMaximized = false;
+					return 0;
+				}
+				else if (wParam == SIZE_MAXIMIZED)
+				{
+					isActive = true;
+					isMinimized = false;
+					isMaximized = true;
+
+				}
+				else if (wParam == SIZE_RESTORED)
+				{
+					if (isMinimized)
+					{
+						isActive = true;
+						isMinimized = false;
+					}
+					else if (isMaximized)
+					{
+						isActive = true;
+						isMaximized = false;
+					}
+					else if (isResizing)
+					{
+						Setting::SetScreenSize(LOWORD(lParam), HIWORD(lParam));
+						return 0;
+					}
+					else
+					{
+					}
+				}
+				return 0;
+
+			case WM_ENTERSIZEMOVE:
+				isActive = false;
+				isResizing = true;
+				Time::Stop();
+				return 0;
+
+			case WM_EXITSIZEMOVE:
+				isActive = true;
+				isResizing = false;
+				Time::Start();
+				return 0;
+
+			case WM_MOUSEWHEEL:
+				Input::SetMouseButton(EMouseButtonState::MouseWheel, static_cast<short>(HIWORD(wParam)), 0);
+				return 0;
+
+			case WM_LBUTTONDOWN:
+				Input::SetMouseButton(EMouseButtonState::LeftMouseButtonDown, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+				return 0;
+
+			case WM_RBUTTONDOWN:
+				Input::SetMouseButton(EMouseButtonState::RightMouseButtonDown, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+				return 0;
+
+			case WM_LBUTTONUP:
+				Input::SetMouseButton(EMouseButtonState::LeftMouseButtonUp, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+				return 0;
+
+			case WM_RBUTTONUP:
+				Input::SetMouseButton(EMouseButtonState::RightMouseButtonUp, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+				return 0;
+
+			case WM_MOUSEMOVE:
+				Input::SetMouseButton(EMouseButtonState::MouseButtonMove, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+				return 0;
+
+			case WM_KEYDOWN:
+				Input::SetKeyState(EKeyState::KeyDown, static_cast<EKeyCode>(wParam));
+				return 0;
+
+			case WM_KEYUP:
+				if (wParam == VK_ESCAPE)
+				{
+					PostQuitMessage(0);
+				}
+				else
+				{
+					Input::SetKeyState(EKeyState::KeyUp, static_cast<EKeyCode>(wParam));
+				}
+				return 0;
+
+			case WM_DESTROY:
+				PostQuitMessage(0);
+				return 0;
+
+			default:
+				return DefWindowProc(hWnd, msg, wParam, lParam);
+		}
 	}
 
 	/**
@@ -229,123 +366,5 @@ namespace SaplingEngine
 	void Application::Update()
 	{
 		GameObject::UpdateAll();
-	}
-
-	/**
-	 * \brief 消息处理
-	 */
-	LRESULT Application::MessageProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
-	{
-		switch (msg)
-		{
-		case WM_ACTIVATE:
-			if (LOWORD(wParam) == WA_INACTIVE)
-			{
-				isActive = false;
-				Time::Stop();
-			}
-			else
-			{
-				isActive = true;
-				Time::Start();
-			}
-			return 0;
-			
-		case WM_SIZE:
-			if (wParam == SIZE_MINIMIZED)
-			{
-				isActive = false;
-				isMinimized = true;
-				isMaximized = false;
-				return 0;
-			}
-			else if (wParam == SIZE_MAXIMIZED)
-			{
-				isActive = true;
-				isMinimized = false;
-				isMaximized = true;
-				
-			}
-			else if (wParam == SIZE_RESTORED)
-			{
-				if (isMinimized)
-				{
-					isActive = true;
-					isMinimized = false;
-				}
-				else if (isMaximized)
-				{
-					isActive = true;
-					isMaximized = false;
-				}
-				else if (isResizing)
-				{
-					Setting::SetScreenSize(LOWORD(lParam), HIWORD(lParam));
-					return 0;
-				}
-				else
-				{
-				}
-			}
-			return 0;
-		
-		case WM_ENTERSIZEMOVE:
-			isActive = false;
-			isResizing = true;
-			Time::Stop();
-			return 0;
-		
-		case WM_EXITSIZEMOVE:
-			isActive = true;
-			isResizing = false;
-			Time::Start();
-			return 0;
-
-		case WM_MOUSEWHEEL:
-			Input::SetMouseButton(EMouseButtonState::MouseWheel, static_cast<short>(HIWORD(wParam)), 0);
-			return 0;
-			
-		case WM_LBUTTONDOWN:
-			Input::SetMouseButton(EMouseButtonState::LeftMouseButtonDown, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
-			return 0;
-			
-		case WM_RBUTTONDOWN:
-			Input::SetMouseButton(EMouseButtonState::RightMouseButtonDown, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
-			return 0;
-
-		case WM_LBUTTONUP:
-			Input::SetMouseButton(EMouseButtonState::LeftMouseButtonUp, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
-			return 0;
-			
-		case WM_RBUTTONUP:
-			Input::SetMouseButton(EMouseButtonState::RightMouseButtonUp, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
-			return 0;
-
-		case WM_MOUSEMOVE:
-			Input::SetMouseButton(EMouseButtonState::MouseButtonMove, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
-			return 0;
-			
-		case WM_KEYDOWN:
-			Input::SetKeyState(EKeyState::KeyDown, static_cast<EKeyCode>(wParam));
-			return 0;
-			
-		case WM_KEYUP:
-			if (wParam == VK_ESCAPE)
-			{
-				PostQuitMessage(0);
-			}
-			else
-			{
-				Input::SetKeyState(EKeyState::KeyUp, static_cast<EKeyCode>(wParam));
-			}
-			return 0;
-			
-		case WM_DESTROY:
-			PostQuitMessage(0);
-			return 0;
-			
-		default:
-			return DefWindowProc(hWnd, msg, wParam, lParam);
-		}
 	}
 }

@@ -24,6 +24,14 @@ namespace SaplingEngine
 		static bool Initialize(uint32_t width, uint32_t height);
 
 		/**
+		 * \brief	是否是编辑器模式
+		 */
+		static bool IsEditorMode()
+		{
+			return isEditorMode;
+		}
+
+		/**
 		 * \brief	获取屏幕宽度
 		 * \return	屏幕宽度
 		 */
@@ -75,6 +83,11 @@ namespace SaplingEngine
 		}
 
 	private:
+		/**
+		 * \brief 是否是编辑器模式
+		 */
+		static bool isEditorMode;
+
 		/**
 		 * \brief 屏幕宽度
 		 */

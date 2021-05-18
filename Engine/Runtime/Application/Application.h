@@ -27,10 +27,20 @@ namespace SaplingEngine
 		 */
 		static void Run();
 
+		/*
+		 * \brief	运行一帧
+		 */
+		static void RunFrame();
+
 		/**
 		 * \brief	销毁
 		 */
 		static void Destroy();
+
+		/**
+		 * \brief	消息处理
+		 */
+		static LRESULT CALLBACK MessageProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 	private:
 		/**
@@ -50,11 +60,6 @@ namespace SaplingEngine
 		 * \brief	更新
 		 */
 		static void Update();
-
-		/**
-		 * \brief	消息处理
-		 */
-		static LRESULT CALLBACK MessageProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 	private:
 		/**

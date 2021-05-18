@@ -27,7 +27,7 @@ namespace SaplingEngine
 	public:
 		Camera() : Component(ComponentType_Camera)
 		{
-
+			m_RunInEditorMode = true;
 		}
 
 		/*

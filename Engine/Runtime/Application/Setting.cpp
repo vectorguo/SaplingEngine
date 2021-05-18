@@ -3,6 +3,7 @@
 namespace SaplingEngine
 {
 	//静态成员初始化
+	bool		Setting::isEditorMode = false;
 	uint32_t	Setting::screenWidth = 0;
 	uint32_t	Setting::screenHeight = 0;
 	std::string Setting::startSceneName;
@@ -46,6 +47,8 @@ namespace SaplingEngine
 	 */
 	bool Setting::Initialize(uint32_t width, uint32_t height)
 	{
+		isEditorMode = true;
+
 		//读取窗口宽度和高度
 		screenWidth = width;
 		screenHeight = height;

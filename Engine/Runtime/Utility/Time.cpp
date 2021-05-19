@@ -1,4 +1,6 @@
 #include "Time.h"
+#include <chrono>
+#include <thread>
 #include <Windows.h>
 
 int64_t Time::s_BaseTime = 0;
@@ -9,6 +11,8 @@ int64_t Time::s_PreviousTime = 0;
 double Time::s_SecondPreCount = 0;
 double Time::s_DeltaTime = 0;
 bool Time::s_Stopped = false;
+
+constexpr double frameTime = 1 / 30.0f;
 
 float Time::TotalTime()
 {
@@ -76,12 +80,9 @@ void Time::Tick()
 	else
 	{
 		QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&s_CurrentTime));
-
 		s_DeltaTime = static_cast<double>(s_CurrentTime - s_PreviousTime) * s_SecondPreCount;
-		if (s_DeltaTime < 0)
-		{
-			s_DeltaTime = 0;
-		}
 		s_PreviousTime = s_CurrentTime;
+
+		s_DeltaTime = 0.01;
 	}
 }

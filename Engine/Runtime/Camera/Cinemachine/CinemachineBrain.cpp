@@ -85,6 +85,8 @@ namespace SaplingEngine
 
         //同步虚拟相机位置参数给真实相机
         auto* pTransform = GetTransform();
-        pTransform->SetPosition(m_pCurrentVirtualCamera->GetTransform()->GetPosition());
+        auto* ptVirtualCameraTransform = m_pCurrentVirtualCamera->GetTransform();
+        pTransform->SetPosition(ptVirtualCameraTransform->GetPosition());
+        pTransform->SetRotation(ptVirtualCameraTransform->GetRotation());
     }
 }

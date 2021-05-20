@@ -17,6 +17,7 @@ namespace SaplingEngine
         {
             auto offset = m_FollowTarget->GetRight() * m_FollowOffset.x + m_FollowTarget->GetUp() * m_FollowOffset.y + m_FollowTarget->GetForward() * m_FollowOffset.z;
             pTransform->SetPosition(m_FollowTarget->GetPosition() + offset);
+            pTransform->LookAt(m_LookAtTarget->GetPosition());
         }
 
         //¸üĞÂ³¯Ïò

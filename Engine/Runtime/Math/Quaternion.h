@@ -25,6 +25,11 @@ namespace SaplingEngine
 				XMStoreFloat4(&value, v);
 			}
 
+			explicit Quaternion(FXMMATRIX m)
+			{
+				XMStoreFloat4(&value, XMQuaternionRotationMatrix(m));
+			}
+
 			/*
 			 * operator overloading
 			 */
@@ -57,6 +62,11 @@ namespace SaplingEngine
 				this->w = w;
 			}
 
+			void Set(FXMMATRIX m)
+			{
+				XMStoreFloat4(&value, XMQuaternionRotationMatrix(m));
+			}
+
 			Quaternion Inverse() const
 			{
 				return Quaternion(XMQuaternionInverse(XMLoadFloat4(&value)));
@@ -73,6 +83,11 @@ namespace SaplingEngine
 			static Quaternion RotateAxis(const Vector3& axis, const float angle)
 			{
 				return Quaternion(XMQuaternionRotationAxis(axis, AngleToRadian(angle)));
+			}
+
+			static Quaternion RotateRollPitchYaw(const Vector3& eulerAngles)
+			{
+				return Quaternion(XMQuaternionRotationRollPitchYaw(eulerAngles.x, eulerAngles.y, eulerAngles.z));
 			}
 
 			static Quaternion RotateRollPitchYaw(const float pitch, const float yaw, const float roll)

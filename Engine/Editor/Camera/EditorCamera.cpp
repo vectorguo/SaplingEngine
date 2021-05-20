@@ -26,6 +26,7 @@ namespace SaplingEditor
 		editorCamraTargetObject = CreateGameObject("EditorVirtualCameraTarget");
 		editorCamraTargetObject->GetTransform()->SetParent(editorRootTransform);
 		editorCamraTargetObject->GetTransform()->SetPosition(targetPosition);
+		editorCamraTargetObject->GetTransform()->SetEulerAngles(targetEulerAngles);
 
 		//创建虚拟相机
 		editorVirtualCameraObject = CreateGameObject("EditorVirtualCamera");

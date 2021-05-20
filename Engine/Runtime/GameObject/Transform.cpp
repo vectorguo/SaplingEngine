@@ -186,6 +186,16 @@ namespace SaplingEngine
 		}
 	}
 
+	void Transform::SetEulerAngles(const Vector3& eulerAngles)
+	{
+		SetRotation(Quaternion::RotateRollPitchYaw(eulerAngles));
+	}
+
+	void Transform::SetEulerAngles(float x, float y, float z)
+	{
+		SetRotation(Quaternion::RotateRollPitchYaw(x, y, z));
+	}
+
 	/**
 	 * \brief	设置局部坐标下的位置
 	 * \param	localPosition	局部坐标下的位置
@@ -264,6 +274,16 @@ namespace SaplingEngine
 		}
 	}
 
+	void Transform::SetLocalEulerAngles(const Vector3& eulerAngles)
+	{
+		SetLocalRotation(Quaternion::RotateRollPitchYaw(eulerAngles));
+	}
+
+	void Transform::SetLocalEulerAngles(float x, float y, float z)
+	{
+		SetLocalRotation(Quaternion::RotateRollPitchYaw(x, y, z));
+	}
+
 	/**
 	 * \brief	设置缩放
 	 * \param	localScale		缩放
@@ -294,6 +314,19 @@ namespace SaplingEngine
 		{
 			SetDirty(0x20, true);
 		}
+	}
+
+	/**
+	 * \brief	LookAt
+	 * \param	focusPosition	LookAt目标位置
+	 */
+	void Transform::LookAt(const Vector3 focusPosition)
+	{
+		m_LocalToWorldMatrix = Matrix4x4::LookAt(GetPosition(), focusPosition, Vector3::Up);
+		m_WorldToLocalMatrix = m_LocalToWorldMatrix.Inverse();
+
+		SetRotation(Quaternion(m_WorldToLocalMatrix));
+		SetDirty(0x20, false);
 	}
 
 	/**

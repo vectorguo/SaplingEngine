@@ -50,7 +50,6 @@ namespace SaplingEngine
 		 * \return	缩放（不可修改）
 		 */
 		const Vector3& GetLocalScale();
-	
 
 		/**
 		 * \brief	获取forward向量
@@ -107,6 +106,17 @@ namespace SaplingEngine
 		void SetRotation(const Quaternion& rotation);
 
 		/**
+		 * \brief	设置旋转的欧拉角
+		 * \param	eulerAngles		欧拉角
+		 */
+		void SetEulerAngles(const Vector3& eulerAngles);
+
+		/**
+		 * \brief	设置旋转的欧拉角
+		 */
+		void SetEulerAngles(float x, float y, float z);
+
+		/**
 		 * \brief	设置局部坐标下的位置
 		 * \param	localPosition	局部坐标下的位置
 		 */
@@ -129,12 +139,29 @@ namespace SaplingEngine
 		void SetLocalRotation(float x, float y, float z, float w);
 
 		/**
+		 * \brief	设置局部坐标下旋转的欧拉角
+		 * \param	eulerAngles		欧拉角
+		 */
+		void SetLocalEulerAngles(const Vector3& eulerAngles);
+
+		/**
+		 * \brief	设置局部坐标下旋转的欧拉角
+		 */
+		void SetLocalEulerAngles(float x, float y, float z);
+
+		/**
 		 * \brief	设置缩放
 		 * \param	localScale		缩放
 		 */
 		void SetLocalScale(const Vector3& localScale);
 
 		void SetLocalScale(float x, float y, float z);
+
+		/**
+		 * \brief	LookAt
+		 * \param	focusPosition	LookAt目标位置
+		 */
+		void LookAt(const Vector3 focusPosition);
 
 		/**
 		 * \brief	获取parent指针

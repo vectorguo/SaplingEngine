@@ -5,6 +5,8 @@ namespace SaplingEngine
 	//静态成员初始化
 	std::map<EKeyCode, EKeyState> Input::keyMap;
 
+	EMouseButtonState	Input::tempMouseButtonState = EMouseButtonState::None;
+	Vector2				Input::tempMousePosition;
 	EMouseButtonState	Input::mouseButtonState = EMouseButtonState::None;
 	Vector2				Input::mousePosition(0, 0);
 	float				Input::mouseWheelValue = 0;
@@ -15,6 +17,31 @@ namespace SaplingEngine
 	void Input::Destroy()
 	{
 		
+	}
+
+	/**
+	 * \brief 刷新
+	 */
+	void Input::Refresh()
+	{
+		if (tempMouseButtonState == EMouseButtonState::None)
+		{
+			return;
+		}
+
+		if (tempMouseButtonState == EMouseButtonState::MouseButtonMove && (
+			mouseButtonState != EMouseButtonState::LeftMouseButtonDown &&
+			mouseButtonState != EMouseButtonState::RightMouseButtonDown &&
+			mouseButtonState != EMouseButtonState::MouseButtonMove))
+		{
+			return;
+		}
+
+		mouseButtonState = tempMouseButtonState;
+		if (mouseButtonState != EMouseButtonState::MouseWheel)
+		{
+			mousePosition = tempMousePosition;
+		}
 	}
 
 	/**
@@ -40,6 +67,7 @@ namespace SaplingEngine
 		}
 
 		//更新鼠标状态
+		tempMouseButtonState = EMouseButtonState::None;
 		if (mouseButtonState == EMouseButtonState::LeftMouseButtonUp ||
 			mouseButtonState == EMouseButtonState::RightMouseButtonUp)
 		{
@@ -81,21 +109,20 @@ namespace SaplingEngine
 	 */
 	void Input::SetMouseButton(EMouseButtonState buttonState, int32_t x, int32_t y)
 	{
-		if (buttonState == EMouseButtonState::MouseButtonMove && (mouseButtonState != EMouseButtonState::LeftMouseButtonDown && mouseButtonState != EMouseButtonState::RightMouseButtonDown && mouseButtonState != EMouseButtonState::MouseButtonMove))
+		if (tempMouseButtonState != EMouseButtonState::None && buttonState == EMouseButtonState::MouseButtonMove)
 		{
 			return;
 		}
 
-		if (buttonState == EMouseButtonState::MouseWheel)
+		tempMouseButtonState = buttonState;
+		if (tempMouseButtonState == EMouseButtonState::MouseWheel)
 		{
-			mouseButtonState = buttonState;
 			mouseWheelValue = x > 0 ? 1.0f : -1.0f;
 		}
 		else
 		{
-			mouseButtonState = buttonState;
-			mousePosition.x = static_cast<float>(x);
-			mousePosition.y = static_cast<float>(y);
+			tempMousePosition.x = static_cast<float>(x);
+			tempMousePosition.y = static_cast<float>(y);
 		}
 	}
 }

@@ -33,7 +33,7 @@ extern "C"
 	/**
 	 * \brief	打开场景
 	 */
-	SaplingEngineExport void Scene_OpenScene(const char* sceneName, const char* scenePath, Vector3 followOffset, Vector3 targetPosition, Vector3 targetEulerAngles);
+	SaplingEngineExport void Scene_OpenScene(const char* sceneName, const char* scenePath, Vector3 cameraPosition, Vector3 cameraEulerAngles);
 
 	/**
 	 * \brief	关闭当前场景

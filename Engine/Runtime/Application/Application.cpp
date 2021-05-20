@@ -79,6 +79,9 @@ namespace SaplingEngine
 				//时间更新
 				Time::Tick();
 
+				//Input刷新
+				Input::Refresh();
+
 				//逻辑更新
 				Update();
 

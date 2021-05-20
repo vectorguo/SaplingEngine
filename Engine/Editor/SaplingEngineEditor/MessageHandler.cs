@@ -49,7 +49,6 @@ namespace SaplingEngineEditor
                     case WM_ACTIVATE:
                     case WM_ENTERSIZEMOVE:
                     case WM_EXITSIZEMOVE:
-                    case WM_MOUSEWHEEL:
                     case WM_MOUSEMOVE:
                     case WM_LBUTTONDOWN:
                     case WM_LBUTTONUP:
@@ -66,7 +65,12 @@ namespace SaplingEngineEditor
                     case WM_SYSKEYUP:
                     case WM_CLOSE:
                         {
-                            NativeMethod.Editor_MessageProcess(directxPanel.Handle, m.Msg, m.WParam.ToInt32(), m.LParam.ToInt32());
+                            NativeMethod.Editor_MessageProcess(directxPanel.Handle, m.Msg, m.WParam.ToInt64(), m.LParam.ToInt64());
+                            return true;
+                        }
+                    case WM_MOUSEWHEEL:
+                        {
+                            NativeMethod.Editor_MessageProcess(directxPanel.Handle, m.Msg, m.WParam.ToInt64(), m.LParam.ToInt64());
                             return true;
                         }
                 }

@@ -145,6 +145,11 @@ namespace SaplingEngine
 
 	private:
 		/**
+		 * \brief À¢–¬
+		 */
+		static void Refresh();
+
+		/**
 		 * \brief ÷ÿ÷√
 		 */
 		static void Reset();
@@ -167,6 +172,8 @@ namespace SaplingEngine
 	private:
 		static std::map<EKeyCode, EKeyState> keyMap;
 
+		static EMouseButtonState tempMouseButtonState;
+		static Vector2 tempMousePosition;
 		static EMouseButtonState mouseButtonState;
 		static Vector2 mousePosition;
 		static float mouseWheelValue;

@@ -12,7 +12,24 @@ namespace SaplingEditor
 		/**
 		 * \brief	创建编辑器相机
 		 */
-		static void CreateEditorCamera(const Vector3& followOffset, const Vector3& targetPosition, const Vector3& targetEulerAngles);
+		static void CreateEditorCamera(const Vector3& cameraPosition, const Vector3& cameraEulerAngles);
+
+		/**
+		 * \brief	移动编辑器相机
+		 * \param	delta			移动距离
+		 */
+		static void MoveEditorCamera(const Vector3& delta);
+
+		/**
+		 * \brief	旋转编辑器相机
+		 * \param	eularAngles		旋转的欧拉角度
+		 */
+		static void RotateEditorCamera(const Vector3& eularAngles);
+
+		/**
+		 * \brief	拉近拉远
+		 */
+		static void ZoomEditorCamera(float value);
 
 	private:
 		/**
@@ -21,23 +38,8 @@ namespace SaplingEditor
 		static CameraSptr editorCamera;
 
 		/**
-		 * \brief	编辑器虚拟相机
-		 */
-		static CinemachineVirtualCameraSptr editorVirtualCamera;
-
-		/**
 		 * \brief	编辑器相机对象
 		 */
 		static GameObjectSptr editorCamraObject;
-
-		/**
-		 * \brief	编辑器虚拟相机对象
-		 */
-		static GameObjectSptr editorVirtualCameraObject;
-
-		/**
-		 * \brief	编辑器虚拟相机目标对象
-		 */
-		static GameObjectSptr editorCamraTargetObject;
 	};
 }

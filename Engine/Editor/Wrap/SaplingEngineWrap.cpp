@@ -43,7 +43,7 @@ SaplingEngineExport void Editor_MessageProcess(int* hWndPtrAddress, int msg, int
 	EditorApplication::MessageProcess((HWND)hWndPtrAddress, msg, wParam, lParam);
 }
 
-SaplingEngineExport void Scene_OpenScene(const char* sceneName, const char* scenePath, Vector3 followOffset, Vector3 targetPosition, Vector3 targetEulerAngles)
+SaplingEngineExport void Scene_OpenScene(const char* sceneName, const char* scenePath, Vector3 cameraPosition, Vector3 cameraEulerAngles)
 {
 	SceneManager::LoadScene(sceneName, scenePath);
 
@@ -57,7 +57,7 @@ SaplingEngineExport void Scene_OpenScene(const char* sceneName, const char* scen
 	CreateGameObject(EditorRootObjectName);
 
 	//创建编辑器相机
-	EditorCamera::CreateEditorCamera(followOffset, targetPosition, targetEulerAngles);
+	EditorCamera::CreateEditorCamera(cameraPosition, cameraEulerAngles);
 }
 
 SaplingEngineExport void Scene_CloseScene()

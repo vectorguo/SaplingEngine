@@ -20,7 +20,7 @@ namespace SaplingEngineEditor
         public static extern void Editor_MessageProcess(IntPtr hWndPtrAddress, int msg, int wParam, int lParam);
 
         [DllImport(NativeDllName, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void Scene_OpenScene(string sceneName, string scenePath);
+        public static extern void Scene_OpenScene(string sceneName, string scenePath, Vector3 cameraFollowOffset, Vector3 cameraTargetPosition, Vector3 cameraTargetEulerAngles);
 
         [DllImport(NativeDllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern void Scene_CloseScene();

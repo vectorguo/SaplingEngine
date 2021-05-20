@@ -33,9 +33,8 @@ namespace SaplingEngine
 	
 	/**
 	 * \brief 渲染
-	 * \param pCamera 渲染使用的相机
 	 */
-	void ShadowPass::Render(const Camera* pCamera)
+	void ShadowPass::Render()
 	{
 		if (!UpdateShadowTransform())
 		{

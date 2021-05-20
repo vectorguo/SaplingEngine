@@ -1,4 +1,3 @@
-#include "Application/Setting.h"
 #include "Editor/Application/EditorSetting.h"
 
 using namespace SaplingEngine;

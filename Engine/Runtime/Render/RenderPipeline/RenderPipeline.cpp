@@ -66,19 +66,22 @@ namespace SaplingEngine
 	{
 		PreRender();
 
+		//更新Object常量缓冲区数据
+		UpdateObjectCbvData();
+
 		//执行Render Pass
 		const auto& cameras = CameraManager::GetCameras();
 		for (auto* pCamera : cameras)
 		{
 			if (pCamera->IsEnabled())
 			{
-				//更新常量缓冲区数据
-				UpdateCbvData(pCamera);
+				//更新Pass常量缓冲区数据
+				UpdatePassCbvData(pCamera);
 
 				//渲染Pass
 				for (auto iter = renderPasses.begin(); iter != renderPasses.end(); ++iter)
 				{
-					(*iter)->Render(pCamera);
+					(*iter)->Render();
 				}
 			}
 		}
@@ -189,9 +192,9 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief	更新常量缓冲区数据
+	 * \brief	更新物体常量缓冲区数据
 	 */
-	void RenderPipeline::UpdateCbvData(Camera* pCamera)
+	void RenderPipeline::UpdateObjectCbvData()
 	{
 		size_t specialDataSize;
 		for (auto iter1 = renderItems.begin(); iter1 != renderItems.end(); ++iter1)
@@ -205,8 +208,14 @@ namespace SaplingEngine
 				const auto* pSpecialData = pRenderer->FillSpecialOcbData(specialDataSize, pRenderer->GetMaterial());
 				BufferManager::FillOcbData(pRenderer->GetCbvIndex(), pCommonData, CommonOcbData::DataSize, pSpecialData, specialDataSize);
 			}
-
-			BufferManager::FillPcbData(CommonPcbData::FillPcbData(pCamera), CommonPcbData::DataSize);
 		}
+	}
+
+	/**
+	 * \brief	更新Pass常量缓冲区数据
+	 */
+	void RenderPipeline::UpdatePassCbvData(Camera* pCamera)
+	{
+		BufferManager::FillPcbData(CommonPcbData::FillPcbData(pCamera), CommonPcbData::DataSize);
 	}
 }

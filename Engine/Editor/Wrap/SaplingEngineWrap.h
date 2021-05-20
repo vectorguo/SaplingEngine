@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SaplingEngineHeader.h"
+#include "Editor/Utility/EditorUtility.h"
 
 #define SaplingEngineExport _declspec(dllexport)
 
@@ -33,7 +33,7 @@ extern "C"
 	/**
 	 * \brief	打开场景
 	 */
-	SaplingEngineExport void Scene_OpenScene(const char* sceneName, const char* scenePath);
+	SaplingEngineExport void Scene_OpenScene(const char* sceneName, const char* scenePath, Vector3 followOffset, Vector3 targetPosition, Vector3 targetEulerAngles);
 
 	/**
 	 * \brief	关闭当前场景

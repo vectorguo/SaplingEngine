@@ -14,6 +14,7 @@ namespace SaplingEngine
 		friend GameObjectSptr CreateGameObject(std::string&&);
 		friend void DestroyGameObject(GameObject*);
 		friend void DestroyGameObject(const GameObjectSptr&);
+		friend GameObjectSptr FindGameObject(const std::string&);
 		
 	public:
 		explicit GameObject();
@@ -237,6 +238,13 @@ namespace SaplingEngine
 	{
 		gameObject->SetDestroyed();
 	}
+
+	/**
+	 * \brief	查找GameObject
+	 * \param	name			GameObject名称
+	 * \return	GameObject智能指针
+	 */
+	GameObjectSptr FindGameObject(const std::string& name);
 
 	/*
 	 * inline functions

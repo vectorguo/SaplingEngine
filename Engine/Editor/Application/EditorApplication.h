@@ -1,7 +1,6 @@
 #pragma once
 
-#include "SaplingEnginePch.h"
-#include "Application/Application.h"
+#include "Editor/Utility/EditorUtility.h"
 
 namespace SaplingEditor
 {

@@ -82,6 +82,12 @@
     <Filter Include="Engine\Editor\Application">
       <UniqueIdentifier>{a9b55a7a-cdda-4feb-aa8f-255dfd4ec0bd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Editor\Camera">
+      <UniqueIdentifier>{948b2465-c7c3-4211-af7a-469e13b8dc06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Editor\Utility">
+      <UniqueIdentifier>{19dfebea-aaf9-4b39-980e-3231ddcbd99e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Runtime\Application\Application.cpp">
@@ -239,6 +245,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Engine\Editor\Application\EditorApplication.cpp">
       <Filter>Engine\Editor\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Editor\Camera\EditorCamera.cpp">
+      <Filter>Engine\Editor\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -457,6 +466,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Engine\Editor\Application\EditorApplication.h">
       <Filter>Engine\Editor\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Editor\Camera\EditorCamera.h">
+      <Filter>Engine\Editor\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Editor\Utility\EditorUtility.h">
+      <Filter>Engine\Editor\Utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,8 +1,7 @@
-#include "RenderOpaquePass.h"
-
 #include "Render/Graphics/Material.h"
 #include "Render/Renderer/Renderer.h"
 #include "Render/RenderPipeline/RenderPipeline.h"
+#include "Render/RenderPipeline/RenderPass/RenderOpaquePass.h"
 #include "Render/RenderPipeline/RenderPass/ShadowPass.h"
 #include "Scene/Scene.h"
 
@@ -10,9 +9,8 @@ namespace SaplingEngine
 {
 	/**
 	 * \brief 渲染
-	 * \param pCamera 渲染使用的相机
 	 */
-	void RenderOpaquePass::Render(const Camera* pCamera)
+	void RenderOpaquePass::Render()
 	{
 		auto* pCommandList = CommandManager::GetCommandList();
 

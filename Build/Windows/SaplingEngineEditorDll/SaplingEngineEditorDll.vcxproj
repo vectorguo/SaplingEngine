@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\Engine\Editor\Application\EditorApplication.cpp" />
     <ClCompile Include="..\..\..\Engine\Editor\Application\EditorSetting.cpp" />
+    <ClCompile Include="..\..\..\Engine\Editor\Camera\EditorCamera.cpp" />
     <ClCompile Include="..\..\..\Engine\Editor\Input\EditorInputSystem.cpp" />
     <ClCompile Include="..\..\..\Engine\Editor\Wrap\SaplingEngineWrap.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Application\Application.cpp" />
@@ -66,7 +67,9 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\Engine\Editor\Application\EditorApplication.h" />
     <ClInclude Include="..\..\..\Engine\Editor\Application\EditorSetting.h" />
+    <ClInclude Include="..\..\..\Engine\Editor\Camera\EditorCamera.h" />
     <ClInclude Include="..\..\..\Engine\Editor\Input\EditorInputSystem.h" />
+    <ClInclude Include="..\..\..\Engine\Editor\Utility\EditorUtility.h" />
     <ClInclude Include="..\..\..\Engine\Editor\Wrap\SaplingEngineWrap.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Application\Application.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Application\Setting.h" />

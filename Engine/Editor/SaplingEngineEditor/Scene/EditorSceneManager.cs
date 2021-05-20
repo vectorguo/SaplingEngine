@@ -47,7 +47,7 @@ namespace SaplingEngineEditor
             CurrentScenePath = scenePath;
 
             //打开场景
-            NativeMethod.Scene_OpenScene(CurrentSceneName, CurrentScenePath);
+            NativeMethod.Scene_OpenScene(CurrentSceneName, CurrentScenePath, new Vector3(0, 20, -20), new Vector3(0, 0, -120), Vector3.Zero);
 
             //初始化场景数据
             InitializeSceneData();

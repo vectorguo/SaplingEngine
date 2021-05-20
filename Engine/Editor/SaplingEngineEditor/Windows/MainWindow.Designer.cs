@@ -30,7 +30,6 @@ namespace SaplingEngineEditor
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.DirectXPanel = new System.Windows.Forms.Panel();
             this.MainMenu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newSceneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -41,25 +40,12 @@ namespace SaplingEngineEditor
             this.SceneTreeView = new System.Windows.Forms.TreeView();
             this.TabControl2 = new System.Windows.Forms.TabControl();
             this.Inspector = new System.Windows.Forms.TabPage();
+            this.DirectXPanel = new System.Windows.Forms.Panel();
             this.MainMenu.SuspendLayout();
             this.TabControl1.SuspendLayout();
             this.Hierarchy.SuspendLayout();
             this.TabControl2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // DirectXPanel
-            // 
-            this.DirectXPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.DirectXPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.DirectXPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.DirectXPanel.Location = new System.Drawing.Point(299, 26);
-            this.DirectXPanel.MaximumSize = new System.Drawing.Size(960, 960);
-            this.DirectXPanel.MinimumSize = new System.Drawing.Size(960, 960);
-            this.DirectXPanel.Name = "DirectXPanel";
-            this.DirectXPanel.Size = new System.Drawing.Size(960, 960);
-            this.DirectXPanel.TabIndex = 0;
             // 
             // MainMenu
             // 
@@ -139,10 +125,10 @@ namespace SaplingEngineEditor
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TabControl2.Controls.Add(this.Inspector);
-            this.TabControl2.Location = new System.Drawing.Point(1260, 26);
+            this.TabControl2.Location = new System.Drawing.Point(1257, 26);
             this.TabControl2.Name = "TabControl2";
             this.TabControl2.SelectedIndex = 0;
-            this.TabControl2.Size = new System.Drawing.Size(303, 963);
+            this.TabControl2.Size = new System.Drawing.Size(308, 963);
             this.TabControl2.TabIndex = 3;
             // 
             // Inspector
@@ -150,10 +136,18 @@ namespace SaplingEngineEditor
             this.Inspector.Location = new System.Drawing.Point(4, 22);
             this.Inspector.Name = "Inspector";
             this.Inspector.Padding = new System.Windows.Forms.Padding(3);
-            this.Inspector.Size = new System.Drawing.Size(295, 937);
+            this.Inspector.Size = new System.Drawing.Size(300, 937);
             this.Inspector.TabIndex = 0;
             this.Inspector.Text = "Inspector";
             this.Inspector.UseVisualStyleBackColor = true;
+            // 
+            // DirectXPanel
+            // 
+            this.DirectXPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.DirectXPanel.Location = new System.Drawing.Point(296, 26);
+            this.DirectXPanel.Name = "DirectXPanel";
+            this.DirectXPanel.Size = new System.Drawing.Size(960, 959);
+            this.DirectXPanel.TabIndex = 4;
             // 
             // MainWindow
             // 
@@ -161,9 +155,9 @@ namespace SaplingEngineEditor
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1563, 987);
+            this.Controls.Add(this.DirectXPanel);
             this.Controls.Add(this.TabControl2);
             this.Controls.Add(this.TabControl1);
-            this.Controls.Add(this.DirectXPanel);
             this.Controls.Add(this.MainMenu);
             this.MainMenuStrip = this.MainMenu;
             this.MaximumSize = new System.Drawing.Size(1579, 1026);
@@ -182,8 +176,6 @@ namespace SaplingEngineEditor
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel DirectXPanel;
         private System.Windows.Forms.MenuStrip MainMenu;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
@@ -194,5 +186,6 @@ namespace SaplingEngineEditor
         private System.Windows.Forms.TabControl TabControl2;
         private System.Windows.Forms.TabPage Inspector;
         private System.Windows.Forms.TreeView SceneTreeView;
+        private System.Windows.Forms.Panel DirectXPanel;
     }
 }

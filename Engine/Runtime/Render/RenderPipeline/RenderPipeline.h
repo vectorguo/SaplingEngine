@@ -125,11 +125,15 @@ namespace SaplingEngine
 		 */
 		static void PostRender();
 	
+		/**
+		 * \brief	更新物体常量缓冲区数据
+		 */
+		static void UpdateObjectCbvData();
 
 		/**
-		 * \brief	更新常量缓冲区数据
+		 * \brief	更新Pass常量缓冲区数据
 		 */
-		static void UpdateCbvData(Camera* pCamera);
+		static void UpdatePassCbvData(Camera* pCamera);
 		
 	private:
 		/**

@@ -32,22 +32,10 @@ namespace SaplingEngine
 	 */
 	void GameObject::Update()
 	{
-		//更新组件
-#if SAPLING_EDITOR
-		for (auto iter = m_Components.begin(); iter != m_Components.end(); ++iter)
-		{
-			auto* pComponent = iter->Get();
-			if (pComponent->m_RunInEditorMode)
-			{
-				(*iter)->Update();
-			}
-		}
-#else
 		for (auto iter = m_Components.begin(); iter != m_Components.end(); ++iter)
 		{
 			(*iter)->Update();
 		}
-#endif
 	}
 
 	/**
@@ -238,10 +226,20 @@ namespace SaplingEngine
 				else
 				{
 					auto componentSptr = ComponentFactory::CreateComponent(componentType, componentSubType);
+#if SAPLING_EDITOR
+					if (componentSptr != nullptr)
+					{
+						newComponents.emplace_back(componentSptr);
+						componentSptr->m_GameObjectPtr = this;
+						componentSptr->Deserialize(pCmpNode);
+						componentSptr->Awake();
+					}
+#else
 					newComponents.emplace_back(componentSptr);
 					componentSptr->m_GameObjectPtr = this;
 					componentSptr->Deserialize(pCmpNode);
 					componentSptr->Awake();
+#endif
 				}
 			}
 		}
@@ -362,5 +360,32 @@ namespace SaplingEngine
 		gameObject->m_ScenePtr = pActiveScene;
 
 		return gameObject;
+	}
+
+	/**
+	 * \brief	查找GameObject
+	 * \param	name			GameObject名称
+	 * \return	GameObject智能指针
+	 */
+	GameObjectSptr FindGameObject(const std::string& name)
+	{
+		auto iter = std::find_if(GameObject::allGameObjects.begin(), GameObject::allGameObjects.end(),
+			[&name](const GameObjectSptr& gameObjectSptr)
+			{
+				return gameObjectSptr->GetName() == name;
+			});
+		if (iter == GameObject::allGameObjects.end())
+		{
+			iter = std::find_if(GameObject::newGameObjects.begin(), GameObject::newGameObjects.end(),
+				[&name](const GameObjectSptr& gameObjectSptr)
+				{
+					return gameObjectSptr->GetName() == name;
+				});
+			return iter == GameObject::newGameObjects.end() ? nullptr : *iter;
+		}
+		else
+		{
+			return *iter;
+		}
 	}
 }

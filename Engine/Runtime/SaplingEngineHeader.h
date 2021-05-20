@@ -13,9 +13,16 @@
 #include "Input/Input.h"
 
 #include "Render/Graphics/Material.h"
+#include "Render/Graphics/MaterialManager.h"
 #include "Render/Graphics/Mesh.h"
 #include "Render/Graphics/Shader.h"
+#include "Render/Graphics/ShaderManager.h"
+#include "Render/Graphics/Texture2D.h"
+#include "Render/Graphics/TextureManager.h"
+
 #include "Render/Renderer/MeshRenderer.h"
+
+#include "Render/RenderPipeline/RenderPipeline.h"
 
 #include "Resource/ResourceManager.h"
 

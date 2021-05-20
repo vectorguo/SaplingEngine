@@ -7,6 +7,8 @@ namespace SaplingEngine
 {
 	class Camera final : public Component
 	{
+		friend class GameObject;
+
 	public:
 		/**
 		 * \brief 相机投影类型

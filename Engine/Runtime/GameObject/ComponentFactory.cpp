@@ -25,16 +25,22 @@ namespace SaplingEngine
 				return MakeShared<Transform>();
 			case ComponentType_Camera:
 				return MakeShared<Camera>();
+#if !SAPLING_EDITOR
 			case ComponentType_CinemachineBrain:
 				return MakeShared<CinemachineBrain>();
 			case ComponentType_CinemachineVirtualCamera:
 				return MakeShared<CinemachineVirtualCamera>();
+#endif
 			case ComponentType_Light:
 				return MakeShared<Light>();
 			case ComponentType_Renderer:
 				return componentSubType == 0 ? MakeShared<MeshRenderer>() : nullptr;
 			default:
+#if SAPLING_EDITOR
+				return nullptr;
+#else
 				return CreateCustomComponent(componentType, componentSubType);
+#endif
 		}
 	}
 }

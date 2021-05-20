@@ -1,9 +1,10 @@
 #include "Editor/Wrap/SaplingEngineWrap.h"
+
 #include "Editor/Application/EditorApplication.h"
 #include "Editor/Application/EditorSetting.h"
+#include "Editor/Camera/EditorCamera.h"
 
 using namespace SaplingEditor;
-using namespace SaplingEngine;
 
 /**
  * \brief	初始化
@@ -42,9 +43,21 @@ SaplingEngineExport void Editor_MessageProcess(int* hWndPtrAddress, int msg, int
 	EditorApplication::MessageProcess((HWND)hWndPtrAddress, msg, wParam, lParam);
 }
 
-SaplingEngineExport void Scene_OpenScene(const char* sceneName, const char* scenePath)
+SaplingEngineExport void Scene_OpenScene(const char* sceneName, const char* scenePath, Vector3 followOffset, Vector3 targetPosition, Vector3 targetEulerAngles)
 {
 	SceneManager::LoadScene(sceneName, scenePath);
+
+	//将所有相机设置成不可用状态
+	for (auto * pCamera : CameraManager::GetCameras())
+	{
+		pCamera->SetEnabled(false);
+	}
+	
+	//创建所有Editor对象的根节点
+	CreateGameObject(EditorRootObjectName);
+
+	//创建编辑器相机
+	EditorCamera::CreateEditorCamera(followOffset, targetPosition, targetEulerAngles);
 }
 
 SaplingEngineExport void Scene_CloseScene()

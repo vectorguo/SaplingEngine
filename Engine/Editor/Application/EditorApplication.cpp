@@ -1,14 +1,5 @@
 #include "Editor/Application/EditorApplication.h"
 
-#include "Application/Setting.h"
-#include "Input/Input.h"
-#include "Render/Graphics/MaterialManager.h"
-#include "Render/Graphics/ShaderManager.h"
-#include "Render/Graphics/TextureManager.h"
-#include "Render/RenderPipeline/RenderPipeline.h"
-#include "Resource/ResourceManager.h"
-#include "Scene/SceneManager.h"
-
 using namespace SaplingEngine;
 
 namespace SaplingEditor

@@ -29,4 +29,14 @@ extern "C"
 	 * \brief	Editor消息处理
 	 */
 	SaplingEngineExport void Editor_MessageProcess(int* hWndPtrAddress, int msg, int wParam, int lParam);
+
+	/**
+	 * \brief	打开场景
+	 */
+	SaplingEngineExport void Scene_OpenScene(const char* sceneName, const char* scenePath);
+
+	/**
+	 * \brief	关闭当前场景
+	 */
+	SaplingEngineExport void Scene_CloseScene();
 }

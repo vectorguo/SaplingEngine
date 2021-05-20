@@ -24,7 +24,7 @@ namespace SaplingEngine
 		const auto* pRootNode = pDocument->first_node();
 
 		//读取窗口宽度和高度
-		screenWidth	= XmlGetNodeValue<uint32_t>(pRootNode, "windowWidth");
+		screenWidth		= XmlGetNodeValue<uint32_t>(pRootNode, "windowWidth");
 		screenHeight	= XmlGetNodeValue<uint32_t>(pRootNode, "windowHeight");
 
 		//读取启动场景配置

@@ -41,3 +41,12 @@ SaplingEngineExport void Editor_MessageProcess(int* hWndPtrAddress, int msg, int
 {
 	EditorApplication::MessageProcess((HWND)hWndPtrAddress, msg, wParam, lParam);
 }
+
+SaplingEngineExport void Scene_OpenScene(const char* sceneName, const char* scenePath)
+{
+	SceneManager::LoadScene(sceneName, scenePath);
+}
+
+SaplingEngineExport void Scene_CloseScene()
+{
+}

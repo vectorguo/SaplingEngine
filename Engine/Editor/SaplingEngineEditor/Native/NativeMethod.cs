@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace SaplingEngineEditor
 {
-    static class NativeMethods
+    public static class NativeMethod
     {
         const string NativeDllName = "SaplingEngineEditorDll.dll";
 
@@ -18,5 +18,11 @@ namespace SaplingEngineEditor
 
         [DllImport(NativeDllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern void Editor_MessageProcess(IntPtr hWndPtrAddress, int msg, int wParam, int lParam);
+
+        [DllImport(NativeDllName, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void Scene_OpenScene(string sceneName, string scenePath);
+
+        [DllImport(NativeDllName, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void Scene_CloseScene();
     }
 }

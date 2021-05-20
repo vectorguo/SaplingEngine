@@ -64,7 +64,7 @@ namespace SaplingEngineEditor
                     case WM_SYSKEYUP:
                     case WM_CLOSE:
                         {
-                            NativeMethods.Editor_MessageProcess(directxPanel.Handle, m.Msg, m.WParam.ToInt32(), m.LParam.ToInt32());
+                            NativeMethod.Editor_MessageProcess(directxPanel.Handle, m.Msg, m.WParam.ToInt32(), m.LParam.ToInt32());
                             return true;
                         }
                 }
@@ -76,7 +76,7 @@ namespace SaplingEngineEditor
         {
             try
             {
-                NativeMethods.Editor_Run();
+                NativeMethod.Editor_Run();
             }
             catch (Exception ex)
             {

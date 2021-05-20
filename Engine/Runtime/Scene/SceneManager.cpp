@@ -13,6 +13,11 @@ namespace SaplingEngine
 	 */
 	void SceneManager::Initialize()
 	{
+		if (Setting::IsEditorMode())
+		{
+			return;
+		}
+
 		//加载启动场景
 		const auto& startSceneName = Setting::StartSceneName();
 		const auto& startScenePath = Setting::StartScenePath();
@@ -52,15 +57,19 @@ namespace SaplingEngine
 	void SceneManager::LoadScene(const std::string& sceneName, const std::string& scenePath)
 	{
 		//读取XML配置
-		XmlDocumentFile documentFile(scenePath.data());
-		XmlDocument document;
-		document.parse<0>(documentFile.data());
+		auto* pDocumentFile = new XmlDocumentFile(scenePath.data());
+		auto* pDocument = new XmlDocument();
+		pDocument->parse<0>(pDocumentFile->data());
 
 		//创建并初始化场景
 		auto* pScene = new Scene(sceneName);
 		m_Scenes.emplace(sceneName, pScene);
 		SetActiveScene(sceneName);
-		pScene->Initialize(document.first_node());
+		pScene->Initialize(pDocument->first_node());
+
+		//卸载XML
+		delete pDocument;
+		delete pDocumentFile;
 	}
 
 	/**

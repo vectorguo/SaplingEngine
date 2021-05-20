@@ -1,4 +1,5 @@
 #include "Editor/Application/EditorApplication.h"
+#include "Editor/Input/EditorInputSystem.h"
 
 using namespace SaplingEngine;
 
@@ -51,6 +52,10 @@ namespace SaplingEditor
 	 */
 	void EditorApplication::Run()
 	{
+		//编辑器输入系统更新
+		EditorInputSystem::Update();
+
+		//游戏更新
 		Update();
 	}
 	

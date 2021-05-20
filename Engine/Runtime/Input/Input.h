@@ -28,6 +28,9 @@ namespace SaplingEngine
 	enum class EKeyCode : uint32_t
 	{
 		None	= 0x00,
+		Shift	= 0x10,
+		Control = 0x11,
+		Space	= 0x20,
 		Zero	= 0x30,
 		One		= 0x31,
 		Two		= 0x02,

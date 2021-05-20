@@ -6,6 +6,10 @@ namespace SaplingEditor
 {
 	class EditorInputSystem
 	{
-
+	public:
+		/**
+		 * \brief ¸üÐÂ
+		 */
+		static void Update();
 	};
 }

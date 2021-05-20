@@ -2,5 +2,10 @@
 
 namespace SaplingEditor
 {
-
+	/**
+	 * \brief ¸üÐÂ
+	 */
+	void EditorInputSystem::Update()
+	{
+	}
 }

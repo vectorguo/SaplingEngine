@@ -54,25 +54,23 @@ namespace SaplingEngine
 		DXGI_FORMAT m_Format = DXGI_FORMAT_R24G8_TYPELESS;
 
 		/**
-		 * \brief	阴影贴图宽度
+		 * \brief	阴影贴图大小
 		 */
-		uint32_t m_ShadowMapWidth;
-
-		/**
-		 * \brief	阴影贴图高度
-		 */
-		uint32_t m_ShadowMapHeight;
+		uint32_t m_ShadowMapSize;
 
 		/**
 		 * \brief	视图窗口
 		 */
-		D3D12_VIEWPORT m_Viewport{ 0, 0, static_cast<float>(m_ShadowMapWidth), static_cast<float>(m_ShadowMapHeight), 0, 1 };
+		D3D12_VIEWPORT m_Viewport{ 0, 0, static_cast<float>(m_ShadowMapSize), static_cast<float>(m_ShadowMapSize), 0, 1 };
 
 		/**
 		 * \brief	裁剪矩形
 		 */
-		D3D12_RECT m_ScissorRect{ 0, 0, (int64_t)m_ShadowMapWidth, (int64_t)m_ShadowMapHeight };
+		D3D12_RECT m_ScissorRect{ 0, 0, (int64_t)m_ShadowMapSize, (int64_t)m_ShadowMapSize };
 
+		/**
+		 * \brief	阴影贴图资源
+		 */
 		ComPtr<ID3D12Resource> m_ShadowMap = nullptr;
 
 		/**

@@ -13,8 +13,7 @@ namespace SaplingEngine
 
 	ShadowPass::ShadowPass(const std::string& name) :
 		RenderPass(name),
-		m_ShadowMapWidth(2048),
-		m_ShadowMapHeight(2048)
+		m_ShadowMapSize(4096)
 	{
 		//创建阴影所需Dsv描述符堆
 		D3D12_DESCRIPTOR_HEAP_DESC heapDesc;
@@ -79,8 +78,7 @@ namespace SaplingEngine
 
 	void ShadowPass::OnSceneResize(uint32_t width, uint32_t height)
 	{
-		m_ShadowMapWidth = width;
-		m_ShadowMapHeight = height;
+		m_ShadowMapSize = width;
 
 		CreateDescriptors();
 	}
@@ -93,8 +91,8 @@ namespace SaplingEngine
 		ZeroMemory(&texDesc, sizeof(D3D12_RESOURCE_DESC));
 		texDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
 		texDesc.Alignment = 0;
-		texDesc.Width = m_ShadowMapWidth;
-		texDesc.Height = m_ShadowMapHeight;
+		texDesc.Width = m_ShadowMapSize;
+		texDesc.Height = m_ShadowMapSize;
 		texDesc.DepthOrArraySize = 1;
 		texDesc.MipLevels = 1;
 		texDesc.Format = m_Format;
@@ -149,25 +147,31 @@ namespace SaplingEngine
 			return false;
 		}
 		const auto shadowDistance = pMainLight->GetShadowDistance();
+		const auto halfShadowDistance = shadowDistance * 0.5f;
 
 		//获取包围盒
 		const auto* pActiveScene = SceneManager::GetActiveScene();
 		const auto& sceneBounds = pActiveScene->GetSceneBounds();
 
 		//计算光源的View矩阵
-		auto targetPosition = Vector3(sceneBounds.Center);
-		auto lightPosition = targetPosition - pMainLight->GetLightDirection() * shadowDistance;
-		auto worldToLightViewMatrix = Matrix4x4::LookAt(lightPosition, targetPosition, Vector3::Up);
+		auto worldToLightViewMatrix = Matrix4x4::LookTo(Vector3::Zero, pMainLight->GetLightDirection(), Vector3::Up);
+
+		//防止阴影贴图抖动
+		auto radius = shadowDistance / static_cast<float>(m_ShadowMapSize);
+		auto lightSpaceCenter = worldToLightViewMatrix.MultiplyPoint(sceneBounds.Center);
+		lightSpaceCenter /= radius;
+		lightSpaceCenter.x = std::floor(lightSpaceCenter.x) * radius;
+		lightSpaceCenter.y = std::floor(lightSpaceCenter.y) * radius;
+		lightSpaceCenter.z = std::floor(lightSpaceCenter.z) * radius;
 
 		//计算光源的Proj矩阵
-		auto targetPositionInLightSpace = worldToLightViewMatrix.MultiplyPoint(targetPosition);
 		auto lightViewToProjMatrix = Matrix4x4::Orthographic(
-			targetPositionInLightSpace.x - shadowDistance,
-			targetPositionInLightSpace.x + shadowDistance,
-			targetPositionInLightSpace.y - shadowDistance,
-			targetPositionInLightSpace.y + shadowDistance,
-			targetPositionInLightSpace.z - shadowDistance,
-			targetPositionInLightSpace.z + shadowDistance);
+			lightSpaceCenter.x - halfShadowDistance,
+			lightSpaceCenter.x + halfShadowDistance,
+			lightSpaceCenter.y - halfShadowDistance,
+			lightSpaceCenter.y + halfShadowDistance,
+			lightSpaceCenter.z - halfShadowDistance,
+			lightSpaceCenter.z + halfShadowDistance);
 
 		static Matrix4x4 t(
 			0.5f, 0.0f, 0.0f, 0.0f,

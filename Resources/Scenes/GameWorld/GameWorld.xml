@@ -18,7 +18,7 @@
     <gameObject name="light" layerMask="1" isActive="1">
         <components>
             <component type="1" lpx="0" lpy="10" lpz="0" lrx="0.382684" lry="0" lrz="0" lrw="0.923879" lsx="1" lsy="1" lsz="1"/>
-            <component type="20" light_type="0" r="1" g="1" b="1" a="1" shadow_distance="30" shadow_strength="0.6"/>
+            <component type="20" light_type="0" r="1" g="1" b="1" a="1" shadow_distance="64" shadow_strength="0.6"/>
         </components>
     </gameObject>
 

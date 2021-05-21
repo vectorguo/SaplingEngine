@@ -52,9 +52,6 @@ namespace SaplingEditor
 	 */
 	void EditorApplication::Run()
 	{
-		//编辑器输入系统更新
-		EditorInputSystem::Update();
-
 		//游戏更新
 		Update();
 	}
@@ -157,6 +154,9 @@ namespace SaplingEditor
 
 		//Input刷新
 		Input::Refresh();
+
+		//编辑器输入系统更新
+		EditorInputSystem::Update();
 
 		//逻辑更新
 		Application::Update();

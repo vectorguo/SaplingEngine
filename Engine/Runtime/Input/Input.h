@@ -30,6 +30,7 @@ namespace SaplingEngine
 		None	= 0x00,
 		Shift	= 0x10,
 		Control = 0x11,
+		Alt		= 0x12,
 		Space	= 0x20,
 		Zero	= 0x30,
 		One		= 0x31,

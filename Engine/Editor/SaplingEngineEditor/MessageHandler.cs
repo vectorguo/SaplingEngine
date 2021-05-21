@@ -32,6 +32,8 @@ namespace SaplingEngineEditor
         private readonly Panel directxPanel;
         private readonly MainWindow parent;
 
+        private bool m_FocusOnDirectxPanel = false;
+
         public MessageHandler(Panel directxPanel, MainWindow parent)
         {
             this.directxPanel = directxPanel;
@@ -40,7 +42,12 @@ namespace SaplingEngineEditor
 
         public bool PreFilterMessage(ref Message m)
         {
-            if (m.HWnd == directxPanel.Handle)
+            if (m.Msg == WM_LBUTTONDOWN || m.Msg == WM_RBUTTONDOWN || m.Msg == WM_MBUTTONDOWN)
+            {
+                CheckFocusOnDirectxPanel();
+            }
+
+            if (m.HWnd == directxPanel.Handle || (m_FocusOnDirectxPanel && (m.Msg == WM_KEYDOWN || m.Msg == WM_KEYUP)))
             {
                 switch (m.Msg)
                 {
@@ -68,14 +75,16 @@ namespace SaplingEngineEditor
                             NativeMethod.Editor_MessageProcess(directxPanel.Handle, m.Msg, m.WParam.ToInt64(), m.LParam.ToInt64());
                             return true;
                         }
-                    case WM_MOUSEWHEEL:
-                        {
-                            NativeMethod.Editor_MessageProcess(directxPanel.Handle, m.Msg, m.WParam.ToInt64(), m.LParam.ToInt64());
-                            return true;
-                        }
                 }
             }
             return false;
+        }
+
+        private void CheckFocusOnDirectxPanel()
+        {
+            var position = Cursor.Position;
+            var relativeToForm = directxPanel.PointToClient(position);
+            m_FocusOnDirectxPanel = (relativeToForm.X >= 0 && relativeToForm.Y >= 0 && relativeToForm.X < directxPanel.Width && relativeToForm.Y < directxPanel.Width);
         }
 
         public void ApplicationIdle(object sender, EventArgs e)

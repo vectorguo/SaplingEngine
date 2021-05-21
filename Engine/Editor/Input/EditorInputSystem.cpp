@@ -3,7 +3,8 @@
 
 namespace SaplingEditor
 {
-	Vector2 EditorInputSystem::mousePosition;;
+	Vector2 EditorInputSystem::mousePosition;
+	EditorInputSystem::EOperationType EditorInputSystem::operationType = EditorInputSystem::EOperationType::ENone;
 
 	/**
 	 * \brief ¸üÐÂ
@@ -11,27 +12,49 @@ namespace SaplingEditor
 	void EditorInputSystem::Update()
 	{
 		auto mouseState = Input::GetMouseButtonState();
-		if (mouseState == EMouseButtonState::MouseWheel)
-		{
-			EditorCamera::ZoomEditorCamera(Input::GetMouseWheelValue());
-		}
-		else
+		if (operationType == EOperationType::ENone)
 		{
 			if (mouseState == EMouseButtonState::LeftMouseButtonDown)
 			{
 				mousePosition = Input::GetMousePosition();
+				if (Input::IsKeyPress(EKeyCode::Control) && Input::IsKeyPress(EKeyCode::Shift))
+				{
+					operationType = EOperationType::EZoom;
+				}
+				else if (Input::IsKeyPress(EKeyCode::Control))
+				{
+					operationType = EOperationType::ERotate;
+				}
+				else
+				{
+					operationType = EOperationType::ETranslate;
+				}
 			}
-			else if (mouseState == EMouseButtonState::MouseButtonMove)
+		}
+		else
+		{
+			if (mouseState == EMouseButtonState::MouseButtonMove)
 			{
 				auto& currentMousePosition = Input::GetMousePosition();
 				auto delta = currentMousePosition - mousePosition;
-				//EditorCamera::RotateEditorCamera(Vector3(delta.y, delta.x, 0));
-				EditorCamera::MoveEditorCamera(Vector3(delta.x, delta.y, 0));
+				if (operationType == EOperationType::ETranslate)
+				{
+					EditorCamera::MoveEditorCamera(Vector3(delta.x, delta.y, 0));
+				}
+				else if (operationType == EOperationType::ERotate)
+				{
+					EditorCamera::RotateEditorCamera(Vector3(delta.y, delta.x, 0));
+				}
+				else
+				{
+					EditorCamera::ZoomEditorCamera(delta.x);
+				}
 				mousePosition = currentMousePosition;
 			}
 			else if (mouseState == EMouseButtonState::LeftMouseButtonUp)
 			{
 				mousePosition = Vector2::Zero;
+				operationType = EOperationType::ENone;
 			}
 		}
 	}

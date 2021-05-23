@@ -81,7 +81,11 @@ namespace SaplingEngine
 				//渲染Pass
 				for (auto iter = renderPasses.begin(); iter != renderPasses.end(); ++iter)
 				{
-					(*iter)->Render();
+					auto* pRenderPass = *iter;
+					if (pRenderPass->IsActive())
+					{
+						pRenderPass->Render();
+					}
 				}
 			}
 		}
@@ -181,6 +185,12 @@ namespace SaplingEngine
 
 		//创建贴图资源
 		TextureManager::UploadTextureDatas();
+
+		//更新阴影数据
+		if (shadowPassPtr && shadowPassPtr->IsActive())
+		{
+			shadowPassPtr->UpdateShadowTransform();
+		}
 	}
 
 	/**
@@ -217,5 +227,10 @@ namespace SaplingEngine
 	void RenderPipeline::UpdatePassCbvData(Camera* pCamera)
 	{
 		BufferManager::FillPcbData(CommonPcbData::FillPcbData(pCamera), CommonPcbData::DataSize);
+
+		if (shadowPassPtr && shadowPassPtr->IsActive())
+		{
+			BufferManager::FillShadowPcbData(CommonPcbData::FillShadowPcbData(shadowPassPtr), CommonPcbData::ShadowDataSize);
+		}
 	}
 }

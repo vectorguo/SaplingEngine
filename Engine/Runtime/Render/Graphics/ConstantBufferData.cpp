@@ -89,14 +89,13 @@ namespace SaplingEngine
 
 	/**
 	 * \brief	填充阴影Pass数据
-	 * \param	view		阴影相机视图矩阵
-	 * \param	proj		阴影相机投影矩阵
+	 * \param	pShadowPass	ShadowPass
 	 * \return	填充好的数据指针
 	 */
-	void* CommonPcbData::FillShadowPcbData(const Matrix4x4& view, const Matrix4x4& proj)
+	void* CommonPcbData::FillShadowPcbData(const ShadowPass* pShadowPass)
 	{
-		auto vp = view * proj;
-		m_ShadowData.SAPLING_MATRIX_V = view.Transpose();
+		auto vp = pShadowPass->GetWorldToLightMatrix() * pShadowPass->GetLightToProjMatrix();
+		m_ShadowData.SAPLING_MATRIX_V = pShadowPass->GetWorldToLightMatrix().Transpose();
 		m_ShadowData.SAPLING_MATRIX_VP = vp.Transpose();
 
 		return static_cast<void*>(&m_ShadowData);

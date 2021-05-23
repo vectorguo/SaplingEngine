@@ -1,0 +1,9 @@
+diff a/Engine/Runtime/Render/RenderPipeline/RenderPass/ShadowPass.cpp b/Engine/Runtime/Render/RenderPipeline/RenderPass/ShadowPass.cpp	(rejected hunks)
+@@ -52,7 +52,6 @@
+ 
+ 		//��Ҫ�л���Ⱦ����״̬
+ 		pCommandList->SetPipelineState(GraphicsManager::GetPipelineState(ShadowCasterHashValue));
+-		pCommandList->SetGraphicsRootSignature(GraphicsManager::GetRootSignature(ShadowCasterHashValue));
+ 		pCommandList->SetGraphicsRootConstantBufferView(2, BufferManager::GetShadowPassCbAddress());
+ 
+ 		//������Ӱ

@@ -6,6 +6,7 @@ namespace SaplingEngine
 {
 	class ShadowPass final : public RenderPass
 	{
+		friend class RenderPipeline;
 	public:
 		explicit ShadowPass(const std::string& name);
 
@@ -21,6 +22,8 @@ namespace SaplingEngine
 		 */
 		void OnSceneResize(uint32_t width, uint32_t height) override;
 
+		bool IsActive() const override;
+
 		D3D12_CPU_DESCRIPTOR_HANDLE GetCpuDescriptor() const
 		{
 			return m_CpuDescriptor;
@@ -31,6 +34,16 @@ namespace SaplingEngine
 			return m_GpuDescriptor;
 		}
 
+		const Matrix4x4& GetWorldToLightMatrix() const
+		{
+			return m_WorldToLightMatrix;
+		}
+
+		const Matrix4x4& GetLightToProjMatrix() const
+		{
+			return m_LightToProjMatrix;
+		}
+
 		/**
 		 * \brief	获取世界空间到阴影空间的坐标变换矩阵
 		 */
@@ -39,13 +52,13 @@ namespace SaplingEngine
 			return m_WorldToShadowMatrix;
 		}
 
-	private:
-		void CreateDescriptors();
-
 		/**
 		 * \brief	更新位置信息
 		 */
-		bool UpdateShadowTransform();
+		void UpdateShadowTransform();
+
+	private:
+		void CreateDescriptors();
 
 	private:
 		/**
@@ -83,6 +96,8 @@ namespace SaplingEngine
 		 * \brief	阴影变换矩阵
 		 */
 		Matrix4x4 m_WorldToShadowMatrix;
+		Matrix4x4 m_WorldToLightMatrix;
+		Matrix4x4 m_LightToProjMatrix;
 
 		uint32_t m_SrvIndex;
 		D3D12_CPU_DESCRIPTOR_HANDLE m_CpuDescriptor;

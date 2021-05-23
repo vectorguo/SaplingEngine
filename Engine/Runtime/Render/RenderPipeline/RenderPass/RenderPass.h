@@ -54,6 +54,14 @@ namespace SaplingEngine
 		}
 
 		/**
+		 * \brief	是否活动
+		 */
+		virtual bool IsActive() const
+		{
+			return true;
+		}
+
+		/**
 		 * \brief	设置宽度和高度
 		 * \param	width		屏幕宽度
 		 * \param	height		屏幕高度

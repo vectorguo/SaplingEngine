@@ -1,0 +1,13 @@
+diff a/Engine/Runtime/Render/RenderPipeline/RenderPipeline.cpp b/Engine/Runtime/Render/RenderPipeline/RenderPipeline.cpp	(rejected hunks)
+@@ -78,6 +78,11 @@
+ 				//����Pass��������������
+ 				UpdatePassCbvData(pCamera);
+ 
++				auto* pCommandList = CommandManager::GetCommandList();
++				pCommandList->SetDescriptorHeaps(1, BufferManager::GetSrvDescriptorHeaps());
++				pCommandList->SetGraphicsRootSignature(GraphicsManager::GetRootSignature());
++				pCommandList->SetGraphicsRootDescriptorTable(3, shadowPassPtr->GetGpuDescriptor());
++
+ 				//��ȾPass
+ 				for (auto iter = renderPasses.begin(); iter != renderPasses.end(); ++iter)
+ 				{

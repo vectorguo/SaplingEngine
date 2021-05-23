@@ -84,6 +84,8 @@ namespace SaplingEngine
 	class Mesh;
 	class Texture2D;
 
+	class ShadowPass;
+
 	class Scene;
 
 	using ComponentSptr					= SharedPtr<Component>;

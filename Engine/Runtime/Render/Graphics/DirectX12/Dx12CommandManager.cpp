@@ -132,7 +132,7 @@ namespace SaplingEngine
 	 */
 	void Dx12CommandManager::CompleteCommand()
 	{
-		m_CurrentFence++;
+		++m_CurrentFence;
 		ThrowIfFailed(m_CommandQueue->Signal(m_Fence.Get(), m_CurrentFence));
 
 		if (m_Fence->GetCompletedValue() < m_CurrentFence)

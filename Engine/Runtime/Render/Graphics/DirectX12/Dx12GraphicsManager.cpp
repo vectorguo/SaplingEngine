@@ -469,6 +469,8 @@ namespace SaplingEngine
 				psoDesc.RasterizerState.DepthBias = 100000;
 				psoDesc.RasterizerState.DepthBiasClamp = 0.0f;
 				psoDesc.RasterizerState.SlopeScaledDepthBias = 1.0f;
+				psoDesc.RTVFormats[0] = DXGI_FORMAT_UNKNOWN;
+				psoDesc.NumRenderTargets = 0;
 			}
 
 			ComPtr<ID3D12PipelineState> pipelineState;

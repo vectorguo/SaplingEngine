@@ -86,11 +86,10 @@ namespace SaplingEngine
 
 		/**
 		 * \brief	填充阴影Pass数据
-		 * \param	view		阴影相机视图矩阵
-		 * \param	proj		阴影相机投影矩阵
+		 * \param	pShadowPass	ShadowPass
 		 * \return	填充好的数据指针
 		 */
-		static void* FillShadowPcbData(const Matrix4x4& view, const Matrix4x4& proj);
+		static void* FillShadowPcbData(const ShadowPass* pShadowPass);
 
 		/**
 		 * \brief	Pass的通用的常量缓冲区数据大小

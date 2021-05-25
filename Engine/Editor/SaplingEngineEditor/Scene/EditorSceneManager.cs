@@ -29,6 +29,7 @@ namespace SaplingEngineEditor
         /// GameObject数据列表
         /// </summary>
         private static List<EditorGameObjectData> gameObjectDatas = new List<EditorGameObjectData>();
+        public static List<EditorGameObjectData> GameObjectDatas => gameObjectDatas;
 
         /// <summary>
         /// 打开场景

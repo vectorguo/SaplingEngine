@@ -92,6 +92,24 @@ namespace SaplingEngineEditor
 
             return treeNode;
         }
+
+        private void SceneTreeView_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            var selectedNode = SceneTreeView.SelectedNode;
+            if (selectedNode == null)
+            {
+                return;
+            }
+
+            ShowGameObjectInspector(EditorSceneManager.GameObjectDatas[selectedNode.Index]);
+        }
+        #endregion
+
+        #region Inspector
+        private void ShowGameObjectInspector(EditorGameObjectData gameObjectData)
+        {
+
+        }
         #endregion
     }
 }

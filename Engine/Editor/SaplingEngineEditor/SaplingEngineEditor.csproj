@@ -47,9 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Component\EditorComponentInspector.cs" />
+    <Compile Include="Component\EditorTransformData.cs" />
+    <Compile Include="Component\EditorTransformInspector.cs" />
     <Compile Include="MessageHandler.cs" />
-    <Compile Include="Scene\EditorComponentData.cs" />
-    <Compile Include="Scene\EditorGameObjectData.cs" />
+    <Compile Include="Component\EditorComponentData.cs" />
+    <Compile Include="GameObject\EditorGameObjectData.cs" />
     <Compile Include="Native\NativeMethod.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

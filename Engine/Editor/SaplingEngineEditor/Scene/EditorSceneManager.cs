@@ -74,9 +74,7 @@ namespace SaplingEngineEditor
             gameObjectDatas.Clear();
             foreach (XmlNode gameObjectNode in sceneXmlRoot.ChildNodes)
             {
-                var gameObjectName = gameObjectNode.Attributes["name"].Value;
-                gameObjectDatas.Add(new EditorGameObjectData(0, gameObjectName));
-
+                gameObjectDatas.Add(new EditorGameObjectData(gameObjectNode));
             }
         }
     }

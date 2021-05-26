@@ -108,7 +108,13 @@ namespace SaplingEngineEditor
         #region Inspector
         private void ShowGameObjectInspector(EditorGameObjectData gameObjectData)
         {
-
+            foreach (var componentData in gameObjectData.ComponentDatas)
+            {
+                var inspector = componentData.Inspector;
+                inspector.ComponentData = componentData;
+                inspector.Control = Inspector;
+                inspector.OnGUI();
+            }
         }
         #endregion
     }

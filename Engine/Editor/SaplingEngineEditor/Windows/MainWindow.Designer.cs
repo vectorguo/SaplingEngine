@@ -50,13 +50,13 @@ namespace SaplingEngineEditor
             // MainMenu
             // 
             this.MainMenu.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.MainMenu.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.MainMenu.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem});
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
-            this.MainMenu.Size = new System.Drawing.Size(2336, 34);
+            this.MainMenu.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
+            this.MainMenu.Size = new System.Drawing.Size(1561, 24);
             this.MainMenu.TabIndex = 1;
             this.MainMenu.Text = "menuStrip1";
             // 
@@ -66,19 +66,19 @@ namespace SaplingEngineEditor
             this.newSceneToolStripMenuItem,
             this.openSceneToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(56, 28);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(39, 22);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // newSceneToolStripMenuItem
             // 
             this.newSceneToolStripMenuItem.Name = "newSceneToolStripMenuItem";
-            this.newSceneToolStripMenuItem.Size = new System.Drawing.Size(208, 34);
+            this.newSceneToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.newSceneToolStripMenuItem.Text = "NewScene";
             // 
             // openSceneToolStripMenuItem
             // 
             this.openSceneToolStripMenuItem.Name = "openSceneToolStripMenuItem";
-            this.openSceneToolStripMenuItem.Size = new System.Drawing.Size(208, 34);
+            this.openSceneToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.openSceneToolStripMenuItem.Text = "OpenScene";
             // 
             // contextMenuStrip1
@@ -92,21 +92,19 @@ namespace SaplingEngineEditor
             this.TabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.TabControl1.Controls.Add(this.Hierarchy);
-            this.TabControl1.Location = new System.Drawing.Point(0, 39);
-            this.TabControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.TabControl1.Location = new System.Drawing.Point(0, 26);
             this.TabControl1.Name = "TabControl1";
             this.TabControl1.SelectedIndex = 0;
-            this.TabControl1.Size = new System.Drawing.Size(448, 1444);
+            this.TabControl1.Size = new System.Drawing.Size(299, 958);
             this.TabControl1.TabIndex = 2;
             // 
             // Hierarchy
             // 
             this.Hierarchy.Controls.Add(this.SceneTreeView);
-            this.Hierarchy.Location = new System.Drawing.Point(4, 28);
-            this.Hierarchy.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Hierarchy.Location = new System.Drawing.Point(4, 22);
             this.Hierarchy.Name = "Hierarchy";
-            this.Hierarchy.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.Hierarchy.Size = new System.Drawing.Size(440, 1412);
+            this.Hierarchy.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.Hierarchy.Size = new System.Drawing.Size(291, 932);
             this.Hierarchy.TabIndex = 0;
             this.Hierarchy.Text = "Hierarchy";
             this.Hierarchy.UseVisualStyleBackColor = true;
@@ -121,7 +119,7 @@ namespace SaplingEngineEditor
             this.SceneTreeView.Location = new System.Drawing.Point(0, 0);
             this.SceneTreeView.Margin = new System.Windows.Forms.Padding(0);
             this.SceneTreeView.Name = "SceneTreeView";
-            this.SceneTreeView.Size = new System.Drawing.Size(434, 1404);
+            this.SceneTreeView.Size = new System.Drawing.Size(291, 932);
             this.SceneTreeView.TabIndex = 0;
             this.SceneTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.SceneTreeView_AfterSelect);
             // 
@@ -131,20 +129,18 @@ namespace SaplingEngineEditor
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TabControl2.Controls.Add(this.Inspector);
-            this.TabControl2.Location = new System.Drawing.Point(1886, 39);
-            this.TabControl2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.TabControl2.Location = new System.Drawing.Point(1257, 26);
             this.TabControl2.Name = "TabControl2";
             this.TabControl2.SelectedIndex = 0;
-            this.TabControl2.Size = new System.Drawing.Size(462, 1444);
+            this.TabControl2.Size = new System.Drawing.Size(308, 957);
             this.TabControl2.TabIndex = 3;
             // 
             // Inspector
             // 
-            this.Inspector.Location = new System.Drawing.Point(4, 28);
-            this.Inspector.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Inspector.Location = new System.Drawing.Point(4, 22);
             this.Inspector.Name = "Inspector";
-            this.Inspector.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.Inspector.Size = new System.Drawing.Size(454, 1412);
+            this.Inspector.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.Inspector.Size = new System.Drawing.Size(300, 931);
             this.Inspector.TabIndex = 0;
             this.Inspector.Text = "Inspector";
             this.Inspector.UseVisualStyleBackColor = true;
@@ -152,26 +148,24 @@ namespace SaplingEngineEditor
             // DirectXPanel
             // 
             this.DirectXPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.DirectXPanel.Location = new System.Drawing.Point(444, 39);
-            this.DirectXPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.DirectXPanel.Location = new System.Drawing.Point(296, 26);
             this.DirectXPanel.Name = "DirectXPanel";
-            this.DirectXPanel.Size = new System.Drawing.Size(1439, 1438);
+            this.DirectXPanel.Size = new System.Drawing.Size(960, 954);
             this.DirectXPanel.TabIndex = 4;
             // 
             // MainWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(2336, 1455);
+            this.ClientSize = new System.Drawing.Size(1561, 981);
             this.Controls.Add(this.DirectXPanel);
             this.Controls.Add(this.TabControl2);
             this.Controls.Add(this.TabControl1);
             this.Controls.Add(this.MainMenu);
             this.MainMenuStrip = this.MainMenu;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.MaximumSize = new System.Drawing.Size(2358, 1511);
-            this.MinimumSize = new System.Drawing.Size(2358, 1511);
+            this.MaximumSize = new System.Drawing.Size(1577, 1020);
+            this.MinimumSize = new System.Drawing.Size(1577, 1020);
             this.Name = "MainWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MainWindow";

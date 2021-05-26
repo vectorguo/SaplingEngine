@@ -1,4 +1,6 @@
-﻿namespace SaplingEngineEditor
+﻿using System.Drawing;
+
+namespace SaplingEngineEditor
 {
     public class EditorTransformInspector : EditorComponentInspector
     {
@@ -20,19 +22,20 @@
 
         public override void OnGUI()
         {
-            Control.Controls.Clear();
-
             var transformData = ComponentData as EditorTransformData;
             if (transformData == null)
             {
                 return;
             }
 
+            Height = 90;
+
+            ShowGroupBox("Transform");
+
             var lineNum = 0;
-            ShowElementLabel("Transform", 100, ref lineNum);
-            ShowVector3("Position", transformData.Position, ref lineNum);
-            ShowVector3("Rotation", transformData.EularAngles, ref lineNum);
-            ShowVector3("Scale", transformData.Scale, ref lineNum);
+            ShowVector3("Position", transformData.Position,     20, lineNum++ * LineSpacing + VertSpacing + 10);
+            ShowVector3("Rotation", transformData.EularAngles,  20, lineNum++ * LineSpacing + VertSpacing + 10);
+            ShowVector3("Scale",    transformData.Scale,        20, lineNum++ * LineSpacing + VertSpacing + 10);
         }
     }
 }

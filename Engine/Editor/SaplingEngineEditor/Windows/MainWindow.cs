@@ -108,12 +108,18 @@ namespace SaplingEngineEditor
         #region Inspector
         private void ShowGameObjectInspector(EditorGameObjectData gameObjectData)
         {
+            Inspector.Controls.Clear();
+
+            var vertSpacing = 10;
             foreach (var componentData in gameObjectData.ComponentDatas)
             {
                 var inspector = componentData.Inspector;
                 inspector.ComponentData = componentData;
                 inspector.Control = Inspector;
+                inspector.VertSpacing = vertSpacing;
                 inspector.OnGUI();
+
+                vertSpacing += inspector.Height;
             }
         }
         #endregion

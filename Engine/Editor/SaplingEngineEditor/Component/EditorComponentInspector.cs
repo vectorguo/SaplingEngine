@@ -1,12 +1,12 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
 
 namespace SaplingEngineEditor
 {
     public class EditorComponentInspector
     {
-        protected const int LineSpacing = 25;
+        protected const int LineSpacing = 22;
+        protected const int ControlHeight = 21;
 
         /// <summary>
         /// 组件数据
@@ -18,43 +18,72 @@ namespace SaplingEngineEditor
         /// </summary>
         public TabPage Control { protected get; set; }
 
+        /// <summary>
+        /// 垂直方向的起始位置
+        /// </summary>
+        public int VertSpacing { protected get; set; }
+
+        /// <summary>
+        /// 高度
+        /// </summary>
+        public int Height { get; protected set; }
+
+        /// <summary>
+        /// GroupBox
+        /// </summary>
+        protected GroupBox groupBox;
+
         public virtual void OnGUI()
         {
             
         }
 
-        protected void ShowElementLabel(string labelText, int labelWidth, ref int lineNum, int horizSpacing = 3, int vertSpacing = 0)
+        protected void ShowGroupBox(string text)
         {
-            Label label = new Label();
-            Point location = new Point(horizSpacing, lineNum * LineSpacing + vertSpacing);
-            label.Location = location;
-            label.Width = labelWidth;
-            label.Text = labelText;
-            Control.Controls.Add(label);
-
-            lineNum += 1;
+            groupBox = new GroupBox();
+            groupBox.Location = new Point(0, VertSpacing);
+            groupBox.Text = text;
+            groupBox.Width = 297;
+            groupBox.Height = Height;
+            Control.Controls.Add(groupBox);
         }
 
-        protected void ShowVector3(string propertyName, Vector3 v3, ref int lineNum)
+        protected void ShowLabel(string text, ContentAlignment alignment, int width, int horizSpacing, int vertSpacing)
         {
-            ShowElementLabel(propertyName, 60, ref lineNum, 30, 3);
-            --lineNum;
+            Label label = new Label();
+            label.Location = new Point(horizSpacing, vertSpacing);
+            label.Text = text;
+            label.TextAlign = alignment;
+            label.Width = width;
+            label.Height = ControlHeight;
+            groupBox.Controls.Add(label);
+        }
 
-            var vs = new float[3] {v3.x, v3.y, v3.z};
-            for (int i = 0; i < 3; ++i)
-            {
-                TextBox textBox = new TextBox();
-                Point location = new Point(100 + (i * 65), lineNum * LineSpacing);
-                textBox.Text = string.Format("{0:0.###}", vs[i]);
-                textBox.TextAlign = HorizontalAlignment.Right;
-                textBox.Location = location;
-                textBox.Width = 60;
-                //textBox.Leave += new EventHandler(NumElementChanged);
+        protected void ShowTextBox(string text, HorizontalAlignment alignment, int width, int horizSpacing, int vertSpacing)
+        {
+            TextBox textBox = new TextBox();
+            textBox.Location = new Point(horizSpacing, vertSpacing);
+            textBox.Text = text;
+            textBox.TextAlign = alignment;
+            textBox.Width = width;
+            textBox.Height = ControlHeight;
+            //textBox.Leave += new EventHandler(NumElementChanged);
 
-                Control.Controls.Add(textBox);
-            }
+            groupBox.Controls.Add(textBox);
+        }
 
-            lineNum += 1;
+        protected void ShowVector3(string propertyName, Vector3 v3, int horizSpacing, int vertSpacing)
+        {
+            ShowLabel(propertyName, ContentAlignment.MiddleLeft, 60, horizSpacing, vertSpacing);
+
+            ShowLabel("X", ContentAlignment.MiddleLeft, 10, horizSpacing + 70, vertSpacing);
+            ShowTextBox(string.Format("{0:0.###}", v3.x), HorizontalAlignment.Right, 57, horizSpacing + 80, vertSpacing);
+
+            ShowLabel("Y", ContentAlignment.MiddleLeft, 10, horizSpacing + 137, vertSpacing);
+            ShowTextBox(string.Format("{0:0.###}", v3.y), HorizontalAlignment.Right, 57, horizSpacing + 147, vertSpacing);
+
+            ShowLabel("Z", ContentAlignment.MiddleLeft, 10, horizSpacing + 204, vertSpacing);
+            ShowTextBox(string.Format("{0:0.###}", v3.z), HorizontalAlignment.Right, 57, horizSpacing + 214, vertSpacing);
         }
     }
 }

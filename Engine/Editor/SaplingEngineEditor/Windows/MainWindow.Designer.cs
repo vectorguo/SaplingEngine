@@ -103,7 +103,7 @@ namespace SaplingEngineEditor
             this.Hierarchy.Controls.Add(this.SceneTreeView);
             this.Hierarchy.Location = new System.Drawing.Point(4, 22);
             this.Hierarchy.Name = "Hierarchy";
-            this.Hierarchy.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.Hierarchy.Padding = new System.Windows.Forms.Padding(3);
             this.Hierarchy.Size = new System.Drawing.Size(291, 932);
             this.Hierarchy.TabIndex = 0;
             this.Hierarchy.Text = "Hierarchy";
@@ -139,7 +139,7 @@ namespace SaplingEngineEditor
             // 
             this.Inspector.Location = new System.Drawing.Point(4, 22);
             this.Inspector.Name = "Inspector";
-            this.Inspector.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.Inspector.Padding = new System.Windows.Forms.Padding(3);
             this.Inspector.Size = new System.Drawing.Size(300, 931);
             this.Inspector.TabIndex = 0;
             this.Inspector.Text = "Inspector";

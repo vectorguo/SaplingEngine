@@ -249,6 +249,9 @@
     <ClCompile Include="..\..\..\Engine\Editor\Camera\EditorCamera.cpp">
       <Filter>Engine\Editor\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\SkyBoxPass.cpp">
+      <Filter>Engine\Runtime\Render\RenderPipeline\RenderPass</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Engine\Runtime\Application\Application.h">
@@ -472,6 +475,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Engine\Editor\Utility\EditorUtility.h">
       <Filter>Engine\Editor\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\SkyBoxPass.h">
+      <Filter>Engine\Runtime\Render\RenderPipeline\RenderPass</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

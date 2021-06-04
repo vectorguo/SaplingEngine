@@ -11,6 +11,11 @@ namespace SaplingEngine
 		explicit ShadowPass(const std::string& name);
 
 		/**
+		 * \brief	执行渲染前的准备工作
+		 */
+		void PreRender() override;
+
+		/**
 		 * \brief	渲染
 		 */
 		void Render() override;
@@ -22,6 +27,9 @@ namespace SaplingEngine
 		 */
 		void OnSceneResize(uint32_t width, uint32_t height) override;
 
+		/**
+		 * \brief	是否处于活动状态
+		 */
 		bool IsActive() const override;
 
 		D3D12_CPU_DESCRIPTOR_HANDLE GetCpuDescriptor() const
@@ -51,11 +59,6 @@ namespace SaplingEngine
 		{
 			return m_WorldToShadowMatrix;
 		}
-
-		/**
-		 * \brief	更新位置信息
-		 */
-		void UpdateShadowTransform();
 
 	private:
 		void CreateDescriptors();

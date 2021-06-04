@@ -186,10 +186,14 @@ namespace SaplingEngine
 		//创建贴图资源
 		TextureManager::UploadTextureDatas();
 
-		//更新阴影数据
-		if (shadowPassPtr && shadowPassPtr->IsActive())
+		//执行渲染前的准备工作
+		for (auto iter = renderPasses.begin(); iter != renderPasses.end(); ++iter)
 		{
-			shadowPassPtr->UpdateShadowTransform();
+			auto* pRenderPass = *iter;
+			if (pRenderPass->IsActive())
+			{
+				pRenderPass->PreRender();
+			}
 		}
 	}
 
@@ -198,6 +202,16 @@ namespace SaplingEngine
 	 */
 	void RenderPipeline::PostRender()
 	{
+		//执行渲染后的清理工作
+		for (auto iter = renderPasses.begin(); iter != renderPasses.end(); ++iter)
+		{
+			auto* pRenderPass = *iter;
+			if (pRenderPass->IsActive())
+			{
+				pRenderPass->PostRender();
+			}
+		}
+
 		CommandManager::PostRender();
 	}
 

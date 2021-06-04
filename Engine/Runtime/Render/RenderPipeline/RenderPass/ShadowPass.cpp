@@ -29,6 +29,49 @@ namespace SaplingEngine
 
 		CreateDescriptors();
 	}
+
+	/**
+	 * \brief	执行渲染前的准备工作
+	 */
+	void ShadowPass::PreRender()
+	{
+		//获取主光源（平行光）
+		const auto* pMainLight = LightManager::GetDirectionalLight();
+		const auto shadowDistance = pMainLight->GetShadowDistance();
+		const auto halfShadowDistance = shadowDistance * 0.5f;
+
+		//获取包围盒
+		const auto* pActiveScene = SceneManager::GetActiveScene();
+		const auto& sceneBounds = pActiveScene->GetSceneBounds();
+
+		//计算光源的View矩阵
+		m_WorldToLightMatrix = Matrix4x4::LookTo(Vector3::Zero, pMainLight->GetLightDirection(), Vector3::Up);
+
+		//防止阴影贴图抖动
+		auto radius = shadowDistance / static_cast<float>(m_ShadowMapSize);
+		auto lightSpaceCenter = m_WorldToLightMatrix.MultiplyPoint(sceneBounds.Center);
+		lightSpaceCenter /= radius;
+		lightSpaceCenter.x = std::floor(lightSpaceCenter.x) * radius;
+		lightSpaceCenter.y = std::floor(lightSpaceCenter.y) * radius;
+		lightSpaceCenter.z = std::floor(lightSpaceCenter.z) * radius;
+
+		//计算光源的Proj矩阵
+		m_LightToProjMatrix = Matrix4x4::Orthographic(
+			lightSpaceCenter.x - halfShadowDistance,
+			lightSpaceCenter.x + halfShadowDistance,
+			lightSpaceCenter.y - halfShadowDistance,
+			lightSpaceCenter.y + halfShadowDistance,
+			lightSpaceCenter.z - halfShadowDistance,
+			lightSpaceCenter.z + halfShadowDistance);
+
+		static Matrix4x4 t(
+			0.5f, 0.0f, 0.0f, 0.0f,
+			0.0f, -0.5f, 0.0f, 0.0f,
+			0.0f, 0.0f, 1.0f, 0.0f,
+			0.5f, 0.5f, 0.0f, 1.0f);
+
+		m_WorldToShadowMatrix = m_WorldToLightMatrix * m_LightToProjMatrix * t;
+	}
 	
 	/**
 	 * \brief 渲染
@@ -81,49 +124,6 @@ namespace SaplingEngine
 	bool ShadowPass::IsActive() const
 	{
 		return LightManager::GetDirectionalLight() != nullptr;
-	}
-
-	/**
-	 * \brief	更新位置信息
-	 */
-	void ShadowPass::UpdateShadowTransform()
-	{
-		//获取主光源（平行光）
-		const auto* pMainLight = LightManager::GetDirectionalLight();
-		const auto shadowDistance = pMainLight->GetShadowDistance();
-		const auto halfShadowDistance = shadowDistance * 0.5f;
-
-		//获取包围盒
-		const auto* pActiveScene = SceneManager::GetActiveScene();
-		const auto& sceneBounds = pActiveScene->GetSceneBounds();
-
-		//计算光源的View矩阵
-		m_WorldToLightMatrix = Matrix4x4::LookTo(Vector3::Zero, pMainLight->GetLightDirection(), Vector3::Up);
-
-		//防止阴影贴图抖动
-		auto radius = shadowDistance / static_cast<float>(m_ShadowMapSize);
-		auto lightSpaceCenter = m_WorldToLightMatrix.MultiplyPoint(sceneBounds.Center);
-		lightSpaceCenter /= radius;
-		lightSpaceCenter.x = std::floor(lightSpaceCenter.x) * radius;
-		lightSpaceCenter.y = std::floor(lightSpaceCenter.y) * radius;
-		lightSpaceCenter.z = std::floor(lightSpaceCenter.z) * radius;
-
-		//计算光源的Proj矩阵
-		m_LightToProjMatrix = Matrix4x4::Orthographic(
-			lightSpaceCenter.x - halfShadowDistance,
-			lightSpaceCenter.x + halfShadowDistance,
-			lightSpaceCenter.y - halfShadowDistance,
-			lightSpaceCenter.y + halfShadowDistance,
-			lightSpaceCenter.z - halfShadowDistance,
-			lightSpaceCenter.z + halfShadowDistance);
-
-		static Matrix4x4 t(
-			0.5f, 0.0f, 0.0f, 0.0f,
-			0.0f, -0.5f, 0.0f, 0.0f,
-			0.0f, 0.0f, 1.0f, 0.0f,
-			0.5f, 0.5f, 0.0f, 1.0f);
-
-		m_WorldToShadowMatrix = m_WorldToLightMatrix * m_LightToProjMatrix * t;
 	}
 
 	void ShadowPass::CreateDescriptors()

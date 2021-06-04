@@ -22,9 +22,19 @@ namespace SaplingEngine
 		RenderPass& operator=(RenderPass&&) = delete;
 
 		/**
+		 * \brief	执行渲染前的准备工作
+		 */
+		virtual void PreRender() {}
+
+		/**
 		 * \brief	渲染
 		 */
 		virtual void Render() = 0;
+
+		/**
+		 * \brief	执行渲染后的清理工作
+		 */
+		virtual void PostRender() {}
 		
 		/**
 		 * \brief	获取RenderPass名称

@@ -91,6 +91,8 @@ namespace SaplingEngine
 		}
 		
 		PostRender();
+
+
 	}
 
 	/**
@@ -171,6 +173,30 @@ namespace SaplingEngine
 			{
 				return rp1->GetPriority() < rp2->GetPriority();
 			});
+	}
+
+	/**
+	 * \brief	开始渲染
+	 * \param	pCamera			相机指针
+	 */
+	void RenderPipeline::BeginCameraRendering(const Camera* pCamera)
+	{
+	}
+
+	/**
+	 * \brief	渲染单相机
+	 * \param	pCamera			相机指针
+	 */
+	void RenderPipeline::RenderSingleCamera(const Camera* pCamera)
+	{
+	}
+
+	/**
+	 * \brief	结束渲染
+	 * \param	pCamera			相机指针
+	 */
+	void RenderPipeline::EndCameraRendering(const Camera* pCamera)
+	{
 	}
 
 	/**

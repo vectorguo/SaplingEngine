@@ -116,6 +116,24 @@ namespace SaplingEngine
 		
 	private:
 		/**
+		 * \brief	开始渲染
+		 * \param	pCamera			相机指针
+		 */
+		static void BeginCameraRendering(const Camera* pCamera);
+
+		/**
+		 * \brief	渲染单相机
+		 * \param	pCamera			相机指针
+		 */
+		static void RenderSingleCamera(const Camera* pCamera);
+
+		/**
+		 * \brief	结束渲染
+		 * \param	pCamera			相机指针
+		 */
+		static void EndCameraRendering(const Camera* pCamera);
+
+		/**
 		 * \brief	执行渲染前的准备工作
 		 */
 		static void PreRender();

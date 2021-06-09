@@ -24,6 +24,34 @@ namespace SaplingEngine
 {
 	class Dx12Utility
 	{
-
+	public:
+		static void CreateDescriptorHeap(ComPtr<ID3D12DescriptorHeap>& descriptorHeap, D3D12_DESCRIPTOR_HEAP_TYPE type, uint32_t descriptorCount, D3D12_DESCRIPTOR_HEAP_FLAGS flags);
+		static void CreateDescriptorHeap(ID3D12Device* pDevice, ComPtr<ID3D12DescriptorHeap>& descriptorHeap, D3D12_DESCRIPTOR_HEAP_TYPE type, uint32_t descriptorCount, D3D12_DESCRIPTOR_HEAP_FLAGS flags);
 	};
+}
+
+static D3D12_CPU_DESCRIPTOR_HANDLE GetCPUHandleFromDescriptorHeap(ID3D12DescriptorHeap* pHeap)
+{
+	return pHeap->GetCPUDescriptorHandleForHeapStart();
+}
+
+static D3D12_CPU_DESCRIPTOR_HANDLE GetCPUHandleFromDescriptorHeap(ID3D12DescriptorHeap* pHeap, uint32_t offset, uint32_t descriptorSize)
+{
+	auto cbvHeapHandle = pHeap->GetCPUDescriptorHandleForHeapStart();
+	const auto cbvHeapHandleOffset = offset * descriptorSize;
+	cbvHeapHandle.ptr += static_cast<uint64_t>(cbvHeapHandleOffset);
+	return cbvHeapHandle;
+}
+
+static D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandleFromDescriptorHeap(ID3D12DescriptorHeap* pHeap)
+{
+	return pHeap->GetGPUDescriptorHandleForHeapStart();
+}
+
+static D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandleFromDescriptorHeap(ID3D12DescriptorHeap* pHeap, uint32_t offset, uint32_t descriptorSize)
+{
+	auto cbvHeapHandle = pHeap->GetGPUDescriptorHandleForHeapStart();
+	const auto cbvHeapHandleOffset = offset * descriptorSize;
+	cbvHeapHandle.ptr += static_cast<uint64_t>(cbvHeapHandleOffset);
+	return cbvHeapHandle;
 }

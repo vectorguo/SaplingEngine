@@ -12,6 +12,7 @@ namespace SaplingEngine
 	Dx12BufferManager::PassUploadBufferData					Dx12BufferManager::passUploadBuffer;
 	ComPtr<ID3D12DescriptorHeap>							Dx12BufferManager::srvDescriptorHeap;
 	std::vector<uint32_t>									Dx12BufferManager::availableSrvIndices;
+
 	/**
 	 * \brief	≥ı ºªØ
 	 */

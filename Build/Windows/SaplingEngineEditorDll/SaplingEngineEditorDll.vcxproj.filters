@@ -255,6 +255,9 @@
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12Utility.cpp">
       <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12DescriptorManager.cpp">
+      <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Engine\Runtime\Application\Application.h">
@@ -480,6 +483,9 @@
       <Filter>Engine\Runtime\Render\RenderPipeline\RenderPass</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12Utility.h">
+      <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12DescriptorManager.h">
       <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
     </ClInclude>
   </ItemGroup>

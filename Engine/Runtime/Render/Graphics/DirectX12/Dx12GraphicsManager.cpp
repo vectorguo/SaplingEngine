@@ -26,30 +26,60 @@ namespace SaplingEngine
 	std::map<ComPtr<ID3D12Resource>, uint64_t> Dx12GraphicsManager::m_UsedUploadBuffers;
 
 	/**
-	 * \brief	开始初始化
-	 * \param	hWnd		窗口句柄
-	 * \param	width		窗口宽度
-	 * \param	height		窗口高度
+	 * \brief	创建DX12 Device
 	 */
-	void Dx12GraphicsManager::BeginInitialize(HWND hWnd, uint32_t width, uint32_t height)
+	void Dx12GraphicsManager::CreateDevice()
 	{
-		CreateDevice();
-		CreateDescriptorHeaps();
+#if defined(DEBUG) || defined(_DEBUG) 
+		{// Enable the D3D12 debug layer.
+			ComPtr<ID3D12Debug> debugController;
+			if (!FAILED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
+			{
+				debugController->EnableDebugLayer();
+			}
+		}
+#endif
+
+		//创建DXGI，用来枚举显卡，创建SwapChain
+		ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(&m_DXGIFactory)));
+
+		//创建显示设备(该设备对应一个显示适配器，比如显卡。下面nullptr代表使用默认的显示适配器)
+		const auto result = D3D12CreateDevice(nullptr, D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&m_D3D12Device));
+		if (FAILED(result))
+		{//默认显示适配器对应的设备创建失败
+			ComPtr<IDXGIAdapter> pWarpAdapter;
+			ThrowIfFailed(m_DXGIFactory->EnumWarpAdapter(IID_PPV_ARGS(&pWarpAdapter)));
+			ThrowIfFailed(D3D12CreateDevice(pWarpAdapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&m_D3D12Device)));
+		}
+
+		//Set ViewPort And ScissorRect
+		const auto width = Setting::ScreenWidth();
+		const auto height = Setting::ScreenHeight();
+		m_Viewport.TopLeftX = 0;
+		m_Viewport.TopLeftY = 0;
+		m_Viewport.Width = static_cast<float>(width);
+		m_Viewport.Height = static_cast<float>(height);
+		m_Viewport.MinDepth = 0.0f;
+		m_Viewport.MaxDepth = 1.0f;
+		m_ScissorRect = { 0, 0, static_cast<long>(width), static_cast<long>(height) };
 	}
 
 	/**
-	 * \brief	结束初始化
+	 * \brief	初始化
 	 * \param	hWnd		窗口句柄
 	 * \param	width		窗口宽度
 	 * \param	height		窗口高度
 	 */
-	void Dx12GraphicsManager::EndInitialize(HWND hWnd, uint32_t width, uint32_t height)
+	void Dx12GraphicsManager::Initialize(HWND hWnd, uint32_t width, uint32_t height)
 	{
 		CreateSwapChain(hWnd, width, height);
-		CreateRootSignature();
-		CreatePipelineState();
+
+		CreateDescriptorHeaps();
 		CreateRtv();
 		CreateDsv(width, height);
+
+		CreateRootSignature();
+		CreatePipelineState();
 	}
 	
 	/**
@@ -227,45 +257,6 @@ namespace SaplingEngine
 			m_UnusedUploadBuffers.insert(*iter);
 		}
 		m_UsedUploadBuffers.clear();
-	}
-	
-	/**
-	 * \brief	创建DX12 Device
-	 */
-	void Dx12GraphicsManager::CreateDevice()
-	{
-#if defined(DEBUG) || defined(_DEBUG) 
-		{// Enable the D3D12 debug layer.
-			ComPtr<ID3D12Debug> debugController;
-			if (!FAILED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
-			{
-				debugController->EnableDebugLayer();
-			}
-		}
-#endif
-
-		//创建DXGI，用来枚举显卡，创建SwapChain
-		ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(&m_DXGIFactory)));
-
-		//创建显示设备(该设备对应一个显示适配器，比如显卡。下面nullptr代表使用默认的显示适配器)
-		const auto result = D3D12CreateDevice(nullptr, D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&m_D3D12Device));
-		if (FAILED(result))
-		{//默认显示适配器对应的设备创建失败
-			ComPtr<IDXGIAdapter> pWarpAdapter;
-			ThrowIfFailed(m_DXGIFactory->EnumWarpAdapter(IID_PPV_ARGS(&pWarpAdapter)));
-			ThrowIfFailed(D3D12CreateDevice(pWarpAdapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&m_D3D12Device)));
-		}
-
-		//Set ViewPort And ScissorRect
-		const auto width = Setting::ScreenWidth();
-		const auto height = Setting::ScreenHeight();
-		m_Viewport.TopLeftX = 0;
-		m_Viewport.TopLeftY = 0;
-		m_Viewport.Width = static_cast<float>(width);
-		m_Viewport.Height = static_cast<float>(height);
-		m_Viewport.MinDepth = 0.0f;
-		m_Viewport.MaxDepth = 1.0f;
-		m_ScissorRect = { 0, 0, static_cast<long>(width), static_cast<long>(height) };
 	}
 
 	/**

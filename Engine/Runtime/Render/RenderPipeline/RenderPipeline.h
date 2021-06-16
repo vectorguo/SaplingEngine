@@ -16,14 +16,9 @@ namespace SaplingEngine
 	{
 	public:
 		/**
-		 * \brief	开始初始化
+		 * \brief	初始化
 		 */
-		static void BeginInitialize(HWND hWnd);
-
-		/**
-		 * \brief	结束初始化
-		 */
-		static void EndInitialize(HWND hWnd);
+		static void Initialize(HWND hWnd);
 
 		/**
 		 * \brief	渲染

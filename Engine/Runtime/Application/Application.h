@@ -80,5 +80,8 @@ namespace SaplingEngine
 		 * \brief	ÊÇ·ñÈ«ÆÁ×´Ì¬
 		 */
 		static bool isFullscreen;
+
+		static ComPtr<IDXGIFactory4> m_DXGIFactory;
+		static ComPtr<ID3D12Device> m_D3D12Device;
 	};
 }

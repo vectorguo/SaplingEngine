@@ -36,9 +36,6 @@ namespace SaplingEngine
 		//初始化资源管理器
 		ResourceManager::Initialize();
 
-		//渲染管线开始初始化
-		RenderPipeline::BeginInitialize(windowHwnd);
-
 		//初始化Shader
 		ShaderManager::Initialize();
 
@@ -51,8 +48,11 @@ namespace SaplingEngine
 		//初始化场景
 		SceneManager::Initialize();
 
-		//渲染管线结束初始化
-		RenderPipeline::EndInitialize(windowHwnd);
+		//时间初始化
+		Time::Initialize();
+
+		//渲染管线开始初始化
+		RenderPipeline::Initialize(windowHwnd);
 
 		//显示并更新窗口
 		ShowWindow(windowHwnd, SW_SHOW);

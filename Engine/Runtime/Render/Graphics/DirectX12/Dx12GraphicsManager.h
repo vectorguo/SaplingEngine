@@ -11,6 +11,7 @@ namespace SaplingEngine
 	class Dx12GraphicsManager final
 	{
 		friend class Dx12BufferManager;
+		friend class Dx12DescriptorManager;
 		friend class Dx12CommandManager;
 
 		using RootSignatureMap = std::map<size_t, ComPtr<ID3D12RootSignature>>;
@@ -18,20 +19,17 @@ namespace SaplingEngine
 		
 	public:
 		/**
+		 * \brief	创建DX12 Device
+		 */
+		static void CreateDevice();
+
+		/**
 		 * \brief	开始初始化
 		 * \param	hWnd		窗口句柄
 		 * \param	width		窗口宽度
 		 * \param	height		窗口高度
 		 */
-		static void BeginInitialize(HWND hWnd, uint32_t width, uint32_t height);
-
-		/**
-		 * \brief	结束初始化
-		 * \param	hWnd		窗口句柄
-		 * \param	width		窗口宽度
-		 * \param	height		窗口高度
-		 */
-		static void EndInitialize(HWND hWnd, uint32_t width, uint32_t height);
+		static void Initialize(HWND hWnd, uint32_t width, uint32_t height);
 		
 		/**
 		 * \brief	重置大小
@@ -140,10 +138,6 @@ namespace SaplingEngine
 		static void ReleaseAllUploadBuffers();
 		
 	private:
-		/**
-		 * \brief	创建DX12 Device
-		 */
-		static void CreateDevice();
 
 		/**
 		 * \brief	创建交换链

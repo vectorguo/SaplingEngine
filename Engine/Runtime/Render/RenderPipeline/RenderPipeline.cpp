@@ -2,6 +2,7 @@
 #include "Camera/CameraManager.h"
 #include "Render/Graphics/ConstantBufferData.h"
 #include "Render/Graphics/DirectX12/Dx12CommandManager.h"
+#include "Render/Graphics/DirectX12/Dx12DescriptorManager.h"
 #include "Render/Graphics/DirectX12/Dx12GraphicsManager.h"
 #include "Render/Graphics/MeshManager.h"
 #include "Render/Graphics/TextureManager.h"
@@ -20,21 +21,27 @@ namespace SaplingEngine
 	ShadowPass*					RenderPipeline::shadowPassPtr = nullptr;
 
 	/**
-	 * \brief	开始初始化
+	 * \brief	初始化
 	 */
-	void RenderPipeline::BeginInitialize(HWND hWnd)
+	void RenderPipeline::Initialize(HWND hWnd)
 	{
 		screenWidth = Setting::ScreenWidth();
 		screenHeight = Setting::ScreenHeight();
 
-		//创建并初始化Graphics Manager
-		GraphicsManager::BeginInitialize(hWnd, screenWidth, screenHeight);
-
-		//创建并初始化常量缓冲区管理器
-		BufferManager::Initialize();
+		//创建DirectX设备
+		GraphicsManager::CreateDevice();
 
 		//创建并初始化Command Manager
 		CommandManager::BeginInitialize();
+
+		//描述符管理器初始化
+		DescriptorManager::Initialize();
+
+		//创建并初始化Graphics Manager
+		GraphicsManager::Initialize(hWnd, screenWidth, screenHeight);
+
+		//创建并初始化常量缓冲区管理器
+		BufferManager::Initialize();
 
 		//初始化渲染管线
 		opaquePassPtr = new RenderOpaquePass("Render Opaque");
@@ -48,14 +55,7 @@ namespace SaplingEngine
 
 		//排序渲染管线
 		SortRenderPass();
-	}
 
-	/**
-	 * \brief	结束初始化
-	 */
-	void RenderPipeline::EndInitialize(HWND hWnd)
-	{
-		GraphicsManager::EndInitialize(hWnd, screenWidth, screenHeight);
 		CommandManager::EndInitialize();
 	}
 

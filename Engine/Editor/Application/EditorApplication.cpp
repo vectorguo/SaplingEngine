@@ -19,9 +19,6 @@ namespace SaplingEditor
 		//初始化资源管理器
 		ResourceManager::Initialize();
 
-		//渲染管线开始初始化
-		RenderPipeline::BeginInitialize(Application::windowHwnd);
-
 		//初始化Shader
 		ShaderManager::Initialize();
 
@@ -37,8 +34,8 @@ namespace SaplingEditor
 		//时间初始化
 		Time::Initialize();
 
-		//渲染管线结束初始化
-		RenderPipeline::EndInitialize(Application::windowHwnd);
+		//渲染管线开始初始化
+		RenderPipeline::Initialize(Application::windowHwnd);
 
 		//显示并更新窗口
 		ShowWindow(Application::windowHwnd, SW_SHOW);

@@ -72,14 +72,16 @@ namespace SaplingEngine
 	 */
 	void Dx12GraphicsManager::Initialize(HWND hWnd, uint32_t width, uint32_t height)
 	{
+		CreateRootSignature();
+		CreatePipelineState();
+
 		CreateSwapChain(hWnd, width, height);
 
 		CreateDescriptorHeaps();
 		CreateRtv();
 		CreateDsv(width, height);
 
-		CreateRootSignature();
-		CreatePipelineState();
+		
 	}
 	
 	/**

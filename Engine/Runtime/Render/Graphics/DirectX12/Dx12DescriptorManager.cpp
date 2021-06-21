@@ -20,6 +20,14 @@ namespace SaplingEngine
 		//创建默认渲染缓冲区和深度/模板缓冲区描述符堆
 		CreateDescriptorHeap(pDevice, defaultRtvDescriptorHeap, D3D12_DESCRIPTOR_HEAP_TYPE_RTV, swapBufferCount);
 		CreateDescriptorHeap(pDevice, defaultDsvDescriptorHeap, D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 1);
+
+		//创建渲染目标View
+		for (auto i = 0; i < swapBufferCount; ++i)
+		{
+
+		}
+
+		//创建深度模板View
 	}
 
 	void Dx12DescriptorManager::CreateDescriptorHeap(ComPtr<ID3D12DescriptorHeap>& descriptorHeap, D3D12_DESCRIPTOR_HEAP_TYPE type, uint32_t descriptorCount, D3D12_DESCRIPTOR_HEAP_FLAGS flags)

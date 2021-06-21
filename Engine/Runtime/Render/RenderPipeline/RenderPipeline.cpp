@@ -34,11 +34,11 @@ namespace SaplingEngine
 		//创建并初始化Command Manager
 		CommandManager::BeginInitialize();
 
-		//描述符管理器初始化
-		DescriptorManager::Initialize();
-
 		//创建并初始化Graphics Manager
 		GraphicsManager::Initialize(hWnd, screenWidth, screenHeight);
+
+		//描述符管理器初始化
+		DescriptorManager::Initialize();
 
 		//创建并初始化常量缓冲区管理器
 		BufferManager::Initialize();

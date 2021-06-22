@@ -27,6 +27,9 @@ namespace SaplingEngine
 		static void CreateDepthStencilView(DXGI_FORMAT format, ID3D12DescriptorHeap* pHeap, ID3D12Resource* pResource, uint32_t offset);
 		static void CreateDepthStencilView(ID3D12Device* pDevice, DXGI_FORMAT format, ID3D12DescriptorHeap* pHeap, ID3D12Resource* pResource, uint32_t offset);
 
+		static D3D12_CPU_DESCRIPTOR_HANDLE GetRenderTargetView();
+		static D3D12_CPU_DESCRIPTOR_HANDLE GetDepthStencilView();
+
 	private:
 		/**
 		 * \brief	渲染目标视图大小

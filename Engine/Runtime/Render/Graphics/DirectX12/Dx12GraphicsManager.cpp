@@ -12,12 +12,12 @@ namespace SaplingEngine
 	uint32_t								Dx12GraphicsManager::m_DsvDescriptorSize = 0;
 	ComPtr<ID3D12DescriptorHeap>			Dx12GraphicsManager::m_RtvDescriptorHeap;
 	ComPtr<ID3D12DescriptorHeap>			Dx12GraphicsManager::m_DsvDescriptorHeap;
-	ComPtr<IDXGISwapChain>					Dx12GraphicsManager::m_SwapChain;
-	ComPtr<ID3D12Resource>					Dx12GraphicsManager::m_SwapChainBuffer[SwapChainBufferCount];
-	int32_t									Dx12GraphicsManager::m_BackBufferIndex = 0;
-	ComPtr<ID3D12Resource>					Dx12GraphicsManager::m_DepthStencilBuffer;
-	DXGI_FORMAT								Dx12GraphicsManager::m_SwapChainBufferFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
-	DXGI_FORMAT								Dx12GraphicsManager::m_DepthStencilViewFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	ComPtr<IDXGISwapChain>					Dx12GraphicsManager::swapChain;
+	ComPtr<ID3D12Resource>					Dx12GraphicsManager::swapChainBuffer[swapChainBufferCount];
+	ComPtr<ID3D12Resource>					Dx12GraphicsManager::depthStencilBuffer;
+	int32_t									Dx12GraphicsManager::currentSwapChainIndex = 0;
+	DXGI_FORMAT								Dx12GraphicsManager::swapChainBufferFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
+	DXGI_FORMAT								Dx12GraphicsManager::depthStencilViewFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 	Dx12GraphicsManager::PipelineStateMap	Dx12GraphicsManager::m_PipelineStates;
 	Dx12GraphicsManager::RootSignatureMap	Dx12GraphicsManager::m_RootSignatures;
 	D3D12_VIEWPORT							Dx12GraphicsManager::m_Viewport;
@@ -75,13 +75,7 @@ namespace SaplingEngine
 		CreateRootSignature();
 		CreatePipelineState();
 
-		CreateSwapChain(hWnd, width, height);
-
-		CreateDescriptorHeaps();
-		CreateRtv();
-		CreateDsv(width, height);
-
-		
+		CreateSwapChainAndDepthStencilBuffer(hWnd, width, height);
 	}
 	
 	/**
@@ -89,37 +83,33 @@ namespace SaplingEngine
 	 */
 	void Dx12GraphicsManager::OnWindowResize(uint32_t width, uint32_t height)
 	{
-		//释放之前的缓存
-		for (auto& buffer : m_SwapChainBuffer)
-		{
-			buffer.Reset();
-		}
-		m_DepthStencilBuffer.Reset();
+		////释放之前的缓存
+		//ResetSwapChainAndDepthStencilBuffer(width, height);
 
-		//Resize
-		m_Viewport.TopLeftX = 0;
-		m_Viewport.TopLeftY = 0;
-		m_Viewport.Width = static_cast<float>(width);
-		m_Viewport.Height = static_cast<float>(height);
-		m_Viewport.MinDepth = 0.0f;
-		m_Viewport.MaxDepth = 1.0f;
-		m_ScissorRect = { 0, 0, static_cast<long>(width), static_cast<long>(height) };
+		////Resize
+		//m_Viewport.TopLeftX = 0;
+		//m_Viewport.TopLeftY = 0;
+		//m_Viewport.Width = static_cast<float>(width);
+		//m_Viewport.Height = static_cast<float>(height);
+		//m_Viewport.MinDepth = 0.0f;
+		//m_Viewport.MaxDepth = 1.0f;
+		//m_ScissorRect = { 0, 0, static_cast<long>(width), static_cast<long>(height) };
 
-		//Resize SwapChain
-		m_BackBufferIndex = 0;
-		ThrowIfFailed(m_SwapChain->ResizeBuffers(SwapChainBufferCount, width, height, m_SwapChainBufferFormat, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH));
+		////Resize SwapChain
+		//m_BackBufferIndex = 0;
+		//ThrowIfFailed(swapChain->ResizeBuffers(swapChainBufferCount, width, height, swapChainBufferFormat, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH));
 
-		//重置命令
-		ThrowIfFailed(CommandManager::m_CommandAllocator->Reset());
-		ThrowIfFailed(CommandManager::m_CommandList->Reset(CommandManager::m_CommandAllocator.Get(), nullptr));
-		
-		//重新创建Rtv和Dsv
-		CreateRtv();
-		CreateDsv(width, height);
+		////重置命令
+		//ThrowIfFailed(CommandManager::m_CommandAllocator->Reset());
+		//ThrowIfFailed(CommandManager::m_CommandList->Reset(CommandManager::m_CommandAllocator.Get(), nullptr));
+		//
+		////重新创建Rtv和Dsv
+		//CreateRtv();
+		//CreateDsv(width, height);
 
-		//执行并等待命令结束
-		CommandManager::ExecuteCommandList();
-		CommandManager::CompleteCommand();
+		////执行并等待命令结束
+		//CommandManager::ExecuteCommandList();
+		//CommandManager::CompleteCommand();
 	}
 	
 	/**
@@ -267,51 +257,117 @@ namespace SaplingEngine
 	 * \param width 窗口宽度
 	 * \param height 窗口高度
 	 */
-	void Dx12GraphicsManager::CreateSwapChain(HWND hWnd, uint32_t width, uint32_t height)
+	void Dx12GraphicsManager::CreateSwapChainAndDepthStencilBuffer(HWND hWnd, uint32_t width, uint32_t height)
 	{
 		DXGI_SWAP_CHAIN_DESC sd;
 		sd.BufferDesc.Width = width;
 		sd.BufferDesc.Height = height;
 		sd.BufferDesc.RefreshRate.Numerator = 60;
 		sd.BufferDesc.RefreshRate.Denominator = 1;
-		sd.BufferDesc.Format = m_SwapChainBufferFormat;
+		sd.BufferDesc.Format = swapChainBufferFormat;
 		sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 		sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 		sd.SampleDesc.Count = 1;
 		sd.SampleDesc.Quality = 0;
 		sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-		sd.BufferCount = SwapChainBufferCount;
+		sd.BufferCount = swapChainBufferCount;
 		sd.OutputWindow = hWnd;
 		sd.Windowed = true;
 		sd.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 		sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
-		ThrowIfFailed(m_DXGIFactory->CreateSwapChain(CommandManager::GetCommandQueue(), &sd, m_SwapChain.GetAddressOf()));
+		ThrowIfFailed(m_DXGIFactory->CreateSwapChain(CommandManager::GetCommandQueue(), &sd, swapChain.GetAddressOf()));
+
+		//已经创建好的交换连SwapChain中获取对应索引的渲染缓冲buffer，填充到交换链缓冲区数组中
+		for (auto i = 0; i < swapChainBufferCount; ++i)
+		{
+			ThrowIfFailed(swapChain->GetBuffer(i, IID_PPV_ARGS(&swapChainBuffer[i])));
+		}
+
+		//创建深度/模板缓冲对应的纹理资源和存储资源的堆，并把创建的资源提交到堆中
+		D3D12_HEAP_PROPERTIES heapProperties
+		{
+			D3D12_HEAP_TYPE_DEFAULT,
+			D3D12_CPU_PAGE_PROPERTY_UNKNOWN,
+			D3D12_MEMORY_POOL_UNKNOWN,
+			1,
+			1
+		};
+
+		//描述符参数
+		D3D12_RESOURCE_DESC depthStencilDesc
+		{
+			D3D12_RESOURCE_DIMENSION_TEXTURE2D,
+			0,
+			width,
+			height,
+			1,
+			1,
+			DXGI_FORMAT_R24G8_TYPELESS,
+			1,
+			0,
+			D3D12_TEXTURE_LAYOUT_UNKNOWN,
+			D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL
+		};
+
+		//清除选项
+		D3D12_CLEAR_VALUE optClear
+		{
+			depthStencilViewFormat,
+			1.0f,
+			0
+		};
+
+		//创建深度/模板缓冲
+		ThrowIfFailed(m_D3D12Device->CreateCommittedResource(
+			&heapProperties,
+			D3D12_HEAP_FLAG_NONE,
+			&depthStencilDesc,
+			D3D12_RESOURCE_STATE_COMMON,
+			&optClear,
+			IID_PPV_ARGS(depthStencilBuffer.GetAddressOf())));
+
+		//资源转换
+		CommandManager::ResourceBarrierTransition(depthStencilBuffer.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_DEPTH_WRITE);
 	}
 
 	/**
-	 * \brief 创建描述符堆
+	 * \brief	重置交换链
+	 * \param	width		窗口宽度
+	 * \param	height		窗口高度
 	 */
-	void Dx12GraphicsManager::CreateDescriptorHeaps()
+	void Dx12GraphicsManager::ResetSwapChainAndDepthStencilBuffer(uint32_t width, uint32_t height)
 	{
-		//创建RTV描述符堆
-		D3D12_DESCRIPTOR_HEAP_DESC heapDesc;
-		heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
-		heapDesc.NumDescriptors = SwapChainBufferCount;
-		heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
-		heapDesc.NodeMask = 0;
-		ThrowIfFailed(m_D3D12Device->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(m_RtvDescriptorHeap.GetAddressOf())));
-
-		//创建深度/裁剪描述符的描述符堆
-		heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
-		heapDesc.NumDescriptors = 1;
-		heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
-		heapDesc.NodeMask = 0;
-		ThrowIfFailed(m_D3D12Device->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(m_DsvDescriptorHeap.GetAddressOf())));
-
-		//查询描述符大小
-		m_RtvDescriptorSize = m_D3D12Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
-		m_DsvDescriptorSize = m_D3D12Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
+		for (auto& buffer : swapChainBuffer)
+		{
+			buffer.Reset();
+		}
+		depthStencilBuffer.Reset();
 	}
+
+	///**
+	// * \brief 创建描述符堆
+	// */
+	//void Dx12GraphicsManager::CreateDescriptorHeaps()
+	//{
+	//	//创建RTV描述符堆
+	//	D3D12_DESCRIPTOR_HEAP_DESC heapDesc;
+	//	heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+	//	heapDesc.NumDescriptors = swapChainBufferCount;
+	//	heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+	//	heapDesc.NodeMask = 0;
+	//	ThrowIfFailed(m_D3D12Device->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(m_RtvDescriptorHeap.GetAddressOf())));
+
+	//	//创建深度/裁剪描述符的描述符堆
+	//	heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
+	//	heapDesc.NumDescriptors = 1;
+	//	heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+	//	heapDesc.NodeMask = 0;
+	//	ThrowIfFailed(m_D3D12Device->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(m_DsvDescriptorHeap.GetAddressOf())));
+
+	//	//查询描述符大小
+	//	m_RtvDescriptorSize = m_D3D12Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+	//	m_DsvDescriptorSize = m_D3D12Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
+	//}
 
 	/**
 	 * \brief 创建根签名
@@ -440,10 +496,10 @@ namespace SaplingEngine
 		psoDesc.SampleMask = UINT_MAX;
 		psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 		psoDesc.NumRenderTargets = 1;
-		psoDesc.RTVFormats[0] = m_SwapChainBufferFormat;
+		psoDesc.RTVFormats[0] = swapChainBufferFormat;
 		psoDesc.SampleDesc.Count = 1;
 		psoDesc.SampleDesc.Quality = 0;
-		psoDesc.DSVFormat = m_DepthStencilViewFormat;
+		psoDesc.DSVFormat = depthStencilViewFormat;
 		
 		
 		//为每一个shader都创建一个pso
@@ -472,81 +528,81 @@ namespace SaplingEngine
 		}
 	}
 
-	/**
-	 * \brief 创建Rtv
-	 */
-	void Dx12GraphicsManager::CreateRtv()
-	{
-		//创建RTV
-		auto rtvHeapHandle = m_RtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
-		for (auto i = 0; i < SwapChainBufferCount; ++i)
-		{
-			//首先从已经创建好的交换连SwapChain中获取对应索引的渲染缓冲buffer，填充到交换链缓冲区数组中
-			//为渲染缓冲创建渲染目标视图，并存储在渲染视图描述符堆中
-			//获取渲染视图描述符堆中的下一个渲染对象视图的句柄
-			ThrowIfFailed(m_SwapChain->GetBuffer(i, IID_PPV_ARGS(&m_SwapChainBuffer[i])));
-			m_D3D12Device->CreateRenderTargetView(m_SwapChainBuffer[i].Get(), nullptr, rtvHeapHandle);
-			rtvHeapHandle.ptr += m_RtvDescriptorSize;
-		}
-	}
+	///**
+	// * \brief 创建Rtv
+	// */
+	//void Dx12GraphicsManager::CreateRtv()
+	//{
+	//	//创建RTV
+	//	auto rtvHeapHandle = m_RtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
+	//	for (auto i = 0; i < swapChainBufferCount; ++i)
+	//	{
+	//		//首先从已经创建好的交换连SwapChain中获取对应索引的渲染缓冲buffer，填充到交换链缓冲区数组中
+	//		//为渲染缓冲创建渲染目标视图，并存储在渲染视图描述符堆中
+	//		//获取渲染视图描述符堆中的下一个渲染对象视图的句柄
+	//		ThrowIfFailed(swapChain->GetBuffer(i, IID_PPV_ARGS(&swapChainBuffer[i])));
+	//		m_D3D12Device->CreateRenderTargetView(swapChainBuffer[i].Get(), nullptr, rtvHeapHandle);
+	//		rtvHeapHandle.ptr += m_RtvDescriptorSize;
+	//	}
+	//}
 
-	/**
-	 * \brief 创建Dsv
-	 */
-	void Dx12GraphicsManager::CreateDsv(uint32_t width, uint32_t height)
-	{
-		//创建DSV
-		//创建深度/模板缓冲对应的纹理资源和存储资源的堆，并把创建的资源提交到堆中
-		D3D12_HEAP_PROPERTIES heapProperties
-		{
-			D3D12_HEAP_TYPE_DEFAULT,
-			D3D12_CPU_PAGE_PROPERTY_UNKNOWN,
-			D3D12_MEMORY_POOL_UNKNOWN,
-			1,1
-		};
+	///**
+	// * \brief 创建Dsv
+	// */
+	//void Dx12GraphicsManager::CreateDsv(uint32_t width, uint32_t height)
+	//{
+	//	//创建DSV
+	//	//创建深度/模板缓冲对应的纹理资源和存储资源的堆，并把创建的资源提交到堆中
+	//	D3D12_HEAP_PROPERTIES heapProperties
+	//	{
+	//		D3D12_HEAP_TYPE_DEFAULT,
+	//		D3D12_CPU_PAGE_PROPERTY_UNKNOWN,
+	//		D3D12_MEMORY_POOL_UNKNOWN,
+	//		1,1
+	//	};
 
-		//描述符参数
-		D3D12_RESOURCE_DESC depthStencilDesc
-		{
-			D3D12_RESOURCE_DIMENSION_TEXTURE2D,
-			0,
-			width,
-			height,
-			1,
-			1,
-			DXGI_FORMAT_R24G8_TYPELESS,
-			1,
-			0,
-			D3D12_TEXTURE_LAYOUT_UNKNOWN,
-			D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL
-		};
+	//	//描述符参数
+	//	D3D12_RESOURCE_DESC depthStencilDesc
+	//	{
+	//		D3D12_RESOURCE_DIMENSION_TEXTURE2D,
+	//		0,
+	//		width,
+	//		height,
+	//		1,
+	//		1,
+	//		DXGI_FORMAT_R24G8_TYPELESS,
+	//		1,
+	//		0,
+	//		D3D12_TEXTURE_LAYOUT_UNKNOWN,
+	//		D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL
+	//	};
 
-		//清除选项
-		D3D12_CLEAR_VALUE optClear
-		{
-			m_DepthStencilViewFormat,
-			1.0f,
-			0
-		};
+	//	//清除选项
+	//	D3D12_CLEAR_VALUE optClear
+	//	{
+	//		depthStencilViewFormat,
+	//		1.0f,
+	//		0
+	//	};
 
-		//创建深度/模板缓冲
-		ThrowIfFailed(m_D3D12Device->CreateCommittedResource(
-			&heapProperties,
-			D3D12_HEAP_FLAG_NONE,
-			&depthStencilDesc,
-			D3D12_RESOURCE_STATE_COMMON,
-			&optClear,
-			IID_PPV_ARGS(m_DepthStencilBuffer.GetAddressOf())));
+	//	//创建深度/模板缓冲
+	//	ThrowIfFailed(m_D3D12Device->CreateCommittedResource(
+	//		&heapProperties,
+	//		D3D12_HEAP_FLAG_NONE,
+	//		&depthStencilDesc,
+	//		D3D12_RESOURCE_STATE_COMMON,
+	//		&optClear,
+	//		IID_PPV_ARGS(depthStencilBuffer.GetAddressOf())));
 
-		//创建深度/模板视图
-		D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc;
-		dsvDesc.Flags = D3D12_DSV_FLAG_NONE;
-		dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
-		dsvDesc.Format = m_DepthStencilViewFormat;
-		dsvDesc.Texture2D.MipSlice = 0;
-		m_D3D12Device->CreateDepthStencilView(m_DepthStencilBuffer.Get(), &dsvDesc, m_DsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
+	//	//创建深度/模板视图
+	//	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc;
+	//	dsvDesc.Flags = D3D12_DSV_FLAG_NONE;
+	//	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
+	//	dsvDesc.Format = depthStencilViewFormat;
+	//	dsvDesc.Texture2D.MipSlice = 0;
+	//	m_D3D12Device->CreateDepthStencilView(depthStencilBuffer.Get(), &dsvDesc, m_DsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
 
-		//资源转换
-		CommandManager::ResourceBarrierTransition(m_DepthStencilBuffer.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_DEPTH_WRITE);
-	}
+	//	//资源转换
+	//	CommandManager::ResourceBarrierTransition(depthStencilBuffer.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_DEPTH_WRITE);
+	//}
 }

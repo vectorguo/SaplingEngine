@@ -76,29 +76,9 @@ namespace SaplingEngine
 		 * \brief	获取后台缓存
 		 * \return	后台缓存
 		 */
-		static ID3D12Resource* GetCurrentRt()
+		static ID3D12Resource* GetCurrentSwapChainBuffer()
 		{
-			return m_SwapChainBuffer[m_BackBufferIndex].Get();
-		}
-
-		/**
-		 * \brief	获取当前后台缓冲区视图
-		 * \return	后台缓冲区视图
-		 */
-		static D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentRtv()
-		{
-			auto rtvHeapHandle = m_RtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
-			rtvHeapHandle.ptr += static_cast<int64_t>(m_BackBufferIndex) * static_cast<int64_t>(m_RtvDescriptorSize);
-			return rtvHeapHandle;
-		}
-
-		/**
-		 * \brief	获取深度模板缓冲区试图
-		 * \return	深度模板缓冲区试图
-		 */
-		static D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentDsv()
-		{
-			return m_DsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
+			return swapChainBuffer[currentSwapChainIndex].Get();
 		}
 		
 		static const D3D12_VIEWPORT& GetViewport()
@@ -140,17 +120,24 @@ namespace SaplingEngine
 	private:
 
 		/**
-		 * \brief	创建交换链
+		 * \brief	创建交换链和深度模板缓冲区
 		 * \param	hWnd		窗口句柄
 		 * \param	width		窗口宽度
 		 * \param	height		窗口高度
 		 */
-		static void CreateSwapChain(HWND hWnd, uint32_t width, uint32_t height);
+		static void CreateSwapChainAndDepthStencilBuffer(HWND hWnd, uint32_t width, uint32_t height);
 
 		/**
-		 * \brief	创建描述符堆
+		 * \brief	重置交换链
+		 * \param	width		窗口宽度
+		 * \param	height		窗口高度
 		 */
-		static void CreateDescriptorHeaps();
+		static void ResetSwapChainAndDepthStencilBuffer(uint32_t width, uint32_t height);
+
+		///**
+		// * \brief	创建描述符堆
+		// */
+		//static void CreateDescriptorHeaps();
 
 		/**
 		 * \brief	创建根签名
@@ -162,27 +149,27 @@ namespace SaplingEngine
 		 */
 		static void CreatePipelineState();
 
-		/**
-		 * \brief	创建Rtv
-		 */
-		static void CreateRtv();
+		///**
+		// * \brief	创建Rtv
+		// */
+		//static void CreateRtv();
 
-		/**
-		 * \brief	创建Dsv
-		 */
-		static void CreateDsv(uint32_t width, uint32_t height);
+		///**
+		// * \brief	创建Dsv
+		// */
+		//static void CreateDsv(uint32_t width, uint32_t height);
 
 		/**
 		 * \brief	呈现当前这一帧的绘制内容
 		 */
 		static void Present()
 		{
-			ThrowIfFailed(m_SwapChain->Present(0, 0));
-			m_BackBufferIndex = (m_BackBufferIndex + 1) % SwapChainBufferCount;
+			ThrowIfFailed(swapChain->Present(0, 0));
+			currentSwapChainIndex = (currentSwapChainIndex + 1) % swapChainBufferCount;
 		}
 
 	private:
-		static constexpr int SwapChainBufferCount = 2;
+		static constexpr int swapChainBufferCount = 2;
 
 		static ComPtr<IDXGIFactory4> m_DXGIFactory;
 		static ComPtr<ID3D12Device> m_D3D12Device;
@@ -210,25 +197,25 @@ namespace SaplingEngine
 		/**
 		 * \brief	交换链
 		 */
-		static ComPtr<IDXGISwapChain> m_SwapChain;
+		static ComPtr<IDXGISwapChain> swapChain;
 
 		/**
 		 * \brief	交换链缓冲区
 		 */
-		static ComPtr<ID3D12Resource> m_SwapChainBuffer[SwapChainBufferCount];
-
-		/**
-		 * \brief	交换链中前台缓冲索引
-		 */
-		static int32_t m_BackBufferIndex;
+		static ComPtr<ID3D12Resource> swapChainBuffer[swapChainBufferCount];
 
 		/**
 		 * \brief	深度/模板缓冲区
 		 */
-		static ComPtr<ID3D12Resource> m_DepthStencilBuffer;
+		static ComPtr<ID3D12Resource> depthStencilBuffer;
 
-		static DXGI_FORMAT m_SwapChainBufferFormat;
-		static DXGI_FORMAT m_DepthStencilViewFormat;
+		/**
+		 * \brief	交换链中前台缓冲索引
+		 */
+		static int32_t currentSwapChainIndex;
+
+		static DXGI_FORMAT swapChainBufferFormat;
+		static DXGI_FORMAT depthStencilViewFormat;
 
 		/**
 		 * \brief	流水线状态

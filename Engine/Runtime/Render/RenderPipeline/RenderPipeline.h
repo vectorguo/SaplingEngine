@@ -3,6 +3,7 @@
 #include "SaplingEnginePch.h"
 #include "Render/Graphics/DirectX12/Dx12BufferManager.h"
 #include "Render/Graphics/DirectX12/Dx12CommandManager.h"
+#include "Render/Graphics/DirectX12/Dx12DescriptorManager.h"
 #include "Render/Graphics/DirectX12/Dx12GraphicsManager.h"
 #include "Render/Renderer/Renderer.h"
 

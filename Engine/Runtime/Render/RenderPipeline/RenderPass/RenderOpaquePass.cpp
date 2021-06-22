@@ -19,12 +19,12 @@ namespace SaplingEngine
 		pCommandList->RSSetScissorRects(1, &GraphicsManager::GetScissorRect());
 
 		//äÖÈ¾»º´æ´Ó³ÊÏÖ×´Ì¬ÇÐ»»µ½RT×´Ì¬
-		auto resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(GraphicsManager::GetCurrentRt(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
+		auto resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(GraphicsManager::GetCurrentSwapChainBuffer(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
 		pCommandList->ResourceBarrier(1, &resourceBarrier);
 
 		//ÇåÀíÑÕÉ«»º³åºÍÉî¶È»º³å
-		const auto rtv = GraphicsManager::GetCurrentRtv();
-		const auto dsv = GraphicsManager::GetCurrentDsv();
+		const auto rtv = DescriptorManager::GetRenderTargetView();
+		const auto dsv = DescriptorManager::GetDepthStencilView();
 		pCommandList->ClearRenderTargetView(rtv, Color::LightBlue, 0, nullptr);
 		pCommandList->ClearDepthStencilView(dsv, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
 		pCommandList->OMSetRenderTargets(1, &rtv, true, &dsv);
@@ -56,7 +56,7 @@ namespace SaplingEngine
 		}
 
 		//äÖÈ¾»º´æ´ÓRT×´Ì¬ÇÐ»»µ½³ÊÏÖ×´Ì¬
-		resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(GraphicsManager::GetCurrentRt(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
+		resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(GraphicsManager::GetCurrentSwapChainBuffer(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
 		pCommandList->ResourceBarrier(1, &resourceBarrier);
 	}
 }

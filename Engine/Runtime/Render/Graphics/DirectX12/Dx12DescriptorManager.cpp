@@ -14,20 +14,23 @@ namespace SaplingEngine
 		rtvDescriptorSize = pDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 		dsvDescriptorSize = pDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
 
-		//交换缓冲区数量
-		const auto swapBufferCount = GraphicsManager::SwapChainBufferCount;
+		const auto swapBufferCount = GraphicsManager::swapChainBufferCount;
 
 		//创建默认渲染缓冲区和深度/模板缓冲区描述符堆
 		CreateDescriptorHeap(pDevice, defaultRtvDescriptorHeap, D3D12_DESCRIPTOR_HEAP_TYPE_RTV, swapBufferCount);
 		CreateDescriptorHeap(pDevice, defaultDsvDescriptorHeap, D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 1);
 
+		auto* pSwapChainBuffer = GraphicsManager::swapChainBuffer;
+		auto* pDepthStencilBuffer = GraphicsManager::depthStencilBuffer.Get();
+
 		//创建渲染目标View
 		for (auto i = 0; i < swapBufferCount; ++i)
 		{
-
+			CreateRenderTargetView(pDevice, defaultRtvDescriptorHeap.Get(), pSwapChainBuffer[i].Get(), i);
 		}
 
 		//创建深度模板View
+		CreateDepthStencilView(pDevice, Dx12GraphicsManager::depthStencilViewFormat, defaultDsvDescriptorHeap.Get(), pDepthStencilBuffer, 0);
 	}
 
 	void Dx12DescriptorManager::CreateDescriptorHeap(ComPtr<ID3D12DescriptorHeap>& descriptorHeap, D3D12_DESCRIPTOR_HEAP_TYPE type, uint32_t descriptorCount, D3D12_DESCRIPTOR_HEAP_FLAGS flags)
@@ -73,5 +76,15 @@ namespace SaplingEngine
 
 		auto descriptorHandle = GetCPUHandleFromDescriptorHeap(pHeap, offset, dsvDescriptorSize);
 		pDevice->CreateDepthStencilView(pResource, &dsvDesc, descriptorHandle);
+	}
+	
+	D3D12_CPU_DESCRIPTOR_HANDLE Dx12DescriptorManager::GetRenderTargetView()
+	{
+		return GetCPUHandleFromDescriptorHeap(defaultRtvDescriptorHeap.Get(), GraphicsManager::currentSwapChainIndex, rtvDescriptorSize);
+	}
+	
+	D3D12_CPU_DESCRIPTOR_HANDLE Dx12DescriptorManager::GetDepthStencilView()
+	{
+		return defaultDsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
 	}
 }

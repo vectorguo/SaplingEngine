@@ -32,7 +32,9 @@
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\DDSTextureLoader.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12BufferManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CommandManager.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12DescriptorManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12GraphicsManager.cpp" />
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12Utility.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\Light.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\LightManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\Material.cpp" />
@@ -86,9 +88,10 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\DDSTextureLoader.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12BufferManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CommandManager.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12DescriptorManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12GraphicsManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12UploadBuffer.h" />
-    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\GraphicsPch.h" />
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12Utility.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\Light.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\LightManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\Material.h" />

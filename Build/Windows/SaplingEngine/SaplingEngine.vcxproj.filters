@@ -216,6 +216,12 @@
     <ClCompile Include="..\..\..\Game\Utility\WarcraftComponentFactory.cpp">
       <Filter>Game\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12DescriptorManager.cpp">
+      <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12Utility.cpp">
+      <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Engine\Runtime\Application\Application.h">
@@ -282,9 +288,6 @@
       <Filter>Engine\Runtime\Memory</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\ConstantBufferData.h">
-      <Filter>Engine\Runtime\Render\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\GraphicsPch.h">
       <Filter>Engine\Runtime\Render\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\Light.h">
@@ -421,6 +424,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Game\WarcraftGameMain.h">
       <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12DescriptorManager.h">
+      <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12Utility.h">
+      <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

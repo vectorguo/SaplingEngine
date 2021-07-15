@@ -377,9 +377,6 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12GraphicsManager.h">
       <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12UploadBuffer.h">
-      <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Renderer\MeshRenderer.h">
       <Filter>Engine\Runtime\Render\Renderer</Filter>
     </ClInclude>
@@ -486,6 +483,9 @@
       <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12DescriptorManager.h">
+      <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12UploadBuffer.h">
       <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
     </ClInclude>
   </ItemGroup>

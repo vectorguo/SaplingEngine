@@ -10,6 +10,8 @@ namespace SaplingEngine
 {
 	class Renderer : public Component
 	{
+		friend class RenderPipeline;
+
 	public:
 		Renderer();
 		~Renderer() override;
@@ -85,24 +87,6 @@ namespace SaplingEngine
 		 * \brief	获取通用数据对应的常量缓冲区描述符
 		 * \return	通用数据对应的常量缓冲区描述符
 		 */
-		D3D12_GPU_DESCRIPTOR_HANDLE GetCommonCbvDescriptor() const
-		{
-			return m_CommonCbvDescriptor;
-		}
-
-		/**
-		 * \brief	获取特殊数据对应的常量缓冲区描述符
-		 * \return	特殊数据对应的常量缓冲区描述符
-		 */
-		D3D12_GPU_DESCRIPTOR_HANDLE GetSpecialCbvDescriptor() const
-		{
-			return m_SpecialCbvDescriptor;
-		}
-
-		/**
-		 * \brief	获取通用数据对应的常量缓冲区描述符
-		 * \return	通用数据对应的常量缓冲区描述符
-		 */
 		D3D12_GPU_VIRTUAL_ADDRESS GetCommonCbAddress() const
 		{
 			return m_CommonCbAddress;
@@ -127,6 +111,8 @@ namespace SaplingEngine
 
 	protected:
 		void Start() override;
+		void OnEnable() override;
+		void OnDisable() override;
 		void OnDestroy() override;
 
 	protected:
@@ -152,19 +138,9 @@ namespace SaplingEngine
 		uint32_t m_CbvIndex = 0;
 
 		/**
-		 * \brief	通用数据常量缓冲区的描述符
-		 */
-		D3D12_GPU_DESCRIPTOR_HANDLE m_CommonCbvDescriptor{};
-
-		/**
 		 * \brief	通用数据常量缓冲区地址
 		 */
 		D3D12_GPU_VIRTUAL_ADDRESS m_CommonCbAddress{};
-
-		/**
-		 * \brief	特殊数据常量缓冲区的描述符
-		 */
-		D3D12_GPU_DESCRIPTOR_HANDLE m_SpecialCbvDescriptor{};
 
 		/**
 		 * \brief	特殊数据常量缓冲区地址

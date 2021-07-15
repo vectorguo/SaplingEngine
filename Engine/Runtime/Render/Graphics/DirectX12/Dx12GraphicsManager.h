@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Dx12UploadBuffer.h"
 #include "SaplingEnginePch.h"
 
 namespace SaplingEngine
@@ -134,11 +133,6 @@ namespace SaplingEngine
 		 */
 		static void ResetSwapChainAndDepthStencilBuffer(uint32_t width, uint32_t height);
 
-		///**
-		// * \brief	创建描述符堆
-		// */
-		//static void CreateDescriptorHeaps();
-
 		/**
 		 * \brief	创建根签名
 		 */
@@ -148,16 +142,6 @@ namespace SaplingEngine
 		 * \brief	创建PSO
 		 */
 		static void CreatePipelineState();
-
-		///**
-		// * \brief	创建Rtv
-		// */
-		//static void CreateRtv();
-
-		///**
-		// * \brief	创建Dsv
-		// */
-		//static void CreateDsv(uint32_t width, uint32_t height);
 
 		/**
 		 * \brief	呈现当前这一帧的绘制内容

@@ -1,29 +1,29 @@
 #pragma once
 
+#include "Render/Graphics/DirectX12/Dx12GraphicsManager.h"
 #include "Render/Graphics/DirectX12/Dx12Utility.h"
-#include "Utility/Exception.h"
 
 namespace SaplingEngine
 {
-	template <typename T>
 	class Dx12UploadBuffer
 	{
 	public:
-		Dx12UploadBuffer(ID3D12Device* device, uint32_t elementCount, bool isConstant) : m_ElementSize(isConstant ? (sizeof(T) + 255) & ~255 : sizeof(T))
+		Dx12UploadBuffer(uint32_t totalSize)
 		{
 			D3D12_HEAP_PROPERTIES headProperties
 			{
 				D3D12_HEAP_TYPE_UPLOAD,
 				D3D12_CPU_PAGE_PROPERTY_UNKNOWN,
 				D3D12_MEMORY_POOL_UNKNOWN,
-				1,1
+				1,
+				1
 			};
 
 			D3D12_RESOURCE_DESC bufferDesc
 			{
 				D3D12_RESOURCE_DIMENSION_BUFFER,
 				0,
-				elementCount * m_ElementSize,
+				(uint64_t)totalSize,
 				1,
 				1,
 				1,
@@ -33,8 +33,9 @@ namespace SaplingEngine
 				D3D12_RESOURCE_FLAG_NONE
 			};
 
-			ThrowIfFailed(device->CreateCommittedResource(&headProperties, D3D12_HEAP_FLAG_NONE, &bufferDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&m_UploadBuffer)));
-			ThrowIfFailed(m_UploadBuffer->Map(0, nullptr, reinterpret_cast<void**>(&m_pMappedData)));
+			auto* pDevice = GraphicsManager::GetDx12Device();
+			ThrowIfFailed(pDevice->CreateCommittedResource(&headProperties, D3D12_HEAP_FLAG_NONE, &bufferDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&m_UploadBuffer)));
+			ThrowIfFailed(m_UploadBuffer->Map(0, nullptr, reinterpret_cast<void**>(&m_MappedDataPtr)));
 		}
 
 		Dx12UploadBuffer(const Dx12UploadBuffer&) = delete;
@@ -48,7 +49,7 @@ namespace SaplingEngine
 			{
 				m_UploadBuffer->Unmap(0, nullptr);
 			}
-			m_pMappedData = nullptr;
+			m_MappedDataPtr = nullptr;
 		}
 
 		ID3D12Resource* GetResource() const
@@ -61,24 +62,18 @@ namespace SaplingEngine
 			return m_UploadBuffer->GetGPUVirtualAddress();
 		}
 
-		D3D12_GPU_VIRTUAL_ADDRESS GetGpuVirtualAddress(const int index) const
+		D3D12_GPU_VIRTUAL_ADDRESS GetGpuVirtualAddress(uint32_t offset) const
 		{
-			return m_UploadBuffer->GetGPUVirtualAddress() + index * m_ElementSize;
+			return m_UploadBuffer->GetGPUVirtualAddress() + offset;
 		}
 
-		uint32_t GetElementSize() const
+		void CopyData(uint32_t offset, const void* pData, uint32_t dataSize)
 		{
-			return m_ElementSize;
-		}
-
-		void CopyData(uint32_t elementIndex, const T& data)
-		{
-			memcpy(m_pMappedData + (elementIndex * m_ElementSize), &data, sizeof(T));
+			memcpy(m_MappedDataPtr + offset, pData, dataSize);
 		}
 
 	private:
 		ComPtr<ID3D12Resource> m_UploadBuffer;
-		uint32_t m_ElementSize;
-		uint8_t* m_pMappedData = nullptr;
+		uint8_t* m_MappedDataPtr = nullptr;
 	};
 }

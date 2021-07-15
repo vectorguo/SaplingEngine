@@ -25,6 +25,14 @@ namespace SaplingEngine
 		RenderPipeline::AddRenderItem(this, shaderHashValue);
 	}
 
+	void Renderer::OnEnable()
+	{
+	}
+
+	void Renderer::OnDisable()
+	{
+	}
+
 	void Renderer::OnDestroy()
 	{
 		RenderPipeline::RemoveRenderItem(this, m_MaterialSptr->GetShaderHashValue());

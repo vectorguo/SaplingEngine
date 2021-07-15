@@ -3,16 +3,19 @@
 
 namespace SaplingEngine
 {
-	uint32_t								Dx12DescriptorManager::rtvDescriptorSize = 0;
-	uint32_t								Dx12DescriptorManager::dsvDescriptorSize = 0;
-	ComPtr<ID3D12DescriptorHeap>			Dx12DescriptorManager::defaultRtvDescriptorHeap;
-	ComPtr<ID3D12DescriptorHeap>			Dx12DescriptorManager::defaultDsvDescriptorHeap;
+	uint32_t												Dx12DescriptorManager::rtvDescriptorSize = 0;
+	uint32_t												Dx12DescriptorManager::dsvDescriptorSize = 0;
+	uint32_t												Dx12DescriptorManager::cbvSrvDescriptorSize = 0;
+	ComPtr<ID3D12DescriptorHeap>							Dx12DescriptorManager::defaultRtvDescriptorHeap;
+	ComPtr<ID3D12DescriptorHeap>							Dx12DescriptorManager::defaultDsvDescriptorHeap;
+	std::vector<Dx12DescriptorManager::Dx12DescriptorHeap*>	Dx12DescriptorManager::objectCbvDescriptorHeaps;
 
 	void Dx12DescriptorManager::Initialize()
 	{
 		auto* pDevice = GraphicsManager::GetDx12Device();
 		rtvDescriptorSize = pDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 		dsvDescriptorSize = pDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
+		cbvSrvDescriptorSize = pDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
 		const auto swapBufferCount = GraphicsManager::swapChainBufferCount;
 
@@ -86,5 +89,49 @@ namespace SaplingEngine
 	D3D12_CPU_DESCRIPTOR_HANDLE Dx12DescriptorManager::GetDepthStencilView()
 	{
 		return defaultDsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
+	}
+	
+	/**
+	 * \brief	获取对象常量缓冲区描述符堆
+	 */
+	Dx12DescriptorManager::Dx12DescriptorHeap* Dx12DescriptorManager::GetObjectCbvDescriptorHeap()
+	{
+		if (objectCbvDescriptorHeaps.empty())
+		{
+			auto* pDevice = GraphicsManager::GetDx12Device();
+
+			//创建描述符堆
+			auto* pCbvDescriptorHeap = new Dx12DescriptorHeap(ObjectCbvDescriptorCount * (ObjectCommonCbSize + ObjectSpecialCbSize));
+			auto bufferLocation = pCbvDescriptorHeap->UploadBuffer.GetGpuVirtualAddress();
+
+			//创建通用数据的常量缓冲区描述符
+			D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc;
+			for (uint32_t index = 0; index < ObjectCbvDescriptorCount; ++index)
+			{
+				cbvDesc.BufferLocation = bufferLocation;
+				cbvDesc.SizeInBytes = ObjectCommonCbSize;
+				pDevice->CreateConstantBufferView(&cbvDesc, GetCPUHandleFromDescriptorHeap(pCbvDescriptorHeap->DescriptorHeap.Get(), index, cbvSrvDescriptorSize));
+
+				bufferLocation += ObjectCommonCbSize;
+			}
+
+			//创建特殊数据的常量缓冲区描述符
+			for (uint32_t index = 0; index < ObjectCbvDescriptorCount; ++index)
+			{
+				cbvDesc.BufferLocation = bufferLocation;
+				cbvDesc.SizeInBytes = ObjectSpecialCbSize;
+				pDevice->CreateConstantBufferView(&cbvDesc, GetCPUHandleFromDescriptorHeap(pCbvDescriptorHeap->DescriptorHeap.Get(), ObjectCbvDescriptorCount + index, cbvSrvDescriptorSize));
+
+				bufferLocation += ObjectSpecialCbSize;
+			}
+
+			return pCbvDescriptorHeap;
+		}
+		else
+		{
+			auto pCbvDescriptorHeap = *objectCbvDescriptorHeaps.rbegin();
+			objectCbvDescriptorHeaps.pop_back();
+			return pCbvDescriptorHeap;
+		}
 	}
 }

@@ -55,9 +55,19 @@ namespace SaplingEngine
 		static constexpr uint32_t ObjectCommonCbSize = 256;
 
 		/**
+		 * \brief	物体通用常量缓冲区总大小
+		 */
+		static constexpr uint32_t TotalObjectCommonCbSize = ObjectCbvDescriptorCount * ObjectCommonCbSize;
+
+		/**
 		 * \brief	物体特殊常量缓冲区大小
 		 */
 		static constexpr uint32_t ObjectSpecialCbSize = 512;
+
+		/**
+		 * \brief	物体特殊常量缓冲区总大小
+		 */
+		static constexpr uint32_t TotalObjectSpecialCbSize = ObjectCbvDescriptorCount * ObjectSpecialCbSize;
 
 		/**
 		 * \brief	Pass常量缓冲区大小

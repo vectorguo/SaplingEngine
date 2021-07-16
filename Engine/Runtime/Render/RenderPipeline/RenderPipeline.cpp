@@ -1,9 +1,6 @@
 #include "Application/Setting.h"
 #include "Camera/CameraManager.h"
 #include "Render/Graphics/ConstantBufferData.h"
-#include "Render/Graphics/DirectX12/Dx12CommandManager.h"
-#include "Render/Graphics/DirectX12/Dx12DescriptorManager.h"
-#include "Render/Graphics/DirectX12/Dx12GraphicsManager.h"
 #include "Render/Graphics/MeshManager.h"
 #include "Render/Graphics/TextureManager.h"
 #include "Render/RenderPipeline/RenderPipeline.h"
@@ -16,6 +13,7 @@ namespace SaplingEngine
 	uint32_t					RenderPipeline::screenWidth = 0;
 	uint32_t					RenderPipeline::screenHeight = 0;
 	std::map<size_t, std::vector<Renderer*>> RenderPipeline::renderItems;
+	std::map<size_t, RenderPipeline::RenderItemList> RenderPipeline::renderItemsMap;
 	std::vector<RenderPass*>	RenderPipeline::renderPasses;
 	RenderOpaquePass*			RenderPipeline::opaquePassPtr = nullptr;
 	ShadowPass*					RenderPipeline::shadowPassPtr = nullptr;

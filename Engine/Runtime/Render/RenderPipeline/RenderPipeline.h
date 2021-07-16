@@ -1,11 +1,11 @@
 #pragma once
 
-#include "SaplingEnginePch.h"
 #include "Render/Graphics/DirectX12/Dx12BufferManager.h"
 #include "Render/Graphics/DirectX12/Dx12CommandManager.h"
 #include "Render/Graphics/DirectX12/Dx12DescriptorManager.h"
 #include "Render/Graphics/DirectX12/Dx12GraphicsManager.h"
 #include "Render/Renderer/Renderer.h"
+#include "SaplingEnginePch.h"
 
 namespace SaplingEngine
 {
@@ -15,6 +15,63 @@ namespace SaplingEngine
 	
 	class RenderPipeline final
 	{
+	public:
+		/**
+		 * \brief	渲染项列表
+		 */
+		class RenderItemList
+		{
+		public:
+			/**
+			 * \brief	添加渲染项
+			 * \param	pRender		Render指针
+			 */
+			void AddRenderItem(Renderer* pRender)
+			{
+				auto index = 0;
+				for (; index < m_DescriptorHeaps.size(); ++index)
+				{					
+					if (m_Renderers[index].size() < Dx12DescriptorManager::ObjectCbvDescriptorCount)
+					{
+						break;
+					}
+				}
+
+				if (index == m_DescriptorHeaps.size())
+				{
+					m_DescriptorHeaps.push_back(Dx12DescriptorManager::GetObjectCbvDescriptorHeap());
+					m_Renderers.emplace_back();
+				}
+
+				auto& uploadBuffer = m_DescriptorHeaps[index]->UploadBuffer;
+				auto& renders = m_Renderers[index];
+				pRender->m_CbvIndex = static_cast<uint32_t>(renders.size());
+				pRender->m_CommonCbAddress = uploadBuffer.GetGpuVirtualAddress(pRender->m_CbvIndex * Dx12DescriptorManager::ObjectCommonCbSize);
+				pRender->m_SpecialCbAddress = uploadBuffer.GetGpuVirtualAddress(pRender->m_CbvIndex * Dx12DescriptorManager::ObjectSpecialCbSize + Dx12DescriptorManager::TotalObjectCommonCbSize);
+				renders.push_back(pRender);
+			}
+
+			/**
+			 * \brief	删除渲染项
+			 * \param	pRender		Render指针
+			 */
+			void RemoveRenderItem(Renderer* pRender)
+			{
+
+			}
+
+		private:
+			/**
+			 * \brief	描述符堆指针列表
+			 */
+			std::vector<Dx12DescriptorManager::Dx12DescriptorHeap*> m_DescriptorHeaps;
+
+			/**
+			 * \brief	渲染项列表
+			 */
+			std::vector<std::vector<Renderer*>> m_Renderers;
+		};
+
 	public:
 		/**
 		 * \brief	初始化
@@ -164,6 +221,7 @@ namespace SaplingEngine
 		 * \brief	渲染项列表
 		 */
 		static std::map<size_t, std::vector<Renderer*>> renderItems;
+		static std::map<size_t, RenderItemList> renderItemsMap;
 		
 		/**
 		 * \brief	所有RenderPass

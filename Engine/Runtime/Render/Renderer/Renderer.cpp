@@ -27,10 +27,12 @@ namespace SaplingEngine
 
 	void Renderer::OnEnable()
 	{
+		//添加到渲染管线中
 	}
 
 	void Renderer::OnDisable()
 	{
+		//从渲染管线中移除
 	}
 
 	void Renderer::OnDestroy()

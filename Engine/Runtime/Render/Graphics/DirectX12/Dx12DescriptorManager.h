@@ -43,6 +43,11 @@ namespace SaplingEngine
 		 */
 		static Dx12DescriptorHeap* GetObjectCbvDescriptorHeap();
 
+		/**
+		 * \brief	归还对象常量缓冲区描述符堆
+		 */
+		static void ReturnObjectCbvDescriptorHeap(Dx12DescriptorHeap* pDescriptorHeap);
+
 	public:
 		/**
 		 * \brief	物体常量缓冲区描述符堆中描述符的数量

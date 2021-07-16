@@ -134,4 +134,11 @@ namespace SaplingEngine
 			return pCbvDescriptorHeap;
 		}
 	}
+	
+	/**
+	 * \brief	归还对象常量缓冲区描述符堆
+	 */
+	void Dx12DescriptorManager::ReturnObjectCbvDescriptorHeap(Dx12DescriptorHeap* pDescriptorHeap)
+	{
+	}
 }

@@ -58,7 +58,25 @@ namespace SaplingEngine
 			 */
 			void RemoveRenderItem(Renderer* pRender)
 			{
+				//将最后位置上的Render挪到要被删除的Render的位置上
+				auto lastCbvHeapIndex = static_cast<uint32_t>(m_DescriptorHeaps.size()) - 1;
+				auto& lastRenders = m_Renderers[lastCbvHeapIndex];
+				auto* pLastRender = *lastRenders.cbegin();
+				pLastRender->m_CbvHeapIndex = pRender->m_CbvHeapIndex;
+				pLastRender->m_CbvIndex = pRender->m_CbvIndex;
+				pLastRender->m_CommonCbAddress = pRender->m_CommonCbAddress;
+				pLastRender->m_SpecialCbAddress = pRender->m_SpecialCbAddress;
+				m_Renderers[pRender->m_CbvHeapIndex][pRender->m_CbvIndex] = pLastRender;
 
+				//删除最后位置上的Render
+				lastRenders.pop_back();
+				if (lastRenders.empty())
+				{
+					auto* pLastDescriptorHeap = *m_DescriptorHeaps.cbegin();
+					Dx12DescriptorManager::ReturnObjectCbvDescriptorHeap(pLastDescriptorHeap);
+					m_DescriptorHeaps.pop_back();
+					m_Renderers.pop_back();
+				}
 			}
 
 		private:

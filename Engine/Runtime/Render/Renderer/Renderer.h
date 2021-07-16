@@ -133,7 +133,12 @@ namespace SaplingEngine
 		
 	private:
 		/**
-		 * \brief	常量缓冲区的索引
+		 * \brief	常量缓冲区描述符堆索引
+		 */
+		uint32_t m_CbvHeapIndex = 0;
+
+		/**
+		 * \brief	常量缓冲区描述符索引
 		 */
 		uint32_t m_CbvIndex = 0;
 

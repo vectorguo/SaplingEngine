@@ -45,6 +45,7 @@ namespace SaplingEngine
 
 				auto& uploadBuffer = m_DescriptorHeaps[index]->UploadBuffer;
 				auto& renders = m_Renderers[index];
+				pRender->m_CbvHeapIndex = index;
 				pRender->m_CbvIndex = static_cast<uint32_t>(renders.size());
 				pRender->m_CommonCbAddress = uploadBuffer.GetGpuVirtualAddress(pRender->m_CbvIndex * Dx12DescriptorManager::ObjectCommonCbSize);
 				pRender->m_SpecialCbAddress = uploadBuffer.GetGpuVirtualAddress(pRender->m_CbvIndex * Dx12DescriptorManager::ObjectSpecialCbSize + Dx12DescriptorManager::TotalObjectCommonCbSize);

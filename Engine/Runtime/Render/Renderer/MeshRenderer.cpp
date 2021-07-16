@@ -10,22 +10,6 @@ namespace SaplingEngine
 {
 	MeshRenderer::MeshRenderer() = default;
 	MeshRenderer::~MeshRenderer() = default;
-	
-	/**
-	 * \brief	设置Mesh
-	 * \param	shaderName	Shader名称
-	 * \return	材质
-	 */
-	MaterialSptr& MeshRenderer::SetMaterial(const std::string& shaderName)
-	{
-		//创建材质
-		m_MaterialSptr = MaterialManager::CreateMaterial(shaderName);
-
-		//根据材质创建不同的Special Ocb Data
-		m_FillSpecialOcbDataHandler = GetFillSpecialOcbDataHandler(m_MaterialSptr->GetShaderOcbType());
-
-		return m_MaterialSptr;
-	}
 
 	/**
 	 * \brief	设置Mesh

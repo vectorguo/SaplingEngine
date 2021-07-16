@@ -30,13 +30,6 @@ namespace SaplingEngine
 
 		/**
 		 * \brief	设置Mesh
-		 * \param	shaderName	Shader名称
-		 * \return	材质
-		 */
-		MaterialSptr& SetMaterial(const std::string& shaderName) override;
-
-		/**
-		 * \brief	设置Mesh
 		 * \param	path		Mesh资源路径
 		 */
 		void SetMesh(const std::string& path) override;

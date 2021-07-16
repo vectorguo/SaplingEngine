@@ -1,6 +1,7 @@
 #include "Renderer.h"
 
 #include "GameObject/GameObject.h"
+#include "Render/Graphics/MaterialManager.h"
 #include "Render/Graphics/MeshManager.h"
 #include "Render/RenderPipeline/RenderPipeline.h"
 #include "Scene/Scene.h"
@@ -16,27 +17,53 @@ namespace SaplingEngine
 	{
 		//删除Mesh
 		MeshManager::DestroyMesh(std::move(m_MeshSptr));
-	}	
-
-	void Renderer::Start()
+	}
+	
+	/**
+	 * \brief	设置Mesh
+	 * \param	shaderName	Shader名称
+	 * \return	材质
+	 */
+	MaterialSptr& Renderer::SetMaterial(const std::string& shaderName)
 	{
-		const auto& shaderHashValue = m_MaterialSptr->GetShaderHashValue();
-		m_CbvIndex = BufferManager::PopCbvIndex(m_CommonCbAddress, m_SpecialCbAddress);
-		RenderPipeline::AddRenderItem(this, shaderHashValue);
+		if (m_MaterialSptr != nullptr)
+		{
+			//从渲染管线中删除Render
+			RenderPipeline::RemoveRenderItem(this, m_MaterialSptr->GetShaderHashValue());
+		}
+
+		//创建材质
+		m_MaterialSptr = MaterialManager::CreateMaterial(shaderName);
+
+		//根据材质创建不同的Special Ocb Data
+		m_FillSpecialOcbDataHandler = GetFillSpecialOcbDataHandler(m_MaterialSptr->GetShaderOcbType());
+
+		//添加到渲染管线中
+		RenderPipeline::AddRenderItem(this, m_MaterialSptr->GetShaderHashValue());
+
+		return m_MaterialSptr;
 	}
 
 	void Renderer::OnEnable()
 	{
 		//添加到渲染管线中
+		if (m_MaterialSptr != nullptr && m_CbvHeapIndex == -1)
+		{
+			RenderPipeline::AddRenderItem(this, m_MaterialSptr->GetShaderHashValue());
+		}
 	}
 
 	void Renderer::OnDisable()
 	{
 		//从渲染管线中移除
+		if (m_MaterialSptr != nullptr && m_CbvHeapIndex != -1)
+		{
+			RenderPipeline::RemoveRenderItem(this, m_MaterialSptr->GetShaderHashValue());
+		}
 	}
 
 	void Renderer::OnDestroy()
 	{
-		RenderPipeline::RemoveRenderItem(this, m_MaterialSptr->GetShaderHashValue());
+		
 	}
 }

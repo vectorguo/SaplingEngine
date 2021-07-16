@@ -57,7 +57,7 @@ namespace SaplingEngine
 		 * \param	shaderName	Shader名称
 		 * \return	材质
 		 */
-		virtual MaterialSptr& SetMaterial(const std::string& shaderName) = 0;
+		MaterialSptr& SetMaterial(const std::string& shaderName);
 
 		/**
 		 * \brief	获取Mesh
@@ -78,7 +78,7 @@ namespace SaplingEngine
 		 * \brief	获取物体常量缓冲区索引
 		 * \return	物体常量缓冲区索引
 		 */
-		uint32_t GetCbvIndex() const
+		int32_t GetCbvIndex() const
 		{
 			return m_CbvIndex;
 		}
@@ -110,7 +110,6 @@ namespace SaplingEngine
 		}
 
 	protected:
-		void Start() override;
 		void OnEnable() override;
 		void OnDisable() override;
 		void OnDestroy() override;
@@ -135,12 +134,12 @@ namespace SaplingEngine
 		/**
 		 * \brief	常量缓冲区描述符堆索引
 		 */
-		uint32_t m_CbvHeapIndex = 0;
+		int32_t m_CbvHeapIndex = -1;
 
 		/**
 		 * \brief	常量缓冲区描述符索引
 		 */
-		uint32_t m_CbvIndex = 0;
+		int32_t m_CbvIndex = -1;
 
 		/**
 		 * \brief	通用数据常量缓冲区地址

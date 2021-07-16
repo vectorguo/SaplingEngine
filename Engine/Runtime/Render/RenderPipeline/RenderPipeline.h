@@ -68,6 +68,10 @@ namespace SaplingEngine
 				pLastRender->m_SpecialCbAddress = pRender->m_SpecialCbAddress;
 				m_Renderers[pRender->m_CbvHeapIndex][pRender->m_CbvIndex] = pLastRender;
 
+				//重置被删除的渲染项的数据
+				pRender->m_CbvHeapIndex = -1;
+				pRender->m_CbvIndex = -1;
+
 				//删除最后位置上的Render
 				lastRenders.pop_back();
 				if (lastRenders.empty())
@@ -121,6 +125,9 @@ namespace SaplingEngine
 		 */
 		static void AddRenderItem(Renderer* pRenderer, size_t shaderHashValue)
 		{
+			renderItemsMap[shaderHashValue].AddRenderItem(pRenderer);
+
+			// Old
 			auto iter = renderItems.find(shaderHashValue);
 			if (iter == renderItems.end())
 			{
@@ -151,6 +158,9 @@ namespace SaplingEngine
 		 */
 		static void RemoveRenderItem(Renderer* pRenderer, size_t shaderHashValue)
 		{
+			renderItemsMap[shaderHashValue].RemoveRenderItem(pRenderer);
+
+			// Old
 			auto iter1 = renderItems.find(shaderHashValue);
 			if (iter1 != renderItems.end())
 			{

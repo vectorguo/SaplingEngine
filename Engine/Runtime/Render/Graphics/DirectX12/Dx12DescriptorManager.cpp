@@ -14,6 +14,9 @@ namespace SaplingEngine
 	ComPtr<ID3D12DescriptorHeap>				Dx12DescriptorManager::passCbvDescriptorHeap;
 	Dx12UploadBuffer*							Dx12DescriptorManager::passCbUploadBuffer;
 
+	ComPtr<ID3D12DescriptorHeap>				Dx12DescriptorManager::defaultSrvDescriptorHeap;
+	std::vector<uint32_t>						Dx12DescriptorManager::availableSrvIndices;
+
 	void Dx12DescriptorManager::Initialize()
 	{
 		auto* pDevice = GraphicsManager::GetDx12Device();
@@ -41,6 +44,33 @@ namespace SaplingEngine
 
 		//创建Pass常量缓冲区描述符堆与上传缓冲区
 		CreatePassCbvDescriptorHeap();
+
+		//创建Srv缓冲区描述符堆
+		CreateSrvDescriptorHeap();
+	}
+
+	void Dx12DescriptorManager::Destroy()
+	{
+		defaultRtvDescriptorHeap.Reset();
+		defaultDsvDescriptorHeap.Reset();
+
+		for (auto iter = objectCbvDescriptorHeaps.begin(); iter != objectCbvDescriptorHeaps.end(); ++iter)
+		{
+			iter->Reset();
+		}
+		objectCbvDescriptorHeaps.clear();
+
+		for (auto iter = objectCbUploadBuffers.begin(); iter != objectCbUploadBuffers.end(); ++iter)
+		{
+			delete* iter;
+		}
+		objectCbUploadBuffers.clear();
+
+		passCbvDescriptorHeap.Reset();
+		delete passCbUploadBuffer;
+
+		defaultSrvDescriptorHeap.Reset();
+		availableSrvIndices.clear();
 	}
 
 	void Dx12DescriptorManager::CreateDescriptorHeap(ComPtr<ID3D12DescriptorHeap>& descriptorHeap, D3D12_DESCRIPTOR_HEAP_TYPE type, uint32_t descriptorCount, D3D12_DESCRIPTOR_HEAP_FLAGS flags)
@@ -86,6 +116,22 @@ namespace SaplingEngine
 
 		auto descriptorHandle = GetCPUHandleFromDescriptorHeap(pHeap, offset, dsvDescriptorSize);
 		pDevice->CreateDepthStencilView(pResource, &dsvDesc, descriptorHandle);
+	}
+
+	void Dx12DescriptorManager::CreateShaderResourceView(ID3D12Resource* pResource, uint32_t index, uint32_t shaderMapping, DXGI_FORMAT format, D3D12_SRV_DIMENSION viewDimension)
+	{
+		CreateShaderResourceView(GraphicsManager::GetDx12Device(), pResource, index, shaderMapping, format, viewDimension);
+	}
+
+	void Dx12DescriptorManager::CreateShaderResourceView(ID3D12Device* pDevice, ID3D12Resource* pResource, uint32_t index, uint32_t shaderMapping, DXGI_FORMAT format, D3D12_SRV_DIMENSION viewDimension)
+	{
+		D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+		srvDesc.Shader4ComponentMapping = shaderMapping;
+		srvDesc.Format = format;
+		srvDesc.ViewDimension = viewDimension;
+		srvDesc.Texture2D.MostDetailedMip = 0;
+		srvDesc.Texture2D.MipLevels = -1;
+		GraphicsManager::GetDx12Device()->CreateShaderResourceView(pResource, &srvDesc, GetCPUHandleFromDescriptorHeap(defaultSrvDescriptorHeap.Get(), index, cbvSrvDescriptorSize));
 	}
 	
 	D3D12_CPU_DESCRIPTOR_HANDLE Dx12DescriptorManager::GetRenderTargetView()
@@ -175,6 +221,22 @@ namespace SaplingEngine
 			pDevice->CreateConstantBufferView(&cbvDesc, GetCPUHandleFromDescriptorHeap(passCbvDescriptorHeap.Get(), index, cbvSrvDescriptorSize));
 
 			bufferLocation += PassCommonCbSize;
+		}
+	}
+	
+	/**
+	 * \brief	创建Srv缓冲区描述符堆
+	 */
+	void Dx12DescriptorManager::CreateSrvDescriptorHeap()
+	{
+		//创建SRV描述符堆
+		CreateDescriptorHeap(defaultSrvDescriptorHeap, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, SrvCount, D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE);
+
+		//填充可用描述符索引列表
+		availableSrvIndices.reserve(SrvCount);
+		for (auto i = 0; i < SrvCount; ++i)
+		{
+			availableSrvIndices.push_back(i);
 		}
 	}
 }

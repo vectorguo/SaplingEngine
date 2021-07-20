@@ -37,9 +37,6 @@ namespace SaplingEngine
 		//描述符管理器初始化
 		DescriptorManager::Initialize();
 
-		//创建并初始化常量缓冲区管理器
-		BufferManager::Initialize();
-
 		//初始化渲染管线
 		opaquePassPtr = new RenderOpaquePass("Render Opaque");
 		opaquePassPtr->SetPriority(10);
@@ -101,7 +98,7 @@ namespace SaplingEngine
 		renderPasses.clear();
 		
 		CommandManager::Destroy();
-		BufferManager::Destroy();
+		DescriptorManager::Destroy();
 		GraphicsManager::Destroy();
 	}
 
@@ -206,6 +203,9 @@ namespace SaplingEngine
 		//创建贴图资源
 		TextureManager::UploadTextureDatas();
 
+		//更新Object常量缓冲区数据
+		UploadObjectCbvData();
+
 		//执行渲染前的准备工作
 		for (auto iter = renderPasses.begin(); iter != renderPasses.end(); ++iter)
 		{
@@ -215,9 +215,6 @@ namespace SaplingEngine
 				pRenderPass->PreRender();
 			}
 		}
-
-		//更新Object常量缓冲区数据
-		UploadObjectCbvData();
 	}
 
 	/**

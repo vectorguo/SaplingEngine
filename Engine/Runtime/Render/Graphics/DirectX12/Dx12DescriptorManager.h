@@ -15,6 +15,11 @@ namespace SaplingEngine
 		 */
 		static void Initialize();
 
+		/**
+		 * \brief	销毁
+		 */
+		static void Destroy();
+
 		static void CreateDescriptorHeap(ComPtr<ID3D12DescriptorHeap>& descriptorHeap, D3D12_DESCRIPTOR_HEAP_TYPE type, uint32_t descriptorCount, D3D12_DESCRIPTOR_HEAP_FLAGS flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE);
 		static void CreateDescriptorHeap(ID3D12Device* pDevice, ComPtr<ID3D12DescriptorHeap>& descriptorHeap, D3D12_DESCRIPTOR_HEAP_TYPE type, uint32_t descriptorCount, D3D12_DESCRIPTOR_HEAP_FLAGS flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE);
 
@@ -22,6 +27,8 @@ namespace SaplingEngine
 		static void CreateRenderTargetView(ID3D12Device* pDevice, ID3D12DescriptorHeap* pHeap, ID3D12Resource* pResource, uint32_t offset);
 		static void CreateDepthStencilView(DXGI_FORMAT format, ID3D12DescriptorHeap* pHeap, ID3D12Resource* pResource, uint32_t offset);
 		static void CreateDepthStencilView(ID3D12Device* pDevice, DXGI_FORMAT format, ID3D12DescriptorHeap* pHeap, ID3D12Resource* pResource, uint32_t offset);
+		static void CreateShaderResourceView(ID3D12Resource* pResource, uint32_t index, uint32_t shaderMapping, DXGI_FORMAT format, D3D12_SRV_DIMENSION viewDimension);
+		static void CreateShaderResourceView(ID3D12Device* pDevice, ID3D12Resource* pResource, uint32_t index, uint32_t shaderMapping, DXGI_FORMAT format, D3D12_SRV_DIMENSION viewDimension);
 
 		static D3D12_CPU_DESCRIPTOR_HANDLE GetRenderTargetView();
 		static D3D12_CPU_DESCRIPTOR_HANDLE GetDepthStencilView();
@@ -62,11 +69,68 @@ namespace SaplingEngine
 			return passCbUploadBuffer->GetGpuVirtualAddress(PassCommonCbSize);
 		}
 
+		/**
+		 * \brief	获取SRV描述符堆的指针数组
+		 * \return	SRV描述符堆的指针数组
+		 */
+		static ID3D12DescriptorHeap** GetSrvDescriptorHeaps()
+		{
+			return defaultSrvDescriptorHeap.GetAddressOf();
+		}
+
+		/**
+		 * \brief	获取SRV描述符
+		 * \param	index	SRV描述符堆中的索引
+		 * \return	CPU描述符
+		 */
+		static D3D12_CPU_DESCRIPTOR_HANDLE GetSrvCpuDescriptor(uint32_t index)
+		{
+			return GetCPUHandleFromDescriptorHeap(defaultSrvDescriptorHeap.Get(), index, cbvSrvDescriptorSize);
+		}
+
+		/**
+		 * \brief	获取SRV描述符
+		 * \param	index	SRV描述符堆中的索引
+		 * \return	GPU描述符
+		 */
+		static D3D12_GPU_DESCRIPTOR_HANDLE GetSrvGpuDescriptor(uint32_t index)
+		{
+			return GetGPUHandleFromDescriptorHeap(defaultSrvDescriptorHeap.Get(), index, cbvSrvDescriptorSize);
+		}
+
+		/**
+		 * \brief	获取可用的SRV索引
+		 */
+		static uint32_t GetSrvIndex()
+		{
+			if (availableSrvIndices.empty())
+			{
+				throw Exception("贴图数量太多，无可用Srv描述符堆空间");
+			}
+
+			auto index = *availableSrvIndices.rbegin();
+			availableSrvIndices.pop_back();
+			return index;
+		}
+
+		/**
+		 * \brief	归还可用的SRV索引
+		 */
+		static void ReturnSrvIndex(uint32_t index)
+		{
+			availableSrvIndices.push_back(index);
+		}
+
 	private:
 		/**
 		 * \brief	创建Pass常量缓冲区描述符堆
 		 */
 		static void CreatePassCbvDescriptorHeap();
+
+		/**
+		 * \brief	创建Srv缓冲区描述符堆
+		 */
+		static void CreateSrvDescriptorHeap();
 
 	public:
 		/**
@@ -103,6 +167,11 @@ namespace SaplingEngine
 		 * \brief	Pass常量缓冲区大小
 		 */
 		static constexpr uint32_t PassCommonCbSize = 512;
+
+		/**
+		 * \brief	SRV描述符数量
+		 */
+		static constexpr uint32_t SrvCount = 500;
 
 	private:
 		/**
@@ -149,6 +218,16 @@ namespace SaplingEngine
 		 * \brief	Pass常量缓冲区对应的上传缓冲区
 		 */
 		static Dx12UploadBuffer* passCbUploadBuffer;
+
+		/**
+		 * \brief	SRV描述符堆
+		 */
+		static ComPtr<ID3D12DescriptorHeap> defaultSrvDescriptorHeap;
+
+		/**
+		 * \brief	可用的SRV索引列表
+		 */
+		static std::vector<uint32_t> availableSrvIndices;
 	};
 
 	using DescriptorManager = Dx12DescriptorManager;

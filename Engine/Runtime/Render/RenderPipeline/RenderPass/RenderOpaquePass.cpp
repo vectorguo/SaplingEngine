@@ -42,7 +42,7 @@ namespace SaplingEngine
 			pCommandList->SetPipelineState(GraphicsManager::GetPipelineState(shaderHashValue));
 
 			//设置跟描述符表和常量缓冲区，将常量缓冲区绑定到渲染流水线上
-			pCommandList->SetDescriptorHeaps(1, BufferManager::GetSrvDescriptorHeaps());
+			pCommandList->SetDescriptorHeaps(1, DescriptorManager::GetSrvDescriptorHeaps());
 			pCommandList->SetGraphicsRootSignature(GraphicsManager::GetRootSignature(shaderHashValue));
 			pCommandList->SetGraphicsRootConstantBufferView(2, Dx12DescriptorManager::GetPassCbAddress());
 			pCommandList->SetGraphicsRootDescriptorTable(3, pShadowPass->GetGpuDescriptor());

@@ -1,6 +1,3 @@
-#include "Render/Graphics/DirectX12/DDSTextureLoader.h"
-#include "Render/Graphics/DirectX12/Dx12BufferManager.h"
-#include "Render/Graphics/DirectX12/Dx12CommandManager.h"
 #include "Render/Graphics/DirectX12/Dx12GraphicsManager.h"
 #include "Render/Graphics/Texture2D.h"
 #include "Render/Graphics/TextureManager.h"
@@ -45,7 +42,7 @@ namespace SaplingEngine
 	 */
 	void TextureManager::DestroyTexture2D(Texture2DSptr&& textureSptr)
 	{
-		if (!textureSptr->IsReady())
+		if (!textureSptr->m_IsReady)
 		{
 			unreadyTexture2Ds.erase(std::find(unreadyTexture2Ds.begin(), unreadyTexture2Ds.end(), textureSptr.Get()));
 		}
@@ -60,19 +57,7 @@ namespace SaplingEngine
 		{
 			for (auto iter = unreadyTexture2Ds.begin(); iter != unreadyTexture2Ds.end(); ++iter)
 			{
-				auto* pTexture2D = *iter;
-				pTexture2D->m_IsReady = true;
-
-				auto wPath = CharToWChar(pTexture2D->m_Path.c_str());
-				ThrowIfFailed(
-					DirectX::CreateDDSTextureFromFile12(
-						GraphicsManager::GetDx12Device(),
-						CommandManager::GetCommandList(),
-						wPath.c_str(),
-						pTexture2D->m_ResourcePtr,
-						pTexture2D->m_UploadHeap));
-
-				BufferManager::PopSrvIndex(pTexture2D);
+				(*iter)->LoadTextureData();
 			}
 			unreadyTexture2Ds.clear();
 		}

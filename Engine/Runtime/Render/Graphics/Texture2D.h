@@ -6,7 +6,6 @@ namespace SaplingEngine
 {
 	class Texture2D
 	{
-		friend class Dx12BufferManager;
 		friend class TextureManager;
 
 	public:
@@ -21,19 +20,16 @@ namespace SaplingEngine
 		Texture2D& operator= (const Texture2D&) = delete;
 		Texture2D& operator= (Texture2D&&) = delete;
 
-		/**
-		 * \brief	顶点和索引数据是否已经上传到默认缓冲区
-		 * \return	顶点和索引数据是否已经上传到默认缓冲区
-		 */
-		inline bool IsReady() const
-		{
-			return m_IsReady;
-		}
-
 		inline D3D12_GPU_DESCRIPTOR_HANDLE GetSrvDescriptor() const
 		{
 			return m_SrvDescriptor;
 		}
+
+	private:
+		/**
+		 * \brief	加载贴图数据
+		 */
+		void LoadTextureData();
 
 	private:
 		/**
@@ -52,7 +48,7 @@ namespace SaplingEngine
 		/**
 		 * \brief	常量缓冲区的索引
 		 */
-		uint32_t m_SrvIndex;
+		uint32_t m_SrvIndex = 0;
 
 		/**
 		 * \brief	描述符

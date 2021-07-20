@@ -35,7 +35,6 @@
     <ClCompile Include="..\..\..\Engine\Runtime\Math\Vector4.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\ConstantBufferData.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\DDSTextureLoader.cpp" />
-    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12BufferManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CommandManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12DescriptorManager.cpp" />
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12GraphicsManager.cpp" />
@@ -98,7 +97,6 @@
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\ConstantBufferData.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\d3dx12.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\DDSTextureLoader.h" />
-    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12BufferManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CommandManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12DescriptorManager.h" />
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12GraphicsManager.h" />

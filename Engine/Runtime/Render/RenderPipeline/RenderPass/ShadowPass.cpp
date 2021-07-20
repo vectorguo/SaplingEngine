@@ -1,5 +1,5 @@
 #include "Application/Setting.h"
-#include "Render/Graphics/DirectX12/Dx12BufferManager.h"
+#include "Render/Graphics/DirectX12/Dx12DescriptorManager.h"
 #include "Render/Graphics/Light.h"
 #include "Render/Graphics/LightManager.h"
 #include "Render/RenderPipeline/RenderPipeline.h"
@@ -23,9 +23,9 @@ namespace SaplingEngine
 		heapDesc.NodeMask = 0;
 		ThrowIfFailed(GraphicsManager::GetDx12Device()->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(m_DsvDescriptorHeap.GetAddressOf())));
 
-		m_SrvIndex = BufferManager::PopSrvIndex();
-		m_CpuDescriptor = BufferManager::GetSrvCpuDescriptor(m_SrvIndex);
-		m_GpuDescriptor = BufferManager::GetSrvGpuDescriptor(m_SrvIndex);
+		m_SrvIndex = DescriptorManager::GetSrvIndex();
+		m_CpuDescriptor = DescriptorManager::GetSrvCpuDescriptor(m_SrvIndex);
+		m_GpuDescriptor = DescriptorManager::GetSrvGpuDescriptor(m_SrvIndex);
 
 		CreateDescriptors();
 	}

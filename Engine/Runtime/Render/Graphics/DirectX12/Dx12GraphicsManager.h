@@ -9,7 +9,6 @@ namespace SaplingEngine
 
 	class Dx12GraphicsManager final
 	{
-		friend class Dx12BufferManager;
 		friend class Dx12DescriptorManager;
 		friend class Dx12CommandManager;
 

@@ -86,32 +86,6 @@ namespace SaplingEngine
 	}
 
 	/**
-	 * \brief	弹出可用的SRV索引
-	 */
-	void Dx12BufferManager::PopSrvIndex(Texture2D* pTexture2D)
-	{
-		if (availableSrvIndices.empty())
-		{
-			throw Exception("贴图数量太多，无可用Srv描述符堆空间");
-		}
-
-		auto index = *availableSrvIndices.rbegin();
-		availableSrvIndices.pop_back();
-
-		pTexture2D->m_SrvIndex = index;
-		pTexture2D->m_SrvDescriptor = GetGPUHandleFromDescriptorHeap(srvDescriptorHeap.Get(), index, cbvSrvDescriptorSize);
-
-		auto& pTextureResource = pTexture2D->m_ResourcePtr;
-		D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
-		srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-		srvDesc.Format = pTextureResource->GetDesc().Format;
-		srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
-		srvDesc.Texture2D.MostDetailedMip = 0;
-		srvDesc.Texture2D.MipLevels = -1;
-		GraphicsManager::GetDx12Device()->CreateShaderResourceView(pTextureResource.Get(), &srvDesc, GetCPUHandleFromDescriptorHeap(srvDescriptorHeap.Get(), index, cbvSrvDescriptorSize));
-	}
-
-	/**
 	 * \brief	创建常量缓冲区描述符
 	 */
 	void Dx12BufferManager::CreateObjectCbvDescriptorHeap()

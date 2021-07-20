@@ -101,11 +101,6 @@ namespace SaplingEngine
 		static uint32_t PopSrvIndex();
 
 		/**
-		 * \brief	弹出可用的SRV索引
-		 */
-		static void PopSrvIndex(Texture2D* pTexture2D);
-
-		/**
 		 * \brief	填充物体常量缓冲区数据
 		 * \param	index			可用的物体常量缓冲区索引
 		 * \param	pCommonData		通用数据

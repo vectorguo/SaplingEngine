@@ -19,8 +19,30 @@ namespace SaplingEngine
 		/**
 		 * \brief	渲染项列表
 		 */
-		class RenderItemList
+		class RenderItemContainer
 		{
+			struct ContainerElement
+			{
+				void Initialize()
+				{
+					Dx12DescriptorManager::GetObjectCbvDescriptorHeap(DescriptorHeapCptr, UploadBufferPtr);
+				}
+
+				void Destroy()
+				{
+					Dx12DescriptorManager::ReturnObjectCbvDescriptorHeap(DescriptorHeapCptr, UploadBufferPtr);
+				}
+				
+				bool isFull()
+				{
+					return Renderers.size() >= Dx12DescriptorManager::ObjectCbvDescriptorCount;
+				}
+
+				ComPtr<ID3D12DescriptorHeap> DescriptorHeapCptr;
+				Dx12UploadBuffer* UploadBufferPtr = nullptr;
+				std::vector<Renderer*> Renderers;
+			};
+
 		public:
 			/**
 			 * \brief	添加渲染项
@@ -29,27 +51,26 @@ namespace SaplingEngine
 			void AddRenderItem(Renderer* pRender)
 			{
 				auto index = 0;
-				for (; index < m_DescriptorHeaps.size(); ++index)
-				{					
-					if (m_Renderers[index].size() < Dx12DescriptorManager::ObjectCbvDescriptorCount)
+				for (; index < elements.size(); ++index)
+				{
+					if (!elements[index].isFull())
 					{
 						break;
 					}
 				}
 
-				if (index == m_DescriptorHeaps.size())
+				if (index == elements.size())
 				{
-					m_DescriptorHeaps.push_back(Dx12DescriptorManager::GetObjectCbvDescriptorHeap());
-					m_Renderers.emplace_back();
+					elements.emplace_back();
+					elements.rbegin()->Initialize();
 				}
 
-				auto& uploadBuffer = m_DescriptorHeaps[index]->UploadBuffer;
-				auto& renders = m_Renderers[index];
+				auto& element = elements[index];
 				pRender->m_CbvHeapIndex = index;
-				pRender->m_CbvIndex = static_cast<uint32_t>(renders.size());
-				pRender->m_CommonCbAddress = uploadBuffer.GetGpuVirtualAddress(pRender->m_CbvIndex * Dx12DescriptorManager::ObjectCommonCbSize);
-				pRender->m_SpecialCbAddress = uploadBuffer.GetGpuVirtualAddress(pRender->m_CbvIndex * Dx12DescriptorManager::ObjectSpecialCbSize + Dx12DescriptorManager::TotalObjectCommonCbSize);
-				renders.push_back(pRender);
+				pRender->m_CbvIndex = static_cast<uint32_t>(element.Renderers.size());
+				pRender->m_CommonCbAddress = element.UploadBufferPtr->GetGpuVirtualAddress(pRender->m_CbvIndex * Dx12DescriptorManager::ObjectCommonCbSize);
+				pRender->m_SpecialCbAddress = element.UploadBufferPtr->GetGpuVirtualAddress(pRender->m_CbvIndex * Dx12DescriptorManager::ObjectSpecialCbSize + Dx12DescriptorManager::TotalObjectCommonCbSize);
+				element.Renderers.push_back(pRender);
 			}
 
 			/**
@@ -58,41 +79,56 @@ namespace SaplingEngine
 			 */
 			void RemoveRenderItem(Renderer* pRender)
 			{
-				//将最后位置上的Render挪到要被删除的Render的位置上
-				auto lastCbvHeapIndex = static_cast<uint32_t>(m_DescriptorHeaps.size()) - 1;
-				auto& lastRenders = m_Renderers[lastCbvHeapIndex];
-				auto* pLastRender = *lastRenders.cbegin();
+				//修改最后位置的Render的参数与要删除的Render的参数一致
+				auto& lastElement = *elements.rbegin();
+				auto* pLastRender = *lastElement.Renderers.rbegin();
 				pLastRender->m_CbvHeapIndex = pRender->m_CbvHeapIndex;
 				pLastRender->m_CbvIndex = pRender->m_CbvIndex;
 				pLastRender->m_CommonCbAddress = pRender->m_CommonCbAddress;
 				pLastRender->m_SpecialCbAddress = pRender->m_SpecialCbAddress;
-				m_Renderers[pRender->m_CbvHeapIndex][pRender->m_CbvIndex] = pLastRender;
+
+				//将最后位置上的Render挪到要被删除的Render的位置上
+				elements[pRender->m_CbvHeapIndex].Renderers[pRender->m_CbvIndex] = pLastRender;
 
 				//重置被删除的渲染项的数据
 				pRender->m_CbvHeapIndex = -1;
 				pRender->m_CbvIndex = -1;
 
 				//删除最后位置上的Render
-				lastRenders.pop_back();
-				if (lastRenders.empty())
+				lastElement.Renderers.pop_back();
+				if (lastElement.Renderers.empty())
 				{
-					auto* pLastDescriptorHeap = *m_DescriptorHeaps.cbegin();
-					Dx12DescriptorManager::ReturnObjectCbvDescriptorHeap(pLastDescriptorHeap);
-					m_DescriptorHeaps.pop_back();
-					m_Renderers.pop_back();
+					lastElement.Destroy();
+					elements.pop_back();
 				}
 			}
 
-		private:
 			/**
-			 * \brief	描述符堆指针列表
+			 * \brief	上传填充数据
 			 */
-			std::vector<Dx12DescriptorManager::Dx12DescriptorHeap*> m_DescriptorHeaps;
+			void UploadRenderData()
+			{
+				size_t specialDataSize;
+				for (auto iter1 = elements.begin(); iter1 != elements.end(); ++iter1)
+				{
+					auto* pUploadBuffer = iter1->UploadBufferPtr;
+					for (auto iter2 = iter1->Renderers.begin(); iter2 != iter1->Renderers.end(); ++iter2)
+					{
+						auto* pRender = *iter2;
 
-			/**
-			 * \brief	渲染项列表
-			 */
-			std::vector<std::vector<Renderer*>> m_Renderers;
+						//填充物体通用常量缓冲区数据
+						const auto* pCommonData = CommonOcbData::FillOcbData(pRender->GetTransform());
+						pUploadBuffer->CopyData(pCommonData, CommonOcbData::DataSize, pRender->m_CbvIndex * Dx12DescriptorManager::ObjectCommonCbSize);
+
+						//填充物体特殊常量缓冲区数据
+						const auto* pSpecialData = pRender->FillSpecialOcbData(specialDataSize, pRender->GetMaterial());
+						pUploadBuffer->CopyData(pSpecialData, (uint32_t)specialDataSize, pRender->m_CbvIndex * Dx12DescriptorManager::ObjectSpecialCbSize + Dx12DescriptorManager::TotalObjectCommonCbSize);
+					}
+				}
+			}
+
+		public:
+			std::vector<ContainerElement> elements;
 		};
 
 	public:
@@ -126,29 +162,15 @@ namespace SaplingEngine
 		static void AddRenderItem(Renderer* pRenderer, size_t shaderHashValue)
 		{
 			renderItemsMap[shaderHashValue].AddRenderItem(pRenderer);
-
-			// Old
-			auto iter = renderItems.find(shaderHashValue);
-			if (iter == renderItems.end())
-			{
-				std::vector<Renderer*> items;
-				items.reserve(BufferManager::ConstantBufferElementCount);
-				items.emplace_back(pRenderer);
-				renderItems.emplace(shaderHashValue, std::move(items));
-			}
-			else
-			{
-				iter->second.emplace_back(pRenderer);
-			}
 		}
 
 		/**
 		 * \brief	获取所有渲染项
 		 * \return	所有渲染项(非const)
 		 */
-		static std::map<size_t, std::vector<Renderer*>>& GetRenderItems()
+		static std::map<size_t, RenderItemContainer>& GetRenderItems()
 		{
-			return renderItems;
+			return renderItemsMap;
 		}
 
 		/**
@@ -159,16 +181,6 @@ namespace SaplingEngine
 		static void RemoveRenderItem(Renderer* pRenderer, size_t shaderHashValue)
 		{
 			renderItemsMap[shaderHashValue].RemoveRenderItem(pRenderer);
-
-			// Old
-			auto iter1 = renderItems.find(shaderHashValue);
-			if (iter1 != renderItems.end())
-			{
-				iter1->second.erase(std::find(iter1->second.begin(), iter1->second.end(), pRenderer));
-
-				//归还常量缓冲区索引
-				BufferManager::PushCbvIndex(pRenderer->GetCbvIndex());
-			}
 		}
 
 		/**
@@ -226,14 +238,14 @@ namespace SaplingEngine
 		static void PostRender();
 	
 		/**
-		 * \brief	更新物体常量缓冲区数据
+		 * \brief	上传物体常量缓冲区数据
 		 */
-		static void UpdateObjectCbvData();
+		static void UploadObjectCbvData();
 
 		/**
-		 * \brief	更新Pass常量缓冲区数据
+		 * \brief	上传Pass常量缓冲区数据
 		 */
-		static void UpdatePassCbvData(Camera* pCamera);
+		static void UploadPassCbvData(Camera* pCamera);
 		
 	private:
 		/**
@@ -249,8 +261,7 @@ namespace SaplingEngine
 		/**
 		 * \brief	渲染项列表
 		 */
-		static std::map<size_t, std::vector<Renderer*>> renderItems;
-		static std::map<size_t, RenderItemList> renderItemsMap;
+		static std::map<size_t, RenderItemContainer> renderItemsMap;
 		
 		/**
 		 * \brief	所有RenderPass

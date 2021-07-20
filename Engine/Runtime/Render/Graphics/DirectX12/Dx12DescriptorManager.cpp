@@ -3,12 +3,16 @@
 
 namespace SaplingEngine
 {
-	uint32_t												Dx12DescriptorManager::rtvDescriptorSize = 0;
-	uint32_t												Dx12DescriptorManager::dsvDescriptorSize = 0;
-	uint32_t												Dx12DescriptorManager::cbvSrvDescriptorSize = 0;
-	ComPtr<ID3D12DescriptorHeap>							Dx12DescriptorManager::defaultRtvDescriptorHeap;
-	ComPtr<ID3D12DescriptorHeap>							Dx12DescriptorManager::defaultDsvDescriptorHeap;
-	std::vector<Dx12DescriptorManager::Dx12DescriptorHeap*>	Dx12DescriptorManager::objectCbvDescriptorHeaps;
+	uint32_t									Dx12DescriptorManager::rtvDescriptorSize = 0;
+	uint32_t									Dx12DescriptorManager::dsvDescriptorSize = 0;
+	uint32_t									Dx12DescriptorManager::cbvSrvDescriptorSize = 0;
+	ComPtr<ID3D12DescriptorHeap>				Dx12DescriptorManager::defaultRtvDescriptorHeap;
+	ComPtr<ID3D12DescriptorHeap>				Dx12DescriptorManager::defaultDsvDescriptorHeap;
+
+	std::vector<ComPtr<ID3D12DescriptorHeap>>	Dx12DescriptorManager::objectCbvDescriptorHeaps;
+	std::vector<Dx12UploadBuffer*>				Dx12DescriptorManager::objectCbUploadBuffers;
+	ComPtr<ID3D12DescriptorHeap>				Dx12DescriptorManager::passCbvDescriptorHeap;
+	Dx12UploadBuffer*							Dx12DescriptorManager::passCbUploadBuffer;
 
 	void Dx12DescriptorManager::Initialize()
 	{
@@ -34,6 +38,9 @@ namespace SaplingEngine
 
 		//创建深度模板View
 		CreateDepthStencilView(pDevice, Dx12GraphicsManager::depthStencilViewFormat, defaultDsvDescriptorHeap.Get(), pDepthStencilBuffer, 0);
+
+		//创建Pass常量缓冲区描述符堆与上传缓冲区
+		CreatePassCbvDescriptorHeap();
 	}
 
 	void Dx12DescriptorManager::CreateDescriptorHeap(ComPtr<ID3D12DescriptorHeap>& descriptorHeap, D3D12_DESCRIPTOR_HEAP_TYPE type, uint32_t descriptorCount, D3D12_DESCRIPTOR_HEAP_FLAGS flags)
@@ -94,23 +101,26 @@ namespace SaplingEngine
 	/**
 	 * \brief	获取对象常量缓冲区描述符堆
 	 */
-	Dx12DescriptorManager::Dx12DescriptorHeap* Dx12DescriptorManager::GetObjectCbvDescriptorHeap()
+	void Dx12DescriptorManager::GetObjectCbvDescriptorHeap(ComPtr<ID3D12DescriptorHeap>& descriptorHeap, Dx12UploadBuffer*& pUploadBuffer)
 	{
 		if (objectCbvDescriptorHeaps.empty())
 		{
 			auto* pDevice = GraphicsManager::GetDx12Device();
 
 			//创建描述符堆
-			auto* pCbvDescriptorHeap = new Dx12DescriptorHeap(ObjectCbvDescriptorCount * (ObjectCommonCbSize + ObjectSpecialCbSize));
-			auto bufferLocation = pCbvDescriptorHeap->UploadBuffer.GetGpuVirtualAddress();
+			CreateDescriptorHeap(pDevice, descriptorHeap, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, ObjectCbvDescriptorCount * 2, D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE);
 
-			//创建通用数据的常量缓冲区描述符
+			//创建上传缓冲区
+			pUploadBuffer = new Dx12UploadBuffer(ObjectCbvDescriptorCount * (ObjectCommonCbSize + ObjectSpecialCbSize));
+
+			//创建描述符
 			D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc;
+			auto bufferLocation = pUploadBuffer->GetGpuVirtualAddress();
 			for (uint32_t index = 0; index < ObjectCbvDescriptorCount; ++index)
 			{
 				cbvDesc.BufferLocation = bufferLocation;
 				cbvDesc.SizeInBytes = ObjectCommonCbSize;
-				pDevice->CreateConstantBufferView(&cbvDesc, GetCPUHandleFromDescriptorHeap(pCbvDescriptorHeap->DescriptorHeap.Get(), index, cbvSrvDescriptorSize));
+				pDevice->CreateConstantBufferView(&cbvDesc, GetCPUHandleFromDescriptorHeap(descriptorHeap.Get(), index, cbvSrvDescriptorSize));
 
 				bufferLocation += ObjectCommonCbSize;
 			}
@@ -120,25 +130,51 @@ namespace SaplingEngine
 			{
 				cbvDesc.BufferLocation = bufferLocation;
 				cbvDesc.SizeInBytes = ObjectSpecialCbSize;
-				pDevice->CreateConstantBufferView(&cbvDesc, GetCPUHandleFromDescriptorHeap(pCbvDescriptorHeap->DescriptorHeap.Get(), ObjectCbvDescriptorCount + index, cbvSrvDescriptorSize));
+				pDevice->CreateConstantBufferView(&cbvDesc, GetCPUHandleFromDescriptorHeap(descriptorHeap.Get(), ObjectCbvDescriptorCount + index, cbvSrvDescriptorSize));
 
 				bufferLocation += ObjectSpecialCbSize;
 			}
-
-			return pCbvDescriptorHeap;
 		}
 		else
 		{
-			auto pCbvDescriptorHeap = *objectCbvDescriptorHeaps.rbegin();
+			descriptorHeap = *objectCbvDescriptorHeaps.rbegin();
+			pUploadBuffer = *objectCbUploadBuffers.rbegin();
 			objectCbvDescriptorHeaps.pop_back();
-			return pCbvDescriptorHeap;
+			objectCbUploadBuffers.pop_back();
 		}
 	}
 	
 	/**
 	 * \brief	归还对象常量缓冲区描述符堆
 	 */
-	void Dx12DescriptorManager::ReturnObjectCbvDescriptorHeap(Dx12DescriptorHeap* pDescriptorHeap)
+	void Dx12DescriptorManager::ReturnObjectCbvDescriptorHeap(ComPtr<ID3D12DescriptorHeap>& descriptorHeap, Dx12UploadBuffer* pUploadBuffer)
 	{
+		objectCbvDescriptorHeaps.push_back(descriptorHeap);
+		objectCbUploadBuffers.push_back(pUploadBuffer);
+	}
+	
+	/**
+	 * \brief	创建Pass常量缓冲区描述符堆
+	 */
+	void Dx12DescriptorManager::CreatePassCbvDescriptorHeap()
+	{
+		auto* pDevice = GraphicsManager::GetDx12Device();
+
+		CreateDescriptorHeap(pDevice, passCbvDescriptorHeap, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, PassCbvDescriptorCount, D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE);
+
+		//创建上传缓冲区
+		passCbUploadBuffer = new Dx12UploadBuffer(PassCbvDescriptorCount * PassCommonCbSize);
+
+		//创建通用数据的常量缓冲区描述符
+		D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc;
+		auto bufferLocation = passCbUploadBuffer->GetGpuVirtualAddress();
+		for (uint32_t index = 0; index < PassCbvDescriptorCount; ++index)
+		{
+			cbvDesc.BufferLocation = bufferLocation;
+			cbvDesc.SizeInBytes = PassCommonCbSize;
+			pDevice->CreateConstantBufferView(&cbvDesc, GetCPUHandleFromDescriptorHeap(passCbvDescriptorHeap.Get(), index, cbvSrvDescriptorSize));
+
+			bufferLocation += PassCommonCbSize;
+		}
 	}
 }

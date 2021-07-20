@@ -96,16 +96,18 @@ namespace SaplingEngine
 		//需要切换渲染管线状态
 		pCommandList->SetPipelineState(GraphicsManager::GetPipelineState(ShadowCasterHashValue));
 		pCommandList->SetGraphicsRootSignature(GraphicsManager::GetRootSignature(ShadowCasterHashValue));
-		pCommandList->SetGraphicsRootConstantBufferView(2, BufferManager::GetShadowPassCbAddress());
+		pCommandList->SetGraphicsRootConstantBufferView(2, Dx12DescriptorManager::GetShadowPassCbAddress());
 
 		//绘制阴影
 		auto& renderItems = RenderPipeline::GetRenderItems();
-		for (auto iter = renderItems.begin(); iter != renderItems.end(); ++iter)
+		for (auto iter1 = renderItems.begin(); iter1 != renderItems.end(); ++iter1)
 		{
-			auto items = iter->second;
-			for (auto iter2 = items.begin(); iter2 != items.end(); ++iter2)
+			for (auto iter2 = iter1->second.elements.begin(); iter2 != iter1->second.elements.end(); ++iter2)
 			{
-				CommandManager::DrawIndexedInstancedForShadowMap(*iter2);
+				for (auto iter3 = iter2->Renderers.begin(); iter3 != iter2->Renderers.end(); ++iter3)
+				{
+					CommandManager::DrawIndexedInstancedForShadowMap(*iter3);
+				}
 			}
 		}
 

@@ -8,7 +8,7 @@ namespace SaplingEngine
 	class Dx12UploadBuffer
 	{
 	public:
-		Dx12UploadBuffer(uint32_t totalSize)
+		Dx12UploadBuffer(uint64_t totalSize)
 		{
 			D3D12_HEAP_PROPERTIES headProperties
 			{
@@ -23,7 +23,7 @@ namespace SaplingEngine
 			{
 				D3D12_RESOURCE_DIMENSION_BUFFER,
 				0,
-				(uint64_t)totalSize,
+				totalSize,
 				1,
 				1,
 				1,
@@ -67,7 +67,7 @@ namespace SaplingEngine
 			return m_UploadBuffer->GetGPUVirtualAddress() + offset;
 		}
 
-		void CopyData(uint32_t offset, const void* pData, uint32_t dataSize)
+		void CopyData(const void* pData, uint32_t dataSize, uint32_t offset)
 		{
 			memcpy(m_MappedDataPtr + offset, pData, dataSize);
 		}

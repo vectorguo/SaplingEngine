@@ -12,8 +12,7 @@ namespace SaplingEngine
 {
 	uint32_t					RenderPipeline::screenWidth = 0;
 	uint32_t					RenderPipeline::screenHeight = 0;
-	std::map<size_t, std::vector<Renderer*>> RenderPipeline::renderItems;
-	std::map<size_t, RenderPipeline::RenderItemList> RenderPipeline::renderItemsMap;
+	std::map<size_t, RenderPipeline::RenderItemContainer> RenderPipeline::renderItemsMap;
 	std::vector<RenderPass*>	RenderPipeline::renderPasses;
 	RenderOpaquePass*			RenderPipeline::opaquePassPtr = nullptr;
 	ShadowPass*					RenderPipeline::shadowPassPtr = nullptr;
@@ -64,9 +63,6 @@ namespace SaplingEngine
 	{
 		PreRender();
 
-		//更新Object常量缓冲区数据
-		UpdateObjectCbvData();
-
 		//执行Render Pass
 		const auto& cameras = CameraManager::GetCameras();
 		for (auto* pCamera : cameras)
@@ -74,7 +70,7 @@ namespace SaplingEngine
 			if (pCamera->IsEnabled())
 			{
 				//更新Pass常量缓冲区数据
-				UpdatePassCbvData(pCamera);
+				UploadPassCbvData(pCamera);
 
 				//渲染Pass
 				for (auto iter = renderPasses.begin(); iter != renderPasses.end(); ++iter)
@@ -219,6 +215,9 @@ namespace SaplingEngine
 				pRenderPass->PreRender();
 			}
 		}
+
+		//更新Object常量缓冲区数据
+		UploadObjectCbvData();
 	}
 
 	/**
@@ -242,33 +241,25 @@ namespace SaplingEngine
 	/**
 	 * \brief	更新物体常量缓冲区数据
 	 */
-	void RenderPipeline::UpdateObjectCbvData()
+	void RenderPipeline::UploadObjectCbvData()
 	{
-		size_t specialDataSize;
-		for (auto iter1 = renderItems.begin(); iter1 != renderItems.end(); ++iter1)
+		for (auto iter = renderItemsMap.begin(); iter != renderItemsMap.end(); ++iter)
 		{
-			const auto& shaderHashValue = iter1->first;
-			const auto& items = iter1->second;
-			for (auto iter2 = items.begin(); iter2 != items.end(); ++iter2)
-			{
-				auto* pRenderer = *iter2;
-				const auto* pCommonData = CommonOcbData::FillOcbData(pRenderer->GetTransform());
-				const auto* pSpecialData = pRenderer->FillSpecialOcbData(specialDataSize, pRenderer->GetMaterial());
-				BufferManager::FillOcbData(pRenderer->GetCbvIndex(), pCommonData, CommonOcbData::DataSize, pSpecialData, specialDataSize);
-			}
+			iter->second.UploadRenderData();
 		}
 	}
 
 	/**
 	 * \brief	更新Pass常量缓冲区数据
 	 */
-	void RenderPipeline::UpdatePassCbvData(Camera* pCamera)
+	void RenderPipeline::UploadPassCbvData(Camera* pCamera)
 	{
-		BufferManager::FillPcbData(CommonPcbData::FillPcbData(pCamera), CommonPcbData::DataSize);
+		auto* pUploadBuffer = Dx12DescriptorManager::GetPassCbUploadBuffer();
+		pUploadBuffer->CopyData(CommonPcbData::FillPcbData(pCamera), CommonPcbData::DataSize, 0);
 
 		if (shadowPassPtr && shadowPassPtr->IsActive())
 		{
-			BufferManager::FillShadowPcbData(CommonPcbData::FillShadowPcbData(shadowPassPtr), CommonPcbData::ShadowDataSize);
+			pUploadBuffer->CopyData(CommonPcbData::FillShadowPcbData(shadowPassPtr), CommonPcbData::ShadowDataSize, Dx12DescriptorManager::PassCommonCbSize);
 		}
 	}
 }

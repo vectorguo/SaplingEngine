@@ -34,9 +34,9 @@ namespace SaplingEngine
 
 		//获取所有渲染目标
 		auto& renderItems = RenderPipeline::GetRenderItems();
-		for (auto iter = renderItems.begin(); iter != renderItems.end(); ++iter)
+		for (auto iter1 = renderItems.begin(); iter1 != renderItems.end(); ++iter1)
 		{
-			const auto shaderHashValue = iter->first;
+			const auto shaderHashValue = iter1->first;
 
 			//需要切换渲染管线状态
 			pCommandList->SetPipelineState(GraphicsManager::GetPipelineState(shaderHashValue));
@@ -44,14 +44,16 @@ namespace SaplingEngine
 			//设置跟描述符表和常量缓冲区，将常量缓冲区绑定到渲染流水线上
 			pCommandList->SetDescriptorHeaps(1, BufferManager::GetSrvDescriptorHeaps());
 			pCommandList->SetGraphicsRootSignature(GraphicsManager::GetRootSignature(shaderHashValue));
-			pCommandList->SetGraphicsRootConstantBufferView(2, BufferManager::GetPassCbAddress());
+			pCommandList->SetGraphicsRootConstantBufferView(2, Dx12DescriptorManager::GetPassCbAddress());
 			pCommandList->SetGraphicsRootDescriptorTable(3, pShadowPass->GetGpuDescriptor());
 
 			//绘制物体
-			auto items = iter->second;
-			for (auto iter2 = items.begin(); iter2 != items.end(); ++iter2)
+			for (auto iter2 = iter1->second.elements.begin(); iter2 != iter1->second.elements.end(); ++iter2)
 			{
-				CommandManager::DrawIndexedInstanced(*iter2);
+				for (auto iter3 = iter2->Renderers.begin(); iter3 != iter2->Renderers.end(); ++iter3)
+				{
+					CommandManager::DrawIndexedInstanced(*iter3);
+				}
 			}
 		}
 

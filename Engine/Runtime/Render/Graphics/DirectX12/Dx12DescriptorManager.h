@@ -10,18 +10,6 @@ namespace SaplingEngine
 		friend class Dx12GraphicsManager;
 
 	public:
-		struct Dx12DescriptorHeap
-		{
-			Dx12DescriptorHeap(uint32_t uploadBufferSize) : UploadBuffer(uploadBufferSize)
-			{
-				CreateDescriptorHeap(DescriptorHeap, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, ObjectCbvDescriptorCount, D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE);
-			}
-
-			ComPtr<ID3D12DescriptorHeap> DescriptorHeap;
-			Dx12UploadBuffer UploadBuffer;
-		};
-
-	public:
 		/**
 		 * \brief	初始化
 		 */
@@ -41,18 +29,55 @@ namespace SaplingEngine
 		/**
 		 * \brief	获取对象常量缓冲区描述符堆
 		 */
-		static Dx12DescriptorHeap* GetObjectCbvDescriptorHeap();
+		static void GetObjectCbvDescriptorHeap(ComPtr<ID3D12DescriptorHeap>& descriptorHeap, Dx12UploadBuffer*& pUploadBuffer);
 
 		/**
 		 * \brief	归还对象常量缓冲区描述符堆
 		 */
-		static void ReturnObjectCbvDescriptorHeap(Dx12DescriptorHeap* pDescriptorHeap);
+		static void ReturnObjectCbvDescriptorHeap(ComPtr<ID3D12DescriptorHeap>& descriptorHeap, Dx12UploadBuffer* pUploadBuffer);
+
+		/**
+		 * \brief	获取Pass上传缓冲区指针(不需要归还)
+		 */
+		static Dx12UploadBuffer* GetPassCbUploadBuffer()
+		{
+			return passCbUploadBuffer;
+		}
+
+		/**
+		 * \brief	获取Pass常量缓冲区地址
+		 * \return	常量Pass缓冲区地址
+		 */
+		static D3D12_GPU_VIRTUAL_ADDRESS GetPassCbAddress()
+		{
+			return passCbUploadBuffer->GetGpuVirtualAddress();
+		}
+
+		/**
+		 * \brief	获取ShadowPass常量缓冲区地址
+		 * \return	常量ShadowPass缓冲区地址
+		 */
+		static D3D12_GPU_VIRTUAL_ADDRESS GetShadowPassCbAddress()
+		{
+			return passCbUploadBuffer->GetGpuVirtualAddress(PassCommonCbSize);
+		}
+
+	private:
+		/**
+		 * \brief	创建Pass常量缓冲区描述符堆
+		 */
+		static void CreatePassCbvDescriptorHeap();
 
 	public:
 		/**
 		 * \brief	物体常量缓冲区描述符堆中描述符的数量
 		 */
 		static constexpr uint32_t ObjectCbvDescriptorCount = 100;
+
+		/**
+		 * \brief	Pass常量缓冲区描述符堆中描述符的数量
+		 */
+		static constexpr uint32_t PassCbvDescriptorCount = 2;
 
 		/**
 		 * \brief	物体通用常量缓冲区大小
@@ -108,7 +133,22 @@ namespace SaplingEngine
 		/**
 		 * \brief	物体常量缓冲区描述符堆列表
 		 */
-		static std::vector<Dx12DescriptorHeap*> objectCbvDescriptorHeaps;
+		static std::vector<ComPtr<ID3D12DescriptorHeap>> objectCbvDescriptorHeaps;
+
+		/**
+		 * \brief	物体常量缓冲区对应的上传缓冲区列表
+		 */
+		static std::vector<Dx12UploadBuffer*> objectCbUploadBuffers;
+
+		/**
+		 * \brief	Pass常量缓冲区描述符堆列表
+		 */
+		static ComPtr<ID3D12DescriptorHeap> passCbvDescriptorHeap;
+
+		/**
+		 * \brief	Pass常量缓冲区对应的上传缓冲区
+		 */
+		static Dx12UploadBuffer* passCbUploadBuffer;
 	};
 
 	using DescriptorManager = Dx12DescriptorManager;

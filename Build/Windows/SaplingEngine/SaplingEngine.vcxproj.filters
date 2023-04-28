@@ -159,9 +159,6 @@
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\DDSTextureLoader.cpp">
       <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12BufferManager.cpp">
-      <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CommandManager.cpp">
       <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
     </ClCompile>
@@ -330,9 +327,6 @@
       <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\DDSTextureLoader.h">
-      <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12BufferManager.h">
       <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CommandManager.h">

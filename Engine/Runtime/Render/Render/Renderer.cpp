@@ -1,10 +1,10 @@
 #include "Renderer.h"
 
-#include "GameObject/GameObject.h"
-#include "Render/Graphics/MaterialManager.h"
-#include "Render/Graphics/MeshManager.h"
-#include "Render/RenderPipeline/RenderPipeline.h"
-#include "Scene/Scene.h"
+#include "Runtime/GameObject/GameObject.h"
+#include "Runtime/Render/Graphics/MaterialManager.h"
+#include "Runtime/Render/Graphics/MeshManager.h"
+#include "Runtime/Render/RenderPipeline/RenderPipeline.h"
+#include "Runtime/Scene/Scene.h"
 
 namespace SaplingEngine
 {

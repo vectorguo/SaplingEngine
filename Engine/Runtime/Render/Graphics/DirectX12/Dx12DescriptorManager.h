@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Render/Graphics/DirectX12/Dx12UploadBuffer.h"
-#include "SaplingEnginePch.h"
+#include "Runtime/SaplingEnginePch.h"
+#include "Runtime/Render/Graphics/DirectX12/Dx12UploadBuffer.h"
 
 namespace SaplingEngine
 {

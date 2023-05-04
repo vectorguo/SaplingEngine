@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Render/Graphics/DirectX12/Dx12CommandManager.h"
-#include "Render/Graphics/DirectX12/Dx12DescriptorManager.h"
-#include "Render/Graphics/DirectX12/Dx12GraphicsManager.h"
-#include "Render/Renderer/Renderer.h"
-#include "SaplingEnginePch.h"
+#include "Runtime/SaplingEnginePch.h"
+#include "Runtime/Render/Graphics/DirectX12/Dx12CommandManager.h"
+#include "Runtime/Render/Graphics/DirectX12/Dx12DescriptorManager.h"
+#include "Runtime/Render/Graphics/DirectX12/Dx12GraphicsManager.h"
+#include "Runtime/Render/Render/Renderer.h"
 
 namespace SaplingEngine
 {

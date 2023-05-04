@@ -1,7 +1,7 @@
 #pragma once
 
-#include "GameObject/Component.h"
-#include "GameObject/Transform.h"
+#include "Runtime/GameObject/Component.h"
+#include "Runtime/GameObject/Transform.h"
 
 namespace SaplingEngine
 {

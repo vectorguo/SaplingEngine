@@ -1,10 +1,10 @@
-#include "Application/Setting.h"
-#include "GameObject/Component.h"
-#include "GameObject/ComponentFactory.h"
-#include "GameObject/GameObject.h"
-#include "GameObject/Transform.h"
-#include "Scene/Scene.h"
-#include "Scene/SceneManager.h"
+#include "Runtime/Application/Setting.h"
+#include "Runtime/GameObject/Component.h"
+#include "Runtime/GameObject/ComponentFactory.h"
+#include "Runtime/GameObject/GameObject.h"
+#include "Runtime/GameObject/Transform.h"
+#include "Runtime/Scene/Scene.h"
+#include "Runtime/Scene/SceneManager.h"
 
 namespace SaplingEngine
 {

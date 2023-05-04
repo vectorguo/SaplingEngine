@@ -1,5 +1,5 @@
-#include "GameObject.h"
-#include "GameObject/Component.h"
+#include "Runtime/GameObject/Component.h"
+#include "Runtime/GameObject/GameObject.h"
 
 namespace SaplingEngine
 {

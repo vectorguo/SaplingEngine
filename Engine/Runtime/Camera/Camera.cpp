@@ -1,7 +1,7 @@
-#include "Application/Setting.h"
-#include "Camera.h"
-#include "CameraManager.h"
-#include "GameObject/GameObject.h"
+#include "Runtime/Application/Setting.h"
+#include "Runtime/Camera/Camera.h"
+#include "Runtime/Camera/CameraManager.h"
+#include "Runtime/GameObject/GameObject.h"
 
 namespace SaplingEngine
 {

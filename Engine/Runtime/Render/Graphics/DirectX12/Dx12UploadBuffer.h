@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Render/Graphics/DirectX12/Dx12GraphicsManager.h"
-#include "Render/Graphics/DirectX12/Dx12Utility.h"
+#include "Runtime/Render/Graphics/DirectX12/Dx12GraphicsManager.h"
+#include "Runtime/Render/Graphics/DirectX12/Dx12Utility.h"
 
 namespace SaplingEngine
 {

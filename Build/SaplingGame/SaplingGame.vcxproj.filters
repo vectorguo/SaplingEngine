@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Game">
+      <UniqueIdentifier>{eaf3726f-cac2-4b7b-8bc5-a07c962682d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Character">
+      <UniqueIdentifier>{4d0cd1f6-62ad-4751-9008-658064270a3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Input">
+      <UniqueIdentifier>{74656c09-a415-4871-a9ac-48c6eba951ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Utility">
+      <UniqueIdentifier>{7cc8952e-9514-4ec2-86c9-28d331b1ad89}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Game\Character\Character.cpp">
+      <Filter>Game\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Game\Input\InputSystem.cpp">
+      <Filter>Game\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Game\Utility\WarcraftComponentFactory.cpp">
+      <Filter>Game\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Game\WarcraftGameMain.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Game\GameMain.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Game\Character\Character.h">
+      <Filter>Game\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Game\Input\InputSystem.h">
+      <Filter>Game\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Game\WarcraftEnum.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Game\WarcraftGameMain.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

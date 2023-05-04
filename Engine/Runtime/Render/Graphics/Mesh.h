@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Render/Graphics/VertexData.h"
-#include "Resource/ResourceManager.h"
+#include "Runtime/Render/Graphics/VertexData.h"
+#include "Runtime/Resource/ResourceManager.h"
 
 namespace SaplingEngine
 {

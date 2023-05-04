@@ -1,11 +1,11 @@
-#include "Application/Setting.h"
-#include "Render/Graphics/DirectX12/Dx12DescriptorManager.h"
-#include "Render/Graphics/Light.h"
-#include "Render/Graphics/LightManager.h"
-#include "Render/RenderPipeline/RenderPipeline.h"
-#include "Render/RenderPipeline/RenderPass/ShadowPass.h"
-#include "Scene/Scene.h"
-#include "Scene/SceneManager.h"
+#include "Runtime/Application/Setting.h"
+#include "Runtime/Render/Graphics/DirectX12/Dx12DescriptorManager.h"
+#include "Runtime/Render/Graphics/Light.h"
+#include "Runtime/Render/Graphics/LightManager.h"
+#include "Runtime/Render/RenderPipeline/RenderPipeline.h"
+#include "Runtime/Render/RenderPipeline/RenderPass/ShadowPass.h"
+#include "Runtime/Scene/Scene.h"
+#include "Runtime/Scene/SceneManager.h"
 
 namespace SaplingEngine
 {

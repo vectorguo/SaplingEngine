@@ -1,6 +1,6 @@
 #include "CameraManager.h"
 
-#include "Application/Setting.h"
+#include "Runtime/Application/Setting.h"
 
 namespace SaplingEngine
 {

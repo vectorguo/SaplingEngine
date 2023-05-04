@@ -20,7 +20,7 @@
 #include "Render/Graphics/Texture2D.h"
 #include "Render/Graphics/TextureManager.h"
 
-#include "Render/Renderer/MeshRenderer.h"
+#include "Render/Render/MeshRenderer.h"
 
 #include "Render/RenderPipeline/RenderPipeline.h"
 

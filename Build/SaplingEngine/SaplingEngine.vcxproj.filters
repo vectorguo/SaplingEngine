@@ -1,0 +1,411 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{320ca286-d791-4937-9bd8-4b5572408eed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Runtime">
+      <UniqueIdentifier>{84f96627-64f2-4a47-9aab-32cdf9bb3ab1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Runtime\Application">
+      <UniqueIdentifier>{6bfd7797-6a0d-4327-9ef1-ea579b58917f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Runtime\Camera">
+      <UniqueIdentifier>{698e9e5a-5b78-43eb-95ba-a28017feb24d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Runtime\GameObject">
+      <UniqueIdentifier>{64162c61-95cd-469f-afe4-884bc9c58cf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Runtime\Input">
+      <UniqueIdentifier>{caa134a7-084b-40eb-b103-96593a16b69d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Runtime\Math">
+      <UniqueIdentifier>{f1474e60-dbb0-4137-96f9-8c469e77b9b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Runtime\Memory">
+      <UniqueIdentifier>{a3378162-38ab-4f16-8c5a-9cd7078d8f8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Runtime\Process">
+      <UniqueIdentifier>{d28abcab-33e3-40f3-b570-d2466ff29f49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Runtime\Render">
+      <UniqueIdentifier>{8e6fc39e-c118-46cd-930e-6e9d83aa9471}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Runtime\Resource">
+      <UniqueIdentifier>{45230e91-7c86-4b52-ad13-2b1bc27c5b76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Runtime\Scene">
+      <UniqueIdentifier>{4915a3b9-c3c2-4962-a3b7-874026604e6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Runtime\Utility">
+      <UniqueIdentifier>{321bcd3b-5bd9-445d-bfdc-3fa2d0efc47d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Runtime\Camera\Cinemachine">
+      <UniqueIdentifier>{4ac1a604-f19f-4d3f-85bb-2011dbf53105}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Runtime\Render\Graphics">
+      <UniqueIdentifier>{bcbecce2-e8a1-46a0-8ffe-14e23a509c49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Runtime\Render\Graphics\DirectX12">
+      <UniqueIdentifier>{7c638023-cfdc-405b-9879-672f6c817b0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Runtime\Render\Render">
+      <UniqueIdentifier>{19058a79-3044-44e2-83fc-f1aafab3cdce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Runtime\Render\RenderPipeline">
+      <UniqueIdentifier>{d617e820-dad9-4680-a225-82ed878ac2dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Runtime\Render\RenderPipeline\RenderPass">
+      <UniqueIdentifier>{47c88f19-854e-45de-b8aa-a4b47c5c5dbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Runtime\Utility\RapidXml">
+      <UniqueIdentifier>{f4f45f53-d424-4c78-a673-4f1955e8cdbe}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Engine\Runtime\Application\Application.cpp">
+      <Filter>Engine\Runtime\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Application\Setting.cpp">
+      <Filter>Engine\Runtime\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Camera\Camera.cpp">
+      <Filter>Engine\Runtime\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Camera\CameraManager.cpp">
+      <Filter>Engine\Runtime\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Camera\Cinemachine\CinemachineBrain.cpp">
+      <Filter>Engine\Runtime\Camera\Cinemachine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Camera\Cinemachine\CinemachineVirtualCamera.cpp">
+      <Filter>Engine\Runtime\Camera\Cinemachine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\GameObject\Component.cpp">
+      <Filter>Engine\Runtime\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\GameObject\ComponentFactory.cpp">
+      <Filter>Engine\Runtime\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\GameObject\GameObject.cpp">
+      <Filter>Engine\Runtime\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\GameObject\Transform.cpp">
+      <Filter>Engine\Runtime\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Input\Input.cpp">
+      <Filter>Engine\Runtime\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Math\Color.cpp">
+      <Filter>Engine\Runtime\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Math\Matrix4x4.cpp">
+      <Filter>Engine\Runtime\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Math\Quaternion.cpp">
+      <Filter>Engine\Runtime\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Math\Vector2.cpp">
+      <Filter>Engine\Runtime\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Math\Vector3.cpp">
+      <Filter>Engine\Runtime\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Math\Vector4.cpp">
+      <Filter>Engine\Runtime\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Process\Process.cpp">
+      <Filter>Engine\Runtime\Process</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Process\ProcessManager.cpp">
+      <Filter>Engine\Runtime\Process</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\DDSTextureLoader.cpp">
+      <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CommandManager.cpp">
+      <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12DescriptorManager.cpp">
+      <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12GraphicsManager.cpp">
+      <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12Utility.cpp">
+      <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\ConstantBufferData.cpp">
+      <Filter>Engine\Runtime\Render\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\Light.cpp">
+      <Filter>Engine\Runtime\Render\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\LightManager.cpp">
+      <Filter>Engine\Runtime\Render\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\Material.cpp">
+      <Filter>Engine\Runtime\Render\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\MaterialManager.cpp">
+      <Filter>Engine\Runtime\Render\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\Mesh.cpp">
+      <Filter>Engine\Runtime\Render\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\MeshManager.cpp">
+      <Filter>Engine\Runtime\Render\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\Shader.cpp">
+      <Filter>Engine\Runtime\Render\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\ShaderManager.cpp">
+      <Filter>Engine\Runtime\Render\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\Texture2D.cpp">
+      <Filter>Engine\Runtime\Render\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\TextureManager.cpp">
+      <Filter>Engine\Runtime\Render\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\Render\MeshRenderer.cpp">
+      <Filter>Engine\Runtime\Render\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\Render\Renderer.cpp">
+      <Filter>Engine\Runtime\Render\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\RenderPipeline\RenderPipeline.cpp">
+      <Filter>Engine\Runtime\Render\RenderPipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\RenderOpaquePass.cpp">
+      <Filter>Engine\Runtime\Render\RenderPipeline\RenderPass</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\RenderPass.cpp">
+      <Filter>Engine\Runtime\Render\RenderPipeline\RenderPass</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\ShadowPass.cpp">
+      <Filter>Engine\Runtime\Render\RenderPipeline\RenderPass</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\SkyBoxPass.cpp">
+      <Filter>Engine\Runtime\Render\RenderPipeline\RenderPass</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Resource\ResourceLoader.cpp">
+      <Filter>Engine\Runtime\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Resource\ResourceManager.cpp">
+      <Filter>Engine\Runtime\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Scene\Scene.cpp">
+      <Filter>Engine\Runtime\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Scene\SceneManager.cpp">
+      <Filter>Engine\Runtime\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Utility\Time.cpp">
+      <Filter>Engine\Runtime\Utility</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Engine\Runtime\Application\Application.h">
+      <Filter>Engine\Runtime\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Application\Setting.h">
+      <Filter>Engine\Runtime\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Camera\Camera.h">
+      <Filter>Engine\Runtime\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Camera\CameraManager.h">
+      <Filter>Engine\Runtime\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Camera\Cinemachine\CinemachineBrain.h">
+      <Filter>Engine\Runtime\Camera\Cinemachine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Camera\Cinemachine\CinemachineVirtualCamera.h">
+      <Filter>Engine\Runtime\Camera\Cinemachine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\GameObject\Component.h">
+      <Filter>Engine\Runtime\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\GameObject\ComponentFactory.h">
+      <Filter>Engine\Runtime\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\GameObject\ComponentType.h">
+      <Filter>Engine\Runtime\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\GameObject\GameObject.h">
+      <Filter>Engine\Runtime\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\GameObject\Transform.h">
+      <Filter>Engine\Runtime\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Input\Input.h">
+      <Filter>Engine\Runtime\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Math\Color.h">
+      <Filter>Engine\Runtime\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Math\Math.h">
+      <Filter>Engine\Runtime\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Math\Matrix4x4.h">
+      <Filter>Engine\Runtime\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Math\Quaternion.h">
+      <Filter>Engine\Runtime\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Math\Vector2.h">
+      <Filter>Engine\Runtime\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Math\Vector3.h">
+      <Filter>Engine\Runtime\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Math\Vector4.h">
+      <Filter>Engine\Runtime\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Memory\Allocator.h">
+      <Filter>Engine\Runtime\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Memory\SharedPtr.h">
+      <Filter>Engine\Runtime\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Process\Process.h">
+      <Filter>Engine\Runtime\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Process\ProcessManager.h">
+      <Filter>Engine\Runtime\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\d3dx12.h">
+      <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\DDSTextureLoader.h">
+      <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CommandManager.h">
+      <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12DescriptorManager.h">
+      <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12GraphicsManager.h">
+      <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12UploadBuffer.h">
+      <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12Utility.h">
+      <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\ConstantBufferData.h">
+      <Filter>Engine\Runtime\Render\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\Light.h">
+      <Filter>Engine\Runtime\Render\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\LightManager.h">
+      <Filter>Engine\Runtime\Render\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\Material.h">
+      <Filter>Engine\Runtime\Render\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\MaterialManager.h">
+      <Filter>Engine\Runtime\Render\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\MaterialProperty.h">
+      <Filter>Engine\Runtime\Render\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\Mesh.h">
+      <Filter>Engine\Runtime\Render\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\MeshManager.h">
+      <Filter>Engine\Runtime\Render\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\Shader.h">
+      <Filter>Engine\Runtime\Render\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\ShaderManager.h">
+      <Filter>Engine\Runtime\Render\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\Texture2D.h">
+      <Filter>Engine\Runtime\Render\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\TextureManager.h">
+      <Filter>Engine\Runtime\Render\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\VertexData.h">
+      <Filter>Engine\Runtime\Render\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Render\MeshRenderer.h">
+      <Filter>Engine\Runtime\Render\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Render\Renderer.h">
+      <Filter>Engine\Runtime\Render\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\RenderPipeline\RenderPipeline.h">
+      <Filter>Engine\Runtime\Render\RenderPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\RenderOpaquePass.h">
+      <Filter>Engine\Runtime\Render\RenderPipeline\RenderPass</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\RenderPass.h">
+      <Filter>Engine\Runtime\Render\RenderPipeline\RenderPass</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\ShadowPass.h">
+      <Filter>Engine\Runtime\Render\RenderPipeline\RenderPass</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\SkyBoxPass.h">
+      <Filter>Engine\Runtime\Render\RenderPipeline\RenderPass</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Resource\ResourceAsyncRequest.h">
+      <Filter>Engine\Runtime\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Resource\ResourceLoader.h">
+      <Filter>Engine\Runtime\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Resource\ResourceManager.h">
+      <Filter>Engine\Runtime\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Scene\Scene.h">
+      <Filter>Engine\Runtime\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Scene\SceneManager.h">
+      <Filter>Engine\Runtime\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Utility\Exception.h">
+      <Filter>Engine\Runtime\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Utility\Log.h">
+      <Filter>Engine\Runtime\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Utility\Object.h">
+      <Filter>Engine\Runtime\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Utility\Singleton.h">
+      <Filter>Engine\Runtime\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Utility\Time.h">
+      <Filter>Engine\Runtime\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Utility\Utility.h">
+      <Filter>Engine\Runtime\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Utility\RapidXml\rapidxml.hpp">
+      <Filter>Engine\Runtime\Utility\RapidXml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Utility\RapidXml\rapidxml_iterators.hpp">
+      <Filter>Engine\Runtime\Utility\RapidXml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Utility\RapidXml\rapidxml_print.hpp">
+      <Filter>Engine\Runtime\Utility\RapidXml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Utility\RapidXml\rapidxml_utils.hpp">
+      <Filter>Engine\Runtime\Utility\RapidXml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\SaplingEngineHeader.h">
+      <Filter>Engine\Runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\SaplingEnginePch.h">
+      <Filter>Engine\Runtime</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

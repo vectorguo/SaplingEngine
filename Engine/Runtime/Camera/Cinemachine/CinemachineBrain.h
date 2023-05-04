@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Camera/Camera.h"
-#include "GameObject/Component.h"
+#include "Runtime/Camera/Camera.h"
+#include "Runtime/GameObject/Component.h"
 
 namespace SaplingEngine
 {

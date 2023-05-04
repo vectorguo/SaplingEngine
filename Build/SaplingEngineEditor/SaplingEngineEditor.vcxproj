@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{e741eb74-02e5-4956-b209-2f71e21b0500}</ProjectGuid>
+    <RootNamespace>SaplingEngineEditor</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>../../Output/SaplingEngineEditor/$(Configuration)\</OutDir>
+    <IntDir>../../Temp/SaplingEngineEditor/$(Platform)\$(Configuration)\</IntDir>
+    <IncludePath>../../;../../Engine/;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>../../Output/SaplingEngineEditor/$(Configuration)\</OutDir>
+    <IntDir>../../Temp/SaplingEngineEditor/$(Platform)\$(Configuration)\</IntDir>
+    <IncludePath>../../;../../Engine/;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;SAPLING_EDITOR;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;SAPLING_EDITOR;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Engine\Editor\Application\EditorApplication.cpp" />
+    <ClCompile Include="..\..\Engine\Editor\Application\EditorSetting.cpp" />
+    <ClCompile Include="..\..\Engine\Editor\Camera\EditorCamera.cpp" />
+    <ClCompile Include="..\..\Engine\Editor\Input\EditorInputSystem.cpp" />
+    <ClCompile Include="..\..\Engine\Editor\Wrap\SaplingEngineWrap.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Application\Application.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Application\Setting.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Camera\Camera.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Camera\CameraManager.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Camera\Cinemachine\CinemachineBrain.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Camera\Cinemachine\CinemachineVirtualCamera.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\GameObject\Component.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\GameObject\ComponentFactory.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\GameObject\GameObject.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\GameObject\Transform.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Input\Input.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Math\Color.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Math\Matrix4x4.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Math\Quaternion.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Math\Vector2.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Math\Vector3.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Math\Vector4.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Process\Process.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Process\ProcessManager.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\ConstantBufferData.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\DDSTextureLoader.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CommandManager.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12DescriptorManager.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12GraphicsManager.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12Utility.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\Light.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\LightManager.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\Material.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\MaterialManager.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\Mesh.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\MeshManager.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\Shader.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\ShaderManager.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\Texture2D.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\TextureManager.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\RenderOpaquePass.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\RenderPass.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\ShadowPass.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\SkyBoxPass.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Render\RenderPipeline\RenderPipeline.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Render\Render\MeshRenderer.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Render\Render\Renderer.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Resource\ResourceLoader.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Resource\ResourceManager.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Scene\Scene.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Scene\SceneManager.cpp" />
+    <ClCompile Include="..\..\Engine\Runtime\Utility\Time.cpp" />
+    <ClCompile Include="..\..\Game\Character\Character.cpp" />
+    <ClCompile Include="..\..\Game\Input\InputSystem.cpp" />
+    <ClCompile Include="..\..\Game\Utility\WarcraftComponentFactory.cpp" />
+    <ClCompile Include="..\..\Game\WarcraftApplication.cpp" />
+    <ClCompile Include="..\..\Game\WarcraftGameMain.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Engine\Editor\Application\EditorApplication.h" />
+    <ClInclude Include="..\..\Engine\Editor\Application\EditorSetting.h" />
+    <ClInclude Include="..\..\Engine\Editor\Camera\EditorCamera.h" />
+    <ClInclude Include="..\..\Engine\Editor\Input\EditorInputSystem.h" />
+    <ClInclude Include="..\..\Engine\Editor\Utility\EditorUtility.h" />
+    <ClInclude Include="..\..\Engine\Editor\Wrap\SaplingEngineWrap.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Application\Application.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Application\Setting.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Camera\Camera.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Camera\CameraManager.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Camera\Cinemachine\CinemachineBrain.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Camera\Cinemachine\CinemachineVirtualCamera.h" />
+    <ClInclude Include="..\..\Engine\Runtime\GameObject\Component.h" />
+    <ClInclude Include="..\..\Engine\Runtime\GameObject\ComponentFactory.h" />
+    <ClInclude Include="..\..\Engine\Runtime\GameObject\ComponentType.h" />
+    <ClInclude Include="..\..\Engine\Runtime\GameObject\GameObject.h" />
+    <ClInclude Include="..\..\Engine\Runtime\GameObject\Transform.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Input\Input.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Math\Color.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Math\Math.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Math\Matrix4x4.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Math\Quaternion.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Math\Vector2.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Math\Vector3.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Math\Vector4.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Memory\Allocator.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Memory\SharedPtr.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Process\Process.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Process\ProcessManager.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\ConstantBufferData.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\d3dx12.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\DDSTextureLoader.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12CommandManager.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12DescriptorManager.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12GraphicsManager.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12UploadBuffer.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12Utility.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\Light.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\LightManager.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\Material.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\MaterialManager.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\MaterialProperty.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\Mesh.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\MeshManager.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\Shader.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\ShaderManager.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\Texture2D.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\TextureManager.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\VertexData.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\RenderOpaquePass.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\RenderPass.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\ShadowPass.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Render\RenderPipeline\RenderPass\SkyBoxPass.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Render\RenderPipeline\RenderPipeline.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Render\Render\MeshRenderer.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Render\Render\Renderer.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Resource\ResourceAsyncRequest.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Resource\ResourceLoader.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Resource\ResourceManager.h" />
+    <ClInclude Include="..\..\Engine\Runtime\SaplingEngineHeader.h" />
+    <ClInclude Include="..\..\Engine\Runtime\SaplingEnginePch.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Scene\Scene.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Scene\SceneManager.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Utility\Exception.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Utility\Log.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Utility\Object.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Utility\RapidXml\rapidxml.hpp" />
+    <ClInclude Include="..\..\Engine\Runtime\Utility\RapidXml\rapidxml_iterators.hpp" />
+    <ClInclude Include="..\..\Engine\Runtime\Utility\RapidXml\rapidxml_print.hpp" />
+    <ClInclude Include="..\..\Engine\Runtime\Utility\RapidXml\rapidxml_utils.hpp" />
+    <ClInclude Include="..\..\Engine\Runtime\Utility\Singleton.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Utility\Time.h" />
+    <ClInclude Include="..\..\Engine\Runtime\Utility\Utility.h" />
+    <ClInclude Include="..\..\Game\Character\Character.h" />
+    <ClInclude Include="..\..\Game\Input\InputSystem.h" />
+    <ClInclude Include="..\..\Game\WarcraftEnum.h" />
+    <ClInclude Include="..\..\Game\WarcraftGameMain.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

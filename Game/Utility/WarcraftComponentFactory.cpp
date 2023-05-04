@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject/ComponentFactory.h"
+#include "Runtime/GameObject/ComponentFactory.h"
 
 #include "Game/Character/Character.h"
 #include "Game/WarcraftEnum.h"

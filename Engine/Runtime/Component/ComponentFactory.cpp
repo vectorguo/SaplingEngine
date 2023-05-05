@@ -1,11 +1,12 @@
+#include "Runtime/Component/Component.h"
+#include "Runtime/Component/ComponentFactory.h"
+#include "Runtime/Component/Transform.h"
+#include "Runtime/Component/Light/Light.h"
+#include "Runtime/Component/Renderer/MeshRenderer.h"
+
 #include "Runtime/Camera/Camera.h"
 #include "Runtime/Camera/Cinemachine/CinemachineBrain.h"
 #include "Runtime/Camera/Cinemachine/CinemachineVirtualCamera.h"
-#include "Runtime/GameObject/Component.h"
-#include "Runtime/GameObject/ComponentFactory.h"
-#include "Runtime/GameObject/Transform.h"
-#include "Runtime/Render/Graphics/Light.h"
-#include "Runtime/Render/Render/MeshRenderer.h"
 
 namespace SaplingEngine
 {

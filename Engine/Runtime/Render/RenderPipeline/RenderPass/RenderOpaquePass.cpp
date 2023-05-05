@@ -1,5 +1,5 @@
-#include "Runtime/Render/Graphics/Material.h"
-#include "Runtime/Render/Render/Renderer.h"
+#include "Runtime/Component/Renderer/Renderer.h"
+#include "Runtime/Render/Graphics/Material/Material.h"
 #include "Runtime/Render/RenderPipeline/RenderPipeline.h"
 #include "Runtime/Render/RenderPipeline/RenderPass/RenderOpaquePass.h"
 #include "Runtime/Render/RenderPipeline/RenderPass/ShadowPass.h"

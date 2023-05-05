@@ -1,4 +1,4 @@
-#include "Runtime/Render/Graphics/LightManager.h"
+#include "LightManager.h"
 
 namespace SaplingEngine
 {

@@ -1,10 +1,10 @@
 #include "MeshRenderer.h"
 
 #include "Runtime/Render/Graphics/ConstantBufferData.h"
-#include "Runtime/Render/Graphics/Material.h"
-#include "Runtime/Render/Graphics/MaterialManager.h"
-#include "Runtime/Render/Graphics/Mesh.h"
-#include "Runtime/Render/Graphics/MeshManager.h"
+#include "Runtime/Render/Graphics/Material/Material.h"
+#include "Runtime/Render/Graphics/Material/MaterialManager.h"
+#include "Runtime/Render/Graphics/Mesh/Mesh.h"
+#include "Runtime/Render/Graphics/Mesh/MeshManager.h"
 
 namespace SaplingEngine
 {

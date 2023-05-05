@@ -6,11 +6,11 @@
 namespace SaplingEngine
 {
 	class Renderer;
-	class Dx12GraphicsManager;
+	class GraphicsManager;
 	
 	class Dx12CommandManager final
 	{
-		friend class Dx12GraphicsManager;
+		friend class GraphicsManager;
 		
 	public:
 		/**

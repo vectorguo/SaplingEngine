@@ -1,5 +1,6 @@
-#include "GameObject.h"
 #include "Transform.h"
+
+#include "Runtime/GameObject/GameObject.h"
 
 namespace SaplingEngine
 {

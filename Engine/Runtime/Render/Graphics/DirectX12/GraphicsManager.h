@@ -7,7 +7,7 @@ namespace SaplingEngine
 	class Camera;
 	class Scene;
 
-	class Dx12GraphicsManager final
+	class GraphicsManager final
 	{
 		friend class Dx12DescriptorManager;
 		friend class Dx12CommandManager;
@@ -230,6 +230,4 @@ namespace SaplingEngine
 		 */
 		static std::map<ComPtr<ID3D12Resource>, uint64_t> m_UsedUploadBuffers;
 	};
-
-	using GraphicsManager = Dx12GraphicsManager;
 }

@@ -1,9 +1,7 @@
 #pragma once
 
-#include "Runtime/GameObject/Component.h"
+#include "Runtime/Component/Component.h"
 #include "Runtime/Render/Graphics/ConstantBufferData.h"
-#include "Runtime/Render/Graphics/Material.h"
-#include "Runtime/Render/Graphics/Mesh.h"
 
 namespace SaplingEngine
 {

@@ -1,8 +1,9 @@
 #include "Dx12CommandManager.h"
-#include "Dx12GraphicsManager.h"
-#include "Runtime/Render/Graphics/Material.h"
-#include "Runtime/Render/Graphics/Mesh.h"
-#include "Runtime/Render/Render/Renderer.h"
+#include "GraphicsManager.h"
+
+#include "Runtime/Component/Renderer/Renderer.h"
+#include "Runtime/Render/Graphics/Material/Material.h"
+#include "Runtime/Render/Graphics/Mesh/Mesh.h"
 
 namespace SaplingEngine
 {

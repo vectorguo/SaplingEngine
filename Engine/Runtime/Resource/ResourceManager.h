@@ -1,9 +1,9 @@
 #pragma once
+#include "ResourceAsyncRequest.h"
+#include "ResourceLoader.h"
 
-#include "Runtime/Render/Graphics/Mesh.h"
-#include "Runtime/Render/Graphics/Texture2D.h"
-#include "Runtime/Resource/ResourceAsyncRequest.h"
-#include "Runtime/Resource/ResourceLoader.h"
+#include "Runtime/Render/Graphics/Mesh/Mesh.h"
+#include "Runtime/Render/Graphics/Texture/Texture2D.h"
 
 namespace SaplingEngine
 {

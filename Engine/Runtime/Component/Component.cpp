@@ -1,4 +1,4 @@
-#include "Runtime/GameObject/Component.h"
+#include "Component.h"
 #include "Runtime/GameObject/GameObject.h"
 
 namespace SaplingEngine

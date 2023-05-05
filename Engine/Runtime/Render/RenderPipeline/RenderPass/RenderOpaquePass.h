@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Runtime/Render/RenderPipeline/RenderPass/RenderPass.h"
+#include "RenderPass.h"
 
 namespace SaplingEngine
 {

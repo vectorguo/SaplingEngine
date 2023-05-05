@@ -1,6 +1,7 @@
-#include "Runtime/GameObject/Transform.h"
-#include "Runtime/Render/Graphics/Light.h"
-#include "Runtime/Render/Graphics/LightManager.h"
+#include "Light.h"
+#include "LightManager.h"
+
+#include "Runtime/Component/Transform.h"
 
 namespace SaplingEngine
 {

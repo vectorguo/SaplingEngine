@@ -1,5 +1,5 @@
-#include "Runtime/Resource/ResourceManager.h"
-#include "Runtime/Resource/ResourceLoader.h"
+#include "ResourceManager.h"
+#include "ResourceLoader.h"
 
 namespace SaplingEngine
 {

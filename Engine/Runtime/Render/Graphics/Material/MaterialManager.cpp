@@ -1,5 +1,5 @@
-#include "Runtime/Render/Graphics/Material.h"
-#include "Runtime/Render/Graphics/MaterialManager.h"
+#include "Material.h"
+#include "MaterialManager.h"
 
 namespace SaplingEngine
 {

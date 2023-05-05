@@ -1,9 +1,9 @@
 #include "Runtime/Application/Application.h"
 #include "Runtime/Application/Setting.h"
 #include "Runtime/Input/Input.h"
-#include "Runtime/Render/Graphics/MaterialManager.h"
-#include "Runtime/Render/Graphics/ShaderManager.h"
-#include "Runtime/Render/Graphics/TextureManager.h"
+#include "Runtime/Render/Graphics/Material/MaterialManager.h"
+#include "Runtime/Render/Graphics/Shader/ShaderManager.h"
+#include "Runtime/Render/Graphics/Texture/TextureManager.h"
 #include "Runtime/Resource/ResourceManager.h"
 #include "Runtime/Scene/SceneManager.h"
 

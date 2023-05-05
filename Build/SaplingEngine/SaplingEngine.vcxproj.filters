@@ -49,16 +49,37 @@
     <Filter Include="Engine\Runtime\Render\Graphics\DirectX12">
       <UniqueIdentifier>{7c638023-cfdc-405b-9879-672f6c817b0e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Runtime\Render\Render">
-      <UniqueIdentifier>{19058a79-3044-44e2-83fc-f1aafab3cdce}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Runtime\Render\RenderPipeline">
       <UniqueIdentifier>{d617e820-dad9-4680-a225-82ed878ac2dd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Runtime\Render\RenderPipeline\RenderPass">
       <UniqueIdentifier>{47c88f19-854e-45de-b8aa-a4b47c5c5dbe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Runtime\Utility\RapidXml">
+    <Filter Include="Engine\Runtime\Component">
+      <UniqueIdentifier>{c6ad0bff-bc98-474f-a366-9b5287d75ac7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Runtime\Component\Light">
+      <UniqueIdentifier>{9e558aac-6c24-442c-8c97-cda17cb1df0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Runtime\Render\Graphics\Material">
+      <UniqueIdentifier>{61541f3e-e6f3-47ed-8111-d5f173179f49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Runtime\Render\Graphics\Mesh">
+      <UniqueIdentifier>{396301c8-b654-40fa-bdab-de0acab8b368}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Runtime\Render\Graphics\Shader">
+      <UniqueIdentifier>{45de70e4-f2fd-48e6-aafe-8edcbf61a75f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Runtime\Render\Graphics\Texture">
+      <UniqueIdentifier>{1bc8993f-3b72-4879-b828-12fdb63f46d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Runtime\Component\Renderer">
+      <UniqueIdentifier>{19058a79-3044-44e2-83fc-f1aafab3cdce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ThirdParty">
+      <UniqueIdentifier>{a6fcbbb1-0c94-4a04-83fd-0c641c2ab75f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ThirdParty\RapidXml">
       <UniqueIdentifier>{f4f45f53-d424-4c78-a673-4f1955e8cdbe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -81,16 +102,7 @@
     <ClCompile Include="..\..\Engine\Runtime\Camera\Cinemachine\CinemachineVirtualCamera.cpp">
       <Filter>Engine\Runtime\Camera\Cinemachine</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Engine\Runtime\GameObject\Component.cpp">
-      <Filter>Engine\Runtime\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Engine\Runtime\GameObject\ComponentFactory.cpp">
-      <Filter>Engine\Runtime\GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Engine\Runtime\GameObject\GameObject.cpp">
-      <Filter>Engine\Runtime\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Engine\Runtime\GameObject\Transform.cpp">
       <Filter>Engine\Runtime\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Engine\Runtime\Input\Input.cpp">
@@ -129,7 +141,7 @@
     <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12DescriptorManager.cpp">
       <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12GraphicsManager.cpp">
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\GraphicsManager.cpp">
       <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12Utility.cpp">
@@ -137,42 +149,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\ConstantBufferData.cpp">
       <Filter>Engine\Runtime\Render\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\Light.cpp">
-      <Filter>Engine\Runtime\Render\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\LightManager.cpp">
-      <Filter>Engine\Runtime\Render\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\Material.cpp">
-      <Filter>Engine\Runtime\Render\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\MaterialManager.cpp">
-      <Filter>Engine\Runtime\Render\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\Mesh.cpp">
-      <Filter>Engine\Runtime\Render\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\MeshManager.cpp">
-      <Filter>Engine\Runtime\Render\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\Shader.cpp">
-      <Filter>Engine\Runtime\Render\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\ShaderManager.cpp">
-      <Filter>Engine\Runtime\Render\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\Texture2D.cpp">
-      <Filter>Engine\Runtime\Render\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\TextureManager.cpp">
-      <Filter>Engine\Runtime\Render\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Engine\Runtime\Render\Render\MeshRenderer.cpp">
-      <Filter>Engine\Runtime\Render\Render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Engine\Runtime\Render\Render\Renderer.cpp">
-      <Filter>Engine\Runtime\Render\Render</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Engine\Runtime\Render\RenderPipeline\RenderPipeline.cpp">
       <Filter>Engine\Runtime\Render\RenderPipeline</Filter>
@@ -204,6 +180,51 @@
     <ClCompile Include="..\..\Engine\Runtime\Utility\Time.cpp">
       <Filter>Engine\Runtime\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Component\Component.cpp">
+      <Filter>Engine\Runtime\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Component\ComponentFactory.cpp">
+      <Filter>Engine\Runtime\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Component\Transform.cpp">
+      <Filter>Engine\Runtime\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Component\Light\Light.cpp">
+      <Filter>Engine\Runtime\Component\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Component\Light\LightManager.cpp">
+      <Filter>Engine\Runtime\Component\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\Material\Material.cpp">
+      <Filter>Engine\Runtime\Render\Graphics\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\Material\MaterialManager.cpp">
+      <Filter>Engine\Runtime\Render\Graphics\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\Mesh\Mesh.cpp">
+      <Filter>Engine\Runtime\Render\Graphics\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\Mesh\MeshManager.cpp">
+      <Filter>Engine\Runtime\Render\Graphics\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\Texture\Texture2D.cpp">
+      <Filter>Engine\Runtime\Render\Graphics\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\Texture\TextureManager.cpp">
+      <Filter>Engine\Runtime\Render\Graphics\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\Shader\Shader.cpp">
+      <Filter>Engine\Runtime\Render\Graphics\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Render\Graphics\Shader\ShaderManager.cpp">
+      <Filter>Engine\Runtime\Render\Graphics\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Component\Renderer\MeshRenderer.cpp">
+      <Filter>Engine\Runtime\Component\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Runtime\Component\Renderer\Renderer.cpp">
+      <Filter>Engine\Runtime\Component\Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Engine\Runtime\Application\Application.h">
@@ -224,19 +245,7 @@
     <ClInclude Include="..\..\Engine\Runtime\Camera\Cinemachine\CinemachineVirtualCamera.h">
       <Filter>Engine\Runtime\Camera\Cinemachine</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Engine\Runtime\GameObject\Component.h">
-      <Filter>Engine\Runtime\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Engine\Runtime\GameObject\ComponentFactory.h">
-      <Filter>Engine\Runtime\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Engine\Runtime\GameObject\ComponentType.h">
-      <Filter>Engine\Runtime\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Engine\Runtime\GameObject\GameObject.h">
-      <Filter>Engine\Runtime\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Engine\Runtime\GameObject\Transform.h">
       <Filter>Engine\Runtime\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Engine\Runtime\Input\Input.h">
@@ -287,7 +296,7 @@
     <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12DescriptorManager.h">
       <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12GraphicsManager.h">
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\GraphicsManager.h">
       <Filter>Engine\Runtime\Render\Graphics\DirectX12</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\DirectX12\Dx12UploadBuffer.h">
@@ -299,47 +308,8 @@
     <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\ConstantBufferData.h">
       <Filter>Engine\Runtime\Render\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\Light.h">
-      <Filter>Engine\Runtime\Render\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\LightManager.h">
-      <Filter>Engine\Runtime\Render\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\Material.h">
-      <Filter>Engine\Runtime\Render\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\MaterialManager.h">
-      <Filter>Engine\Runtime\Render\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\MaterialProperty.h">
-      <Filter>Engine\Runtime\Render\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\Mesh.h">
-      <Filter>Engine\Runtime\Render\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\MeshManager.h">
-      <Filter>Engine\Runtime\Render\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\Shader.h">
-      <Filter>Engine\Runtime\Render\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\ShaderManager.h">
-      <Filter>Engine\Runtime\Render\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\Texture2D.h">
-      <Filter>Engine\Runtime\Render\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\TextureManager.h">
-      <Filter>Engine\Runtime\Render\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\VertexData.h">
       <Filter>Engine\Runtime\Render\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Engine\Runtime\Render\Render\MeshRenderer.h">
-      <Filter>Engine\Runtime\Render\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Engine\Runtime\Render\Render\Renderer.h">
-      <Filter>Engine\Runtime\Render\Render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Engine\Runtime\Render\RenderPipeline\RenderPipeline.h">
       <Filter>Engine\Runtime\Render\RenderPipeline</Filter>
@@ -389,23 +359,74 @@
     <ClInclude Include="..\..\Engine\Runtime\Utility\Utility.h">
       <Filter>Engine\Runtime\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Engine\Runtime\Utility\RapidXml\rapidxml.hpp">
-      <Filter>Engine\Runtime\Utility\RapidXml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Engine\Runtime\Utility\RapidXml\rapidxml_iterators.hpp">
-      <Filter>Engine\Runtime\Utility\RapidXml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Engine\Runtime\Utility\RapidXml\rapidxml_print.hpp">
-      <Filter>Engine\Runtime\Utility\RapidXml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Engine\Runtime\Utility\RapidXml\rapidxml_utils.hpp">
-      <Filter>Engine\Runtime\Utility\RapidXml</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Engine\Runtime\SaplingEngineHeader.h">
       <Filter>Engine\Runtime</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Engine\Runtime\SaplingEnginePch.h">
       <Filter>Engine\Runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Component\Component.h">
+      <Filter>Engine\Runtime\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Component\ComponentFactory.h">
+      <Filter>Engine\Runtime\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Component\ComponentType.h">
+      <Filter>Engine\Runtime\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Component\Transform.h">
+      <Filter>Engine\Runtime\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Component\Light\Light.h">
+      <Filter>Engine\Runtime\Component\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Component\Light\LightManager.h">
+      <Filter>Engine\Runtime\Component\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\Material\Material.h">
+      <Filter>Engine\Runtime\Render\Graphics\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\Material\MaterialManager.h">
+      <Filter>Engine\Runtime\Render\Graphics\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\Material\MaterialProperty.h">
+      <Filter>Engine\Runtime\Render\Graphics\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\Mesh\Mesh.h">
+      <Filter>Engine\Runtime\Render\Graphics\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\Mesh\MeshManager.h">
+      <Filter>Engine\Runtime\Render\Graphics\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\Texture\Texture2D.h">
+      <Filter>Engine\Runtime\Render\Graphics\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\Texture\TextureManager.h">
+      <Filter>Engine\Runtime\Render\Graphics\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\Shader\Shader.h">
+      <Filter>Engine\Runtime\Render\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Render\Graphics\Shader\ShaderManager.h">
+      <Filter>Engine\Runtime\Render\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Component\Renderer\MeshRenderer.h">
+      <Filter>Engine\Runtime\Component\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Runtime\Component\Renderer\Renderer.h">
+      <Filter>Engine\Runtime\Component\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\ThirdParty\RapidXml\rapidxml.hpp">
+      <Filter>Engine\ThirdParty\RapidXml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\ThirdParty\RapidXml\rapidxml_iterators.hpp">
+      <Filter>Engine\ThirdParty\RapidXml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\ThirdParty\RapidXml\rapidxml_print.hpp">
+      <Filter>Engine\ThirdParty\RapidXml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\ThirdParty\RapidXml\rapidxml_utils.hpp">
+      <Filter>Engine\ThirdParty\RapidXml</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

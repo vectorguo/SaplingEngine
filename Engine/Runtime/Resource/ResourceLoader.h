@@ -1,11 +1,10 @@
 #pragma once
 
+#include "Runtime/SaplingEnginePch.h"
+
 namespace SaplingEngine
 {
 	struct MeshAsset;
-
-	class Texture2D;
-	using Texture2DSptr = SharedPtr<Texture2D>;
 
 	/**
 	 * \brief	¼ÓÔØMesh×ÊÔ´

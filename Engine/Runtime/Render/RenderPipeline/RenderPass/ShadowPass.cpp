@@ -1,9 +1,10 @@
+#include "ShadowPass.h"
+
 #include "Runtime/Application/Setting.h"
+#include "Runtime/Component/Light/Light.h"
+#include "Runtime/Component/Light/LightManager.h"
 #include "Runtime/Render/Graphics/DirectX12/Dx12DescriptorManager.h"
-#include "Runtime/Render/Graphics/Light.h"
-#include "Runtime/Render/Graphics/LightManager.h"
 #include "Runtime/Render/RenderPipeline/RenderPipeline.h"
-#include "Runtime/Render/RenderPipeline/RenderPass/ShadowPass.h"
 #include "Runtime/Scene/Scene.h"
 #include "Runtime/Scene/SceneManager.h"
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Runtime/GameObject/Component.h"
+#include "Component.h"
 
 namespace SaplingEngine
 {

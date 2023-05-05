@@ -1,5 +1,5 @@
 #include "Runtime/Render/Graphics/DirectX12/Dx12DescriptorManager.h"
-#include "Runtime/Render/Graphics/DirectX12/Dx12GraphicsManager.h"
+#include "Runtime/Render/Graphics/DirectX12/GraphicsManager.h"
 
 namespace SaplingEngine
 {
@@ -40,7 +40,7 @@ namespace SaplingEngine
 		}
 
 		//创建深度模板View
-		CreateDepthStencilView(pDevice, Dx12GraphicsManager::depthStencilViewFormat, defaultDsvDescriptorHeap.Get(), pDepthStencilBuffer, 0);
+		CreateDepthStencilView(pDevice, GraphicsManager::depthStencilViewFormat, defaultDsvDescriptorHeap.Get(), pDepthStencilBuffer, 0);
 
 		//创建Pass常量缓冲区描述符堆与上传缓冲区
 		CreatePassCbvDescriptorHeap();

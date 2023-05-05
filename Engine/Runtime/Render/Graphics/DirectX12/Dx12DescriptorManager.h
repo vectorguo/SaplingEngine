@@ -7,7 +7,7 @@ namespace SaplingEngine
 {
 	class Dx12DescriptorManager
 	{
-		friend class Dx12GraphicsManager;
+		friend class GraphicsManager;
 
 	public:
 		/**

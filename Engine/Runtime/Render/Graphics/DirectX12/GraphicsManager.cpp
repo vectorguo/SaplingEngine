@@ -1,34 +1,34 @@
 #include "Dx12CommandManager.h"
-#include "Dx12GraphicsManager.h"
+#include "GraphicsManager.h"
 #include "Runtime/Application/Setting.h"
 #include "Runtime/Render/Graphics/Shader.h"
 #include "Runtime/Render/Graphics/ShaderManager.h"
 
 namespace SaplingEngine
 {
-	ComPtr<IDXGIFactory4>					Dx12GraphicsManager::m_DXGIFactory;
-	ComPtr<ID3D12Device>					Dx12GraphicsManager::m_D3D12Device;
-	uint32_t								Dx12GraphicsManager::m_RtvDescriptorSize = 0;
-	uint32_t								Dx12GraphicsManager::m_DsvDescriptorSize = 0;
-	ComPtr<ID3D12DescriptorHeap>			Dx12GraphicsManager::m_RtvDescriptorHeap;
-	ComPtr<ID3D12DescriptorHeap>			Dx12GraphicsManager::m_DsvDescriptorHeap;
-	ComPtr<IDXGISwapChain>					Dx12GraphicsManager::swapChain;
-	ComPtr<ID3D12Resource>					Dx12GraphicsManager::swapChainBuffer[swapChainBufferCount];
-	ComPtr<ID3D12Resource>					Dx12GraphicsManager::depthStencilBuffer;
-	int32_t									Dx12GraphicsManager::currentSwapChainIndex = 0;
-	DXGI_FORMAT								Dx12GraphicsManager::swapChainBufferFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
-	DXGI_FORMAT								Dx12GraphicsManager::depthStencilViewFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	Dx12GraphicsManager::PipelineStateMap	Dx12GraphicsManager::m_PipelineStates;
-	Dx12GraphicsManager::RootSignatureMap	Dx12GraphicsManager::m_RootSignatures;
-	D3D12_VIEWPORT							Dx12GraphicsManager::m_Viewport;
-	D3D12_RECT								Dx12GraphicsManager::m_ScissorRect;
-	std::map<ComPtr<ID3D12Resource>, uint64_t> Dx12GraphicsManager::m_UnusedUploadBuffers;
-	std::map<ComPtr<ID3D12Resource>, uint64_t> Dx12GraphicsManager::m_UsedUploadBuffers;
+	ComPtr<IDXGIFactory4>					GraphicsManager::m_DXGIFactory;
+	ComPtr<ID3D12Device>					GraphicsManager::m_D3D12Device;
+	uint32_t								GraphicsManager::m_RtvDescriptorSize = 0;
+	uint32_t								GraphicsManager::m_DsvDescriptorSize = 0;
+	ComPtr<ID3D12DescriptorHeap>			GraphicsManager::m_RtvDescriptorHeap;
+	ComPtr<ID3D12DescriptorHeap>			GraphicsManager::m_DsvDescriptorHeap;
+	ComPtr<IDXGISwapChain>					GraphicsManager::swapChain;
+	ComPtr<ID3D12Resource>					GraphicsManager::swapChainBuffer[swapChainBufferCount];
+	ComPtr<ID3D12Resource>					GraphicsManager::depthStencilBuffer;
+	int32_t									GraphicsManager::currentSwapChainIndex = 0;
+	DXGI_FORMAT								GraphicsManager::swapChainBufferFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
+	DXGI_FORMAT								GraphicsManager::depthStencilViewFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	GraphicsManager::PipelineStateMap	GraphicsManager::m_PipelineStates;
+	GraphicsManager::RootSignatureMap	GraphicsManager::m_RootSignatures;
+	D3D12_VIEWPORT							GraphicsManager::m_Viewport;
+	D3D12_RECT								GraphicsManager::m_ScissorRect;
+	std::map<ComPtr<ID3D12Resource>, uint64_t> GraphicsManager::m_UnusedUploadBuffers;
+	std::map<ComPtr<ID3D12Resource>, uint64_t> GraphicsManager::m_UsedUploadBuffers;
 
 	/**
 	 * \brief	创建DX12 Device
 	 */
-	void Dx12GraphicsManager::CreateDevice()
+	void GraphicsManager::CreateDevice()
 	{
 #if defined(DEBUG) || defined(_DEBUG) 
 		{// Enable the D3D12 debug layer.
@@ -70,7 +70,7 @@ namespace SaplingEngine
 	 * \param	width		窗口宽度
 	 * \param	height		窗口高度
 	 */
-	void Dx12GraphicsManager::Initialize(HWND hWnd, uint32_t width, uint32_t height)
+	void GraphicsManager::Initialize(HWND hWnd, uint32_t width, uint32_t height)
 	{
 		CreateRootSignature();
 		CreatePipelineState();
@@ -81,7 +81,7 @@ namespace SaplingEngine
 	/**
 	 * \brief	重置大小
 	 */
-	void Dx12GraphicsManager::OnWindowResize(uint32_t width, uint32_t height)
+	void GraphicsManager::OnWindowResize(uint32_t width, uint32_t height)
 	{
 		////释放之前的缓存
 		//ResetSwapChainAndDepthStencilBuffer(width, height);
@@ -115,7 +115,7 @@ namespace SaplingEngine
 	/**
 	 * \brief 销毁
 	 */
-	void Dx12GraphicsManager::Destroy()
+	void GraphicsManager::Destroy()
 	{
 	}
 	
@@ -125,7 +125,7 @@ namespace SaplingEngine
 	 * \param	byteSize		数据大小
 	 * \return	默认缓冲区
 	 */
-	ComPtr<ID3D12Resource> Dx12GraphicsManager::CreateDefaultBufferAndUploadData(const void* initData, uint64_t byteSize)
+	ComPtr<ID3D12Resource> GraphicsManager::CreateDefaultBufferAndUploadData(const void* initData, uint64_t byteSize)
 	{
 		ComPtr<ID3D12Resource> defaultBuffer;
 
@@ -179,7 +179,7 @@ namespace SaplingEngine
 	 * \param	bufferSize		缓冲区大小
 	 * \return	上传缓存
 	 */
-	ID3D12Resource* Dx12GraphicsManager::GetUploadBuffer(uint64_t bufferSize)
+	ID3D12Resource* GraphicsManager::GetUploadBuffer(uint64_t bufferSize)
 	{
 		for (auto iter = m_UnusedUploadBuffers.begin(); iter != m_UnusedUploadBuffers.end(); ++iter)
 		{
@@ -226,7 +226,7 @@ namespace SaplingEngine
 	 * \brief	释放上传缓存
 	 * \param	uploadBuffer	上传缓存
 	 */
-	void Dx12GraphicsManager::ReleaseUploadBuffer(const ID3D12Resource* uploadBuffer)
+	void GraphicsManager::ReleaseUploadBuffer(const ID3D12Resource* uploadBuffer)
 	{
 		for (auto iter = m_UsedUploadBuffers.begin(); iter != m_UsedUploadBuffers.end(); ++iter)
 		{
@@ -242,7 +242,7 @@ namespace SaplingEngine
 	/**
 	 * \brief	释放所有上传缓存
 	 */
-	void Dx12GraphicsManager::ReleaseAllUploadBuffers()
+	void GraphicsManager::ReleaseAllUploadBuffers()
 	{
 		for (auto iter = m_UsedUploadBuffers.begin(); iter != m_UsedUploadBuffers.end(); ++iter)
 		{
@@ -257,7 +257,7 @@ namespace SaplingEngine
 	 * \param width 窗口宽度
 	 * \param height 窗口高度
 	 */
-	void Dx12GraphicsManager::CreateSwapChainAndDepthStencilBuffer(HWND hWnd, uint32_t width, uint32_t height)
+	void GraphicsManager::CreateSwapChainAndDepthStencilBuffer(HWND hWnd, uint32_t width, uint32_t height)
 	{
 		DXGI_SWAP_CHAIN_DESC sd;
 		sd.BufferDesc.Width = width;
@@ -335,7 +335,7 @@ namespace SaplingEngine
 	 * \param	width		窗口宽度
 	 * \param	height		窗口高度
 	 */
-	void Dx12GraphicsManager::ResetSwapChainAndDepthStencilBuffer(uint32_t width, uint32_t height)
+	void GraphicsManager::ResetSwapChainAndDepthStencilBuffer(uint32_t width, uint32_t height)
 	{
 		for (auto& buffer : swapChainBuffer)
 		{
@@ -347,7 +347,7 @@ namespace SaplingEngine
 	///**
 	// * \brief 创建描述符堆
 	// */
-	//void Dx12GraphicsManager::CreateDescriptorHeaps()
+	//void GraphicsManager::CreateDescriptorHeaps()
 	//{
 	//	//创建RTV描述符堆
 	//	D3D12_DESCRIPTOR_HEAP_DESC heapDesc;
@@ -372,7 +372,7 @@ namespace SaplingEngine
 	/**
 	 * \brief 创建根签名
 	 */
-	void Dx12GraphicsManager::CreateRootSignature()
+	void GraphicsManager::CreateRootSignature()
 	{
 		CD3DX12_STATIC_SAMPLER_DESC samplerDescriptors[5] =
 		{
@@ -485,7 +485,7 @@ namespace SaplingEngine
 	/**
 	 * \brief 创建PSO
 	 */
-	void Dx12GraphicsManager::CreatePipelineState()
+	void GraphicsManager::CreatePipelineState()
 	{
 		//创建基础的PipelineState描述符
 		D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc;
@@ -531,7 +531,7 @@ namespace SaplingEngine
 	///**
 	// * \brief 创建Rtv
 	// */
-	//void Dx12GraphicsManager::CreateRtv()
+	//void GraphicsManager::CreateRtv()
 	//{
 	//	//创建RTV
 	//	auto rtvHeapHandle = m_RtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
@@ -549,7 +549,7 @@ namespace SaplingEngine
 	///**
 	// * \brief 创建Dsv
 	// */
-	//void Dx12GraphicsManager::CreateDsv(uint32_t width, uint32_t height)
+	//void GraphicsManager::CreateDsv(uint32_t width, uint32_t height)
 	//{
 	//	//创建DSV
 	//	//创建深度/模板缓冲对应的纹理资源和存储资源的堆，并把创建的资源提交到堆中

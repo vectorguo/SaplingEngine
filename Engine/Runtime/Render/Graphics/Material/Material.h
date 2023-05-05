@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Runtime/Render/Graphics/MaterialProperty.h"
-#include "Runtime/Render/Graphics/Shader.h"
-#include "Runtime/Render/Graphics/ShaderManager.h"
-#include "Runtime/Render/Graphics/Texture2D.h"
+#include "Runtime/Render/Graphics/Material/MaterialProperty.h"
+#include "Runtime/Render/Graphics/Shader/Shader.h"
+#include "Runtime/Render/Graphics/Shader/ShaderManager.h"
+#include "Runtime/Render/Graphics/Texture/Texture2D.h"
 
 namespace SaplingEngine
 {

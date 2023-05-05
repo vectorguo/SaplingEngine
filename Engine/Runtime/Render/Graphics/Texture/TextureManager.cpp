@@ -1,6 +1,7 @@
-#include "Runtime/Render/Graphics/DirectX12/Dx12GraphicsManager.h"
-#include "Runtime/Render/Graphics/Texture2D.h"
-#include "Runtime/Render/Graphics/TextureManager.h"
+#include "Texture2D.h"
+#include "TextureManager.h"
+
+#include "Runtime/Render/Graphics/DirectX12/GraphicsManager.h"
 #include "Runtime/Resource/ResourceManager.h"
 
 namespace SaplingEngine

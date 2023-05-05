@@ -5,9 +5,9 @@
 /*
  * XML
  */
-#include "Runtime/Utility/RapidXml/rapidxml.hpp"
-#include "Runtime/Utility/RapidXml/rapidxml_utils.hpp"
-#include "Runtime/Utility/RapidXml/rapidxml_print.hpp"
+#include "ThirdParty/RapidXml/rapidxml.hpp"
+#include "ThirdParty/RapidXml/rapidxml_utils.hpp"
+#include "ThirdParty/RapidXml/rapidxml_print.hpp"
 
 using XmlDocumentFile	= rapidxml::file<>;
 using XmlDocument		= rapidxml::xml_document<>;

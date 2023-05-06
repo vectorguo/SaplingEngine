@@ -1,5 +1,5 @@
-#include "Runtime/Render/Graphics/DirectX12/Dx12DescriptorManager.h"
-#include "Runtime/Render/Graphics/DirectX12/GraphicsManager.h"
+#include "DescriptorManager.h"
+#include "GraphicsManager.h"
 
 namespace SaplingEngine
 {

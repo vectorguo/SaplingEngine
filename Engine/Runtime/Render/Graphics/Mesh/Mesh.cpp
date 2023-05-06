@@ -1,6 +1,6 @@
 #include "Mesh.h"
 
-#include "Runtime/Render/Graphics/DirectX12/GraphicsManager.h"
+#include "Runtime/Render/Graphics/GraphicsManager.h"
 
 namespace SaplingEngine
 {

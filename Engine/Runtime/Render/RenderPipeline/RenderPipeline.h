@@ -2,9 +2,9 @@
 
 #include "Runtime/SaplingEnginePch.h"
 #include "Runtime/Component/Renderer/Renderer.h"
-#include "Runtime/Render/Graphics/DirectX12/Dx12CommandManager.h"
-#include "Runtime/Render/Graphics/DirectX12/Dx12DescriptorManager.h"
-#include "Runtime/Render/Graphics/DirectX12/GraphicsManager.h"
+#include "Runtime/Render/Graphics/CommandManager.h"
+#include "Runtime/Render/Graphics/DescriptorManager.h"
+#include "Runtime/Render/Graphics/GraphicsManager.h"
 
 namespace SaplingEngine
 {

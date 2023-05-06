@@ -1,8 +1,8 @@
 #include "Texture2D.h"
 
 #include "Runtime/Render/Graphics/DirectX12/DDSTextureLoader.h"
-#include "Runtime/Render/Graphics/DirectX12/Dx12CommandManager.h"
-#include "Runtime/Render/Graphics/DirectX12/Dx12DescriptorManager.h"
+#include "Runtime/Render/Graphics/CommandManager.h"
+#include "Runtime/Render/Graphics/DescriptorManager.h"
 
 namespace SaplingEngine
 {
